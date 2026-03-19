@@ -67,7 +67,7 @@
       min-height: 100vh;
       display: flex; flex-direction:column; align-items:center; justify-content:center;
       text-align: center;
-      padding: 140px 20px 60px; /* adjusted to clear topbar and nav */
+      padding: 140px 20px 60px;
       position: relative;
       overflow: hidden;
       background: var(--bg);
@@ -333,11 +333,16 @@
     .faq-q {
       padding:20px 24px; font-weight:600; font-size:0.98rem;
       cursor:pointer; display:flex; justify-content:space-between; align-items:center;
-      transition:color 0.2s;
+      transition:color 0.2s; user-select:none;
     }
     .faq-q:hover { color:var(--green); }
-    .faq-q::after { content:'＋'; color:var(--green); font-size:1.2rem; flex-shrink:0; }
-    .faq-a { padding:0 24px 20px; color:var(--muted); font-size:0.9rem; line-height:1.7; }
+    .faq-q .faq-icon { color:var(--green); font-size:1.2rem; flex-shrink:0; transition:transform 0.3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.25s ease;
+      padding:0 24px; color:var(--muted); font-size:0.9rem; line-height:1.7;
+    }
+    .faq-item.open .faq-a { max-height:300px; padding:0 24px 20px; }
 
     /* ─── CTA FINAL ─── */
     .cta-final {
@@ -383,38 +388,65 @@
     .ticker span.down { color:#ff6b6b; }
     @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      display:none; position:fixed; inset:0; z-index:999;
+      background:rgba(0,0,0,0.85); backdrop-filter:blur(6px);
+      align-items:center; justify-content:center;
+    }
+    .modal-overlay.active { display:flex; }
+    .modal-box {
+      background:var(--card); border:1px solid var(--green);
+      border-radius:20px; padding:40px; max-width:440px; width:90%;
+      text-align:center; position:relative;
+    }
+    .modal-box h3 { font-size:1.5rem; font-weight:800; margin-bottom:10px; }
+    .modal-box p { color:var(--muted); margin-bottom:28px; font-size:0.95rem; line-height:1.6; }
+    .modal-close {
+      position:absolute; top:16px; right:20px;
+      background:none; border:none; color:var(--muted);
+      font-size:1.5rem; cursor:pointer; line-height:1;
+    }
+    .modal-close:hover { color:var(--text); }
+    .modal-plan-name {
+      display:inline-block; background:var(--green-glow); border:1px solid var(--green);
+      color:var(--green); padding:4px 16px; border-radius:100px;
+      font-size:0.8rem; font-weight:700; margin-bottom:20px;
+    }
+    .modal-price { font-size:2.8rem; font-weight:900; color:var(--green); margin-bottom:4px; }
+    .modal-period { color:var(--muted); font-size:0.85rem; margin-bottom:28px; }
+    .modal-btn {
+      display:block; width:100%; padding:14px; border-radius:10px;
+      background:var(--green); color:#060c0a; border:none;
+      font-size:1rem; font-weight:800; cursor:pointer; text-decoration:none;
+      transition:all 0.2s; margin-bottom:12px;
+    }
+    .modal-btn:hover { background:var(--green-dark); }
+    .modal-secure { font-size:0.78rem; color:var(--muted); }
+
     /* ─── RESPONSIVE ─── */
     @media(max-width:768px) {
       .trader-inner { grid-template-columns:1fr; }
-      /* Problem grid: 1 coluna no mobile */
       .problem-grid { grid-template-columns:1fr; }
-      /* Seções com menos padding no mobile */
       section { padding:60px 20px; }
       .problem-bg { padding-bottom:60px; }
       .subtitle { margin-bottom:36px; }
     }
 
     @media(max-width:600px) {
-      .topbar-escassez { font-size: 0.75rem; padding: 8px 16px; }
       nav { padding:10px 16px; }
-      /* Nav CTA: não quebra linha no mobile */
       .nav-cta { white-space:nowrap; font-size:0.8rem; padding:8px 14px; }
       .nav-login { font-size:0.8rem; padding:8px 14px; }
-      /* Hero: aumenta padding-top para não sobrepor o ticker absoluto, reduz laterais e base */
       .hero { padding:140px 16px 24px; min-height: auto; }
       .hero h1 { letter-spacing:-1px; font-size: 2.2rem; }
       .hero p { margin-bottom:24px; font-size: 0.95rem; line-height: 1.5; }
-      /* Botões empilhados e largura total no mobile */
       .hero-action-area { margin-top: 10px; }
       .hero-btns { flex-direction:column; align-items:stretch; gap:12px; width: 100%; }
       .btn-primary { padding:14px 24px; text-align:center; }
       .btn-secondary { padding:14px 24px; text-align:center; }
-      /* Stats com menos margem e menor tamanho */
       .hero-stats { margin-top:32px; gap:20px; }
       .stat-num { font-size:1.6rem; }
-      /* Pricing */
       .pricing-card.popular { transform:scale(1); }
-      /* Ticker: itens mais compactos no mobile */
       .ticker-wrap { top: 62px; }
       .ticker span { margin:0 18px; font-size:0.78rem; }
     }
@@ -422,14 +454,74 @@
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════════
+     ⚙️  PAYMENT CONFIGURATION
+     Replace the URLs below with your real payment links
+     (Stripe, Hotmart, Kiwify, Gumroad, etc.)
+     ═══════════════════════════════════════════════ -->
+<script>
+  var PAYMENT_LINKS = {
+    starter:    'https://buy.stripe.com/YOUR_STARTER_LINK',   // ← replace
+    pro:        'https://buy.stripe.com/YOUR_PRO_LINK',       // ← replace
+    enterprise: 'https://buy.stripe.com/YOUR_ENTERPRISE_LINK' // ← replace
+  };
+
+  var LOGIN_URL  = 'https://app.taketips.ai/login'; // ← replace with your app URL
+  var TERMS_URL  = '#';                              // ← replace with your terms page
+
+  var PLANS = {
+    starter:    { name:'Starter',    price:'$12', period:'/month' },
+    pro:        { name:'Pro',        price:'$19', period:'/month' },
+    enterprise: { name:'Enterprise', price:'$37', period:'/month' }
+  };
+
+  function checkout(plan) {
+    var url = PAYMENT_LINKS[plan];
+    if (!url || url.indexOf('YOUR_') !== -1) {
+      alert('⚙️ Payment link not configured yet.\n\nOpen index.html and set your PAYMENT_LINKS at the top of the <script> section.');
+      return;
+    }
+    window.location.href = url;
+  }
+
+  function openModal(plan) {
+    var p = PLANS[plan];
+    document.getElementById('modal-plan').textContent  = p.name;
+    document.getElementById('modal-price').textContent = p.price;
+    document.getElementById('modal-period').textContent = p.period;
+    document.getElementById('modal-confirm').onclick = function(){ checkout(plan); };
+    document.getElementById('checkout-modal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('checkout-modal').classList.remove('active');
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(function(q) {
+      q.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+    // Close modal on overlay click
+    document.getElementById('checkout-modal').addEventListener('click', function(e){
+      if (e.target === this) closeModal();
+    });
+  });
+</script>
+
 <!-- NAV -->
 <nav>
   <div class="logo">
     <img src="logo.png" alt="TakeTips IA" style="max-height: 42px; width: auto; object-fit: contain; transform: scale(2.2); transform-origin: left center;">
   </div>
   <div class="nav-actions">
-    <a href="/login.html" class="nav-login">Login</a>
-    <a href="#planos" class="nav-cta">Testar a IA agora →</a>
+    <a href="javascript:void(0)" onclick="window.location.href=LOGIN_URL" class="nav-login">Login</a>
+    <a href="#planos" class="nav-cta">Try TakeTips AI now →</a>
   </div>
 </nav>
 
@@ -448,7 +540,6 @@
     <span class="down">AUD/USD -0.10% ▼</span>
     <span class="up">EUR/JPY +0.45% ▲</span>
     <span class="down">DXY -0.25% ▼</span>
-    <!-- Duplicados para manter o fluxo contínuo na animação HTML -->
     <span class="up">EUR/USD +0.42% ▲</span>
     <span class="up">BTC/USD +2.15% ▲</span>
     <span class="down">XAU/USD -0.30% ▼</span>
@@ -470,7 +561,7 @@
       <a href="#como-funciona" class="btn-secondary">Ver como funciona</a>
     </div>
     <div class="hero-risk-free">
-      🔒 Pagamento Seguro • Acesso Imediato por R$ 59
+      🔒 Secure Payment · Immediate Access from $12/mo
     </div>
   </div>
 
@@ -488,8 +579,8 @@
       <div class="stat-label">No Ao Vivo (T7 Premium)</div>
     </div>
     <div class="stat">
-      <div class="stat-num">R$ 59 / mês</div>
-      <div class="stat-label">Sem fidelidade</div>
+      <div class="stat-num">From $12/mo</div>
+      <div class="stat-label">No long-term commitment</div>
     </div>
   </div>
 </section>
@@ -588,7 +679,6 @@
         <img src="feedbacks/feedback-06.jpg" alt="Feedback 6" style="width: 100%; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.6); transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
       </div>
     </div>
-
   </div>
 </section>
 
@@ -673,8 +763,8 @@
       <!-- STARTER -->
       <div class="pricing-card">
         <div class="plan-name">Starter</div>
-        <div class="plan-price"><sup>R$</sup>59</div>
-        <div class="plan-period">por mês</div>
+        <div class="plan-price"><sup>$</sup>12</div>
+        <div class="plan-period">per month</div>
         <hr class="plan-divider">
         <ul class="plan-features">
           <li><span class="check">✓</span><strong>60 análises</strong> por mês</li>
@@ -685,15 +775,15 @@
           <li><span class="x">✗</span><span style="color:var(--muted)">Análise de macro economia</span></li>
           <li><span class="x">✗</span><span style="color:var(--muted)">Suporte prioritário</span></li>
         </ul>
-        <a href="/api/checkout?plan=starter" class="plan-btn plan-btn-outline">Começar com Starter</a>
+        <button onclick="openModal('starter')" class="plan-btn plan-btn-outline">Começar com Starter</button>
       </div>
 
       <!-- PRO (POPULAR) -->
       <div class="pricing-card popular">
         <div class="popular-tag">⭐ MAIS POPULAR</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-price"><sup>R$</sup>97</div>
-        <div class="plan-period">por mês</div>
+        <div class="plan-price"><sup>$</sup>19</div>
+        <div class="plan-period">per month</div>
         <hr class="plan-divider">
         <ul class="plan-features">
           <li><span class="check">✓</span><strong>100 análises</strong> por mês</li>
@@ -704,14 +794,14 @@
           <li><span class="check">✓</span>Análise multi-timeframe</li>
           <li><span class="x">✗</span><span style="color:var(--muted)">Suporte prioritário</span></li>
         </ul>
-        <a href="/api/checkout?plan=pro" class="plan-btn plan-btn-primary">Quero o Plano Pro →</a>
+        <button onclick="openModal('pro')" class="plan-btn plan-btn-primary">Quero o Plano Pro →</button>
       </div>
 
       <!-- ENTERPRISE -->
       <div class="pricing-card">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-price"><sup>R$</sup>197</div>
-        <div class="plan-period">por mês</div>
+        <div class="plan-price"><sup>$</sup>37</div>
+        <div class="plan-period">per month</div>
         <hr class="plan-divider">
         <ul class="plan-features">
           <li><span class="check">✓</span><strong>300 análises</strong> por mês</li>
@@ -722,7 +812,7 @@
           <li><span class="check">✓</span>Acesso antecipado a novos recursos</li>
           <li><span class="check">✓</span>Sessão mensal de revisão de trades</li>
         </ul>
-        <a href="/api/checkout?plan=enterprise" class="plan-btn plan-btn-outline">Quero o Enterprise</a>
+        <button onclick="openModal('enterprise')" class="plan-btn plan-btn-outline">Quero o Enterprise</button>
       </div>
 
     </div>
@@ -736,27 +826,27 @@
     <h2 style="margin-bottom:48px;">Perguntas frequentes</h2>
     <div class="faq-list">
       <div class="faq-item">
-        <div class="faq-q">Preciso ter experiência em trading para usar?</div>
+        <div class="faq-q">Preciso ter experiência em trading para usar? <span class="faq-icon">＋</span></div>
         <div class="faq-a">Não. A TakeTips IA foi criada exatamente para quem não tem experiência ou tempo para analisar gráficos. A análise vem completa: entrada, stop, alvo e contexto explicados de forma objetiva. Você só precisa seguir as indicações.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">O que é o T7 Premium e o que tem a ver com a IA?</div>
+        <div class="faq-q">O que é o T7 Premium e o que tem a ver com a IA? <span class="faq-icon">＋</span></div>
         <div class="faq-a">O T7 Premium é a sala de trading ao vivo do Rafael Mascarenhas, ativa desde 2016, com mais de 10.000 traders. As estratégias e critérios de entrada que Rafael usa ao vivo com seus alunos são os mesmos que foram programados dentro da TakeTips IA.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Quais mercados a IA consegue analisar?</div>
+        <div class="faq-q">Quais mercados a IA consegue analisar? <span class="faq-icon">＋</span></div>
         <div class="faq-a">A TakeTips IA analisa os principais ativos Globais — Forex, criptomoedas, ações, índices, commodities. Basta selecionar o ativo na plataforma e a IA analisa na mesma hora.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Como funciona a análise de notícias e macro economia?</div>
+        <div class="faq-q">Como funciona a análise de notícias e macro economia? <span class="faq-icon">＋</span></div>
         <div class="faq-a">Ao selecionar o ativo, a IA busca automaticamente as principais notícias e eventos econômicos do dia para o ativo analisado. Para operações no gráfico diário, também entrega uma visão do cenário macroeconômico relevante.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Como funciona o acesso após o pagamento?</div>
+        <div class="faq-q">Como funciona o acesso após o pagamento? <span class="faq-icon">＋</span></div>
         <div class="faq-a">Imediatamente após o pagamento, você recebe acesso à plataforma por e-mail. Faça login, selecione o ativo e o tempo gráfico, e receba sua primeira análise em segundos.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">A IA garante lucro nas operações?</div>
+        <div class="faq-q">A IA garante lucro nas operações? <span class="faq-icon">＋</span></div>
         <div class="faq-a">Não. Nenhuma ferramenta garante lucro em trading. A TakeTips IA entrega análises técnicas de alta qualidade baseadas em estratégias reais, mas o resultado final depende sempre do mercado. Trading envolve risco.</div>
       </div>
     </div>
@@ -770,7 +860,7 @@
     <h2>Com a TakeTips IA, você nunca mais clica em 'comprar' ou 'vender' no escuro.</h2>
     <p>Pare de transferir seu capital para os institucionais. Tenha os critérios de entrada validados por quem vive do mercado há 15 anos — calculados em milissegundos pela nossa IA.</p>
     <a href="#planos" class="btn-primary" style="font-size:1.1rem; padding:18px 48px;">Escolher meu plano →</a>
-    <p style="margin-top:20px; font-size:0.82rem; color:var(--muted);">Acesso imediato · Sem contrato</p>
+    <p style="margin-top:20px; font-size:0.82rem; color:var(--muted);">Acesso imediato · Sem contrato · From $12/month</p>
   </div>
 </section>
 
@@ -781,13 +871,26 @@
   </div>
   <p>
     Inteligência Artificial com as estratégias de Rafael Mascarenhas — trader profissional há 15 anos<br>
-    <a href="/termos.html">Termos de Uso</a> · <a href="#">Política de Privacidade</a> · <a href="#">Contato</a>
+    <a href="javascript:void(0)" onclick="window.location.href=TERMS_URL">Termos de Uso</a> · <a href="#">Política de Privacidade</a> · <a href="#">Contato</a>
   </p>
   <p style="margin-top:16px; font-size:0.76rem;">
     ⚠️ Trading envolve riscos. Análises são ferramentas de apoio, não garantia de resultado.<br>
     © 2026 TakeTips IA. Todos os direitos reservados.
   </p>
 </footer>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-plan-name" id="modal-plan">Pro</div>
+    <div class="modal-price" id="modal-price">$19</div>
+    <div class="modal-period" id="modal-period">/month</div>
+    <p>You'll be redirected to our secure payment page. Access is granted immediately after payment.</p>
+    <button class="modal-btn" id="modal-confirm">Proceed to secure checkout →</button>
+    <div class="modal-secure">🔒 Stripe-secured · Cancel anytime · No contracts</div>
+  </div>
+</div>
 
 </body>
 </html>
