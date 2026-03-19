@@ -414,18 +414,18 @@
       display:none; position:fixed; inset:0; z-index:999;
       background:rgba(0,0,0,0.88); backdrop-filter:blur(8px);
       align-items:center; justify-content:center;
+      padding: 16px;
     }
     .modal-overlay.active { display:flex; }
     .modal-box {
       background:var(--card); border:1px solid var(--green);
-      border-radius:20px; padding:44px 40px; max-width:440px; width:92%;
+      border-radius:20px; padding:32px 28px; max-width:460px; width:100%;
       text-align:center; position:relative;
       box-shadow: 0 0 60px var(--green-glow);
+      max-height: 90vh; overflow-y: auto;
     }
-    .modal-box h3 { font-size:1.5rem; font-weight:800; margin-bottom:10px; }
-    .modal-box p { color:var(--muted); margin-bottom:28px; font-size:0.95rem; line-height:1.6; }
     .modal-close {
-      position:absolute; top:16px; right:20px;
+      position:absolute; top:14px; right:18px;
       background:none; border:none; color:var(--muted);
       font-size:1.6rem; cursor:pointer; line-height:1; transition:color 0.2s;
     }
@@ -433,18 +433,63 @@
     .modal-plan-name {
       display:inline-block; background:var(--green-glow); border:1px solid var(--green);
       color:var(--green); padding:4px 16px; border-radius:100px;
-      font-size:0.8rem; font-weight:700; margin-bottom:20px;
+      font-size:0.8rem; font-weight:700; margin-bottom:14px;
     }
-    .modal-price { font-size:2.8rem; font-weight:900; color:var(--green); margin-bottom:4px; line-height:1; }
-    .modal-period { color:var(--muted); font-size:0.85rem; margin-bottom:28px; }
-    .modal-btn {
-      display:block; width:100%; padding:15px; border-radius:10px;
+    .modal-price { font-size:2.6rem; font-weight:900; color:var(--green); margin-bottom:2px; line-height:1; }
+    .modal-period { color:var(--muted); font-size:0.85rem; margin-bottom:20px; }
+    .modal-divider { border:none; border-top:1px solid var(--border); margin:18px 0; }
+
+    /* payment method tabs */
+    .pay-tabs { display:flex; gap:10px; margin-bottom:18px; }
+    .pay-tab {
+      flex:1; padding:10px 8px; border-radius:10px; cursor:pointer;
+      border:1.5px solid var(--border); background:transparent;
+      color:var(--muted); font-size:0.85rem; font-weight:600;
+      transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:6px;
+    }
+    .pay-tab.active { border-color:var(--green); background:var(--green-glow); color:var(--green); }
+    .pay-tab:hover:not(.active) { border-color:var(--green); color:var(--text); }
+
+    /* payment method panel */
+    .pay-panel { display:none; }
+    .pay-panel.active { display:block; }
+
+    .pay-number-box {
+      background: rgba(0,230,118,0.07); border:1.5px solid var(--green);
+      border-radius:12px; padding:16px 20px; margin-bottom:14px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .pay-number-label { font-size:0.75rem; color:var(--muted); text-align:left; margin-bottom:4px; }
+    .pay-number { font-size:1.7rem; font-weight:900; color:var(--green); letter-spacing:2px; }
+    .copy-btn {
+      background:var(--green-glow); border:1px solid var(--green);
+      color:var(--green); padding:8px 14px; border-radius:8px;
+      font-size:0.8rem; font-weight:700; cursor:pointer;
+      white-space:nowrap; transition:all 0.2s; flex-shrink:0;
+    }
+    .copy-btn:hover { background:var(--green); color:#060c0a; }
+    .copy-btn.copied { background:var(--green); color:#060c0a; }
+
+    .pay-steps { text-align:left; margin-bottom:16px; }
+    .pay-steps p {
+      font-size:0.83rem; color:var(--muted); line-height:1.7;
+      display:flex; gap:8px; align-items:flex-start; margin-bottom:6px;
+    }
+    .pay-steps p span.step-n {
+      background:var(--green-glow); border:1px solid var(--green);
+      color:var(--green); min-width:20px; height:20px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.7rem; font-weight:800; flex-shrink:0; margin-top:2px;
+    }
+
+    .modal-confirm-btn {
+      display:block; width:100%; padding:14px; border-radius:10px;
       background:var(--green); color:#060c0a; border:none;
-      font-size:1rem; font-weight:800; cursor:pointer; text-decoration:none;
-      transition:all 0.2s; margin-bottom:12px;
+      font-size:0.98rem; font-weight:800; cursor:pointer;
+      transition:all 0.2s; margin-bottom:10px;
     }
-    .modal-btn:hover { background:var(--green-dark); transform:translateY(-1px); }
-    .modal-secure { font-size:0.78rem; color:var(--muted); }
+    .modal-confirm-btn:hover { background:var(--green-dark); transform:translateY(-1px); }
+    .modal-secure { font-size:0.76rem; color:var(--muted); }
 
     /* ─── RESPONSIVE ─── */
     @media(max-width:900px) {
@@ -862,60 +907,101 @@
   </p>
 </footer>
 
-<!-- CHECKOUT MODAL -->
+<!-- CHECKOUT MODAL — M-Pesa / e-Mola -->
 <div class="modal-overlay" id="checkout-modal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()" aria-label="Fechar">×</button>
+
     <div class="modal-plan-name" id="modal-plan">Pro</div>
-    <div class="modal-price" id="modal-price">$19</div>
+    <div class="modal-price" id="modal-price">3.500 MT</div>
     <div class="modal-period" id="modal-period">/mês</div>
-    <p>Você será redirecionado para nossa página de pagamento seguro. O acesso é liberado imediatamente após a confirmação.</p>
-    <button class="modal-btn" id="modal-confirm">Prosseguir para o checkout seguro →</button>
-    <div class="modal-secure">🔒 Pagamento via Stripe · Cancele quando quiser · Sem contratos</div>
+
+    <hr class="modal-divider">
+
+    <!-- TABS -->
+    <div class="pay-tabs">
+      <button class="pay-tab active" onclick="switchTab('mpesa')" id="tab-mpesa">
+        📱 M-Pesa
+      </button>
+      <button class="pay-tab" onclick="switchTab('emola')" id="tab-emola">
+        💳 e-Mola
+      </button>
+    </div>
+
+    <!-- M-PESA PANEL -->
+    <div class="pay-panel active" id="panel-mpesa">
+      <div class="pay-number-box">
+        <div>
+          <div class="pay-number-label">Número M-Pesa</div>
+          <div class="pay-number">840 330 540</div>
+        </div>
+        <button class="copy-btn" onclick="copyNumber('840330540', this)">Copiar</button>
+      </div>
+      <div class="pay-steps">
+        <p><span class="step-n">1</span>Abra o M-Pesa no seu telemóvel</p>
+        <p><span class="step-n">2</span>Selecione <strong>Enviar Dinheiro</strong></p>
+        <p><span class="step-n">3</span>Digite o número <strong>840 330 540</strong></p>
+        <p><span class="step-n">4</span>Coloque o valor do plano escolhido</p>
+        <p><span class="step-n">5</span>Envie o comprovativo pelo WhatsApp para ativar o acesso</p>
+      </div>
+    </div>
+
+    <!-- E-MOLA PANEL -->
+    <div class="pay-panel" id="panel-emola">
+      <div class="pay-number-box">
+        <div>
+          <div class="pay-number-label">Número e-Mola</div>
+          <div class="pay-number">877 480 775</div>
+        </div>
+        <button class="copy-btn" onclick="copyNumber('877480775', this)">Copiar</button>
+      </div>
+      <div class="pay-steps">
+        <p><span class="step-n">1</span>Abra o e-Mola no seu telemóvel</p>
+        <p><span class="step-n">2</span>Selecione <strong>Transferência</strong></p>
+        <p><span class="step-n">3</span>Digite o número <strong>877 480 775</strong></p>
+        <p><span class="step-n">4</span>Coloque o valor do plano escolhido</p>
+        <p><span class="step-n">5</span>Envie o comprovativo pelo WhatsApp para ativar o acesso</p>
+      </div>
+    </div>
+
+    <button class="modal-confirm-btn" onclick="openWhatsapp()">
+      📲 Enviar comprovativo no WhatsApp →
+    </button>
+    <div class="modal-secure">🔒 Acesso ativado em até 30 min após confirmação · Cancele quando quiser</div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     ⚙️  CONFIGURAÇÃO DE PAGAMENTO
-     Substitua os links abaixo pelos seus links reais
-     (Stripe, Hotmart, Kiwify, Gumroad, etc.)
+     ⚙️  CONFIGURAÇÃO
      ═══════════════════════════════════════════════ -->
 <script>
-  // ── LINKS DE PAGAMENTO ──────────────────────────
-  var PAYMENT_LINKS = {
-    starter:    'https://buy.stripe.com/YOUR_STARTER_LINK',
-    pro:        'https://buy.stripe.com/YOUR_PRO_LINK',
-    enterprise: 'https://buy.stripe.com/YOUR_ENTERPRISE_LINK'
-  };
+  // ── URLS DA PLATAFORMA ──────────────────────────
+  var LOGIN_URL  = 'https://www.taketipsia.com/login.html';
+  var TERMS_URL  = 'https://www.taketipsia.com/termos.html';
 
-  // ── URLs DA PLATAFORMA ──────────────────────────
-  var LOGIN_URL = 'https://app.taketips.ai/login';
-  var TERMS_URL = '#';
+  // ── WHATSAPP PARA RECEBER COMPROVATIVOS ─────────
+  // Substitua pelo seu número com código do país (258 = Moçambique)
+  var WHATSAPP_NUMBER = '258840330540';
 
-  // ── DADOS DOS PLANOS ────────────────────────────
+  // ── DADOS DOS PLANOS (em Meticais) ──────────────
   var PLANS = {
-    starter:    { name: 'Starter',    price: '$12', period: '/mês' },
-    pro:        { name: 'Pro',        price: '$19', period: '/mês' },
-    enterprise: { name: 'Enterprise', price: '$37', period: '/mês' }
+    starter:    { name: 'Starter',    price: '800 MT',   period: '/mês', valor: '800'   },
+    pro:        { name: 'Pro',        price: '1.500 MT', period: '/mês', valor: '1500'  },
+    enterprise: { name: 'Enterprise', price: '3.000 MT', period: '/mês', valor: '3000'  }
   };
 
-  // ── FUNÇÕES ─────────────────────────────────────
-  function checkout(plan) {
-    var url = PAYMENT_LINKS[plan];
-    if (!url || url.indexOf('YOUR_') !== -1) {
-      alert('⚙️ Link de pagamento não configurado.\n\nAbra o index.html e defina seu PAYMENT_LINKS no bloco <script> ao final do arquivo.');
-      return;
-    }
-    window.location.href = url;
-  }
+  var _currentPlan = 'pro';
 
+  // ── FUNÇÕES DE MODAL ────────────────────────────
   function openModal(plan) {
     var p = PLANS[plan];
     if (!p) return;
+    _currentPlan = plan;
     document.getElementById('modal-plan').textContent   = p.name;
     document.getElementById('modal-price').textContent  = p.price;
     document.getElementById('modal-period').textContent = p.period;
-    document.getElementById('modal-confirm').onclick    = function () { checkout(plan); };
+    // reset to mpesa tab
+    switchTab('mpesa');
     document.getElementById('checkout-modal').classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -923,6 +1009,47 @@
   function closeModal() {
     document.getElementById('checkout-modal').classList.remove('active');
     document.body.style.overflow = '';
+  }
+
+  function switchTab(method) {
+    ['mpesa', 'emola'].forEach(function(m) {
+      document.getElementById('tab-' + m).classList.toggle('active', m === method);
+      document.getElementById('panel-' + m).classList.toggle('active', m === method);
+    });
+  }
+
+  function copyNumber(num, btn) {
+    navigator.clipboard.writeText(num).then(function() {
+      var orig = btn.textContent;
+      btn.textContent = '✓ Copiado!';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(function() {
+      // fallback for older browsers
+      var ta = document.createElement('textarea');
+      ta.value = num;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = '✓ Copiado!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function openWhatsapp() {
+    var p      = PLANS[_currentPlan] || PLANS['pro'];
+    var method = document.getElementById('tab-mpesa').classList.contains('active') ? 'M-Pesa' : 'e-Mola';
+    var msg    = encodeURIComponent(
+      'Olá! Acabei de fazer o pagamento do plano ' + p.name +
+      ' (' + p.price + '/mês) via ' + method + '.' +
+      '\nSegue em anexo o comprovativo. Por favor ative meu acesso.'
+    );
+    window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + msg, '_blank');
   }
 
   // ── DOM READY ───────────────────────────────────
