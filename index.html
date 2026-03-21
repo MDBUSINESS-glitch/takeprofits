@@ -802,10 +802,6 @@ a{color:inherit;text-decoration:none}
       <div class="ak-dot ak-live" id="top-api-dot"></div>
       <span id="top-api-txt">football-data.org</span>
     </div>
-    <div class="topbar-user">
-      <div class="user-av">MD</div>
-      <span>Manuel Danca</span>
-    </div>
     <button class="btn-gear-top" onclick="openApiCfg()" title="Configurar APIs">&#9881;</button>
   </div>
 </header>
@@ -874,7 +870,7 @@ a{color:inherit;text-decoration:none}
     <div class="sb-contact">
       <div>&#9993; 840 330 540 — 24/7</div>
       <div>&#9993; 877 480 775 — 24/7</div>
-      <div>dancamanuel@gmail.com</div>
+      <div><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0f6b6e616c6e626e617a6a634f68626e6663216c6062">[email&#160;protected]</a></div>
     </div>
   </div>
 </aside>
@@ -920,6 +916,26 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 
+  <!-- 12 Pillars summary strip -->
+  <div style="padding:8px 16px;border-bottom:1px solid var(--bd);background:linear-gradient(90deg,rgba(0,212,170,.03),transparent);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span style="font-size:.6rem;font-weight:800;color:var(--ac);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap">12 Pilares:</span>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;flex:1">
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:var(--ac-dim);border:1px solid var(--ac-brd);color:var(--ac);font-family:var(--mono)">1 Volume</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:var(--bdim);border:1px solid var(--bbrd);color:var(--blue);font-family:var(--mono)">2 Hit Rate</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--t3);font-family:var(--mono)">3 Tendencia</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:var(--pdim);border:1px solid var(--pbrd);color:var(--purp);font-family:var(--mono)">4 Matchup</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:var(--gdim);border:1px solid var(--gbrd);color:var(--gold);font-family:var(--mono)">5 Tatico</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--t3);font-family:var(--mono)">6 Situacao</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.2);color:#22d3ee;font-family:var(--mono)">7 Correlacoes</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:var(--rdim);border:1px solid var(--rbrd);color:var(--red);font-family:var(--mono)">8 Arbitro</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--t3);font-family:var(--mono)">9 Fisico</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--t3);font-family:var(--mono)">10 Externas</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:var(--ac-dim);border:1px solid var(--ac-brd);color:var(--ac);font-family:var(--mono)">11 Value/Edge</span>
+      <span style="font-size:.58rem;padding:2px 7px;border-radius:3px;background:var(--bdim);border:1px solid var(--bbrd);color:var(--blue);font-family:var(--mono)">12 Timing</span>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="goPage('sites')" style="font-size:.58rem;white-space:nowrap">Ver Guia Completo</button>
+  </div>
+
   <!-- Match selector bar -->
   <div class="match-bar">
     <select class="sel" id="league-sel" onchange="onLeagueChange()">
@@ -933,7 +949,8 @@ a{color:inherit;text-decoration:none}
     <select class="sel" id="match-sel" onchange="onMatchChange()">
       <option value="">Selecionar Jogo...</option>
     </select>
-    <button class="btn btn-b btn-sm" onclick="loadAPIMatches()">&#8635; Carregar Jogos</button>
+    <button class="btn btn-b btn-sm" onclick="loadAPIMatches()">&#8635; API Jogos</button>
+    <button class="btn btn-ac btn-sm" onclick="renderDemoPlayers()">&#9654; Brighton vs Liverpool</button>
     <button class="btn btn-ghost btn-sm" onclick="openQLPanel()">&#9670; Quick Links</button>
     <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
       <span style="font-size:.62rem;color:var(--t4);font-family:var(--mono)" id="player-count">0 jogadores</span>
@@ -1814,7 +1831,7 @@ a{color:inherit;text-decoration:none}
 <div class="tw" id="tw"></div>
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 'use strict';
 
@@ -1837,13 +1854,85 @@ var COMPS = {
 //  ILLUSTRATIVE PLAYER DATABASE (replace with API data)
 // ================================================================
 var PLAYERS = [
-  // Format: {name, team, pos, league, shots, sot, fouls, tackles, yellow, xg, passes, aerial, crosses, kp, interceptions, clearances, dribbles, recoveries, saves}
-  {name:'Exemplo FW',      team:'Team A', pos:'FW', league:'PL', shots:3.8, sot:1.9, fouls:1.1, tackles:0.4, yellow:0.07, xg:0.55, passes:22, aerial:1.5, crosses:0.3, kp:1.2, interceptions:0.3, clearances:0.2, dribbles:2.0, recoveries:2.5},
-  {name:'Exemplo MC Def',  team:'Team A', pos:'CM', league:'PL', shots:0.6, sot:0.3, fouls:2.2, tackles:3.4, yellow:0.22, xg:0.05, passes:65, aerial:1.0, crosses:0.4, kp:0.8, interceptions:1.8, clearances:0.5, dribbles:0.4, recoveries:5.8},
-  {name:'Exemplo Ponta',   team:'Team B', pos:'FW', league:'PL', shots:4.1, sot:2.1, fouls:1.3, tackles:0.3, yellow:0.08, xg:0.78, passes:16, aerial:3.1, crosses:0.1, kp:0.4, interceptions:0.2, clearances:0.2, dribbles:0.7, recoveries:2.0},
-  {name:'Exemplo AM',      team:'Team B', pos:'AM', league:'PL', shots:3.0, sot:1.6, fouls:1.3, tackles:0.9, yellow:0.09, xg:0.42, passes:50, aerial:0.5, crosses:1.0, kp:2.5, interceptions:0.6, clearances:0.2, dribbles:2.2, recoveries:2.8},
-  {name:'Exemplo CB',      team:'Team A', pos:'CB', league:'PL', shots:0.5, sot:0.2, fouls:1.1, tackles:1.6, yellow:0.15, xg:0.07, passes:68, aerial:5.0, crosses:0.3, kp:0.3, interceptions:1.0, clearances:5.5, dribbles:0.1, recoveries:3.5},
-  {name:'Exemplo GK',      team:'Team B', pos:'GK', league:'PL', shots:0.0, sot:0.0, fouls:0.1, tackles:0.0, yellow:0.02, xg:0.00, passes:38, aerial:1.3, crosses:0, kp:0, interceptions:0, clearances:0, dribbles:0, recoveries:0, saves:3.6},
+  // ── BRIGHTON (Home)
+  {name:'Carlos Baleba',      team:'Brighton',  pos:'CDM',league:'PL', shots:0.8,sot:0.3,fouls:2.4,tackles:3.8,yellow:0.30,xg:0.04,passes:48,aerial:1.0,crosses:0.2,kp:0.6, interceptions:1.8,clearances:0.6,dribbles:0.4,recoveries:5.6,
+   prob_fouls_1:{v:92,line:1.5}, prob_fouls_2:{v:72,line:2.5}, prob_fouls_3:{v:40,line:3.5},
+   prob_sot_1:{v:25,line:0.5},
+   prob_tackles_2:{v:82,line:1.5}, prob_tackles_3:{v:62,line:2.5}, prob_tackles_4:{v:38,line:3.5},
+   yellow_prob:30, note:'Mais agressivo. Vai travar Gravenberch e Mac Allister.'},
+  {name:'Pascal Gross',       team:'Brighton',  pos:'CM', league:'PL', shots:0.8,sot:0.4,fouls:1.3,tackles:3.2,yellow:0.15,xg:0.05,passes:54,aerial:0.4,crosses:0.8,kp:1.4, interceptions:1.3,clearances:0.3,dribbles:0.8,recoveries:4.2,
+   prob_fouls_1:{v:72,line:1.5}, prob_fouls_2:{v:35,line:2.5},
+   prob_tackles_2:{v:75,line:1.5}, prob_tackles_3:{v:52,line:2.5},
+   yellow_prob:15},
+  {name:'Pervis Estupinian',  team:'Brighton',  pos:'LB', league:'PL', shots:0.6,sot:0.3,fouls:1.9,tackles:2.8,yellow:0.22,xg:0.03,passes:44,aerial:0.5,crosses:1.6,kp:0.8, interceptions:1.0,clearances:0.7,dribbles:0.6,recoveries:3.5,
+   prob_fouls_1:{v:88,line:1.5}, prob_fouls_2:{v:58,line:2.5}, prob_fouls_3:{v:28,line:3.5},
+   prob_tackles_2:{v:65,line:1.5}, prob_tackles_3:{v:42,line:2.5},
+   yellow_prob:35, note:'Vai sofrer contra Salah. Candidato a amarelo.'},
+  {name:'Joel Veltman',       team:'Brighton',  pos:'RB', league:'PL', shots:0.3,sot:0.1,fouls:1.7,tackles:2.5,yellow:0.18,xg:0.02,passes:50,aerial:0.4,crosses:0.8,kp:0.4, interceptions:0.8,clearances:1.0,dribbles:0.2,recoveries:3.1,
+   prob_fouls_1:{v:82,line:1.5}, prob_fouls_2:{v:50,line:2.5},
+   prob_tackles_2:{v:58,line:1.5}, prob_tackles_3:{v:35,line:2.5},
+   yellow_prob:25},
+  {name:'Lewis Dunk',         team:'Brighton',  pos:'CB', league:'PL', shots:0.5,sot:0.3,fouls:1.5,tackles:2.2,yellow:0.12,xg:0.06,passes:60,aerial:4.8,crosses:0.3,kp:0.3, interceptions:1.2,clearances:5.4,dribbles:0.1,recoveries:3.4,
+   prob_fouls_1:{v:78,line:1.5}, prob_fouls_2:{v:42,line:2.5},
+   prob_tackles_2:{v:52,line:1.5}, prob_tackles_3:{v:28,line:2.5},
+   yellow_prob:20},
+  {name:'Jan Paul van Hecke', team:'Brighton',  pos:'CB', league:'PL', shots:0.3,sot:0.1,fouls:1.2,tackles:1.8,yellow:0.10,xg:0.02,passes:58,aerial:3.8,crosses:0.2,kp:0.2, interceptions:1.0,clearances:4.8,dribbles:0.1,recoveries:2.8,
+   prob_fouls_1:{v:68,line:1.5}, prob_fouls_2:{v:30,line:2.5},
+   prob_tackles_2:{v:42,line:1.5},
+   yellow_prob:12},
+  {name:'Kaoru Mitoma',       team:'Brighton',  pos:'FW', league:'PL', shots:2.2,sot:1.1,fouls:0.7,tackles:1.0,yellow:0.05,xg:0.22,passes:22,aerial:0.4,crosses:0.8,kp:1.4, interceptions:0.4,clearances:0.1,dribbles:2.8,recoveries:2.2,
+   prob_fouls_1:{v:45,line:1.5},
+   prob_sot_1:{v:68,line:0.5}, prob_sot_2:{v:32,line:1.5},
+   yellow_prob:5},
+  {name:'Joao Pedro',         team:'Brighton',  pos:'FW', league:'PL', shots:2.0,sot:1.0,fouls:0.9,tackles:0.5,yellow:0.08,xg:0.28,passes:18,aerial:2.0,crosses:0.2,kp:0.7, interceptions:0.3,clearances:0.2,dribbles:1.4,recoveries:2.0,
+   prob_fouls_1:{v:52,line:1.5},
+   prob_sot_1:{v:62,line:0.5}, prob_sot_2:{v:28,line:1.5},
+   yellow_prob:8},
+  {name:'Danny Welbeck',      team:'Brighton',  pos:'FW', league:'PL', shots:1.8,sot:0.9,fouls:1.1,tackles:0.8,yellow:0.10,xg:0.18,passes:16,aerial:2.2,crosses:0.2,kp:0.5, interceptions:0.2,clearances:0.2,dribbles:0.8,recoveries:1.8,
+   prob_fouls_1:{v:62,line:1.5},
+   prob_sot_1:{v:55,line:0.5}, prob_sot_2:{v:25,line:1.5},
+   yellow_prob:10},
+  // ── LIVERPOOL (Away)
+  {name:'Mohamed Salah',      team:'Liverpool', pos:'FW', league:'PL', shots:3.9,sot:2.1,fouls:0.5,tackles:0.5,yellow:0.03,xg:0.56,passes:30,aerial:0.8,crosses:0.4,kp:1.8, interceptions:0.4,clearances:0.2,dribbles:1.8,recoveries:3.2,
+   prob_fouls_1:{v:35,line:1.5},
+   prob_sot_1:{v:92,line:0.5}, prob_sot_2:{v:68,line:1.5}, prob_sot_3:{v:35,line:2.5},
+   yellow_prob:3, note:'PICK #1 — 2+ SOT 68% prob. Nunca para de rematar.'},
+  {name:'Luis Diaz',          team:'Liverpool', pos:'FW', league:'PL', shots:2.5,sot:1.3,fouls:1.0,tackles:0.9,yellow:0.14,xg:0.32,passes:22,aerial:0.8,crosses:1.4,kp:1.6, interceptions:0.5,clearances:0.2,dribbles:2.0,recoveries:2.8,
+   prob_fouls_1:{v:58,line:1.5},
+   prob_sot_1:{v:78,line:0.5}, prob_sot_2:{v:40,line:1.5},
+   yellow_prob:10},
+  {name:'Ryan Gravenberch',   team:'Liverpool', pos:'CM', league:'PL', shots:0.8,sot:0.4,fouls:1.8,tackles:3.5,yellow:0.20,xg:0.06,passes:72,aerial:0.6,crosses:0.3,kp:1.0, interceptions:1.6,clearances:0.4,dribbles:0.6,recoveries:4.8,
+   prob_fouls_1:{v:85,line:1.5}, prob_fouls_2:{v:55,line:2.5}, prob_fouls_3:{v:25,line:3.5},
+   prob_sot_1:{v:30,line:0.5},
+   prob_tackles_2:{v:78,line:1.5}, prob_tackles_3:{v:55,line:2.5}, prob_tackles_4:{v:32,line:3.5},
+   yellow_prob:28, note:'Pivô defensivo. Faltas táticas para cortar contra-ataques.'},
+  {name:'Alexis Mac Allister', team:'Liverpool', pos:'CM', league:'PL', shots:1.4,sot:0.8,fouls:1.5,tackles:2.8,yellow:0.18,xg:0.10,passes:68,aerial:0.8,crosses:0.6,kp:1.4, interceptions:1.4,clearances:0.4,dribbles:0.8,recoveries:4.6,
+   prob_fouls_1:{v:78,line:1.5}, prob_fouls_2:{v:42,line:2.5},
+   prob_sot_1:{v:52,line:0.5}, prob_sot_2:{v:22,line:1.5},
+   prob_tackles_2:{v:65,line:1.5}, prob_tackles_3:{v:40,line:2.5},
+   yellow_prob:22, note:'Ex-Brighton — vai ser mais agressivo neste jogo.'},
+  {name:'Dominik Szoboszlai', team:'Liverpool', pos:'AM', league:'PL', shots:2.0,sot:1.0,fouls:1.3,tackles:1.8,yellow:0.15,xg:0.16,passes:56,aerial:0.6,crosses:0.4,kp:2.2, interceptions:0.6,clearances:0.2,dribbles:1.2,recoveries:3.0,
+   prob_fouls_1:{v:72,line:1.5},
+   prob_sot_1:{v:65,line:0.5}, prob_sot_2:{v:30,line:1.5},
+   prob_tackles_2:{v:40,line:1.5},
+   yellow_prob:15},
+  {name:'Andrew Robertson',   team:'Liverpool', pos:'LB', league:'PL', shots:0.3,sot:0.2,fouls:1.4,tackles:2.5,yellow:0.12,xg:0.04,passes:62,aerial:0.5,crosses:3.2,kp:1.0, interceptions:0.8,clearances:0.6,dribbles:0.4,recoveries:3.5,
+   prob_fouls_1:{v:75,line:1.5}, prob_fouls_2:{v:38,line:2.5},
+   prob_tackles_2:{v:58,line:1.5}, prob_tackles_3:{v:35,line:2.5},
+   yellow_prob:20},
+  {name:'Trent Alexander-Arnold',team:'Liverpool',pos:'RB',league:'PL', shots:1.2,sot:0.5,fouls:0.9,tackles:1.8,yellow:0.08,xg:0.08,passes:82,aerial:0.6,crosses:4.2,kp:3.0, interceptions:0.8,clearances:0.8,dribbles:0.8,recoveries:4.0,
+   prob_fouls_1:{v:55,line:1.5},
+   prob_sot_1:{v:35,line:0.5},
+   prob_tackles_2:{v:42,line:1.5},
+   yellow_prob:12},
+  {name:'Virgil van Dijk',    team:'Liverpool', pos:'CB', league:'PL', shots:0.8,sot:0.4,fouls:0.8,tackles:1.5,yellow:0.08,xg:0.08,passes:72,aerial:5.0,crosses:0.4,kp:0.4, interceptions:0.8,clearances:4.8,dribbles:0.2,recoveries:3.6,
+   prob_fouls_1:{v:50,line:1.5},
+   prob_tackles_2:{v:35,line:1.5},
+   yellow_prob:8},
+  {name:'Ibrahima Konate',    team:'Liverpool', pos:'CB', league:'PL', shots:0.5,sot:0.3,fouls:1.2,tackles:2.0,yellow:0.18,xg:0.05,passes:58,aerial:4.2,crosses:0.2,kp:0.2, interceptions:0.8,clearances:4.2,dribbles:0.1,recoveries:3.0,
+   prob_fouls_1:{v:68,line:1.5},
+   prob_tackles_2:{v:48,line:1.5},
+   yellow_prob:18},
 ];
 
 // ================================================================
@@ -2080,65 +2169,174 @@ function renderPlayersForMatch(home, away) {
   var wrap = document.getElementById('player-grid-wrap');
   var filtered = S.filterPos === 'all' ? PLAYERS : PLAYERS.filter(function(p) {
     var posMap = {fw:['FW','AM'],cm:['CM','CDM'],df:['CB','RB','LB','DF'],gk:['GK']};
-    return (posMap[S.filterPos] || []).includes(p.pos);
+    return (posMap[S.filterPos] || []).indexOf(p.pos) !== -1;
   });
-  
+  if (home || away) {
+    filtered = filtered.filter(function(p) {
+      return p.team === home || p.team === away;
+    });
+  }
   var posOrder = {FW:0,AM:1,CM:2,CDM:3,RB:4,LB:5,CB:6,DF:7,GK:8};
   var sorted = filtered.slice().sort(function(a, b) {
     return ((posOrder[a.pos] || 5) - (posOrder[b.pos] || 5)) || a.name.localeCompare(b.name);
   });
-  
   document.getElementById('player-count').textContent = sorted.length + ' jogadores';
-  
   if (!sorted.length) {
-    wrap.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-ic">&#9675;</div>Nenhum jogador com esta posicao.</div>';
+    wrap.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-ic">&#9675;</div>Nenhum jogador encontrado.</div>';
     return;
   }
-  
   var posClass = {FW:'pos-fw',AM:'pos-am',CM:'pos-cm',CDM:'pos-dm',RB:'pos-df',LB:'pos-df',CB:'pos-df',DF:'pos-df',GK:'pos-gk'};
-  var colorStat = function(val, high, mid) {
-    return val >= high ? 'var(--green)' : val >= mid ? 'var(--gold)' : 'var(--t3)';
-  };
-  
-  wrap.innerHTML = '<div style="grid-column:1/-1;padding:7px 0 5px;display:flex;gap:7px;align-items:center;border-bottom:1px solid var(--bd);flex-wrap:wrap">' +
-    '<span style="font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:4px;background:var(--gdim);border:1px solid var(--gbrd);color:var(--green);">' + (home || '--') + ' (Casa)</span>' +
-    '<span style="font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:4px;background:var(--bdim);border:1px solid var(--bbrd);color:var(--blue);">' + (away || '--') + ' (Fora)</span>' +
-    '<span style="font-size:.62rem;color:var(--t4);margin-left:auto;font-family:var(--mono)">Clica num jogador para analise dos 7 filtros</span>' +
-  '</div>' +
-  sorted.map(function(p) {
-    var isHomeTeam = p.team === home;
-    var fbrefSlug = encodeURIComponent(p.name.replace(/ /g, '-'));
-    var sofaSlug = encodeURIComponent(p.name.toLowerCase().replace(/ /g, '-'));
-    return '<div class="player-card ' + (isHomeTeam ? 'home-card' : 'away-card') + '" onclick="openAnalysis(\'' + p.name.replace(/'/g, "\\'") + '\')">' +
-      '<div class="pc-team-row">' +
-        '<div class="pc-team" style="color:' + (isHomeTeam ? 'var(--green)' : 'var(--blue)') + '">' + p.team + '</div>' +
-        '<span class="pc-pos ' + (posClass[p.pos] || 'pos-df') + '">' + p.pos + '</span>' +
+
+  function st(label, val, high, mid) {
+    var c = val >= high ? 'var(--ac)' : val >= mid ? 'var(--gold)' : 'var(--t3)';
+    return '<div style="background:var(--bg3);border-radius:5px;padding:4px 3px;text-align:center">' +
+      '<span style="font-size:.78rem;font-weight:700;font-family:var(--mono);color:' + c + ';display:block">' + (typeof val === 'number' ? val.toFixed(1) : val) + '</span>' +
+      '<span style="font-size:.48rem;color:var(--t4);text-transform:uppercase;letter-spacing:.3px">' + label + '</span>' +
+    '</div>';
+  }
+
+  function probBadge(v, bg, col) {
+    return '<span style="font-size:.64rem;font-weight:800;font-family:var(--mono);padding:2px 5px;border-radius:3px;background:' + bg + ';color:' + col + '">' + v + '%</span>';
+  }
+
+  var header = '<div style="grid-column:1/-1;padding:8px 2px 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+    (home ? '<span style="font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:5px;background:var(--ac-dim);border:1px solid var(--ac-brd);color:var(--ac)">' + home + ' (Casa)</span>' : '') +
+    (away ? '<span style="font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:5px;background:var(--bdim);border:1px solid var(--bbrd);color:var(--blue)">' + away + ' (Fora)</span>' : '') +
+    '<span style="margin-left:auto;font-size:.6rem;color:var(--t4);font-family:var(--mono)">Probabilidades por mercado | Clica para analise 12 pilares</span>' +
+  '</div>';
+
+  wrap.innerHTML = header + sorted.map(function(p) {
+    var isHome = p.team === home;
+    var bc = isHome ? 'var(--ac)' : 'var(--blue)';
+    var fbSlug = encodeURIComponent(p.name);
+    var ssSlug = encodeURIComponent(p.name.toLowerCase().replace(/ /g,'-'));
+
+    var probRows = '';
+
+    if (p.prob_sot_1) {
+      probRows += '<div style="margin-bottom:5px"><div style="font-size:.54rem;color:var(--t4);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;font-family:var(--mono)">Remates Baliza (SOT)</div><div style="display:flex;gap:3px;flex-wrap:wrap">' +
+        (p.prob_sot_1 ? probBadge(p.prob_sot_1.v, 'rgba(248,113,113,.12)', 'var(--red)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">0.5+</span>' : '') +
+        (p.prob_sot_2 ? probBadge(p.prob_sot_2.v, 'rgba(248,113,113,.07)', 'var(--t2)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">1.5+</span>' : '') +
+        (p.prob_sot_3 ? probBadge(p.prob_sot_3.v, 'rgba(255,255,255,.04)', 'var(--t3)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">2.5+</span>' : '') +
+      '</div></div>';
+    }
+
+    if (p.prob_fouls_1) {
+      probRows += '<div style="margin-bottom:5px"><div style="font-size:.54rem;color:var(--t4);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;font-family:var(--mono)">Faltas Cometidas</div><div style="display:flex;gap:3px;flex-wrap:wrap">' +
+        (p.prob_fouls_1 ? probBadge(p.prob_fouls_1.v, 'var(--ac-dim)', 'var(--ac)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">1+</span>' : '') +
+        (p.prob_fouls_2 ? probBadge(p.prob_fouls_2.v, 'var(--bdim)', 'var(--blue)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">2+</span>' : '') +
+        (p.prob_fouls_3 ? probBadge(p.prob_fouls_3.v, 'rgba(255,255,255,.04)', 'var(--t3)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">3+</span>' : '') +
+      '</div></div>';
+    }
+
+    if (p.prob_tackles_2) {
+      probRows += '<div style="margin-bottom:5px"><div style="font-size:.54rem;color:var(--t4);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;font-family:var(--mono)">Tackles</div><div style="display:flex;gap:3px;flex-wrap:wrap">' +
+        (p.prob_tackles_2 ? probBadge(p.prob_tackles_2.v, 'var(--pdim)', 'var(--purp)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">2+</span>' : '') +
+        (p.prob_tackles_3 ? probBadge(p.prob_tackles_3.v, 'rgba(167,139,250,.06)', 'var(--t3)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">3+</span>' : '') +
+        (p.prob_tackles_4 ? probBadge(p.prob_tackles_4.v, 'rgba(255,255,255,.03)', 'var(--t4)') + '<span style="font-size:.52rem;color:var(--t4);align-self:center">4+</span>' : '') +
+      '</div></div>';
+    }
+
+    var yc = p.yellow_prob >= 30 ? 'var(--gold)' : p.yellow_prob >= 20 ? 'var(--orng)' : 'var(--t3)';
+    var yellowRow = p.yellow_prob ? '<div style="display:flex;align-items:center;gap:5px;padding-top:4px;border-top:1px solid var(--bd)">' +
+      '<span style="font-size:.54rem;color:var(--t4);font-family:var(--mono);text-transform:uppercase;letter-spacing:.3px;width:50px;flex-shrink:0">Amarelo</span>' +
+      '<div style="flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px"><div style="width:' + Math.min(100, p.yellow_prob * 2.5) + '%;height:100%;background:' + yc + ';border-radius:2px"></div></div>' +
+      '<span style="font-size:.64rem;font-weight:800;font-family:var(--mono);color:' + yc + '">' + p.yellow_prob + '%</span>' +
+    '</div>' : '';
+
+    var noteHtml = p.note ? '<div style="font-size:.59rem;color:var(--gold);background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:4px;padding:3px 7px;margin-top:5px;line-height:1.5">' + p.note + '</div>' : '';
+
+    return '<div class="player-card" onclick="openAnalysis(\'' + p.name.replace(/'/g, "\\'") + '\')" style="border-top:2px solid ' + bc + '">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:4px">' +
+        '<div class="pc-team" style="color:' + (isHome ? 'var(--ac)' : 'var(--blue)') + ';font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px">' + p.team + '</div>' +
+        '<span class="pc-pos ' + (posClass[p.pos]||'pos-df') + '">' + p.pos + '</span>' +
       '</div>' +
-      '<div class="pc-name">' + p.name + '</div>' +
-      '<div class="pc-stats">' +
-        '<div class="pc-stat"><span class="pc-stat-v" style="color:' + colorStat(p.shots,2.5,1.5) + '">' + p.shots.toFixed(1) + '</span><div class="pc-stat-l">Rem/90</div></div>' +
-        '<div class="pc-stat"><span class="pc-stat-v" style="color:' + colorStat(p.sot,1.5,0.8) + '">' + p.sot.toFixed(1) + '</span><div class="pc-stat-l">SOT</div></div>' +
-        '<div class="pc-stat"><span class="pc-stat-v" style="color:' + colorStat(p.fouls,2.5,1.5) + '">' + p.fouls.toFixed(1) + '</span><div class="pc-stat-l">Faltas</div></div>' +
-        '<div class="pc-stat"><span class="pc-stat-v" style="color:' + colorStat(p.tackles,3,1.8) + '">' + p.tackles.toFixed(1) + '</span><div class="pc-stat-l">Tackles</div></div>' +
-        '<div class="pc-stat"><span class="pc-stat-v" style="color:' + (p.yellow >= 0.22 ? 'var(--red)' : p.yellow >= 0.12 ? 'var(--gold)' : 'var(--t4)') + '">' + (p.yellow * 100).toFixed(0) + '%</span><div class="pc-stat-l">Amarelo</div></div>' +
-        '<div class="pc-stat"><span class="pc-stat-v" style="color:' + colorStat(p.xg,0.35,0.15) + '">' + p.xg.toFixed(2) + '</span><div class="pc-stat-l">xG</div></div>' +
+      '<div class="pc-name" style="font-size:.86rem;font-weight:700;margin-bottom:8px">' + p.name + '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:9px">' +
+        st('SOT',    p.sot,    1.5, 0.8) +
+        st('Faltas', p.fouls,  2.5, 1.5) +
+        st('Tackl',  p.tackles,3.0, 1.8) +
+        st('xG',     p.xg,     0.35,0.15) +
+        st('Passes', p.passes, 60,  35)  +
+        st('Aereos', p.aerial, 3.0, 1.5) +
       '</div>' +
-      '<div class="pc-links">' +
-        '<a href="https://fbref.com/search/search.fcgi?search=' + fbrefSlug + '" target="_blank" class="pc-link lk-fbref" onclick="event.stopPropagation()">FBRef</a>' +
-        '<a href="https://sofascore.com/search#/' + sofaSlug + '" target="_blank" class="pc-link" onclick="event.stopPropagation()">Sofascore</a>' +
-        '<a href="https://understat.com/player/' + fbrefSlug + '" target="_blank" class="pc-link" onclick="event.stopPropagation()">xG</a>' +
-        '<a href="https://transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=' + fbrefSlug + '" target="_blank" class="pc-link" onclick="event.stopPropagation()">TM</a>' +
+      '<div style="border-top:1px solid var(--bd);padding-top:7px">' +
+        probRows +
+        yellowRow +
+      '</div>' +
+      noteHtml +
+      '<div style="display:flex;gap:4px;margin-top:7px;flex-wrap:wrap">' +
+        '<a href="https://fbref.com/search/search.fcgi?search=' + fbSlug + '" target="_blank" onclick="event.stopPropagation()" class="pc-link">FBRef</a>' +
+        '<a href="https://www.sofascore.com/search#/' + ssSlug + '" target="_blank" onclick="event.stopPropagation()" class="pc-link">Sofascore</a>' +
+        '<a href="https://understat.com/search?q=' + fbSlug + '" target="_blank" onclick="event.stopPropagation()" class="pc-link" style="color:var(--blue)">xG Map</a>' +
       '</div>' +
     '</div>';
   }).join('');
 }
 
+
 function renderDemoPlayers() {
-  document.getElementById('mb-match').textContent = 'Demo: Team A vs Team B';
-  document.getElementById('mb-sub').textContent = 'Dados ilustrativos - Use FBRef para dados reais';
-  document.getElementById('match-banner').style.display = 'block';
-  document.getElementById('ql-inline').classList.add('show');
-  renderPlayersForMatch('Team A', 'Team B');
+  document.getElementById('mb-match').textContent = 'Brighton vs Liverpool';
+  document.getElementById('mb-sub').textContent = 'Premier League | Analise estatistica profunda 12 Pilares | 2024/25';
+  document.getElementById('match-banner').classList.add('show');
+  renderPlayersForMatch('Brighton', 'Liverpool');
+  // Render match summary panel
+  renderMatchSummary('Brighton','Liverpool');
+}
+
+function renderMatchSummary(home, away) {
+  var existing = document.getElementById('match-summary-panel');
+  if (existing) existing.remove();
+  var panel = document.createElement('div');
+  panel.id = 'match-summary-panel';
+  panel.style.cssText = 'background:var(--bg1);border-bottom:1px solid var(--bd);padding:10px 16px';
+  panel.innerHTML =
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px">' +
+    makeSummaryBox('Faltas Totais Esperadas','23-29 faltas',
+      [['Over 20.5','88%','var(--ac)'],['Over 24.5','62%','var(--blue)'],['Over 28.5','30%','var(--t3)']],
+      'rgba(0,212,170,.05)','rgba(0,212,170,.2)') +
+    makeSummaryBox('Cartoes Amarelos','3-5 esperados',
+      [['Over 2.5','82%','var(--ac)'],['Over 3.5','55%','var(--blue)'],['Over 4.5','30%','var(--t3)']],
+      'rgba(245,158,11,.05)','rgba(245,158,11,.2)') +
+    makeSummaryBox('Remates a Baliza','Total 9-15',
+      [['Over 7.5','85%','var(--ac)'],['Over 9.5','62%','var(--blue)'],['Over 11.5','40%','var(--t3)']],
+      'rgba(248,113,113,.05)','rgba(248,113,113,.2)') +
+    makeSummaryBox('Tackles Totais','33-43 tackles',
+      [['Over 30.5','88%','var(--ac)'],['Over 35.5','60%','var(--blue)'],['Over 40.5','28%','var(--t3)']],
+      'rgba(167,139,250,.05)','rgba(167,139,250,.2)') +
+    '</div>' +
+    '<div style="margin-top:8px;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:9px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">' +
+    '<div style="font-size:.64rem;font-weight:800;color:var(--gold);font-family:var(--mono);text-transform:uppercase;letter-spacing:.4px">TOP 3 PICKS DO DIA</div>' +
+    makeTopPick('1','Salah 2+ Remates Baliza','68% prob | min. @1.55','var(--red)') +
+    makeTopPick('2','Baleba 2+ Tackles','82% prob | min. @1.35','var(--purp)') +
+    makeTopPick('3','Over 2.5 Cartoes Amarelos','82% prob | min. @1.40','var(--ac)') +
+    '</div>';
+  var wrap = document.getElementById('player-grid-wrap');
+  wrap.parentNode.insertBefore(panel, wrap);
+}
+
+function makeSummaryBox(title, subtitle, rows, bg, brd) {
+  var rowsHtml = rows.map(function(r) {
+    return '<div style="display:flex;align-items:center;gap:6px;padding:2px 0">' +
+      '<span style="font-size:.62rem;color:var(--t3);font-family:var(--mono);flex:1">' + r[0] + '</span>' +
+      '<div style="flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:2px"><div style="width:' + parseInt(r[1]) + '%;height:100%;background:' + r[2] + ';border-radius:2px"></div></div>' +
+      '<span style="font-size:.64rem;font-weight:800;font-family:var(--mono);color:' + r[2] + ';min-width:30px;text-align:right">' + r[1] + '</span>' +
+    '</div>';
+  }).join('');
+  return '<div style="background:' + bg + ';border:1px solid ' + brd + ';border-radius:8px;padding:9px 12px">' +
+    '<div style="font-size:.68rem;font-weight:700;color:var(--t1);font-family:var(--hd);margin-bottom:1px">' + title + '</div>' +
+    '<div style="font-size:.6rem;color:var(--t3);font-family:var(--mono);margin-bottom:7px">' + subtitle + '</div>' +
+    rowsHtml +
+  '</div>';
+}
+
+function makeTopPick(num, pick, meta, col) {
+  var medals = {1:'var(--gold)',2:'#94a3b8',3:'#cd7f32'};
+  return '<div style="display:flex;align-items:center;gap:7px;padding:4px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:6px">' +
+    '<span style="font-size:.7rem;font-weight:900;font-family:var(--mono);color:' + (medals[num]||'var(--t3)') + '">#' + num + '</span>' +
+    '<div><div style="font-size:.72rem;font-weight:700;color:var(--t1)">' + pick + '</div>' +
+    '<div style="font-size:.58rem;color:var(--t3);font-family:var(--mono)">' + meta + '</div></div>' +
+  '</div>';
 }
 
 // ================================================================
@@ -4281,11 +4479,4 @@ document.addEventListener('DOMContentLoaded', function() {
   renderBltApiStatus();
   renderBoletim();
   renderDia();
-  var d = new Date();
-  var badge = document.getElementById('dia-date-badge');
-  if (badge) badge.textContent = d.toLocaleDateString('pt-PT', {weekday:'short',day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
-});
-
-</script>
-</body>
-</html>
+  var d = new Dat
