@@ -412,6 +412,8 @@ a{color:inherit;text-decoration:none}
   cursor:pointer;border:1px solid var(--bd);background:var(--bg2);color:var(--t3);transition:all .13s;
 }
 .tab-btn.on{background:var(--bdim);border-color:var(--bbrd);color:var(--blue)}
+.tab-item{padding:5px 13px;border-radius:20px;font-size:.7rem;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--bg2);color:var(--t3);transition:all .13s}
+.tab-item.on{background:var(--bdim);border-color:var(--bbrd);color:var(--blue)}
 .sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;padding:12px 16px}
 .site-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r12);padding:12px}
 .site-card-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
@@ -847,19 +849,30 @@ a{color:inherit;text-decoration:none}
     <div class="sb-api-box">
       <div class="sb-api-lbl">
         <div class="ak-dot" id="sb-api-dot" style="background:var(--ac)"></div>
-        Odds API
+        Chave API
       </div>
+      <!-- football-data.org key -->
+      <div style="font-size:.52rem;color:var(--t4);font-family:var(--mono);margin-bottom:2px;text-transform:uppercase;letter-spacing:.3px">football-data.org</div>
       <input class="sb-api-input" id="sb-api-key-inp" type="text"
-        placeholder="Chave API football-data.org..."
+        placeholder="Chave football-data.org..."
         value="209ba7814c9eff53800266fea67771d7"
         oninput="onSbApiKeyChange()">
-      <div class="sb-api-row">
-        <button class="btn btn-ac btn-sm" style="flex:1;font-size:.65rem" onclick="connectSbApi()">&#9679; Ligar</button>
-        <button class="btn btn-ghost btn-sm" onclick="openApiCfg()" style="font-size:.62rem;padding:5px 8px" title="Config">&#9881;</button>
+      <!-- RapidAPI key -->
+      <div style="font-size:.52rem;color:var(--t4);font-family:var(--mono);margin-bottom:2px;text-transform:uppercase;letter-spacing:.3px;margin-top:5px">RapidAPI / API-Football</div>
+      <input class="sb-api-input" id="sb-rapid-key-inp" type="text"
+        placeholder="Chave RapidAPI (opcional)..."
+        oninput="onRapidKeyChange()">
+      <div class="sb-api-row" style="margin-top:6px">
+        <button class="btn btn-ac btn-sm" style="flex:1;font-size:.63rem" onclick="connectSbApi()">Ligar APIs</button>
+        <button class="btn btn-ghost btn-sm" onclick="openApiCfg()" style="font-size:.62rem;padding:5px 8px;flex-shrink:0" title="Config Avancada">&#9881;</button>
       </div>
-      <div style="font-size:.56rem;color:var(--t4);margin-top:5px;font-family:var(--mono)">
-        Gratis em <a href="https://www.football-data.org" target="_blank" style="color:var(--ac);text-decoration:underline">football-data.org</a> — 10 req/min
+      <div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">
+        <span style="font-size:.52rem;color:var(--t4);font-family:var(--mono)">Gratis:</span>
+        <a href="https://www.football-data.org" target="_blank" style="font-size:.52rem;color:var(--ac);font-family:var(--mono)">football-data.org</a>
+        <span style="font-size:.52rem;color:var(--t4);font-family:var(--mono)">|</span>
+        <a href="https://rapidapi.com/api-sports/api/api-football" target="_blank" style="font-size:.52rem;color:var(--blue);font-family:var(--mono)">rapidapi.com</a>
       </div>
+      <div id="sb-api-status-txt" style="font-size:.54rem;color:var(--t3);font-family:var(--mono);margin-top:4px"></div>
     </div>
 
     <div class="sb-banca-row">
@@ -2976,45 +2989,186 @@ function renderCorrMap() {
 //  SITES PAGE
 // ================================================================
 var SITE_CATS = [
-  {k:'all',l:'Todos'},
-  {k:'stats',l:'Stats Gerais'},
-  {k:'xg',l:'xG e Remates'},
-  {k:'injuries',l:'Lesoes / Escalacoes'},
-  {k:'odds',l:'Odds e Value'},
+  {k:'all',   l:'Todos'},
+  {k:'p1',    l:'P1 Volume'},
+  {k:'p2',    l:'P2 Hit Rate'},
+  {k:'p3',    l:'P3 Tendencia'},
+  {k:'p4',    l:'P4 Matchup'},
+  {k:'p5',    l:'P5 Tatico'},
+  {k:'p6',    l:'P6 Situacao'},
+  {k:'p7',    l:'P7 Correlacoes'},
+  {k:'p8',    l:'P8 Arbitro'},
+  {k:'p9',    l:'P9 Fisico'},
+  {k:'p10',   l:'P10 Externas'},
+  {k:'p11',   l:'P11 Odds/Value'},
+  {k:'p12',   l:'P12 Timing'},
 ];
 var sitesCat = 'all';
 
+// Mapping each site to pillars
+var PILLAR_MAP = {
+  'FBRef':         ['p1','p2','p3','p4','p5','p7'],
+  'Sofascore':     ['p1','p2','p4','p5'],
+  'FotMob':        ['p1','p2','p5'],
+  'WhoScored':     ['p4','p5'],
+  'Understat':     ['p1','p5'],
+  'Transfermarkt': ['p8','p9'],
+  'Fantasy PL':    ['p9','p12'],
+  'Rotowire':      ['p9','p12'],
+  'OddsPortal':    ['p11','p12'],
+  'Oddschecker':   ['p11','p12'],
+  'PL Official':   ['p6','p8'],
+  'Flashscore':    ['p6','p8','p12'],
+  'SoccerStats':   ['p6'],
+  'FootyStats':    ['p1','p4'],
+  'Pinnacle':      ['p11'],
+};
+
 function renderSites() {
   var tabsEl = document.getElementById('sites-tabs');
+  if (!tabsEl) return;
+
+  // Tabs
   tabsEl.innerHTML = SITE_CATS.map(function(c) {
-    return '<div class="tab-item' + (c.k === sitesCat ? ' on' : '') + '" onclick="setSitesCat(\'' + c.k + '\')">' + c.l + '</div>';
+    var isP = c.k !== 'all';
+    var active = c.k === sitesCat;
+    var pNum = c.k.replace('p','');
+    var bg = active ? 'var(--ac-dim)' : 'var(--bg2)';
+    var brd = active ? 'var(--ac-brd)' : 'var(--bd)';
+    var col = active ? 'var(--ac)' : 'var(--t3)';
+    if (active && isP) {
+      var cs = ['','var(--ac)','var(--blue)','var(--gold)','var(--purp)','var(--orng)','var(--red)','#22d3ee','var(--red)','var(--blue)','var(--gold)','var(--ac)','var(--blue)'];
+      col = cs[parseInt(pNum)] || 'var(--ac)';
+      bg = 'rgba(0,0,0,.15)';
+      brd = col.replace('var(--','rgba(').replace(')',',.3)');
+    }
+    return '<div class="tab-item' + (active ? ' on' : '') + '" onclick="setSitesCat(\'' + c.k + '\')" style="background:' + bg + ';border-color:' + brd + ';color:' + col + '">' + c.l + '</div>';
   }).join('');
-  
-  var sites = sitesCat === 'all' ? SITES : SITES.filter(function(s) { return s.cat === sitesCat; });
-  sites = sites.slice().sort(function(a, b) { return a.rank - b.rank; });
-  
-  document.getElementById('sites-grid').innerHTML = sites.map(function(s) {
-    var stars = Array(s.stars).fill('*').join('');
-    var freeTag = s.free ? {txt:'Gratuito',c:'var(--green)',bg:'var(--gdim)',br:'var(--gbrd)'} : {txt:'Pago/Freemium',c:'var(--gold)',bg:'var(--gdld)',br:'var(--gbrdl)'};
-    return '<div class="site-card">' +
-      '<div class="site-rank rank-' + (s.rank === 1 ? 'gold' : s.rank <= 3 ? 'silver' : 'norm') + '">#' + s.rank + ' ' + s.cat.toUpperCase() + '</div>' +
-      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
-        '<div class="site-name">' + s.name + '</div>' +
-        '<span style="font-family:var(--mono);font-size:.65rem;color:var(--gold)">' + stars + '</span>' +
+
+  var gridEl = document.getElementById('sites-grid');
+  if (!gridEl) return;
+
+  // If a specific pilar tab: show pilar info card + filtered sites
+  if (sitesCat !== 'all') {
+    var pilarInfo = {
+      p1:  {title:'Pilar 1: Volume Historico', color:'var(--ac)', desc:'A base de dados. Calcular media simples, pesada, L5, L10, mediana e percentil para ter o volume historico completo do jogador.',
+             tips:['Usar Media Pesada (x3, x2, x1) para todas as apostas — mais precisa que simples','Floor > Linha = quase certo. Ex: Floor = 2, Linha = 1.5 = OURO','Per 90 e essencial para jogadores com minutos irregulares','Mediana elimina outliers (jogos atipicos que distorcem a media)'],
+             sites:['FBRef','Sofascore','FotMob','FootyStats']},
+      p2:  {title:'Pilar 2: Consistencia (Hit Rate)', color:'var(--blue)', desc:'Quantas vezes o jogador bateu a linha nos ultimos 15 jogos. Hit Rate minimo: SOT 65%, Tackles 65%, Faltas 70%, Passes 75%, Cartao 35%.',
+             tips:['Hit Rate L5 > Geral = forma em subida (Over tem mais valor)','Hit Rate Casa/Fora SEPARADO — Gueye em casa: 90% vs fora: 60%','Streak de 8+ jogos batendo a linha = sinal MUITO forte','Desvio Padrao baixo = jogador consistente (DP 0.5 = excelente)'],
+             sites:['FBRef','Sofascore']},
+      p3:  {title:'Pilar 3: Tendencia / Momentum', color:'var(--gold)', desc:'L5 > L10 > Temporada = SUBIDA (Over tem mais valor). Media pesada > simples = forma recente melhor.',
+             tips:['L5 > L10 > Season = Over. L5 < L10 < Season = Under','Novo treinador? SÓ usar dados POS a mudanca de sistema','Regresso de lesao: descontar 15-20% nos primeiros 2-3 jogos','Mais minutos recentemente = confianca do treinador = stats em subida'],
+             sites:['FBRef','Sofascore','Transfermarkt']},
+      p4:  {title:'Pilar 4: Matchup (Adversario)', color:'var(--purp)', desc:'Quantas stats o adversario CONCEDE por jogo. Defensor direto. H2H historico. Estilo do adversario (bloco baixo, pressing alto, posse dominante).',
+             tips:['Adversario TOP 5 defesa = menos stats. Bottom 5 = mais stats','H2H: Gueye vs Chelsea media 2.8 faltas (acima da media geral de 2.5)','Bloco baixo adversario = MENOS remates dentro da area, mais remates de fora','Posse dominante adversario = MAIS tackles, desarmes, saves do GR'],
+             sites:['FBRef','WhoScored','Sofascore']},
+      p5:  {title:'Pilar 5: Contexto Tatico', color:'var(--orng)', desc:'Formacao real, posse esperada, pressing, zona de ataque. A regra de ouro: equipa com 65%+ posse = jogadores fazem MENOS tackles.',
+             tips:['Equipa com MAIS posse: mais passes, KP — MENOS tackles, intercecoes','Pressing alto = mais faltas, mais tackles, mais duelos no meio','PPDA baixo = pressing alto (Passes Per Defensive Action)','xG alto da equipa = mais SoT para avancados'],
+             sites:['WhoScored','Sofascore','FBRef','Understat']},
+      p6:  {title:'Pilar 6: Situacao do Jogo', color:'var(--red)', desc:'Derby/luta descida = +15% faltas, +20% cartoes. Casa: +8% remates, +10% faltas. Momento da temporada (final = mais intensidade).',
+             tips:['Alta importancia: +15% faltas, +20% cartoes, +10% tackles','Casa: +8% remates, +12% cantos. Fora: +5% faltas (mais defensivo)','Final da temporada (Mar-Mai): mais cartoes, mais faltas, mais fadiga','Midweek apos jogo domingo: stats podem cair 5-10%, mais rotacao'],
+             sites:['PL Official','Flashscore','Sofascore']},
+      p7:  {title:'Pilar 7: Correlacoes', color:'#22d3ee', desc:'Faltas ↔ Amarelo (0.72), Remates ↔ SOT (0.85), Posse ↔ Passes (0.90), Tackles ↔ Faltas (0.65). Anti: Posse Alta ↔ Tackles Baixos (-0.75).',
+             tips:['Tackles altos + faltas altos do mesmo jogador = APOSTAR ambos (0.65 corr)','Posse adversaria alta = MAIS saves do GR (0.80 corr) — SEMPRE verificar','Dribles tentados altos = mais faltas sofridas (0.75 corr)','Posse propria 65%+ = UNDER tackles (anti-correlacao -0.75)'],
+             sites:['FBRef','Manual (Excel)']},
+      p8:  {title:'Pilar 8: Arbitro', color:'var(--red)', desc:'Duro (>4.0 amarelos/jogo) = apostar cartoes e faltas. Verificar faltas por cartao: rigoroso (<4.0 faltas/cartao) = cartao vem rapido.',
+             tips:['Anthony Taylor: 5.2 amarelos/jogo — DURO. Apostar cartoes nestes jogos','Faltas por cartao: < 4.0 = cartao rapido (rigoroso). > 5.0 = lento (tolerante)','Tendencia casa/fora: alguns arbitros favorecem equipa da casa','VERIFICAR SEMPRE o arbitro antes de apostar em cartoes e faltas'],
+             sites:['Transfermarkt','PL Official','Flashscore']},
+      p9:  {title:'Pilar 9: Condicoes Fisicas', color:'var(--blue)', desc:'3 dias descanso: -10 a -15% stats. Suplente = NUNCA apostar. Jogadores >30 anos sofrem mais com carga acumulada.',
+             tips:['3 dias descanso = stats -10-15%. 7+ dias = stats +2-5%','Suplente (entra 60min) = stats dividem por 3. NUNCA apostar em props de suplente','Idade >33 anos + 3 dias descanso = stats -25% (ex: Salah aos 32)','Carga >800 min/30 dias = fadiga. Verificar no FBRef minutos jogados'],
+             sites:['Transfermarkt','Fantasy PL','Rotowire','FBRef']},
+      p10: {title:'Pilar 10: Condicoes Externas', color:'var(--gold)', desc:'Chuva forte: +10% faltas, -15% passes certos. Vento forte: -20% cruzamentos. Estadio pequeno (Goodison, Elland Road): +10% faltas e cartoes.',
+             tips:['Chuva forte: +10% faltas (escorregoes), -10% dribles certos','Vento forte: -20% cruzamentos certos, -15% passes longos','Estadio pequeno com publico agressivo: +10% faltas e cartoes','12:30 kick-off: jogadores podem estar mais lentos nos primeiros 15 min'],
+             sites:['weather.com (clima)']},
+      p11: {title:'Pilar 11: Odds e Value (Edge)', color:'var(--ac)', desc:'Edge = Prob Real - Prob Implicita. Edge > 5% = APOSTAR. Kelly Criterion para definir stake. Comparar 3+ casas de apostas.',
+             tips:['Edge > 5% = apostar. Edge 8-12% = stake 3%. Edge 12-18% = stake 4%','SEMPRE comparar odds em 3+ casas — diferenca de 0.10 = 5-10% mais lucro','Pinnacle e a referencia. Tuas odds > Pinnacle = valor CONFIRMADO','Margem da casa: Over + Under - 1. Margem > 8% = procurar melhor casa'],
+             sites:['OddsPortal','Oddschecker','Pinnacle']},
+      p12: {title:'Pilar 12: Timing e Execucao', color:'var(--blue)', desc:'Identificar valor 48h antes. Confirmar titular 1h antes. Se suplente = CANCELAR. Cash out se nova info surgir.',
+             tips:['48h antes: odds iniciais com mais erros = mais valor. Mas escalacoes incertas','24h antes: confer. de imprensa da pistas. MELHOR momento para apostar singles','1h antes: escalacao CONFIRMADA. Se nao e titular = CANCELAR imediatamente','Steam moves (odds a cair rapido) = dinheiro inteligente a apostar nessa direcao'],
+             sites:['Rotowire','Fantasy PL','Sofascore','OddsPortal']}
+    };
+
+    var info = pilarInfo[sitesCat];
+    if (!info) { gridEl.innerHTML = '<div class="empty">Sem info para este filtro</div>'; return; }
+
+    var pillNum = parseInt(sitesCat.replace('p',''));
+    var pillarColors = ['','var(--ac)','var(--blue)','var(--gold)','var(--purp)','var(--orng)','var(--red)','#22d3ee','var(--red)','var(--blue)','var(--gold)','var(--ac)','var(--blue)'];
+    var col = pillarColors[pillNum] || 'var(--ac)';
+
+    var siteCards = SITES.filter(function(s) {
+      var mapped = PILLAR_MAP[s.name] || [];
+      return mapped.indexOf(sitesCat) !== -1;
+    }).map(function(s) {
+      return renderSiteCard(s);
+    }).join('');
+
+    gridEl.innerHTML =
+      '<div style="grid-column:1/-1;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid ' + col.replace('var(--','rgba(').replace(')',',.35)') + ';border-radius:var(--r12);padding:14px 16px;margin-bottom:4px">' +
+        '<div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap">' +
+          '<div style="flex:1;min-width:280px">' +
+            '<div style="font-size:.82rem;font-weight:800;color:var(--t1);font-family:var(--hd);margin-bottom:5px">' + info.title + '</div>' +
+            '<div style="font-size:.72rem;color:var(--t2);line-height:1.7;margin-bottom:10px">' + info.desc + '</div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">' +
+              info.tips.map(function(t, i) {
+                return '<div style="background:var(--bg);border:1px solid var(--bd);border-radius:5px;padding:6px 8px;font-size:.65rem;color:var(--t2);line-height:1.5">' +
+                  '<span style="color:' + col + ';font-weight:700;margin-right:4px">' + (i+1) + '</span>' + t +
+                '</div>';
+              }).join('') +
+            '</div>' +
+          '</div>' +
+          '<div style="min-width:160px;flex-shrink:0">' +
+            '<div style="font-size:.6rem;font-weight:700;color:var(--t4);font-family:var(--mono);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Sites Usados</div>' +
+            info.sites.map(function(name) {
+              var site = SITES.find(function(s){ return s.name === name; });
+              if (!site) return '<div style="font-size:.68rem;color:var(--t3);padding:3px 0">' + name + '</div>';
+              return '<a href="' + site.url + '" target="_blank" style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;margin-bottom:4px;font-size:.68rem;font-weight:600;color:var(--t1);text-decoration:none;transition:border-color .13s" onmouseover="this.style.borderColor=\'' + col + '\'" onmouseout="this.style.borderColor=\'var(--bd)\'">' +
+                '<div style="width:7px;height:7px;border-radius:50%;background:' + (site.free ? 'var(--ac)' : 'var(--gold)') + ';flex-shrink:0"></div>' +
+                name + (site.free ? '' : ' <span style=\"font-size:.5rem;color:var(--gold)\">PRO</span>') +
+              '</a>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
       '</div>' +
-      '<div class="site-desc">' + s.desc + '</div>' +
-      '<div class="site-tags">' + s.tags.map(function(t) {
-        return '<span class="site-tag" style="background:var(--bg3);border:1px solid var(--bd);color:var(--t3)">' + t + '</span>';
-      }).join('') + '</div>' +
-      '<div class="site-btns">' +
-        '<a href="' + s.url + '" target="_blank" class="site-btn primary">Abrir Site</a>' +
-        s.links.map(function(l) {
-          return '<a href="' + l.u + '" target="_blank" class="site-btn">' + l.l + '</a>';
-        }).join('') +
-      '</div>' +
-    '</div>';
-  }).join('');
+      (siteCards || '<div class="empty" style="grid-column:1/-1">Navega para outro pilar para ver os sites correspondentes</div>');
+    return;
+  }
+
+  // ALL tab: Show sites grid organized by pilar groupings
+  var allSites = SITES.slice().sort(function(a, b) { return a.rank - b.rank; });
+  gridEl.innerHTML = allSites.map(function(s) { return renderSiteCard(s); }).join('');
 }
+
+function renderSiteCard(s) {
+  var freeTag = s.free ? {txt:'Gratis',c:'var(--ac)',bg:'var(--ac-dim)',br:'var(--ac-brd)'}
+                       : {txt:'Freemium',c:'var(--gold)',bg:'var(--gdim)',br:'var(--gbrd)'};
+  var pillarTags = (PILLAR_MAP[s.name] || []).map(function(p) {
+    var nums = ['','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12'];
+    var n = parseInt(p.replace('p',''));
+    return '<span style="font-size:.5rem;font-weight:700;padding:1px 4px;border-radius:2px;background:rgba(255,255,255,.06);color:var(--t3);font-family:var(--mono)">' + (nums[n]||p.toUpperCase()) + '</span>';
+  }).join('');
+  var starsColor = s.stars >= 5 ? 'var(--gold)' : s.stars >= 4 ? 'var(--blue)' : 'var(--t3)';
+  return '<div class="site-card" style="cursor:pointer" onclick="window.open(\'' + s.url + '\',\'_blank\')">' +
+    '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:6px">' +
+      '<div>' +
+        '<div class="site-card-name" style="margin-bottom:2px">' + s.name + '</div>' +
+        '<div style="display:flex;gap:3px;flex-wrap:wrap">' + pillarTags + '</div>' +
+      '</div>' +
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">' +
+        '<span style="font-size:.6rem;font-weight:700;padding:1px 7px;border-radius:3px;background:' + freeTag.bg + ';border:1px solid ' + freeTag.br + ';color:' + freeTag.c + '">' + freeTag.txt + '</span>' +
+        '<span style="font-family:var(--mono);font-size:.65rem;color:' + starsColor + '">' + Array(s.stars).fill('*').join('') + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="site-card-desc">' + s.desc + '</div>' +
+    '<div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap">' +
+      '<a href="' + s.url + '" target="_blank" onclick="event.stopPropagation()" class="site-btn primary">Abrir Site</a>' +
+      (s.links || []).map(function(l) {
+        return '<a href="' + l.u + '" target="_blank" onclick="event.stopPropagation()" class="site-btn">' + l.l + '</a>';
+      }).join('') +
+    '</div>' +
+  '</div>';
+}
+
 
 function setSitesCat(k) { sitesCat = k; renderSites(); }
 
@@ -4429,10 +4583,14 @@ function addToSlip() { addFromVerdict(); }
 // ================================================================
 function connectSbApi() {
   var inp = document.getElementById('sb-api-key-inp');
+  var rapInp = document.getElementById('sb-rapid-key-inp');
+  if (rapInp && rapInp.value.trim()) { API_KEYS.rapid = rapInp.value.trim(); }
   if (!inp) return;
   var val = inp.value.trim();
-  if (!val) { toast('Introduz a chave API', 'err'); return; }
+  if (!val) { toast('Introduz a chave API football-data.org', 'err'); return; }
   API_KEYS.fdorg = val;
+  var statusEl = document.getElementById('sb-api-status-txt');
+  if (statusEl) statusEl.textContent = 'A ligar...';
   try { var s=JSON.parse(localStorage.getItem('mdc_api_keys')||'{}'); s.fdorg=val; localStorage.setItem('mdc_api_keys',JSON.stringify(s)); } catch(e){}
   toast('API key guardada. A testar...', 'info');
   testApi('fdorg');
@@ -4442,6 +4600,14 @@ function connectSbApi() {
 function onSbApiKeyChange() {
   var inp = document.getElementById('sb-api-key-inp');
   if (inp) API_KEYS.fdorg = inp.value.trim();
+}
+function onRapidKeyChange() {
+  var inp = document.getElementById('sb-rapid-key-inp');
+  if (inp) {
+    API_KEYS.rapid = inp.value.trim();
+    var statusEl = document.getElementById('sb-api-status-txt');
+    if (statusEl) statusEl.textContent = inp.value.trim() ? 'RapidAPI key pronta' : '';
+  }
 }
 
 function updateTopbarStats() {
