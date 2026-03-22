@@ -4632,7 +4632,7 @@ const SPORTS_CONFIG = [
   // Other
   { key:'tennis_atp',                sport:'Tennis',  label:'ATP',              markets:'h2h,spreads' },
   { key:'tennis_wta',                sport:'Tennis',  label:'WTA',              markets:'h2h,spreads' },
-  { key:'mma_mixed_martial_arts',    sport:'MMA',     label:'UFC/MMA',          markets:'h2h,totals' },
+  { key:'mma_mixed_martial_arts',    sport:'MMA',     label:'UFC/MMA',          markets:'h2h,totals,spreads' },
 ];
 
 // Market key → our internal market category
@@ -4748,25 +4748,75 @@ const RealData = {
       });
     });
 
-    /* Step 2 — for each market compute fair probs via overround removal */
+    /* Step 2 — for each market compute fair probs using consensus overround
+       KEY FIX: We use the AVERAGE overround across all bookmakers (not best-odds mix)
+       to avoid the "both sides +EV" illusion from cross-book odds comparison.
+    */
     const picks = [];
 
+    // Build per-bookmaker markets for consensus overround
+    const bkMkts = {}; // mktKey -> bkKey -> outcomeName|point -> odds
+    game.bookmakers.forEach(bk => {
+      if(this.EXCLUDE_BOOKS.has(bk.key)) return;
+      bk.markets?.forEach(mkt => {
+        if(!bkMkts[mkt.key]) bkMkts[mkt.key] = {};
+        if(!bkMkts[mkt.key][bk.key]) bkMkts[mkt.key][bk.key] = {};
+        mkt.outcomes?.forEach(out => {
+          const odds = parseFloat(out.price || 0);
+          if(!this.validOdds(odds, mkt.key)) return;
+          const key = `${out.name}|${out.point ?? ''}`;
+          bkMkts[mkt.key][bk.key][key] = odds;
+        });
+      });
+    });
+
     Object.entries(mkts).forEach(([mktKey, outMap]) => {
-      const outArr = Object.values(outMap);
+      const outArr = Object.values(outMap).filter(o => o.odds >= 1.01);
       if(outArr.length < 2) return;
 
-      // Overround = sum(1/odds) — should be between 1.00 and 1.20 for legit bookmakers
-      const overround = outArr.reduce((s, o) => s + 1/o.odds, 0);
-      if(overround < 0.90 || overround > 1.30) return; // reject garbage data
+      // Compute CONSENSUS overround: average the overround across all bookmakers
+      // This prevents the "best odds from different books → sub-1.0 overround" trap
+      const bkOverrounds = [];
+      if(bkMkts[mktKey]) {
+        Object.values(bkMkts[mktKey]).forEach(bkOut => {
+          const vals = Object.values(bkOut).map(Number).filter(v => v > 1.01);
+          if(vals.length >= 2) {
+            const or = vals.reduce((s,v) => s + 1/v, 0);
+            if(or > 0.90 && or < 1.30) bkOverrounds.push(or);
+          }
+        });
+      }
 
-      outArr.forEach(o => {
+      // Need at least one valid bookmaker for the market
+      if(!bkOverrounds.length) return;
+
+      // Consensus overround = median across bookmakers (robust to outliers)
+      bkOverrounds.sort((a,b) => a-b);
+      const consensusOR = bkOverrounds[Math.floor(bkOverrounds.length/2)];
+
+      // Compute per-outcome EVs using consensus overround
+      const evScores = outArr.map(o => {
+        const fp = (1/o.odds) / consensusOR * 100;
+        return ((fp/100) * (o.odds-1) - (1-fp/100)) * 100;
+      });
+
+      // If multiple outcomes from same market both show +EV (due to odds from different books),
+      // only keep the one with HIGHEST EV — otherwise we'd show contradictory picks
+      const allPositive = evScores.every(e => e > 0);
+
+      outArr.forEach((o, idx) => {
         const { odds, bookmaker, name: outName, point } = o;
-        // True probability after margin removal
-        const fairProb = (1/odds) / overround * 100;
+        const fairProb = (1/odds) / consensusOR * 100;
         const fairOdds = (100/fairProb).toFixed(2);
-        const ev       = ((fairProb/100) * (odds - 1) - (1 - fairProb/100)) * 100;
+        const ev = evScores[idx];
 
-        if(ev < 1.5 || ev > 30) return; // ignore tiny or suspiciously huge EV
+        // If all sides show +EV (cross-book artifact), only keep best EV side
+        if(allPositive) {
+          const maxEV = Math.max(...evScores);
+          if(ev < maxEV) return; // skip lower-EV side
+        }
+
+        if(ev < 1.0 || ev > 25) return; // filter: min +1% EV, max 25% EV
 
         /* Step 3 — build clear human-readable pick label */
         const pt     = point != null ? parseFloat(point) : null;
@@ -4781,8 +4831,15 @@ const RealData = {
 
           case 'spreads':
           case 'alternate_spreads':
-            // "Arsenal -1.5" / "Manchester City +1.5"
-            label = `${outName} ${ptSign}`;
+            if(isMMA) {
+              // MMA spreads = round betting (e.g. "Chase Hooper -1.5 rds" means wins before round 2)
+              label = `${outName} ${ptSign} rds`;
+            } else if(isTennis) {
+              label = `${outName} ${ptSign} games`;
+            } else {
+              // Soccer/Basketball/etc: "Arsenal -1.5", "LAL +4.5"
+              label = `${outName} ${ptSign}`;
+            }
             break;
 
           case 'btts':
@@ -4799,21 +4856,28 @@ const RealData = {
 
           case 'totals':
           case 'alternate_totals': {
-            const dir = outName.toLowerCase().startsWith('over') ? '↑ Over' : '↓ Under';
-            const unit = isSoccer ? 'Golos' : isTennis ? 'Games' : isMLB ? 'Runs' : 'Pts';
-            label = `${dir} ${pt} ${unit}`;
+            const isOver2 = outName.toLowerCase().includes('over');
+            const dir4 = isOver2 ? '↑ Over' : '↓ Under';
+            const unit4 = isSoccer ? 'Golos' :
+                          isTennis ? 'Games' :
+                          isMLB    ? 'Runs' :
+                          isMMA    ? 'Rds' :  // MMA = rounds
+                          isNHL    ? 'Golos' :
+                          'Pts';
+            label = `${dir4} ${pt} ${unit4}`;
             break;
           }
 
           case 'team_totals': {
-            const dir2 = outName.toLowerCase().includes('over') ? '↑' : '↓';
-            // outName from the-odds-api is e.g. "Arsenal Over" or "Arsenal Under"
-            // Split to get team name
+            // outName from the-odds-api: "Arsenal Over" | "Arsenal Under" | "Over" | "Under"
             const parts = outName.split(' ');
-            const teamPart = parts.slice(0, -1).join(' ');
-            const dirWord  = parts[parts.length-1];
-            const arr2 = dirWord.toLowerCase() === 'over' ? '↑' : '↓';
-            label = `${arr2} ${teamPart} Over ${pt} Golos`;
+            const lastWord = parts[parts.length-1].toLowerCase();
+            const isOver = lastWord === 'over';
+            const arr3 = isOver ? '↑' : '↓';
+            const teamName = parts.length > 1 ? parts.slice(0,-1).join(' ') : home;
+            const dir3Word = isOver ? 'Over' : 'Under';
+            const unit3 = isSoccer ? 'Golos' : 'Pts';
+            label = `${arr3} ${teamName} ${dir3Word} ${pt} ${unit3}`;
             break;
           }
 
@@ -4893,15 +4957,16 @@ const RealData = {
       return;
     }
 
-    /* Final dedup: best EV per (game + market + team/direction) */
+    /* Final dedup: best EV per exact pick — keep different points as separate picks */
     const seen = {};
     allPicks.forEach(p => {
-      const k = `${p.home}|${p.away}|${p.mktKey}|${p.pick}`;
+      // Key includes the FULL pick text so "Over 2.5 Golos" and "Over 3.5 Golos" are separate
+      const k = `${p.home}|${p.away}|${p.sportKey}|${p.pick}`;
       if(!seen[k] || parseFloat(p.ev_pct) > parseFloat(seen[k].ev_pct)) seen[k] = p;
     });
     const deduped = Object.values(seen).sort((a,b) => parseFloat(b.ev_pct)-parseFloat(a.ev_pct));
 
-    PM.render(deduped.slice(0, 120));
+    PM.render(deduped.slice(0, 150));
     const sports = [...new Set(deduped.map(p=>p.sport))].join(' · ');
     toast(`✅ ${deduped.length} picks reais · ${sports}`, 's');
   },
