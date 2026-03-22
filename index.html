@@ -2094,7 +2094,13 @@ function getMktCat(mktKey, pickStr, point) {
     case 'team_shots_on_target':               return 'shot_t';
     case 'corners':                            return 'corner';
     case 'team_corners':                       return 'corner_t';
-    case 'cards': case 'player_cards':         return 'card';
+    case 'cards': case 'player_cards': case 'pp_card': return 'card';
+    case 'player_tackles':   case 'pp_tackle':  return 'card'; // group under cards filter
+    case 'player_fouls_committed': case 'pp_foul': return 'card';
+    case 'player_saves':     case 'pp_saves':   return 'shot';  // group under SoT filter
+    case 'player_shots_on_target': case 'pp_sot': return 'shot';
+    case 'player_assists':   case 'pp_ast_soc': return '1x2';  // group under match filter
+    case 'player_goal_scorer_anytime': case 'pp_goal': return '1x2';
     case 'team_cards':                         return 'card_t';
     case 'first_half_totals': case 'first_half_spreads': return 'ht';
     case 'team_totals':                        return 'tt';
@@ -2244,6 +2250,14 @@ const PROP_KEYS = {
   esports_player_kills:          { lbl:'Player Kills (O/U)', sport:'esports',icon:'K',   cat:'pp_esports',minLine:10,  vol:'med',  quality:'good',    draftedge:'Avg'      },
   esports_first_blood:           { lbl:'First Blood',        sport:'esports',icon:'FB',  cat:'pp_esports',minLine:0.5, vol:'high', quality:'risky',   draftedge:'Risky'    },
   esports_ace:                   { lbl:'Player Ace (CS2)',   sport:'esports',icon:'ACE', cat:'pp_esports',minLine:0.5, vol:'high', quality:'risky',   draftedge:'Risky'    },
+  /* ---- Soccer player props ---- */
+  pp_sot:     { lbl:'Remates à Baliza',        sport:'soccer', icon:'🎯', cat:'pp_sot',    minLine:0.5, vol:'low',    quality:'best',  draftedge:'Top Pick' },
+  pp_goal:    { lbl:'Marca (qualquer)',         sport:'soccer', icon:'⚽', cat:'pp_goal',   minLine:0.5, vol:'high',   quality:'risky', draftedge:'Risky'    },
+  pp_card:    { lbl:'Recebe Cartão',            sport:'soccer', icon:'🟨', cat:'pp_card',   minLine:0.5, vol:'medium', quality:'solid', draftedge:'Solid'    },
+  pp_tackle:  { lbl:'Tackles',                 sport:'soccer', icon:'💪', cat:'pp_tackle', minLine:1.5, vol:'medium', quality:'solid', draftedge:'Solid'    },
+  pp_foul:    { lbl:'Faltas Cometidas',         sport:'soccer', icon:'🦶', cat:'pp_foul',   minLine:0.5, vol:'medium', quality:'solid', draftedge:'Solid'    },
+  pp_saves:   { lbl:'Defesas (Guarda-Redes)',   sport:'soccer', icon:'🧤', cat:'pp_saves',  minLine:2.5, vol:'low',    quality:'best',  draftedge:'Top Pick' },
+  pp_ast_soc: { lbl:'Assistências',            sport:'soccer', icon:'👟', cat:'pp_ast_soc',minLine:0.5, vol:'high',   quality:'risky', draftedge:'Risky'    },
 };
 function isPropKey(k){ return !!(k && (PROP_KEYS[k] || k.startsWith('player_') || k.startsWith('fighter_') || k.startsWith('esports_'))); }
 
@@ -2522,6 +2536,11 @@ function _soccerStats(pick,mkt,pt,isO,sk) {
   else if(mkt==='corners'){avg=lg.corners.toFixed(1);hit=(isO&&pt!=null&&pt<lg.corners)?0.62:0.40;lastLbl='CK Hit';bases=[10,12,9,11,8,10,13,9,11,10];}
   else if(mkt==='team_corners'){avg=lg.cornersT.toFixed(1);hit=0.55;lastLbl='Team CK';bases=[5,6,4,5,3,5,7,4,5,6];}
   else if(mkt==='cards'||mkt==='player_cards'){avg=lg.cards.toFixed(1);hit=(isO&&pt!=null&&pt<lg.cards)?0.60:0.40;lastLbl='Cards Hit';bases=[5,4,5,4,3,2,5,4,4,3];}
+  else if(mkt==='pp_tackle'||mkt==='player_tackles'){avg='2.8';hit=isO&&pt!=null&&pt<2.8?0.62:0.38;lastLbl='Tackles Hit';bases=[3,2,4,3,5,2,3,4,2,3];}
+  else if(mkt==='pp_foul'||mkt==='player_fouls_committed'){avg='1.4';hit=isO&&pt!=null&&pt<1.5?0.58:0.42;lastLbl='Faltas Hit';bases=[2,1,2,1,3,1,2,1,2,1];}
+  else if(mkt==='pp_saves'||mkt==='player_saves'){avg='3.2';hit=isO&&pt!=null&&pt<3.5?0.60:0.40;lastLbl='Defesas Hit';bases=[4,3,5,2,4,3,5,2,3,4];}
+  else if(mkt==='pp_sot'||mkt==='player_shots_on_target'){avg='1.6';hit=isO&&pt!=null&&pt<2?0.62:0.38;lastLbl='SoT Hit';bases=[2,1,2,1,3,2,2,1,2,1];}
+  else if(mkt==='pp_ast_soc'||mkt==='player_assists'){avg='0.8';hit=isO&&pt!=null&&pt<1?0.55:0.35;lastLbl='Assist Hit';bases=[1,0,1,0,2,0,1,0,1,0];}
   else if(mkt==='team_cards'){avg=lg.cardsT.toFixed(1);hit=0.55;lastLbl='Team Cards';bases=[2,1,2,1,2,2,1,2,1,2];}
   else{hit=parseFloat(pick.prob_real||50)/100;lastLbl='Hit';bases=[1,0,1,1,0,1,1,0,1,1];}
 
@@ -2813,6 +2832,13 @@ function pickMktLabel(mktKey,pickStr,point){
     case 'team_corners':return'Team Cantos'+(pt?' '+(dir||'Over')+' '+pt:'');
     case 'cards':       return'Cartões'+(pt?' '+(dir||'Over')+' '+pt:'');
     case 'team_cards':  return'Team Cartões'+(pt?' '+(dir||'Over')+' '+pt:'');
+    case 'pp_sot':      return ps||'Remates à Baliza';
+    case 'pp_goal':     return ps||'Marca (qualquer)';
+    case 'pp_card':     return ps||'Recebe Cartão';
+    case 'pp_tackle':   return ps||'Tackles';
+    case 'pp_foul':     return ps||'Faltas Cometidas';
+    case 'pp_saves':    return ps||'Defesas';
+    case 'pp_ast_soc':  return ps||'Assistências';
     default:            return ps||(mktKey||'').replace(/_/g,' ');
   }
 }
@@ -3121,11 +3147,12 @@ const SPORT_MKT_MAP = {
   soccer: {
     label:'⚽ Soccer',
     groups:[
-      {label:'Result',  mkts:['1x2','dc','btts','dnb','ah']},
-      {label:'Goals',   mkts:['ou15','ou25','ou35','ht','tt']},
-      {label:'Cards',   mkts:['card','card_t']},
-      {label:'Corners', mkts:['corner','corner_t']},
-      {label:'Shots',   mkts:['shot','shot_t']},
+      {label:'Result',    mkts:['1x2','dc','btts','dnb','ah']},
+      {label:'Goals',     mkts:['ou15','ou25','ou35','ht','tt']},
+      {label:'Cards',     mkts:['card','card_t','pp_card','pp_foul','pp_tackle']},
+      {label:'Corners',   mkts:['corner','corner_t']},
+      {label:'Shots',     mkts:['shot','shot_t','pp_sot','pp_saves']},
+      {label:'Jogadores', mkts:['pp_goal','pp_ast_soc','pp_sot','pp_card','pp_tackle','pp_foul','pp_saves']},
     ]
   },
   nba: {
@@ -4615,13 +4642,20 @@ const ODDS_API_BASE = 'https://api.the-odds-api.com/v4';
 ───────────────────────────────────────────────────────────── */
 const SPORTS_CONFIG = [
   // ⚽ Soccer leagues (h2h = 1X2, spreads = AH, totals = O/U, btts)
-  { key:'soccer_epl',                 sport:'Soccer', label:'Premier League',    markets:'h2h,totals,spreads,btts' },
-  { key:'soccer_spain_la_liga',       sport:'Soccer', label:'La Liga',           markets:'h2h,totals,spreads,btts' },
-  { key:'soccer_germany_bundesliga',  sport:'Soccer', label:'Bundesliga',        markets:'h2h,totals,spreads,btts' },
-  { key:'soccer_italy_serie_a',       sport:'Soccer', label:'Serie A',           markets:'h2h,totals,spreads,btts' },
-  { key:'soccer_france_ligue_one',    sport:'Soccer', label:'Ligue 1',           markets:'h2h,totals,spreads,btts' },
-  { key:'soccer_uefa_champs_league',  sport:'Soccer', label:'Champions League',  markets:'h2h,totals,spreads,btts' },
-  { key:'soccer_portugal_primeira_liga',sport:'Soccer',label:'Primeira Liga',   markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_epl',                 sport:'Soccer', label:'Premier League',    markets:'h2h,totals,spreads,btts',
+    propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
+  { key:'soccer_spain_la_liga',       sport:'Soccer', label:'La Liga',           markets:'h2h,totals,spreads,btts',
+    propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
+  { key:'soccer_germany_bundesliga',  sport:'Soccer', label:'Bundesliga',        markets:'h2h,totals,spreads,btts',
+    propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
+  { key:'soccer_italy_serie_a',       sport:'Soccer', label:'Serie A',           markets:'h2h,totals,spreads,btts',
+    propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
+  { key:'soccer_france_ligue_one',    sport:'Soccer', label:'Ligue 1',           markets:'h2h,totals,spreads,btts',
+    propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
+  { key:'soccer_uefa_champs_league',  sport:'Soccer', label:'Champions League',  markets:'h2h,totals,spreads,btts',
+    propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
+  { key:'soccer_portugal_primeira_liga',sport:'Soccer',label:'Primeira Liga',   markets:'h2h,totals,spreads,btts',
+    propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
   // 🏀 NBA — team markets + player props
   { key:'basketball_nba',             sport:'NBA',    label:'NBA',               markets:'h2h,totals,spreads,team_totals',
     propMarkets:'player_points,player_rebounds,player_assists,player_threes,player_points_rebounds_assists,player_blocks,player_steals,player_turnovers' },
@@ -4665,10 +4699,16 @@ const PROP_MKT_META = {
   batter_hits:                      { lbl:'Hits',        mkt:'pp_mlb_h'  },
   batter_home_runs:                 { lbl:'Home Runs',   mkt:'pp_mlb'    },
   batter_total_bases:               { lbl:'Total Bases', mkt:'pp_mlb_tb' },
-  // Soccer
-  player_goal_scorer_anytime:       { lbl:'Marca Qualquer',   mkt:'pp_goal'  },
-  player_shots_on_target:           { lbl:'Remates à Baliza', mkt:'pp_sot'   },
-  player_cards:                     { lbl:'Recebe Cartão',    mkt:'pp_card'  },
+  // Soccer — player props
+  player_goal_scorer_anytime:       { lbl:'Marca (qualquer)',          mkt:'pp_goal',   icon:'⚽', unit:'golos',   cat:'soccer' },
+  player_shots_on_target:           { lbl:'Remates à Baliza',          mkt:'pp_sot',    icon:'🎯', unit:'remates', cat:'soccer' },
+  player_cards:                     { lbl:'Recebe Cartão',             mkt:'pp_card',   icon:'🟨', unit:'cartões', cat:'soccer' },
+  player_tackles:                   { lbl:'Tackles',                   mkt:'pp_tackle', icon:'💪', unit:'tackles', cat:'soccer' },
+  player_fouls_committed:           { lbl:'Faltas Cometidas',          mkt:'pp_foul',   icon:'🦶', unit:'faltas',  cat:'soccer' },
+  player_saves:                     { lbl:'Defesas (Guarda-Redes)',     mkt:'pp_saves',  icon:'🧤', unit:'defesas', cat:'soccer' },
+  player_assists:                   { lbl:'Assistências',              mkt:'pp_ast_soc',icon:'👟', unit:'asst',    cat:'soccer' },
+  // Soccer — team/match props (from market keys used in team markets section)
+  player_corners:                   { lbl:'Cantos para Equipa',        mkt:'corner',    icon:'🚩', unit:'cantos',  cat:'soccer' },
 };
 
 // Books to skip (exchanges & unreliable)
@@ -4919,8 +4959,12 @@ const RealData = {
 
         const meta = PROP_MKT_META[side.mktKey] || {};
         const pt   = side.point != null ? parseFloat(side.point) : null;
-        const dir  = side.direction.toLowerCase() === 'over' ? '↑' : '↓';
-        const label = `${dir} ${side.player} Over ${pt} ${meta.lbl||side.mktKey}`;
+        const isOver = side.direction.toLowerCase() === 'over';
+        const dir  = isOver ? '↑' : '↓';
+        const dirW = isOver ? 'Over' : 'Under';
+        // Build clear label: "↑ Salah Over 2.5 Remates à Baliza"
+        const propLbl = meta.lbl || side.mktKey.replace(/_/g,' ');
+        const label = `${dir} ${side.player} ${dirW} ${pt} ${propLbl}`;
 
         picks.push({
           pick: label,
