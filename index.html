@@ -4719,11 +4719,16 @@ const EXCLUDE_BOOKS = new Set([
 
 // Max reasonable odds per market type
 function validOdds(odds, mktKey) {
-  if(odds <= 1.01 || isNaN(odds)) return false;
-  if(mktKey.includes('player_') || mktKey.includes('batter_') || mktKey.includes('pitcher_')) return odds <= 10;
+  if(!odds || isNaN(odds) || odds <= 1.001) return false;
+  // Exchange-style extreme odds
+  if(odds >= 200) return false;
+  // Props can go to 15x for longshots
+  if(mktKey.includes('player_') || mktKey.includes('batter_') || mktKey.includes('pitcher_')) return odds <= 15;
+  // Soccer/team result markets: favourite can be 1.05, underdog 15.0
   if(['h2h','spreads','btts','draw_no_bet','double_chance'].includes(mktKey)) return odds <= 20;
-  if(mktKey.includes('total')) return odds <= 5;
-  return odds <= 20;
+  // Totals: standard lines are 1.50–2.00 range, extremes up to 8.0 for alternate lines
+  if(mktKey.includes('total')) return odds <= 8;
+  return odds <= 25;
 }
 
 const RealData = {
@@ -4797,17 +4802,23 @@ const RealData = {
       });
     });
 
-    // Step 2: per-bookmaker overrounds for consensus
-    const bkOrs = {}; // mktKey -> [overround1, overround2, ...]
+    // Step 2: compute per-market overround using SHARPEST available bookmaker
+    // We take the LOWEST overround book (closest to 100% = sharpest, no margin)
+    // This is the Pinnacle method: the book with least margin = most accurate probs
+    const sharpOR = {}; // mktKey -> lowest overround found
+
     game.bookmakers.forEach(bk => {
       if(EXCLUDE_BOOKS.has(bk.key)) return;
       bk.markets?.forEach(mkt => {
-        const vals = mkt.outcomes?.map(o => parseFloat(o.price||0)).filter(v => validOdds(v, mkt.key)) || [];
+        const vals = (mkt.outcomes || [])
+          .map(o => parseFloat(o.price || 0))
+          .filter(v => v >= 1.01 && v <= 50);
         if(vals.length >= 2) {
-          const or = vals.reduce((s,v) => s + 1/v, 0);
-          if(or >= 0.92 && or <= 1.25) {
-            if(!bkOrs[mkt.key]) bkOrs[mkt.key] = [];
-            bkOrs[mkt.key].push(or);
+          const or = vals.reduce((s, v) => s + 1/v, 0);
+          if(or >= 0.90 && or <= 1.35) { // accept wider range — 1.35 covers some bookmakers
+            if(!sharpOR[mkt.key] || or < sharpOR[mkt.key]) {
+              sharpOR[mkt.key] = or; // keep lowest overround (sharpest)
+            }
           }
         }
       });
@@ -4817,11 +4828,14 @@ const RealData = {
       const outArr = Object.values(outMap).filter(o => o.odds >= 1.01);
       if(outArr.length < 2) return;
 
-      // Consensus overround from real bookmakers
-      const ors = bkOrs[mktKey] || [];
-      if(!ors.length) return;
-      ors.sort((a,b) => a-b);
-      const consensusOR = ors[Math.floor(ors.length/2)];
+      // Use sharpest available overround, fall back to computing from best odds
+      let consensusOR = sharpOR[mktKey];
+      if(!consensusOR) {
+        // No bookmaker found — compute from best-odds array directly
+        const fallbackOR = outArr.reduce((s, o) => s + 1/o.odds, 0);
+        if(fallbackOR < 0.85 || fallbackOR > 1.40) return; // still unreasonable
+        consensusOR = fallbackOR;
+      }
 
       // Compute EV for each outcome
       const withEV = outArr.map(o => {
@@ -5009,34 +5023,79 @@ const RealData = {
     }
 
     let allPicks = [];
-    const gamesWithProps = []; // track events that have prop markets configured
+    const gamesWithProps = [];
+    const statusLog = [];
 
-    // Step 1: Load all sports team-level markets
+    // Helper: update loading text in grid
+    const updateStatus = (msg) => {
+      const g = document.getElementById('picks-grid');
+      if(g) g.innerHTML = `<div class="empty-wrap"><span class="empty-ico" style="display:inline-block;animation:spin 1s linear infinite">⚡</span><div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">${msg}</div><div style="font-size:.72rem;color:var(--t3);margin-top:6px">${statusLog.slice(-3).join(' · ')}</div></div>`;
+    };
+
+    // Step 1: Load team markets for each sport
     for(const cfg of SPORTS_CONFIG) {
       try {
+        updateStatus(`A carregar ${cfg.label}...`);
         const games = await this.fetchSportOdds(cfg);
-        if(!games?.length) continue;
-        games.forEach(g => {
-          allPicks.push(...this.gameToTeamPicks(g, cfg));
-          if(cfg.propMarkets) gamesWithProps.push({ game: g, cfg });
-        });
-      } catch(e) { console.warn('Sport error:', cfg.key, e); }
+        const count = games?.length || 0;
+        let teamPicks = 0;
+        if(count > 0) {
+          games.forEach(g => {
+            const p = this.gameToTeamPicks(g, cfg);
+            allPicks.push(...p);
+            teamPicks += p.length;
+            if(cfg.propMarkets) gamesWithProps.push({ game: g, cfg });
+          });
+        }
+        statusLog.push(`${cfg.sport}: ${count} jogos / ${teamPicks} picks`);
+        console.log(`[MD] ${cfg.label}: ${count} games → ${teamPicks} team picks`);
+      } catch(e) {
+        statusLog.push(`${cfg.sport}: erro`);
+        console.warn('[MD] Sport error:', cfg.key, e);
+      }
     }
 
-    // Step 2: Load player props for sports that have them (limit to 5 games to save credits)
-    const propsGames = gamesWithProps.slice(0, 5); // max 5 events for props
+    // Step 2: Player props (max 5 events total to save credits)
+    const propsGames = gamesWithProps.slice(0, 5);
+    let propCount = 0;
     for(const { game, cfg } of propsGames) {
       try {
+        updateStatus(`A carregar props: ${game.home_team} vs ${game.away_team}`);
         const eventData = await this.fetchEventProps(cfg.key, game.id, cfg.propMarkets);
-        if(eventData) allPicks.push(...this.eventToPropPicks(eventData, cfg));
-      } catch(e) { console.warn('Props error:', game.id, e); }
+        if(eventData) {
+          const p = this.eventToPropPicks(eventData, cfg);
+          allPicks.push(...p);
+          propCount += p.length;
+          console.log(`[MD] Props ${game.home_team} vs ${game.away_team}: ${p.length} picks`);
+        }
+      } catch(e) { console.warn('[MD] Props error:', game.id, e); }
     }
+    console.log(`[MD] TOTAL before dedup: ${allPicks.length} picks (${propCount} props)`);
 
     this._loading = false;
 
     if(!allPicks.length) {
-      if(grid) grid.innerHTML = `<div class="empty-wrap"><span class="empty-ico">🕐</span><div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Sem picks +EV disponíveis agora</div><div style="font-size:.84rem;color:var(--t3);max-width:380px;margin:0 auto;line-height:1.65">A API está ligada mas os bookmakers não têm margin suficiente para gerar EV positivo neste momento. Tenta em horas de jogo ou aumenta a sensibilidade abaixo.</div><button onclick="RealData.loadAllSports(true)" style="margin-top:16px;padding:9px 22px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">↓ Mostrar EV ≥ 0% também</button></div>`;
-      toast('Sem picks +EV agora. Tenta em horas de jogo.','i');
+      const logHtml = statusLog.length
+        ? `<div style="font-size:.72rem;color:rgba(255,255,255,.25);margin-top:14px;line-height:1.7;max-width:420px;margin-left:auto;margin-right:auto;text-align:left">${statusLog.map(l=>`· ${l}`).join('<br>')}</div>`
+        : '';
+      if(grid) grid.innerHTML = `<div class="empty-wrap" style="padding:60px 24px">
+        <span class="empty-ico">📊</span>
+        <div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Sem picks +EV neste momento</div>
+        <div style="font-size:.84rem;color:var(--t3);max-width:420px;margin:0 auto;line-height:1.65">
+          A API está conectada. Os picks aparecem quando existem jogos com margem suficiente para gerar EV positivo.
+          <strong style="color:rgba(255,255,255,.5)">Clica em "Mostrar todos" para ver todas as probabilidades.</strong>
+        </div>
+        ${logHtml}
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+          <button onclick="RealData.loadAllSports(true)" style="padding:10px 24px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">
+            ↓ Mostrar todos (incl. EV-)
+          </button>
+          <button onclick="RealData.loadAllSports()" style="padding:10px 24px;border-radius:50px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-family:'Inter',sans-serif;font-weight:600;font-size:.84rem;cursor:pointer">
+            ↻ Tentar novamente
+          </button>
+        </div>
+      </div>`;
+      toast('Sem picks +EV agora. Verifica a consola (F12) para detalhes.','i');
       return;
     }
 
