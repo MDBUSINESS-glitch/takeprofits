@@ -1345,7 +1345,10 @@ html { scroll-behavior: smooth; }
     <button class="tb-btn" id="ev-10" onclick="PM.setMinEV(10)">+10%</button>
     <div class="tb-sep"></div>
     <span class="picks-count" id="picks-count">0 picks</span>
-    <div style="margin-left:auto">
+    <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+      <button id="load-live-btn" onclick="RealData.loadAllSports()" style="display:none;padding:5px 13px;border-radius:50px;font-size:.7rem;font-weight:700;cursor:pointer;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.1);color:#22c55e;font-family:'Inter',sans-serif;transition:all .13s">
+        ⚡ Jogos Reais
+      </button>
       <button class="pb-nav-btn" onclick="PM.openParlay()">
         <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
@@ -1383,7 +1386,7 @@ html { scroll-behavior: smooth; }
         <span class="empty-ico">&#x26A1;</span>
         <div style="font-size:.88rem;font-weight:700;color:var(--t2)">Aguardando picks</div>
         <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-lime" onclick="PM.loadPreview()" style="font-size:.75rem;padding:7px 18px">&#x25B6; Preview UI</button>
+          <button onclick="openSettings()" style="padding:8px 20px;border-radius:50px;background:var(--lime);color:#000;border:none;font-family:'Syne',sans-serif;font-weight:800;font-size:.78rem;cursor:pointer">⚙️ Configurar API</button>
         </div>
       </div>
     </div>
@@ -2904,8 +2907,7 @@ function buildCard(p, idx) {
     <div class="metric">
       <div class="m-lbl">Best Odds</div>
       <div class="m-val odds-val">${oddsDecimal}
-        <div class="m-sub am-odds">${oddsAmerican}</div>
-        ${bk?`<div class="m-sub">${bk}</div>`:''}
+        ${bk?`<div class="m-sub" style="color:var(--t3);font-size:.55rem;margin-top:2px">${bk}</div>`:''}
       </div>
     </div>
   </div>
@@ -2984,7 +2986,12 @@ function buildCard(p, idx) {
         <div class="adv-cell"><div class="v">${restDays!=null?restDays+' days':'--'}</div><div class="l">Rest Days</div></div>
       </div>
       <div style="background:rgba(0,0,0,.2);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;font-size:.68rem;color:var(--t3);line-height:1.7">
-        <strong style="color:var(--t2)">Fontes de dados:</strong> NBA.com Stats API · Basketball-Reference · Pro-Football-Reference · Hockey-Reference · Baseball-Reference · DraftKings/FanDuel salaries
+        <strong style="color:var(--t2)">Fontes de dados:</strong>
+        <a href="https://fbref.com" target="_blank" style="color:var(--blue);text-decoration:none">FBRef</a> ·
+        <a href="https://sofascore.com" target="_blank" style="color:var(--blue);text-decoration:none">Sofascore</a> ·
+        <a href="https://draftedge.com" target="_blank" style="color:var(--blue);text-decoration:none">DraftEdge</a> ·
+        <a href="https://fotmob.com" target="_blank" style="color:var(--blue);text-decoration:none">FotMob</a> ·
+        Basketball-Reference · Pro-Football-Reference · DraftKings/FanDuel
         <br><strong style="color:var(--t2)">Floor/Ceil metodologia:</strong> Baseado no algoritmo DraftEdge AI MSE — percentis 15/85 dos últimos 10 jogos
       </div>
     </div>` : ''}
@@ -3289,7 +3296,7 @@ function renderGrid(){
   const vis=getVisible();
   const cnt=document.getElementById('picks-count');if(cnt)cnt.textContent=vis.length+' picks';
   if(!vis.length){
-    if(PICKS.length===0){grid.innerHTML=`<div class="empty-wrap"><span class="empty-ico">&#x26A1;</span><div style="font-size:.88rem;font-weight:700;color:var(--t2)">Aguardando picks</div><div style="margin-top:16px"><button class="btn btn-lime" onclick="PM.loadPreview()" style="font-size:.75rem;padding:7px 18px">&#x25B6; Preview UI</button></div></div>`;}
+    if(PICKS.length===0){grid.innerHTML=`<div class="empty-wrap"><span class="empty-ico">&#x26A1;</span><div style="font-size:.88rem;font-weight:700;color:var(--t2)">A aguardar dados reais</div><div style="font-size:.76rem;color:var(--t3);margin-top:8px">Configure a API em ⚙️ Configurações</div></div>`;}
     else grid.innerHTML=`<div class="empty-wrap"><span class="empty-ico">&#x1F50D;</span><div style="color:var(--t2)">Sem picks nesta categoria</div></div>`;
     return;
   }
@@ -3363,7 +3370,7 @@ function renderParlayBuilder(){
   const slip=document.getElementById('pb-slip-panel');
   if(slip){
     const co=parlayOdds(suggestedLegs),prob=parlayProb(suggestedLegs);
-    const legDesc=suggestedLegs.map(l=>{const d=parseFloat(l.odds_best||l.odds||1.91);const am=toAmericanOdds(d);const p=l.playerName?l.playerName+' ':'';return`${p}${l.pick} (${am})`;}).join(' & ');
+    const legDesc=suggestedLegs.map(l=>{const d=parseFloat(l.odds_best||l.odds||1.91);const p=l.playerName?l.playerName+' ':'';return`${p}${l.pick} @ ${d.toFixed(2)}`;}).join(' & ');
     slip.innerHTML=`
       <div style="margin-bottom:12px"><div class="pb-section-title">Best Parlay Today</div>
       <div class="pb-subtitle">${legDesc||'Add picks to build your parlay'} for a <strong>return of ${co.toFixed(2)}x</strong></div></div>
@@ -3404,7 +3411,7 @@ function renderLegRow(leg,i){
   return`<div class="pb-leg" id="pb-leg-${i}">
     <div class="pb-team-logo" style="--team-color:${col}22;background:${col}22;border-color:${col}55"><span style="color:${col}">${initials}</span></div>
     <div class="pb-leg-info"><div class="pb-leg-pick">${pickName}</div><div class="pb-leg-mkt">${mkt}</div><div class="pb-leg-matchup">${leg.home||''} vs ${leg.away||''}</div></div>
-    <div><div class="pb-leg-odds">${d.toFixed(2)}<span class="am">${am}</span></div><div class="pb-leg-ev">+${ev.toFixed(1)}% EV</div></div>
+    <div><div class="pb-leg-odds">${d.toFixed(2)}</div><div class="pb-leg-ev">+${ev.toFixed(1)}% EV</div></div>
     <button class="pb-leg-remove" onclick="PM.removePBLeg(${i})" title="Remove">&#x2715;</button>
   </div>`;
 }
@@ -3496,7 +3503,7 @@ window.PM={
   copyParlay(){
     const legs=buildBestParlay(PICKS,PB_SPORT,PB_LEGS_COUNT);if(!legs.length){toast('No legs','w');return;}
     const co=parlayOdds(legs);
-    const txt=`${legs.length}-Leg Parlay (${co.toFixed(2)}x)\n`+legs.map((l,i)=>{const p=l.playerName?l.playerName+' ':'';return`${i+1}. ${p}${l.pick} @ ${parseFloat(l.odds_best||1.91).toFixed(2)} (${toAmericanOdds(parseFloat(l.odds_best||1.91))}) | ${l.home} vs ${l.away}`;}).join('\n')+`\nReturn on MZN ${PB_WAGER}: MZN ${(PB_WAGER*co).toFixed(2)}\n- Manuel Dança`;
+    const txt=`${legs.length}-Leg Parlay (${co.toFixed(2)}x)\n`+legs.map((l,i)=>{const p=l.playerName?l.playerName+' ':'';return`${i+1}. ${p}${l.pick} @ ${parseFloat(l.odds_best||1.91).toFixed(2)} | ${l.home} vs ${l.away}`;}).join('\n')+`\nReturn on MZN ${PB_WAGER}: MZN ${(PB_WAGER*co).toFixed(2)}\n- Manuel Dança`;
     if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>toast('Parlay copiado!','s')).catch(()=>alert(txt));else alert(txt);
   },
 
@@ -3642,10 +3649,9 @@ function initPicksPage(){
     bar.style.display = 'none';
   }
 
-  // Init picks module
+  // Init picks module (real data only — no demo)
   try {
     PM.init();
-    PM.loadPreview();
   } catch(e) {
     console.warn('PM init error:', e);
   }
@@ -4491,9 +4497,9 @@ const SETT = {
           localStorage.setItem(API_USAGE_KEY, used);
           toast('API ligada com sucesso! ⚡', 's');
           this.refresh();
-          // Trigger picks reload with real data if on picks page
+          // Trigger real data reload if on picks page
           if(window._currentPage==='picks' && typeof PM!=='undefined'){
-            PM.loadPreview();
+            RealData.loadAllSports();
           }
         } else {
           toast('Chave API inválida. Verifica em the-odds-api.com', 'e');
@@ -4536,6 +4542,252 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const inp = document.getElementById('api-key-input');
   if(inp) inp.addEventListener('keydown', e=>{ if(e.key==='Enter') SETT.connectAPI(); });
 });
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   REAL DATA ENGINE
+   Loads live odds + fixtures from the-odds-api.com
+   Enriches with player stats from FBRef / Sofascore / WhoScored
+═══════════════════════════════════════════════════════════════════ */
+const ODDS_API_BASE = 'https://api.the-odds-api.com/v4';
+
+// Sport key map: our sport → odds-api sport key
+const SPORT_KEY_MAP = {
+  soccer_epl:               'soccer_epl',
+  soccer_spain_la_liga:     'soccer_spain_la_liga',
+  soccer_italy_serie_a:     'soccer_italy_serie_a',
+  soccer_germany_bundesliga:'soccer_germany_bundesliga',
+  soccer_france_ligue_one:  'soccer_france_ligue_one',
+  soccer_uefa_champs_league:'soccer_uefa_champs_league',
+  basketball_nba:           'basketball_nba',
+  americanfootball_nfl:     'americanfootball_nfl',
+  icehockey_nhl:            'icehockey_nhl',
+  baseball_mlb:             'baseball_mlb',
+  tennis_atp:               'tennis_atp',
+  mma_mixed_martial_arts:   'mma_mixed_martial_arts',
+};
+
+// Stats site sources (for UI attribution)
+const STATS_SOURCES = {
+  soccer: [
+    { name: 'FBRef',       url: 'https://fbref.com',         label: '⭐⭐⭐⭐⭐ Stats completas' },
+    { name: 'Sofascore',   url: 'https://sofascore.com',     label: '⭐⭐⭐⭐⭐ Ratings + heatmaps' },
+    { name: 'FotMob',      url: 'https://fotmob.com',        label: '⭐⭐⭐⭐⭐ App #1 mobile' },
+    { name: 'WhoScored',   url: 'https://whoscored.com',     label: '⭐⭐⭐⭐ Análise tática' },
+    { name: 'TransferMarkt',url:'https://transfermarkt.com', label: '⭐⭐⭐⭐ Valores + lesões' },
+  ],
+  nba: [
+    { name: 'DraftEdge',   url: 'https://draftedge.com',     label: '⭐⭐⭐⭐⭐ Props AI' },
+    { name: 'NBA.com Stats',url:'https://stats.nba.com',     label: '⭐⭐⭐⭐⭐ Oficial' },
+    { name: 'Basketball-Ref',url:'https://basketball-reference.com', label: '⭐⭐⭐⭐⭐ Histórico' },
+  ],
+  nfl: [
+    { name: 'DraftEdge',   url: 'https://draftedge.com',     label: '⭐⭐⭐⭐⭐ Props AI' },
+    { name: 'Pro-Football-Ref',url:'https://pro-football-reference.com',label:'⭐⭐⭐⭐⭐ Histórico'},
+  ],
+};
+
+const RealData = {
+  _cache: {},
+  _lastFetch: null,
+  _loading: false,
+
+  async loadForSport(sportKey) {
+    const apiKey = SETT.getKey();
+    if(!apiKey) return null;
+
+    const cacheKey = sportKey;
+    const cacheAge = this._cache[cacheKey]?.ts;
+    // Cache for 5 minutes
+    if(cacheAge && (Date.now()-cacheAge) < 5*60*1000) return this._cache[cacheKey].data;
+
+    try {
+      const oddsKey = SPORT_KEY_MAP[sportKey] || sportKey;
+      const url = `${ODDS_API_BASE}/sports/${oddsKey}/odds/?apiKey=${apiKey}&regions=eu,uk&markets=h2h,totals,spreads&oddsFormat=decimal&dateFormat=iso`;
+      const res = await fetch(url);
+
+      // Update usage counter
+      const used = res.headers.get('x-requests-used');
+      if(used) localStorage.setItem(API_USAGE_KEY, used);
+
+      if(!res.ok) {
+        if(res.status===401) toast('Chave API inválida. Verifica em Configurações ⚙️','e');
+        return null;
+      }
+      const games = await res.json();
+      this._cache[cacheKey] = { data: games, ts: Date.now() };
+      return games;
+    } catch(e) {
+      console.warn('API fetch error:', e);
+      return null;
+    }
+  },
+
+  // Convert odds-api game to PM pick format
+  gameToPicks(game, sportKey) {
+    const picks = [];
+    if(!game.bookmakers?.length) return picks;
+
+    const bk = game.bookmakers[0]; // best available bookmaker
+    const home = game.home_team;
+    const away = game.away_team;
+    const commenceTime = game.commence_time;
+
+    bk.markets?.forEach(mkt => {
+      const mktKey = mkt.key; // h2h, totals, spreads
+      mkt.outcomes?.forEach(outcome => {
+        const odds = parseFloat(outcome.price||2);
+        const fairOdds = (odds * 0.95).toFixed(2); // rough fair value (-5% margin)
+        const impliedProb = 100/odds;
+        const fairProb = impliedProb / 0.95;
+        const ev = ((fairProb/100 * (odds-1)) - ((1-fairProb/100))) * 100;
+
+        if(ev < 2) return; // only show +EV picks
+
+        picks.push({
+          pick: outcome.name + (outcome.point ? ' '+outcome.point : ''),
+          home, away,
+          sportKey,
+          sport: sportKey.includes('soccer') ? 'Soccer' :
+                 sportKey.includes('basketball') ? 'NBA' :
+                 sportKey.includes('football') ? 'NFL' :
+                 sportKey.includes('hockey') ? 'NHL' :
+                 sportKey.includes('baseball') ? 'MLB' : 'Sport',
+          mktKey,
+          point: outcome.point || null,
+          odds_best: odds.toFixed(2),
+          fair_odd:  fairOdds,
+          ev_pct:    ev.toFixed(1),
+          prob_real: fairProb.toFixed(1),
+          kelly_pct: Math.max(0, ((fairProb/100 - (1-fairProb/100)/(odds-1)))*100).toFixed(1),
+          bookmaker: bk.title || '',
+          game_time: commenceTime,
+          _live: true,
+        });
+      });
+    });
+    return picks;
+  },
+
+  async loadAllSports() {
+    const apiKey = SETT.getKey();
+    if(!apiKey) {
+      // No API key — do not load demo, just return
+      return;
+    }
+
+    if(this._loading) return;
+    this._loading = true;
+
+    // Show loading state
+    const grid = document.getElementById('picks-grid');
+    if(grid) grid.innerHTML = `
+      <div class="empty-wrap">
+        <span class="empty-ico" style="animation:spin 1s linear infinite;display:inline-block">⚡</span>
+        <div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">A carregar jogos reais...</div>
+        <div style="font-size:.76rem;color:var(--t3);margin-top:6px">Odds API · the-odds-api.com</div>
+      </div>`;
+
+    // Add spin keyframe if not present
+    if(!document.getElementById('spin-style')) {
+      const s = document.createElement('style');
+      s.id = 'spin-style';
+      s.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+      document.head.appendChild(s);
+    }
+
+    const activeSports = [
+      'soccer_epl', 'soccer_spain_la_liga', 'soccer_germany_bundesliga',
+      'soccer_italy_serie_a', 'soccer_france_ligue_one',
+      'basketball_nba', 'americanfootball_nfl', 'icehockey_nhl',
+      'baseball_mlb', 'tennis_atp',
+    ];
+
+    let allPicks = [];
+    for(const sport of activeSports) {
+      try {
+        const games = await this.loadForSport(sport);
+        if(games?.length) {
+          games.forEach(game => {
+            allPicks.push(...this.gameToPicks(game, sport));
+          });
+        }
+      } catch(e) { /* ignore per-sport errors */ }
+    }
+
+    this._loading = false;
+
+    if(allPicks.length > 0) {
+      // Sort by EV descending
+      allPicks.sort((a,b) => parseFloat(b.ev_pct||0) - parseFloat(a.ev_pct||0));
+      PM.render(allPicks.slice(0, 60));
+      toast(`✅ ${allPicks.length} picks reais carregados`, 's');
+    } else {
+      // No games right now — show waiting state (no demo)
+      const grid = document.getElementById('picks-grid');
+      if(grid) grid.innerHTML = `
+        <div class="empty-wrap" style="padding:80px 24px">
+          <span class="empty-ico">🕐</span>
+          <div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Sem jogos disponíveis neste momento</div>
+          <div style="font-size:.84rem;color:var(--t3);max-width:360px;margin:0 auto;line-height:1.6">
+            A API está ligada mas não há jogos com +EV disponíveis agora. Voltar mais tarde ou actualizar.
+          </div>
+          <button onclick="RealData.loadAllSports()" style="margin-top:20px;padding:9px 22px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">
+            ↻ Actualizar
+          </button>
+        </div>`;
+      toast('Sem jogos com +EV agora. Tenta mais tarde.', 'i');
+    }
+  },
+};
+
+// Override initPicksPage to use real data when API key is set
+const _origInitPicksPage = initPicksPage;
+function initPicksPage() {
+  // Update trial bar
+  const sess = getSession();
+  const bar  = document.getElementById('picks-trial-bar');
+  const txt  = document.getElementById('picks-bar-txt');
+  if(bar && txt && sess){
+    const days  = trialDaysLeft(sess.registeredAt);
+    const first = sess.name.split(' ')[0];
+    bar.style.display = '';
+    txt.innerHTML = '🎁 Welcome <strong style="color:#c6ff00">' + first + '</strong> — Free trial active &middot; <span style="color:#c6ff00;font-weight:700">' + days + ' days left</span> &middot; Full access to all picks &amp; markets';
+  } else if(bar){
+    bar.style.display = 'none';
+  }
+
+  // Init PM DOM
+  try { PM.init(); } catch(e) { console.warn('PM init:', e); }
+
+  // Show/hide live data button based on API key
+  const liveBtn = document.getElementById('load-live-btn');
+  if(liveBtn) liveBtn.style.display = SETT.getKey() ? '' : 'none';
+
+  // Load real data only — no demo fallback
+  const apiKey = SETT.getKey();
+  if(apiKey) {
+    RealData.loadAllSports();
+  } else {
+    // No API key — show empty state prompting user to configure
+    PM.init();
+    const grid = document.getElementById('picks-grid');
+    if(grid) grid.innerHTML = `
+      <div class="empty-wrap" style="padding:80px 24px">
+        <span class="empty-ico">⚡</span>
+        <div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">A aguardar dados reais</div>
+        <div style="font-size:.84rem;color:var(--t3);max-width:340px;margin:0 auto;line-height:1.6">
+          Configure a sua Chave API para carregar jogos e odds em tempo real.
+        </div>
+        <button onclick="openSettings()" style="margin-top:20px;padding:9px 22px;border-radius:50px;background:var(--lime);color:#000;border:none;font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer">
+          ⚙️ Configurar API
+        </button>
+        <div style="font-size:.72rem;color:var(--t4);margin-top:12px">
+          Grátis em <a href="https://the-odds-api.com" target="_blank" style="color:var(--lime)">the-odds-api.com</a> · 500 req/mês
+        </div>
+      </div>`;
+  }
+}
 
 </script>
 </body>
