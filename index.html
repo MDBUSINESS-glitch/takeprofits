@@ -821,6 +821,249 @@ html { scroll-behavior: smooth; }
   .trust-bar { gap: 20px; }
   .dash-topbar { padding: 16px 20px; }
 }
+
+/* ══════════════════════════════════════════
+   BET TRACKER STYLES
+══════════════════════════════════════════ */
+.bt-page { padding-top: 68px; min-height: 100vh; background: var(--cbg,#080a0d); }
+
+/* Top bar */
+.bt-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px; border-bottom: 1px solid var(--cborder);
+  background: #0d1117; flex-wrap: wrap; gap: 12px;
+}
+.bt-topbar-left { display: flex; align-items: center; gap: 12px; }
+.bt-topbar-title { font-family: var(--font-head); font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.bt-topbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.bt-capital-pill {
+  padding: 5px 14px; border-radius: 50px; font-size: .83rem; font-weight: 700;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+}
+.bt-capital-pill span { color: #c6ff00; }
+.bt-reset-btn {
+  padding: 6px 14px; border-radius: 50px; font-size: .78rem; font-weight: 700;
+  background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #ef4444;
+  cursor: pointer; transition: all .15s; font-family: var(--font-body);
+}
+.bt-reset-btn:hover { background: rgba(239,68,68,.2); }
+
+/* Tabs */
+.bt-tabs {
+  display: flex; gap: 6px; padding: 14px 28px 0;
+  border-bottom: 1px solid var(--cborder); background: #0d1117;
+}
+.bt-tab {
+  padding: 8px 18px; border-radius: 8px 8px 0 0; font-size: .86rem; font-weight: 600;
+  background: transparent; border: 1px solid transparent; border-bottom: none;
+  color: rgba(255,255,255,.4); cursor: pointer; transition: all .15s;
+  font-family: var(--font-body); position: relative; bottom: -1px;
+  display: flex; align-items: center; gap: 7px;
+}
+.bt-tab:hover { color: rgba(255,255,255,.7); background: rgba(255,255,255,.04); }
+.bt-tab.active {
+  color: #edf1f4; background: #0d1117;
+  border-color: var(--cborder); border-bottom-color: #0d1117;
+}
+.bt-tab-ico { font-size: .95rem; }
+.bt-body { padding: 24px 28px; }
+
+/* Stat cards row */
+.bt-stat-row {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px;
+  background: var(--cborder); border: 1px solid var(--cborder);
+  border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+}
+.bt-stat-card {
+  background: #111820; padding: 18px 16px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.bt-stat-label {
+  font-size: .72rem; color: rgba(255,255,255,.35); text-transform: uppercase;
+  letter-spacing: .06em; font-weight: 600; display: flex; align-items: center; gap: 5px;
+}
+.bt-stat-val {
+  font-family: var(--font-head); font-size: 1.45rem; font-weight: 900;
+  line-height: 1; letter-spacing: -.03em;
+}
+.bt-stat-sub { font-size: .72rem; color: rgba(255,255,255,.3); }
+.bt-sv-profit { color: #c6ff00; }
+.bt-sv-roi { color: #3b82f6; }
+.bt-sv-count { color: #edf1f4; }
+.bt-sv-wr { color: #f59e0b; }
+.bt-sv-wager { color: #8b5cf6; }
+.bt-sv-odds { color: #ef4444; }
+
+/* Chart box */
+.bt-chart-box {
+  background: #111820; border: 1px solid var(--cborder); border-radius: 14px;
+  padding: 20px 22px; margin-bottom: 24px;
+}
+.bt-chart-title { font-size: .88rem; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.bt-chart-total { font-size: .78rem; color: #c6ff00; font-weight: 700; }
+.bt-chart-canvas-wrap { position: relative; height: 180px; margin-top: 14px; }
+.bt-time-btns { display: flex; gap: 4px; }
+.bt-time-btn {
+  padding: 4px 12px; border-radius: 6px; font-size: .76rem; font-weight: 600;
+  border: 1px solid var(--cborder); background: transparent; color: rgba(255,255,255,.4);
+  cursor: pointer; font-family: var(--font-body); transition: all .15s;
+}
+.bt-time-btn.active { background: rgba(198,255,0,.1); border-color: rgba(198,255,0,.3); color: #c6ff00; }
+
+/* Bottom stat row */
+.bt-bottom-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px;
+}
+.bt-bot-cell {
+  background: #111820; border: 1px solid var(--cborder); border-radius: 12px; padding: 16px 18px;
+}
+.bt-bot-lbl { font-size: .72rem; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.bt-bot-val { font-family: var(--font-head); font-size: 1.25rem; font-weight: 800; }
+.bt-bot-sub { font-size: .73rem; color: rgba(255,255,255,.3); margin-top: 3px; }
+
+/* Add bet form */
+.bt-add-form {
+  background: #111820; border: 1px solid rgba(198,255,0,.2); border-radius: 14px;
+  padding: 16px 18px; margin-bottom: 20px;
+}
+.bt-add-form-title { font-size: .85rem; font-weight: 700; color: #c6ff00; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.bt-form-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.bt-form-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 110px; }
+.bt-form-label { font-size: .68rem; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+.bt-form-input, .bt-form-select {
+  padding: 8px 11px; background: rgba(255,255,255,.04); border: 1px solid var(--cborder);
+  border-radius: 8px; color: #edf1f4; font-size: .88rem; font-family: var(--font-body);
+  outline: none; transition: border-color .15s; width: 100%;
+}
+.bt-form-input:focus, .bt-form-select:focus { border-color: rgba(198,255,0,.4); }
+.bt-form-input::placeholder { color: rgba(255,255,255,.2); }
+.bt-form-select option { background: #0d1117; }
+.bt-add-btn {
+  padding: 9px 20px; border-radius: 8px; background: #c6ff00; color: #000;
+  font-family: var(--font-head); font-size: .88rem; font-weight: 800;
+  border: none; cursor: pointer; transition: all .15s; white-space: nowrap; flex-shrink: 0;
+}
+.bt-add-btn:hover { background: #b8f000; transform: translateY(-1px); }
+
+/* Bet history table */
+.bt-table-wrap {
+  background: #111820; border: 1px solid var(--cborder); border-radius: 14px; overflow: hidden;
+}
+.bt-table-header {
+  display: flex; align-items: center; justify-content: space-between; padding: 14px 18px;
+  border-bottom: 1px solid var(--cborder);
+}
+.bt-table-title { font-size: .88rem; font-weight: 700; }
+.bt-table-actions { display: flex; gap: 8px; }
+.bt-action-btn {
+  padding: 5px 13px; border-radius: 6px; font-size: .76rem; font-weight: 600;
+  border: 1px solid var(--cborder); background: rgba(255,255,255,.04); color: rgba(255,255,255,.6);
+  cursor: pointer; font-family: var(--font-body); transition: all .15s;
+}
+.bt-action-btn:hover { color: #edf1f4; border-color: rgba(255,255,255,.18); }
+.bt-table { width: 100%; border-collapse: collapse; }
+.bt-table thead th {
+  padding: 10px 14px; text-align: left; font-size: .68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em; color: rgba(255,255,255,.3);
+  border-bottom: 1px solid var(--cborder);
+}
+.bt-table tbody tr { border-bottom: 1px solid rgba(255,255,255,.04); transition: background .12s; }
+.bt-table tbody tr:hover { background: rgba(255,255,255,.025); }
+.bt-table tbody tr:last-child { border-bottom: none; }
+.bt-table tbody td { padding: 12px 14px; font-size: .86rem; color: rgba(255,255,255,.7); }
+.bet-status {
+  display: inline-block; padding: 3px 10px; border-radius: 50px;
+  font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+}
+.bs-pending  { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); color: #f59e0b; }
+.bs-won      { background: rgba(34,197,94,.1);  border: 1px solid rgba(34,197,94,.3);  color: #22c55e; }
+.bs-lost     { background: rgba(239,68,68,.1);  border: 1px solid rgba(239,68,68,.3);  color: #ef4444; }
+.bs-void     { background: rgba(99,102,241,.1); border: 1px solid rgba(99,102,241,.3); color: #818cf8; }
+.bt-pnl-pos  { color: #22c55e; font-weight: 700; font-family: var(--font-head); }
+.bt-pnl-neg  { color: #ef4444; font-weight: 700; font-family: var(--font-head); }
+.bet-type-tag {
+  display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: .65rem; font-weight: 700;
+  background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3); color: #a5b4fc;
+  margin-left: 4px;
+}
+.bt-del-btn {
+  background: none; border: none; cursor: pointer; color: rgba(255,255,255,.25); font-size: .9rem; padding: 2px 6px; transition: color .12s;
+}
+.bt-del-btn:hover { color: #ef4444; }
+
+/* Sweat Station */
+.ss-wrap { display: grid; grid-template-columns: 280px 1fr; gap: 18px; }
+.ss-calendar {
+  background: #111820; border: 1px solid var(--cborder); border-radius: 14px; padding: 18px;
+}
+.ss-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.ss-cal-month { font-family: var(--font-head); font-size: .95rem; font-weight: 800; }
+.ss-cal-nav { background: none; border: 1px solid var(--cborder); border-radius: 6px; padding: 3px 9px; color: rgba(255,255,255,.6); cursor: pointer; font-size: .85rem; transition: all .15s; }
+.ss-cal-nav:hover { color: #edf1f4; border-color: rgba(255,255,255,.2); }
+.ss-cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.ss-cal-day-lbl { font-size: .66rem; font-weight: 700; text-align: center; color: rgba(255,255,255,.3); padding: 4px 0; text-transform: uppercase; letter-spacing: .04em; }
+.ss-cal-day {
+  aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: .82rem; font-weight: 500; cursor: pointer; transition: all .15s;
+  color: rgba(255,255,255,.5);
+}
+.ss-cal-day:hover { background: rgba(255,255,255,.07); color: #edf1f4; }
+.ss-cal-day.today { background: rgba(198,255,0,.15); color: #c6ff00; font-weight: 800; }
+.ss-cal-day.has-bets { color: #edf1f4; position: relative; }
+.ss-cal-day.has-bets::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: #22c55e; }
+.ss-cal-day.empty { cursor: default; }
+
+.ss-right { display: flex; flex-direction: column; gap: 14px; }
+.ss-tabs-row { display: flex; gap: 6px; background: rgba(255,255,255,.04); border-radius: 10px; padding: 4px; }
+.ss-tab {
+  flex: 1; padding: 7px 10px; border-radius: 7px; border: none; font-size: .8rem; font-weight: 600;
+  color: rgba(255,255,255,.4); background: transparent; cursor: pointer; font-family: var(--font-body); transition: all .15s; text-align: center;
+}
+.ss-tab.active { background: #111820; color: #edf1f4; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.ss-bets-list { background: #111820; border: 1px solid var(--cborder); border-radius: 12px; overflow: hidden; }
+.ss-bet-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,.04); gap: 12px;
+}
+.ss-bet-row:last-child { border-bottom: none; }
+.ss-bet-match { font-size: .88rem; font-weight: 600; color: #edf1f4; }
+.ss-bet-meta { font-size: .76rem; color: rgba(255,255,255,.35); margin-top: 2px; }
+.ss-bet-odds { font-family: var(--font-head); font-size: 1.05rem; font-weight: 800; color: #f59e0b; }
+.ss-bet-status { font-size: .68rem; font-weight: 700; color: rgba(255,255,255,.3); text-transform: uppercase; }
+.ss-empty { padding: 40px; text-align: center; color: rgba(255,255,255,.2); font-size: .9rem; }
+
+/* Deposits / Withdrawals */
+.dw-form-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px; }
+.dw-form-field { display: flex; flex-direction: column; gap: 4px; }
+.dw-form-label { font-size: .68rem; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+.dw-stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 22px; }
+.dw-stat { background: #111820; border: 1px solid var(--cborder); border-radius: 12px; padding: 18px 16px; }
+.dw-stat-lbl { font-size: .72rem; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 7px; }
+.dw-stat-val { font-family: var(--font-head); font-size: 1.35rem; font-weight: 900; }
+
+/* Analysis tabs in Bet Tracker */
+.bt-analysis-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.bt-atab {
+  padding: 5px 14px; border-radius: 6px; font-size: .78rem; font-weight: 600;
+  background: rgba(255,255,255,.04); border: 1px solid var(--cborder);
+  color: rgba(255,255,255,.5); cursor: pointer; font-family: var(--font-body); transition: all .15s;
+}
+.bt-atab.active { background: rgba(198,255,0,.1); border-color: rgba(198,255,0,.3); color: #c6ff00; }
+.bt-analysis-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.bt-anl-cell { background: #111820; border: 1px solid var(--cborder); border-radius: 12px; padding: 16px; }
+.bt-anl-lbl { font-size: .72rem; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+.bt-anl-val { font-family: var(--font-head); font-size: 1.3rem; font-weight: 800; }
+.bt-anl-sub { font-size: .73rem; color: rgba(255,255,255,.3); margin-top: 4px; }
+.bt-no-data { padding: 48px; text-align: center; color: rgba(255,255,255,.2); font-size: .9rem; }
+
+@media(max-width:960px){
+  .bt-stat-row { grid-template-columns: repeat(3,1fr); }
+  .bt-bottom-row { grid-template-columns: repeat(2,1fr); }
+  .ss-wrap { grid-template-columns: 1fr; }
+  .dw-stat-row { grid-template-columns: repeat(2,1fr); }
+  .bt-analysis-grid { grid-template-columns: repeat(2,1fr); }
+  .bt-body { padding: 16px; }
+}
 </style>
 </head>
 <body style="background:#080a0d;color:#edf1f4">
@@ -837,6 +1080,7 @@ html { scroll-behavior: smooth; }
     <button class="nav-link" id="nl-features" onclick="goPage('features')">Features</button>
     <button class="nav-link" id="nl-rankings" onclick="goPage('rankings')">Rankings</button>
     <button class="nav-link" id="nl-pricing"  onclick="goPage('pricing')">Pricing</button>
+    <button class="nav-link" id="nl-bettracker" onclick="requireAuth('bettracker')" style="color:#c6ff00;border:1px solid rgba(198,255,0,.2);background:rgba(198,255,0,.06);border-radius:50px;padding:6px 14px">📊 Bet Tracker</button>
   </div>
   <div class="nav-right" id="nav-right"></div>
 </nav>
@@ -1189,6 +1433,340 @@ html { scroll-behavior: smooth; }
     <footer class="lfooter"><div class="lfooter-inner"><div class="lfooter-brand">Manuel Dança Sports Picks</div><div class="lfooter-links"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Contact</a></div><div class="lfooter-copy">© 2026 Manuel Dança Sports Picks.</div></div></footer>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: BET TRACKER
+═══════════════════════════════════════════ -->
+<div id="page-bettracker" class="app-page">
+<div class="bt-page">
+
+  <!-- Top bar -->
+  <div class="bt-topbar">
+    <div class="bt-topbar-left">
+      <div class="bt-topbar-title">
+        <svg width="18" height="18" fill="none" stroke="#c6ff00" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Bet Tracker
+      </div>
+    </div>
+    <div class="bt-topbar-right">
+      <div class="bt-capital-pill">MZN <span id="bt-capital-display">0</span></div>
+      <button class="bt-reset-btn" onclick="BT.resetAll()">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="bt-tabs">
+    <button class="bt-tab active" id="bttab-dashboard"   onclick="BT.switchTab('dashboard')">
+      <span class="bt-tab-ico">📊</span> Dashboard
+    </button>
+    <button class="bt-tab" id="bttab-tracker"     onclick="BT.switchTab('tracker')">
+      <span class="bt-tab-ico">📋</span> Bet Tracker
+    </button>
+    <button class="bt-tab" id="bttab-sweat"       onclick="BT.switchTab('sweat')">
+      <span class="bt-tab-ico">🔥</span> Sweat Station
+    </button>
+    <button class="bt-tab" id="bttab-deposits"    onclick="BT.switchTab('deposits')">
+      <span class="bt-tab-ico">💰</span> Deposits / Withdrawals
+    </button>
+  </div>
+
+  <!-- ── TAB: DASHBOARD ── -->
+  <div id="bt-panel-dashboard" class="bt-body">
+    <div class="bt-stat-row" id="bt-stat-row">
+      <div class="bt-stat-card"><div class="bt-stat-label">📈 Net Profit</div><div class="bt-stat-val bt-sv-profit" id="bt-s-profit">MZN 0</div><div class="bt-stat-sub" id="bt-s-profit-sub">—</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">✖ ROI</div><div class="bt-stat-val bt-sv-roi" id="bt-s-roi">0%</div><div class="bt-stat-sub" id="bt-s-clv">CLV Beat: —</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">🏆 Total Bets</div><div class="bt-stat-val bt-sv-count" id="bt-s-count">0</div><div class="bt-stat-sub" id="bt-s-pending">0 pending</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">🏅 Win Rate</div><div class="bt-stat-val bt-sv-wr" id="bt-s-wr">0%</div><div class="bt-stat-sub" id="bt-s-wl">0W-0L</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">💸 Total Wagered</div><div class="bt-stat-val bt-sv-wager" id="bt-s-wager">MZN 0</div><div class="bt-stat-sub" id="bt-s-risk">MZN 0 em risco</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">🌟 Odd Media</div><div class="bt-stat-val bt-sv-odds" id="bt-s-avgodds">—</div><div class="bt-stat-sub" id="bt-s-maxprofit">Max Profit: —</div></div>
+    </div>
+
+    <!-- Profit Over Time -->
+    <div class="bt-chart-box">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <div class="bt-chart-title">📈 Profit Over Time <span class="bt-chart-total" id="bt-chart-total">Total: MZN 0</span></div>
+        </div>
+        <div class="bt-time-btns">
+          <button class="bt-time-btn" onclick="BT.setChartPeriod('day',this)">Diário</button>
+          <button class="bt-time-btn active" onclick="BT.setChartPeriod('week',this)">Semanal</button>
+          <button class="bt-time-btn" onclick="BT.setChartPeriod('month',this)">Mensal</button>
+        </div>
+      </div>
+      <div class="bt-chart-canvas-wrap">
+        <canvas id="bt-profit-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Analysis by Sport & Market -->
+    <div class="bt-chart-box">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div class="bt-chart-title">🔍 Análise por Desporto &amp; Mercado</div>
+        <div class="bt-analysis-tabs">
+          <button class="bt-atab active" onclick="BT.setAnalysis('sport',this)">Desporto</button>
+          <button class="bt-atab" onclick="BT.setAnalysis('market',this)">Mercado</button>
+          <button class="bt-atab" onclick="BT.setAnalysis('house',this)">Casa</button>
+        </div>
+      </div>
+      <div id="bt-analysis-body"><div class="bt-no-data">Sem dados — adicione apostas para ver a análise</div></div>
+    </div>
+
+    <!-- Bottom Stats -->
+    <div class="bt-bottom-row">
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">Total Profit</div><div class="bt-bot-val bt-sv-profit" id="bt-b-profit">MZN 0</div></div>
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">Total Wagered</div><div class="bt-bot-val" id="bt-b-wager">MZN 0</div></div>
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">Pendentes</div><div class="bt-bot-val" id="bt-b-pending">MZN 0</div></div>
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">Pot. Payout</div><div class="bt-bot-val" id="bt-b-payout">MZN 0</div></div>
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">Profit Margin</div><div class="bt-bot-val" id="bt-b-margin">0%</div></div>
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">Beat CLV</div><div class="bt-bot-val" id="bt-b-clv">—</div></div>
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">Total Bets</div><div class="bt-bot-val" id="bt-b-count">0</div></div>
+      <div class="bt-bot-cell"><div class="bt-bot-lbl">% Bets Won</div><div class="bt-bot-val" id="bt-b-wr">0%</div></div>
+    </div>
+  </div>
+
+  <!-- ── TAB: BET TRACKER ── -->
+  <div id="bt-panel-tracker" class="bt-body" style="display:none">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap">
+      <div class="bt-capital-pill">Capital: MZN <span id="bt-tracker-capital">0</span></div>
+      <div class="bt-time-btns">
+        <button class="bt-time-btn active" onclick="BT.setTrackerPeriod('day',this)">Diário</button>
+        <button class="bt-time-btn" onclick="BT.setTrackerPeriod('week',this)">Semanal</button>
+        <button class="bt-time-btn" onclick="BT.setTrackerPeriod('month',this)">Mensal</button>
+      </div>
+    </div>
+
+    <!-- Quick stat bar -->
+    <div class="bt-stat-row" style="margin-bottom:20px">
+      <div class="bt-stat-card"><div class="bt-stat-label">📈 Net Profit</div><div class="bt-stat-val bt-sv-profit" id="bttr-profit">MZN 0</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">✖ ROI</div><div class="bt-stat-val bt-sv-roi" id="bttr-roi">0%</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">📋 Apostas</div><div class="bt-stat-val" id="bttr-count">0</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">🏅 Win Rate</div><div class="bt-stat-val bt-sv-wr" id="bttr-wr">0%</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">💸 Apostado</div><div class="bt-stat-val bt-sv-wager" id="bttr-wager">MZN 0</div></div>
+      <div class="bt-stat-card"><div class="bt-stat-label">🌟 Odd Media</div><div class="bt-stat-val bt-sv-odds" id="bttr-avgodds">—</div></div>
+    </div>
+
+    <!-- Evolução chart -->
+    <div class="bt-chart-box" style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div class="bt-chart-title">📈 Evolução do Capital</div>
+      </div>
+      <div class="bt-chart-canvas-wrap"><canvas id="bt-tracker-chart"></canvas></div>
+      <div style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:8px">
+        Melhor: <span id="bttr-best" style="color:#22c55e">—</span> &nbsp;
+        Pior: <span id="bttr-worst" style="color:#ef4444">—</span> &nbsp;
+        Sequência: <span id="bttr-streak">—</span> &nbsp;
+        Período: <span id="bttr-period">7d</span>
+      </div>
+    </div>
+
+    <!-- Add Bet Form -->
+    <div class="bt-add-form">
+      <div class="bt-add-form-title">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Adicionar Aposta
+      </div>
+      <div class="bt-form-row">
+        <div class="bt-form-field" style="flex:2;min-width:180px">
+          <label class="bt-form-label">Jogo / Evento</label>
+          <input class="bt-form-input" id="bt-inp-match" placeholder="ex: Bayern vs Dortmund">
+        </div>
+        <div class="bt-form-field" style="flex:1.5">
+          <label class="bt-form-label">Mercado / Tipo</label>
+          <input class="bt-form-input" id="bt-inp-market" placeholder="ex: Over 2.5 Goals">
+        </div>
+        <div class="bt-form-field" style="flex:.8">
+          <label class="bt-form-label">Odd (dec)</label>
+          <input class="bt-form-input" id="bt-inp-odds" type="number" step="0.01" placeholder="1.85">
+        </div>
+        <div class="bt-form-field" style="flex:.8">
+          <label class="bt-form-label">Fair odd</label>
+          <input class="bt-form-input" id="bt-inp-fair" type="number" step="0.01" placeholder="1.72">
+        </div>
+        <div class="bt-form-field" style="flex:.8">
+          <label class="bt-form-label">Stake MZN</label>
+          <input class="bt-form-input" id="bt-inp-stake" type="number" placeholder="200">
+        </div>
+        <div class="bt-form-field" style="flex:.8">
+          <label class="bt-form-label">Score ex:2-1</label>
+          <input class="bt-form-input" id="bt-inp-score" placeholder="—">
+        </div>
+        <div class="bt-form-field" style="flex:1.2">
+          <label class="bt-form-label">Status</label>
+          <select class="bt-form-select" id="bt-inp-status">
+            <option value="pending">Pending</option>
+            <option value="won">Won</option>
+            <option value="lost">Lost</option>
+            <option value="void">Void</option>
+          </select>
+        </div>
+        <div class="bt-form-field" style="flex:.8">
+          <label class="bt-form-label">Tipo</label>
+          <select class="bt-form-select" id="bt-inp-type">
+            <option value="SIMPLES 1-Fold">SIMPLES</option>
+            <option value="DUPLA 2-Fold">DUPLA</option>
+            <option value="TRIPLA 3-Fold">TRIPLA</option>
+            <option value="PARLAY">PARLAY</option>
+          </select>
+        </div>
+        <button class="bt-add-btn" onclick="BT.addBet()">+ Adicionar</button>
+      </div>
+    </div>
+
+    <!-- History Table -->
+    <div class="bt-table-wrap">
+      <div class="bt-table-header">
+        <div class="bt-table-title">Histórico de Apostas</div>
+        <div class="bt-table-actions">
+          <button class="bt-action-btn" onclick="BT.autoScores()">↻ Auto Scores</button>
+          <button class="bt-action-btn" onclick="BT.exportCSV()">⬇ CSV</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="bt-table">
+          <thead><tr>
+            <th><input type="checkbox" onchange="BT.selectAll(this)"></th>
+            <th>Data</th><th>Jogo</th><th>Mercado</th>
+            <th>Odd</th><th>Fair</th><th>CLV%</th>
+            <th>Stake</th><th>Score</th><th>Resultado</th><th>P/L</th><th>Ação</th>
+          </tr></thead>
+          <tbody id="bt-history-tbody">
+            <tr><td colspan="12" style="text-align:center;padding:36px;color:rgba(255,255,255,.2);font-size:.88rem">Sem apostas ainda. Adiciona a tua primeira aposta acima.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: SWEAT STATION ── -->
+  <div id="bt-panel-sweat" class="bt-body" style="display:none">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+      <div style="font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:6px">
+        🔥 Sweat Station <span id="ss-total" style="font-size:.8rem;color:#c6ff00;font-weight:700">Total: MZN 0</span>
+      </div>
+      <button class="bt-action-btn" onclick="BT.refreshSweat()">↻ Refresh</button>
+    </div>
+    <div class="ss-wrap">
+      <!-- Calendar -->
+      <div class="ss-calendar">
+        <div class="ss-cal-header">
+          <button class="ss-cal-nav" onclick="BT.calPrev()">‹</button>
+          <div class="ss-cal-month" id="ss-cal-month">—</div>
+          <button class="ss-cal-nav" onclick="BT.calNext()">›</button>
+        </div>
+        <div class="ss-cal-grid" id="ss-cal-grid"></div>
+      </div>
+      <!-- Right panel -->
+      <div class="ss-right">
+        <div class="ss-tabs-row">
+          <button class="ss-tab active" onclick="BT.ssTab('live',this)">🔴 Live (<span id="ss-cnt-live">0</span>)</button>
+          <button class="ss-tab" onclick="BT.ssTab('settled',this)">✅ Settled (<span id="ss-cnt-settled">0</span>)</button>
+          <button class="ss-tab" onclick="BT.ssTab('upcoming',this)">⏰ Upcoming (<span id="ss-cnt-upcoming">0</span>)</button>
+          <button class="ss-tab" onclick="BT.ssTab('parlays',this)">🎯 Parlays (<span id="ss-cnt-parlays">0</span>)</button>
+        </div>
+        <div class="ss-bets-list" id="ss-bets-list">
+          <div class="ss-empty">Sem apostas para mostrar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profit chart -->
+    <div class="bt-chart-box" style="margin-top:18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="bt-chart-title">📈 Profit Over Time</div>
+        <div class="bt-time-btns">
+          <button class="bt-time-btn" onclick="BT.setSweatPeriod('day',this)">Daily</button>
+          <button class="bt-time-btn active" onclick="BT.setSweatPeriod('week',this)">Weekly</button>
+          <button class="bt-time-btn" onclick="BT.setSweatPeriod('month',this)">Monthly</button>
+        </div>
+      </div>
+      <div class="bt-chart-canvas-wrap"><canvas id="bt-sweat-chart"></canvas></div>
+      <div class="bt-bottom-row" style="margin-top:16px">
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">Total Profit</div><div class="bt-bot-val bt-sv-profit" id="ss-b-profit">MZN 0</div></div>
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">Total Stake</div><div class="bt-bot-val" id="ss-b-stake">MZN 0</div></div>
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">Pending</div><div class="bt-bot-val" id="ss-b-pending">MZN 0</div></div>
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">Pot. Payout</div><div class="bt-bot-val" id="ss-b-payout">MZN 0</div></div>
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">Profit Margin</div><div class="bt-bot-val" id="ss-b-margin">0%</div></div>
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">Beat CLV</div><div class="bt-bot-val" id="ss-b-clv">—</div></div>
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">Total Bets</div><div class="bt-bot-val" id="ss-b-count">0</div></div>
+        <div class="bt-bot-cell"><div class="bt-bot-lbl">% Bets Won</div><div class="bt-bot-val" id="ss-b-wr">0%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: DEPOSITS / WITHDRAWALS ── -->
+  <div id="bt-panel-deposits" class="bt-body" style="display:none">
+    <!-- Stats -->
+    <div class="dw-stat-row">
+      <div class="dw-stat"><div class="dw-stat-lbl">Total Depositado</div><div class="dw-stat-val c-lime" id="dw-total-dep">MZN 0</div></div>
+      <div class="dw-stat"><div class="dw-stat-lbl">Total Levantado</div><div class="dw-stat-val" id="dw-total-with" style="color:#ef4444">MZN 0</div></div>
+      <div class="dw-stat"><div class="dw-stat-lbl">Saldo Actual (Dep. + Apostas)</div><div class="dw-stat-val c-green" id="dw-balance">+MZN 0</div></div>
+      <div class="dw-stat"><div class="dw-stat-lbl">ROI sobre Depósitos</div><div class="dw-stat-val" id="dw-roi">0%</div></div>
+    </div>
+
+    <!-- Add form -->
+    <div class="bt-add-form" style="margin-bottom:18px">
+      <div class="bt-add-form-title">+ Adicionar Depósito / Levantamento</div>
+      <div class="dw-form-row">
+        <div class="dw-form-field">
+          <label class="dw-form-label">Tipo</label>
+          <select class="bt-form-select" id="dw-inp-type" style="min-width:130px">
+            <option value="deposit">Depósito</option>
+            <option value="withdrawal">Levantamento</option>
+          </select>
+        </div>
+        <div class="dw-form-field">
+          <label class="dw-form-label">Casa de Apostas</label>
+          <input class="bt-form-input" id="dw-inp-house" placeholder="ex: Bet365" style="min-width:120px">
+        </div>
+        <div class="dw-form-field">
+          <label class="dw-form-label">Estado/Região</label>
+          <input class="bt-form-input" id="dw-inp-region" placeholder="ex: MZ" style="width:80px">
+        </div>
+        <div class="dw-form-field">
+          <label class="dw-form-label">Valor MZN</label>
+          <input class="bt-form-input" id="dw-inp-val" type="number" placeholder="0" style="width:100px">
+        </div>
+        <div class="dw-form-field">
+          <label class="dw-form-label">Data</label>
+          <input class="bt-form-input" id="dw-inp-date" type="date" style="min-width:140px">
+        </div>
+        <div class="dw-form-field">
+          <label class="dw-form-label">Status</label>
+          <select class="bt-form-select" id="dw-inp-status" style="min-width:110px">
+            <option value="complete">Completo</option>
+            <option value="pending">Pendente</option>
+          </select>
+        </div>
+        <button class="bt-add-btn" onclick="BT.addDW()">+ Adicionar</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bt-table-wrap">
+      <div class="bt-table-header">
+        <div class="bt-table-title">Histórico de Transações</div>
+        <div class="bt-table-actions">
+          <input class="bt-form-input" placeholder="🔍 Pesquisar..." id="dw-search" oninput="BT.renderDW()" style="width:160px;padding:5px 10px;font-size:.8rem">
+          <button class="bt-action-btn" onclick="BT.dwTotals()">Totais</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="bt-table">
+          <thead><tr>
+            <th><input type="checkbox"></th>
+            <th>Data</th><th>Casa</th><th>Estado</th>
+            <th>Tipo</th><th>Valor</th><th>Status</th><th>Ações</th>
+          </tr></thead>
+          <tbody id="dw-tbody">
+            <tr><td colspan="8" style="text-align:center;padding:36px;color:rgba(255,255,255,.2);font-size:.88rem">Sem transações. Adiciona o teu depósito inicial.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-bettracker -->
 
 <!-- ═══════ AUTH MODAL ═══════ -->
 <div class="auth-bg" id="auth-bg" onclick="handleAuthBgClick(event)">
@@ -2803,9 +3381,10 @@ function goPage(name){
   const navId = 'nl-' + name;
   const nl = document.getElementById(navId);
   if(nl) nl.classList.add('active-link');
-  if(name==='picks')    { setTimeout(initPicksPage, 50); }  // slight delay ensures DOM is active
-  if(name==='rankings') renderRankings();
-  if(name==='pricing')  renderFAQ();
+  if(name==='picks')      { setTimeout(initPicksPage, 50); }
+  if(name==='rankings')   renderRankings();
+  if(name==='pricing')    renderFAQ();
+  if(name==='bettracker') { loadChartJS(()=>setTimeout(()=>BT.init(),80)); }
   updateNav();
 }
 
@@ -2858,6 +3437,7 @@ function updateNav(){
     nr.innerHTML=`
       <span class="nav-trial-badge"><span class="trial-dot"></span>${days} day${days!==1?'s':''} free</span>
       <button class="lbtn lbtn-sm lbtn-outline" onclick="requireAuth('picks')">My Picks</button>
+      <button class="lbtn lbtn-sm" style="background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.25);color:#c6ff00;border-radius:50px;padding:7px 16px;font-size:.85rem;font-weight:600" onclick="requireAuth('bettracker')">📊 Tracker</button>
       <button class="lbtn lbtn-sm lbtn-ghost" onclick="logout()">Sign Out</button>
     `;
   } else {
@@ -3085,12 +3665,531 @@ document.addEventListener('keydown',e=>{
   const sess=getSession();
   if(sess && isTrialActive(sess)){
     updateNav();
-    // If user came back, stay on home but update nav
   } else {
     if(sess) clearSession();
   }
   updateNav();
+  // Pre-load Chart.js
+  loadChartJS(()=>{ /* ready */ });
 })();
+
+
+/* ═══════════════════════════════════════════════════════════
+   BET TRACKER — Full system with localStorage persistence
+═══════════════════════════════════════════════════════════ */
+const BT_BETS_KEY = 'md_bt_bets';
+const BT_DW_KEY   = 'md_bt_dw';
+let _btTab = 'dashboard';
+let _btCalYear, _btCalMonth;
+let _ssTab = 'live';
+let _chartPeriod = 'week';
+let _btProfitChart = null;
+let _btTrackerChart = null;
+let _btSweatChart = null;
+let _analysisMode = 'sport';
+let _trackerPeriod = 'week';
+
+function getBets() { try { return JSON.parse(localStorage.getItem(BT_BETS_KEY)||'[]'); } catch(e){return[];} }
+function saveBets(b){ localStorage.setItem(BT_BETS_KEY, JSON.stringify(b)); }
+function getDW()    { try { return JSON.parse(localStorage.getItem(BT_DW_KEY)||'[]');   } catch(e){return[];} }
+function saveDW(d)  { localStorage.setItem(BT_DW_KEY,   JSON.stringify(d)); }
+
+function fmzn(n){ return 'MZN '+(n>=0?'+':'')+n.toFixed(0); }
+function fmzn2(n){ return 'MZN '+n.toFixed(0); }
+function fdate(d){ return new Date(d).toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function today(){ return new Date().toISOString().split('T')[0]; }
+
+const BT = {
+  init(){
+    const now = new Date();
+    _btCalYear  = now.getFullYear();
+    _btCalMonth = now.getMonth();
+    this.switchTab(_btTab);
+    // Init calendar
+    this.renderCalendar();
+    // Set date defaults
+    const di = document.getElementById('dw-inp-date');
+    if(di && !di.value) di.value = today();
+  },
+
+  switchTab(name){
+    _btTab = name;
+    ['dashboard','tracker','sweat','deposits'].forEach(t=>{
+      const panel = document.getElementById('bt-panel-'+t);
+      const tab   = document.getElementById('bttab-'+t);
+      if(panel) panel.style.display = t===name ? '' : 'none';
+      if(tab)   tab.classList.toggle('active', t===name);
+    });
+    if(name==='dashboard') this.renderDashboard();
+    if(name==='tracker')   this.renderTracker();
+    if(name==='sweat')     this.renderSweat();
+    if(name==='deposits')  this.renderDW();
+    this.updateCapital();
+  },
+
+  /* ── COMPUTED STATS ── */
+  computeStats(bets){
+    const settled = bets.filter(b=>b.status!=='pending');
+    const won     = bets.filter(b=>b.status==='won');
+    const lost    = bets.filter(b=>b.status==='lost');
+    const pending = bets.filter(b=>b.status==='pending');
+    const totalStake   = bets.reduce((s,b)=>s+parseFloat(b.stake||0),0);
+    const pendingStake = pending.reduce((s,b)=>s+parseFloat(b.stake||0),0);
+    const profit = won.reduce((s,b)=>s+(parseFloat(b.stake||0)*(parseFloat(b.odds||1)-1)),0)
+                 - lost.reduce((s,b)=>s+parseFloat(b.stake||0),0);
+    const potPayout = pending.reduce((s,b)=>s+parseFloat(b.stake||0)*parseFloat(b.odds||1),0);
+    const roi     = totalStake>0 ? (profit/totalStake)*100 : 0;
+    const wr      = settled.length>0 ? (won.length/settled.length)*100 : 0;
+    const avgOdds = bets.length>0 ? bets.reduce((s,b)=>s+parseFloat(b.odds||0),0)/bets.length : 0;
+    const maxProfit = bets.length>0 ? Math.max(...bets.map(b=>parseFloat(b.stake||0)*(parseFloat(b.odds||1)-1))) : 0;
+    const fairBets = bets.filter(b=>b.fair&&parseFloat(b.fair)>0);
+    const clvBeat  = fairBets.length>0 ? (fairBets.filter(b=>parseFloat(b.odds||0)>parseFloat(b.fair||0)).length/fairBets.length*100) : null;
+    return { settled, won, lost, pending, totalStake, pendingStake, profit, potPayout, roi, wr, avgOdds, maxProfit, clvBeat };
+  },
+
+  updateCapital(){
+    const dw     = getDW();
+    const totalDep  = dw.filter(d=>d.type==='deposit').reduce((s,d)=>s+parseFloat(d.val||0),0);
+    const totalWith = dw.filter(d=>d.type==='withdrawal').reduce((s,d)=>s+parseFloat(d.val||0),0);
+    const bets   = getBets();
+    const s      = this.computeStats(bets);
+    const capital = totalDep - totalWith + s.profit;
+    const el1 = document.getElementById('bt-capital-display');
+    const el2 = document.getElementById('bt-tracker-capital');
+    if(el1) el1.textContent = capital.toFixed(0);
+    if(el2) el2.textContent = capital.toFixed(0);
+  },
+
+  /* ── DASHBOARD ── */
+  renderDashboard(){
+    const bets = getBets();
+    const s = this.computeStats(bets);
+    const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+    set('bt-s-profit',    fmzn(s.profit));
+    set('bt-s-profit-sub','');
+    set('bt-s-roi',       s.roi.toFixed(1)+'%');
+    set('bt-s-clv',       s.clvBeat!=null?'CLV Beat: '+s.clvBeat.toFixed(0)+'%':'CLV Beat: —');
+    set('bt-s-count',     bets.length);
+    set('bt-s-pending',   s.pending.length+' pending');
+    set('bt-s-wr',        s.wr.toFixed(0)+'%');
+    set('bt-s-wl',        s.won.length+'W-'+s.lost.length+'L');
+    set('bt-s-wager',     fmzn2(s.totalStake));
+    set('bt-s-risk',      'MZN '+s.pendingStake.toFixed(0)+' em risco');
+    set('bt-s-avgodds',   s.avgOdds.toFixed(2)||'—');
+    set('bt-s-maxprofit', 'Max Profit: MZN '+s.maxProfit.toFixed(0));
+    // Bottom
+    set('bt-b-profit',  fmzn(s.profit));
+    set('bt-b-wager',   fmzn2(s.totalStake));
+    set('bt-b-pending', fmzn2(s.pendingStake));
+    set('bt-b-payout',  'MZN '+s.potPayout.toFixed(0));
+    set('bt-b-margin',  s.roi.toFixed(1)+'%');
+    set('bt-b-clv',     s.clvBeat!=null?s.clvBeat.toFixed(0)+'%':'—');
+    set('bt-b-count',   bets.length);
+    set('bt-b-wr',      s.wr.toFixed(0)+'%');
+    set('bt-chart-total','Total: '+fmzn(s.profit));
+    this.renderProfitChart('bt-profit-chart', bets, _chartPeriod);
+    this.renderAnalysis();
+    this.updateCapital();
+  },
+
+  renderAnalysis(){
+    const bets = getBets();
+    const body = document.getElementById('bt-analysis-body');
+    if(!body) return;
+    if(!bets.length){ body.innerHTML='<div class="bt-no-data">Sem dados — adicione apostas para ver a análise</div>'; return; }
+    // Group by mode
+    const groups = {};
+    bets.forEach(b=>{
+      let key;
+      if(_analysisMode==='sport')  key = (b.sport||'Outros');
+      else if(_analysisMode==='market') key = (b.market||'Outros');
+      else key = (b.house||'Outros');
+      if(!groups[key]) groups[key]={bets:[],profit:0,stake:0,won:0};
+      groups[key].bets.push(b);
+      const stake=parseFloat(b.stake||0);
+      const odds=parseFloat(b.odds||1);
+      groups[key].stake+=stake;
+      if(b.status==='won') { groups[key].profit+=(stake*(odds-1)); groups[key].won++; }
+      else if(b.status==='lost') groups[key].profit-=stake;
+    });
+    const items = Object.entries(groups).sort((a,b)=>b[1].profit-a[1].profit);
+    body.innerHTML='<div class="bt-analysis-grid">'+items.map(([k,g])=>{
+      const roi=g.stake>0?(g.profit/g.stake*100):0;
+      const wr=g.bets.length>0?(g.won/g.bets.length*100):0;
+      return `<div class="bt-anl-cell">
+        <div class="bt-anl-lbl">${k}</div>
+        <div class="bt-anl-val ${g.profit>=0?'c-green':'bt-sv-odds'}">${fmzn(g.profit)}</div>
+        <div class="bt-anl-sub">${g.bets.length} apostas · ${roi.toFixed(1)}% ROI · ${wr.toFixed(0)}% WR</div>
+      </div>`;
+    }).join('')+'</div>';
+  },
+
+  setAnalysis(mode,btn){
+    _analysisMode=mode;
+    document.querySelectorAll('.bt-atab').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    this.renderAnalysis();
+  },
+
+  /* ── TRACKER ── */
+  renderTracker(){
+    const bets = getBets();
+    const s = this.computeStats(bets);
+    const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+    set('bttr-profit',  fmzn(s.profit));
+    set('bttr-roi',     s.roi.toFixed(1)+'%');
+    set('bttr-count',   bets.length);
+    set('bttr-wr',      s.wr.toFixed(0)+'%');
+    set('bttr-wager',   fmzn2(s.totalStake));
+    set('bttr-avgodds', s.avgOdds.toFixed(2)||'—');
+    // Best/Worst
+    const profits = bets.map(b=>{ const sk=parseFloat(b.stake||0); const od=parseFloat(b.odds||1); return b.status==='won'?sk*(od-1):b.status==='lost'?-sk:0; }).filter((_,i)=>bets[i].status!=='pending');
+    const best = profits.length?Math.max(...profits):0;
+    const worst= profits.length?Math.min(...profits):0;
+    set('bttr-best',   'MZN +'+best.toFixed(0));
+    set('bttr-worst',  'MZN '+worst.toFixed(0));
+    set('bttr-period', _trackerPeriod==='day'?'1d':_trackerPeriod==='week'?'7d':'30d');
+    this.renderProfitChart('bt-tracker-chart', bets, _trackerPeriod);
+    this.renderHistory();
+    this.updateCapital();
+  },
+
+  renderHistory(){
+    const bets = getBets();
+    const tbody = document.getElementById('bt-history-tbody');
+    if(!tbody) return;
+    if(!bets.length){
+      tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:36px;color:rgba(255,255,255,.2);font-size:.88rem">Sem apostas ainda. Adiciona a tua primeira aposta acima.</td></tr>';
+      return;
+    }
+    tbody.innerHTML=[...bets].reverse().map((b,ri)=>{
+      const i = bets.length-1-ri;
+      const stake=parseFloat(b.stake||0), odds=parseFloat(b.odds||1);
+      const pl = b.status==='won'?stake*(odds-1):b.status==='lost'?-stake:null;
+      const fair=parseFloat(b.fair||0);
+      const clv = (odds>0&&fair>0)?((odds/fair-1)*100).toFixed(1)+'%':'—';
+      const clvColor = (odds>0&&fair>0&&odds>fair)?'#22c55e':'#ef4444';
+      const statusCls = {won:'bs-won',lost:'bs-lost',pending:'bs-pending',void:'bs-void'}[b.status]||'bs-pending';
+      return `<tr>
+        <td><input type="checkbox"></td>
+        <td style="color:rgba(255,255,255,.5);font-size:.8rem;white-space:nowrap">${fdate(b.date)}</td>
+        <td><div style="font-weight:600;color:#edf1f4;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.match||'—'}</div><span class="bet-type-tag">${b.type||'SIMPLES'}</span></td>
+        <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.market||'—'}</td>
+        <td style="font-family:var(--font-head);font-weight:700;color:#f59e0b">${parseFloat(b.odds||0).toFixed(2)}</td>
+        <td style="color:rgba(255,255,255,.4)">${fair>0?fair.toFixed(2):'—'}</td>
+        <td style="color:${clvColor};font-weight:700">${clv}</td>
+        <td style="font-weight:600">MZN ${stake.toFixed(0)}</td>
+        <td style="color:rgba(255,255,255,.4)">${b.score||'—'}</td>
+        <td><select class="bt-form-select" style="padding:4px 8px;font-size:.75rem;background:transparent;border:1px solid rgba(255,255,255,.08)" onchange="BT.updateStatus(${i},this.value)">
+          <option value="pending" ${b.status==='pending'?'selected':''}>Pending</option>
+          <option value="won"     ${b.status==='won'?'selected':''}>Won ✓</option>
+          <option value="lost"    ${b.status==='lost'?'selected':''}>Lost ✗</option>
+          <option value="void"    ${b.status==='void'?'selected':''}>Void</option>
+        </select></td>
+        <td class="${pl!==null?(pl>=0?'bt-pnl-pos':'bt-pnl-neg'):''}">
+          ${pl!==null ? (pl>=0?'+':'')+pl.toFixed(0) : '—'}
+        </td>
+        <td><button class="bt-del-btn" onclick="BT.deleteBet(${i})">✕</button></td>
+      </tr>`;
+    }).join('');
+  },
+
+  addBet(fromPick){
+    let match, market, odds, fair, stake, score, status, type, sport, house;
+    if(fromPick){
+      match=fromPick.match; market=fromPick.market; odds=fromPick.odds;
+      fair=fromPick.fair; stake=fromPick.stake||200; score=''; status='pending';
+      type=fromPick.type||'SIMPLES 1-Fold'; sport=fromPick.sport; house=fromPick.house||'';
+    } else {
+      match  = document.getElementById('bt-inp-match')?.value.trim();
+      market = document.getElementById('bt-inp-market')?.value.trim();
+      odds   = parseFloat(document.getElementById('bt-inp-odds')?.value||0);
+      fair   = parseFloat(document.getElementById('bt-inp-fair')?.value||0);
+      stake  = parseFloat(document.getElementById('bt-inp-stake')?.value||0);
+      score  = document.getElementById('bt-inp-score')?.value.trim()||'';
+      status = document.getElementById('bt-inp-status')?.value||'pending';
+      type   = document.getElementById('bt-inp-type')?.value||'SIMPLES 1-Fold';
+      sport  = 'Outros'; house = '';
+    }
+    if(!match||!odds||!stake){ toast('Preenche Jogo, Odd e Stake', 'w'); return; }
+    const bets = getBets();
+    bets.push({ match, market, odds, fair, stake, score, status, type, sport, house, date: new Date().toISOString() });
+    saveBets(bets);
+    if(!fromPick){
+      ['bt-inp-match','bt-inp-market','bt-inp-odds','bt-inp-fair','bt-inp-stake','bt-inp-score'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.value='';
+      });
+    }
+    this.renderTracker();
+    this.renderDashboard();
+    toast(fromPick ? 'Aposta adicionada ao Bet Tracker ✓':'Aposta adicionada!','s');
+  },
+
+  updateStatus(i, newStatus){
+    const bets=getBets();
+    if(bets[i]) bets[i].status=newStatus;
+    saveBets(bets);
+    this.renderDashboard();
+    this.renderTracker();
+  },
+
+  deleteBet(i){
+    const bets=getBets();
+    bets.splice(i,1);
+    saveBets(bets);
+    this.renderHistory();
+    this.renderDashboard();
+    toast('Aposta removida','i');
+  },
+
+  setTrackerPeriod(p,btn){ _trackerPeriod=p; document.querySelectorAll('#bt-panel-tracker .bt-time-btn').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); this.renderProfitChart('bt-tracker-chart',getBets(),p); const el=document.getElementById('bttr-period'); if(el)el.textContent=p==='day'?'1d':p==='week'?'7d':'30d'; },
+
+  autoScores(){ toast('Auto scores não disponíveis nesta versão','i'); },
+  exportCSV(){
+    const bets=getBets(); if(!bets.length){toast('Sem apostas para exportar','w');return;}
+    const hdr='Data,Jogo,Mercado,Odd,Fair,Stake,Score,Status,P/L\n';
+    const rows=bets.map(b=>{
+      const sk=parseFloat(b.stake||0),od=parseFloat(b.odds||1);
+      const pl=b.status==='won'?sk*(od-1):b.status==='lost'?-sk:0;
+      return [fdate(b.date),b.match,b.market,b.odds,b.fair||'',b.stake,b.score||'',b.status,pl.toFixed(0)].join(',');
+    }).join('\n');
+    const blob=new Blob([hdr+rows],{type:'text/csv'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='manueldanca_bets.csv'; a.click();
+  },
+  selectAll(cb){ document.querySelectorAll('#bt-history-tbody input[type=checkbox]').forEach(c=>c.checked=cb.checked); },
+
+  /* ── SWEAT STATION ── */
+  renderSweat(){
+    this.renderCalendar();
+    this.ssTab(_ssTab);
+    this.renderSweatChart();
+    this.updateSweatStats();
+  },
+
+  renderCalendar(){
+    const now = new Date();
+    if(!_btCalYear) { _btCalYear=now.getFullYear(); _btCalMonth=now.getMonth(); }
+    const el=document.getElementById('ss-cal-month');
+    const grid=document.getElementById('ss-cal-grid');
+    if(!el||!grid) return;
+    const months=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    el.textContent = months[_btCalMonth]+' '+_btCalYear;
+    const bets=getBets();
+    const betDates=new Set(bets.map(b=>b.date?b.date.split('T')[0]:''));
+    const firstDay=new Date(_btCalYear,_btCalMonth,1).getDay();
+    const daysInMonth=new Date(_btCalYear,_btCalMonth+1,0).getDate();
+    const todayStr=now.toISOString().split('T')[0];
+    const days=['D','S','T','Q','Q','S','S'];
+    let html=days.map(d=>`<div class="ss-cal-day-lbl">${d}</div>`).join('');
+    for(let i=0;i<firstDay;i++) html+=`<div class="ss-cal-day empty"></div>`;
+    for(let d=1;d<=daysInMonth;d++){
+      const ds=`${_btCalYear}-${String(_btCalMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const isToday=ds===todayStr;
+      const hasBets=[...betDates].some(bd=>bd===ds);
+      html+=`<div class="ss-cal-day${isToday?' today':''}${hasBets?' has-bets':''}" onclick="BT.calSelectDay('${ds}')">${d}</div>`;
+    }
+    grid.innerHTML=html;
+  },
+
+  calPrev(){ _btCalMonth--; if(_btCalMonth<0){_btCalMonth=11;_btCalYear--;} this.renderCalendar(); },
+  calNext(){ _btCalMonth++; if(_btCalMonth>11){_btCalMonth=0;_btCalYear++;} this.renderCalendar(); },
+  calSelectDay(ds){ /* highlight and filter */ },
+
+  ssTab(name, btn){
+    _ssTab=name;
+    document.querySelectorAll('.ss-tab').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    else { const b=document.querySelector(`.ss-tab[onclick*="${name}"]`); if(b)b.classList.add('active'); }
+    const bets=getBets();
+    const now=new Date();
+    let filtered;
+    if(name==='live') filtered=bets.filter(b=>b.status==='pending'&&new Date(b.date)<now);
+    else if(name==='settled') filtered=bets.filter(b=>b.status==='won'||b.status==='lost');
+    else if(name==='upcoming') filtered=bets.filter(b=>b.status==='pending'&&new Date(b.date)>=now);
+    else filtered=bets.filter(b=>b.type&&b.type.toUpperCase().includes('PARLAY'));
+    // Update counts
+    const setC=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    setC('ss-cnt-live',    bets.filter(b=>b.status==='pending'&&new Date(b.date)<now).length);
+    setC('ss-cnt-settled', bets.filter(b=>b.status==='won'||b.status==='lost').length);
+    setC('ss-cnt-upcoming',bets.filter(b=>b.status==='pending'&&new Date(b.date)>=now).length);
+    setC('ss-cnt-parlays', bets.filter(b=>b.type&&b.type.toUpperCase().includes('PARLAY')).length);
+    const list=document.getElementById('ss-bets-list');
+    if(!list) return;
+    if(!filtered.length){ list.innerHTML='<div class="ss-empty">Sem apostas para mostrar</div>'; return; }
+    list.innerHTML=filtered.map(b=>`
+      <div class="ss-bet-row">
+        <div>
+          <div class="ss-bet-match">${b.match||'—'}<span class="bet-type-tag">${b.type||''}</span></div>
+          <div class="ss-bet-meta">${b.market||''} · ${fdate(b.date)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="ss-bet-odds">${parseFloat(b.odds||0).toFixed(2)}</div>
+          <div class="ss-bet-status">${b.status==='pending'?'P':''}  MZN ${parseFloat(b.stake||0).toFixed(0)}</div>
+        </div>
+      </div>`).join('');
+  },
+
+  refreshSweat(){ this.renderSweat(); toast('Atualizado!','s'); },
+
+  updateSweatStats(){
+    const bets=getBets(); const s=this.computeStats(bets);
+    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    set('ss-total',    'Total: '+fmzn(s.profit));
+    set('ss-b-profit', fmzn(s.profit));
+    set('ss-b-stake',  fmzn2(s.totalStake));
+    set('ss-b-pending',fmzn2(s.pendingStake));
+    set('ss-b-payout', 'MZN '+s.potPayout.toFixed(0));
+    set('ss-b-margin', s.roi.toFixed(1)+'%');
+    set('ss-b-clv',    s.clvBeat!=null?s.clvBeat.toFixed(0)+'%':'—');
+    set('ss-b-count',  bets.length);
+    set('ss-b-wr',     s.wr.toFixed(0)+'%');
+  },
+
+  setSweatPeriod(p,btn){ document.querySelectorAll('#bt-panel-sweat .bt-time-btn').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); this.renderSweatChart(); },
+  renderSweatChart(){ this.renderProfitChart('bt-sweat-chart',getBets(),'week'); },
+  setChartPeriod(p,btn){ _chartPeriod=p; document.querySelectorAll('#bt-panel-dashboard .bt-time-btn').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); this.renderProfitChart('bt-profit-chart',getBets(),p); },
+
+  /* ── PROFIT CHART ── */
+  renderProfitChart(canvasId, bets, period){
+    const canvas=document.getElementById(canvasId); if(!canvas) return;
+    const ctx=canvas.getContext('2d');
+    // Build timeline data
+    const sorted=[...bets].filter(b=>b.status!=='pending').sort((a,b)=>new Date(a.date)-new Date(b.date));
+    const labels=[], data=[];
+    let cumProfit=0;
+    if(!sorted.length){
+      labels.push('Start'); data.push(0);
+    } else {
+      labels.push('Start'); data.push(0);
+      sorted.forEach(b=>{
+        const sk=parseFloat(b.stake||0), od=parseFloat(b.odds||1);
+        cumProfit += b.status==='won'?sk*(od-1):-sk;
+        labels.push(fdate(b.date));
+        data.push(parseFloat(cumProfit.toFixed(1)));
+      });
+    }
+    // Destroy old chart
+    if(canvasId==='bt-profit-chart'&&_btProfitChart)   { _btProfitChart.destroy(); _btProfitChart=null; }
+    if(canvasId==='bt-tracker-chart'&&_btTrackerChart)  { _btTrackerChart.destroy(); _btTrackerChart=null; }
+    if(canvasId==='bt-sweat-chart'&&_btSweatChart)      { _btSweatChart.destroy(); _btSweatChart=null; }
+
+    const maxV=Math.max(...data,1), minV=Math.min(...data,0);
+    const grad=ctx.createLinearGradient(0,0,0,160);
+    grad.addColorStop(0,'rgba(198,255,0,.3)'); grad.addColorStop(1,'rgba(198,255,0,.02)');
+
+    const chart=new Chart(ctx,{
+      type:'line',
+      data:{ labels, datasets:[{ data, borderColor:'#c6ff00', backgroundColor:grad, borderWidth:2, fill:true, tension:.3, pointRadius:data.length<20?4:0, pointHoverRadius:6, pointBackgroundColor:'#c6ff00' }] },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{
+          callbacks:{ label:ctx=>'MZN '+(ctx.raw>=0?'+':'')+ctx.raw }
+        }},
+        scales:{
+          x:{ ticks:{color:'rgba(255,255,255,.35)',font:{size:10},maxTicksLimit:8}, grid:{color:'rgba(255,255,255,.05)'}, border:{display:false} },
+          y:{ ticks:{color:'rgba(255,255,255,.35)',font:{size:10},callback:v=>'MZN '+v}, grid:{color:'rgba(255,255,255,.05)'}, border:{display:false}, suggestedMin:minV-Math.abs(minV)*0.1, suggestedMax:maxV+Math.abs(maxV)*0.1 }
+        }
+      }
+    });
+    if(canvasId==='bt-profit-chart')  _btProfitChart=chart;
+    if(canvasId==='bt-tracker-chart') _btTrackerChart=chart;
+    if(canvasId==='bt-sweat-chart')   _btSweatChart=chart;
+  },
+
+  /* ── DEPOSITS / WITHDRAWALS ── */
+  renderDW(){
+    const dw=getDW();
+    const search=(document.getElementById('dw-search')?.value||'').toLowerCase();
+    const filtered=dw.filter(d=>!search||d.house?.toLowerCase().includes(search)||d.region?.toLowerCase().includes(search));
+    const totalDep  = dw.filter(d=>d.type==='deposit').reduce((s,d)=>s+parseFloat(d.val||0),0);
+    const totalWith = dw.filter(d=>d.type==='withdrawal').reduce((s,d)=>s+parseFloat(d.val||0),0);
+    const bets=getBets(); const s=this.computeStats(bets);
+    const balance=totalDep-totalWith+s.profit;
+    const roi = totalDep>0?((s.profit/totalDep)*100):0;
+    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    set('dw-total-dep',  'MZN '+totalDep.toFixed(0));
+    set('dw-total-with', 'MZN '+totalWith.toFixed(0));
+    set('dw-balance',    (balance>=0?'+':'')+' MZN '+balance.toFixed(0));
+    set('dw-roi',        roi.toFixed(1)+'% ROI');
+    // Table
+    const tbody=document.getElementById('dw-tbody');
+    if(!tbody) return;
+    if(!filtered.length){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:36px;color:rgba(255,255,255,.2)">Sem transações. Adiciona o teu depósito inicial.</td></tr>'; return; }
+    tbody.innerHTML=[...filtered].reverse().map((d,ri)=>{
+      const i=dw.length-1-ri;
+      const isD=d.type==='deposit';
+      return `<tr>
+        <td><input type="checkbox"></td>
+        <td style="color:rgba(255,255,255,.5);font-size:.8rem">${fdate(d.date)}</td>
+        <td style="font-weight:600;color:#edf1f4">${d.house||'—'}</td>
+        <td style="color:rgba(255,255,255,.4)">${d.region||'—'}</td>
+        <td><span style="color:${isD?'#22c55e':'#ef4444'};font-weight:700">${isD?'Depósito':'Levantamento'}</span></td>
+        <td style="font-family:var(--font-head);font-weight:800;color:${isD?'#22c55e':'#ef4444'}">MZN ${parseFloat(d.val||0).toFixed(0)}</td>
+        <td><span class="bet-status ${d.status==='complete'?'bs-won':'bs-pending'}">${d.status==='complete'?'complete':'pending'}</span></td>
+        <td><button class="bt-del-btn" onclick="BT.deleteDW(${i})">✕</button></td>
+      </tr>`;
+    }).join('');
+    this.updateCapital();
+  },
+
+  addDW(){
+    const type   = document.getElementById('dw-inp-type')?.value||'deposit';
+    const house  = document.getElementById('dw-inp-house')?.value.trim();
+    const region = document.getElementById('dw-inp-region')?.value.trim();
+    const val    = parseFloat(document.getElementById('dw-inp-val')?.value||0);
+    const date   = document.getElementById('dw-inp-date')?.value||today();
+    const status = document.getElementById('dw-inp-status')?.value||'complete';
+    if(!val){ toast('Introduz um valor', 'w'); return; }
+    const dw=getDW();
+    dw.push({ type, house, region, val, date, status });
+    saveDW(dw);
+    ['dw-inp-house','dw-inp-region','dw-inp-val'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+    this.renderDW();
+    toast((type==='deposit'?'Depósito':'Levantamento')+' adicionado!','s');
+  },
+
+  deleteDW(i){ const dw=getDW(); dw.splice(i,1); saveDW(dw); this.renderDW(); toast('Removido','i'); },
+  dwTotals(){ toast('Exportar totais brevemente','i'); },
+
+  /* ── RESET ── */
+  resetAll(){
+    if(!confirm('Tens a certeza que queres apagar TODOS os dados do Bet Tracker?')) return;
+    localStorage.removeItem(BT_BETS_KEY);
+    localStorage.removeItem(BT_DW_KEY);
+    this.switchTab('dashboard');
+    toast('Bet Tracker reiniciado','w');
+  },
+};
+
+/* ── LOAD CHART.JS if not loaded ── */
+function loadChartJS(cb){
+  if(window.Chart){ cb(); return; }
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+  s.onload=cb;
+  document.head.appendChild(s);
+}
+
+/* ── PICKS INTEGRATION: Add to Bet Tracker button ── */
+function addPickToBetTracker(pick){
+  requireAuth('bettracker');
+  if(getSession()&&isTrialActive(getSession())){
+    BT.addBet({
+      match: pick.home+' vs '+pick.away,
+      market: pick.pick||pick.playerName||'—',
+      odds: parseFloat(pick.odds_best||pick.odds||0),
+      fair: parseFloat(pick.fair_odd||pick.fair||0),
+      stake: 200,
+      type: 'SIMPLES 1-Fold',
+      sport: pick.sport||'—',
+      house: pick.bookmaker||'',
+    });
+    setTimeout(()=>BT.switchTab('tracker'),200);
+  }
+}
+
+
 </script>
 </body>
 </html>
