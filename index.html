@@ -1064,6 +1064,128 @@ html { scroll-behavior: smooth; }
   .bt-analysis-grid { grid-template-columns: repeat(2,1fr); }
   .bt-body { padding: 16px; }
 }
+
+/* ══════════════════════════════════════════
+   SETTINGS MODAL — API + Contacts
+══════════════════════════════════════════ */
+.settings-modal-bg {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(0,0,0,.78); backdrop-filter: blur(12px);
+  display: flex; align-items: flex-end; justify-content: flex-end;
+  padding: 80px 20px 20px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.settings-modal-bg.open { opacity: 1; pointer-events: all; }
+
+.settings-modal {
+  background: #0d1117; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px; width: 320px;
+  overflow: hidden;
+  transform: translateY(12px) scale(.97); transition: transform .2s;
+  box-shadow: 0 24px 64px rgba(0,0,0,.6);
+}
+.settings-modal-bg.open .settings-modal { transform: translateY(0) scale(1); }
+
+/* Settings header */
+.sett-header {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sett-title { font-family: var(--font-head); font-size: .95rem; font-weight: 800; display: flex; align-items: center; gap: 7px; }
+.sett-close {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,.06); border: none;
+  color: rgba(255,255,255,.4); cursor: pointer; font-size: .8rem;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.sett-close:hover { background: rgba(255,255,255,.12); color: #edf1f4; }
+
+/* Section */
+.sett-section { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,.05); }
+.sett-section:last-child { border-bottom: none; }
+.sett-section-title {
+  font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  color: rgba(255,255,255,.3); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+}
+
+/* API section */
+.api-key-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.api-key-display {
+  flex: 1; padding: 8px 12px; background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  font-size: .78rem; font-family: 'Courier New', monospace; color: #c6ff00;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer;
+}
+.api-key-copy {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.5); cursor: pointer; font-size: .8rem;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.api-key-copy:hover { background: rgba(255,255,255,.1); color: #edf1f4; }
+.api-key-delete {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2);
+  color: rgba(239,68,68,.6); cursor: pointer; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.api-key-delete:hover { background: rgba(239,68,68,.18); color: #ef4444; }
+
+.api-input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.api-input {
+  flex: 1; padding: 9px 12px; background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  font-size: .84rem; color: #edf1f4; outline: none; font-family: var(--font-body);
+  transition: border-color .15s;
+}
+.api-input:focus { border-color: rgba(198,255,0,.4); }
+.api-input::placeholder { color: rgba(255,255,255,.2); font-size: .78rem; }
+.api-connect-btn {
+  padding: 9px 16px; border-radius: 8px; background: var(--clime,#c6ff00);
+  color: #000; border: none; font-family: var(--font-head); font-size: .85rem;
+  font-weight: 800; cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.api-connect-btn:hover { background: #b8f000; transform: translateY(-1px); }
+.api-connect-btn.connected { background: rgba(34,197,94,.15); color: #22c55e; border: 1px solid rgba(34,197,94,.3); font-family: var(--font-body); font-weight: 600; }
+
+.api-status-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 10px; background: rgba(255,255,255,.03);
+  border-radius: 8px; margin-bottom: 8px;
+}
+.api-status-left { display: flex; align-items: center; gap: 7px; font-size: .8rem; color: rgba(255,255,255,.6); }
+.api-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #ef4444; }
+.api-status-dot.ok { background: #22c55e; animation: nblink 2s infinite; }
+.api-status-right { font-size: .72rem; color: rgba(255,255,255,.3); }
+
+.api-note { font-size: .72rem; color: rgba(255,255,255,.3); line-height: 1.5; margin-top: 6px; }
+.api-note a { color: var(--clime,#c6ff00); text-decoration: none; }
+.api-note a:hover { text-decoration: underline; }
+
+/* Contacts */
+.contact-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: .84rem; color: rgba(255,255,255,.6);
+}
+.contact-item:last-child { border-bottom: none; }
+.contact-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; }
+.contact-label { font-size: .72rem; color: rgba(255,255,255,.3); display: block; }
+.contact-val { font-size: .84rem; color: rgba(255,255,255,.75); font-weight: 500; }
+.contact-link { color: var(--clime,#c6ff00); font-size: .8rem; font-weight: 600; text-decoration: none; margin-left: auto; flex-shrink: 0; }
+.contact-link:hover { text-decoration: underline; }
+
+/* Gear icon button */
+.settings-trigger {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.5); cursor: pointer; font-size: .95rem;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.settings-trigger:hover { background: rgba(255,255,255,.1); color: #edf1f4; border-color: rgba(255,255,255,.2); }
 </style>
 </head>
 <body style="background:#080a0d;color:#edf1f4">
@@ -1767,6 +1889,109 @@ html { scroll-behavior: smooth; }
 
 </div>
 </div><!-- /page-bettracker -->
+
+<!-- ═══════ SETTINGS MODAL (API + Contacts) ═══════ -->
+<div class="settings-modal-bg" id="settings-bg" onclick="handleSettingsBgClick(event)">
+  <div class="settings-modal">
+
+    <!-- Header -->
+    <div class="sett-header">
+      <div class="sett-title">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+        Configurações
+      </div>
+      <button class="sett-close" onclick="closeSettings()">✕</button>
+    </div>
+
+    <!-- API Section -->
+    <div class="sett-section">
+      <div class="sett-section-title">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+        🔑 Chave API
+      </div>
+
+      <!-- Status indicator -->
+      <div class="api-status-row">
+        <div class="api-status-left">
+          <span class="api-status-dot" id="api-status-dot"></span>
+          <span id="api-status-txt">Sem API configurada</span>
+        </div>
+        <span class="api-status-right" id="api-usage-txt"></span>
+      </div>
+
+      <!-- Saved key display (hidden until key is set) -->
+      <div id="api-key-saved-row" style="display:none">
+        <div class="api-key-row">
+          <div class="api-key-display" id="api-key-masked" title="Clica para copiar" onclick="SETT.copyKey()">—</div>
+          <button class="api-key-copy" onclick="SETT.copyKey()" title="Copiar">📋</button>
+          <button class="api-key-delete" onclick="SETT.deleteKey()" title="Remover API">🗑</button>
+        </div>
+      </div>
+
+      <!-- Input row (shown when no key) -->
+      <div id="api-key-input-row">
+        <div class="api-input-row">
+          <input class="api-input" id="api-key-input" type="text" placeholder="Cole a sua Chave API aqui..." autocomplete="off">
+          <button class="api-connect-btn" id="api-connect-btn" onclick="SETT.connectAPI()">⚡ Ligar</button>
+        </div>
+      </div>
+
+      <div class="api-note">
+        Grátis em <a href="https://the-odds-api.com" target="_blank">the-odds-api.com</a> — 500 req/mês.<br>
+        A API carrega dados reais de jogos, odds e resultados nos picks.
+      </div>
+    </div>
+
+    <!-- Contacts Section -->
+    <div class="sett-section">
+      <div class="sett-section-title">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        📞 Contactos &amp; Suporte
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon" style="background:rgba(37,211,102,.12)">📱</div>
+        <div>
+          <span class="contact-label">WhatsApp</span>
+          <span class="contact-val">840 330 540</span>
+        </div>
+        <a class="contact-link" href="https://wa.me/258840330540" target="_blank">Abrir →</a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon" style="background:rgba(37,211,102,.12)">📱</div>
+        <div>
+          <span class="contact-label">WhatsApp</span>
+          <span class="contact-val">877 480 775</span>
+        </div>
+        <a class="contact-link" href="https://wa.me/258877480775" target="_blank">Abrir →</a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon" style="background:rgba(198,255,0,.1)">✉️</div>
+        <div>
+          <span class="contact-label">Email</span>
+          <span class="contact-val" style="font-size:.78rem">dancamanuel@gmail.com</span>
+        </div>
+        <a class="contact-link" href="mailto:dancamanuel@gmail.com">Email →</a>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon" style="background:rgba(0,168,232,.1)">💬</div>
+        <div>
+          <span class="contact-label">Suporte 24/7</span>
+          <span class="contact-val" style="font-size:.78rem">840 330 540 &amp; 877 480 775</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Version -->
+    <div style="padding:10px 18px;text-align:center;font-size:.72rem;color:rgba(255,255,255,.18)">
+      Manuel Dança Sports Picks v2.0 · © 2026
+    </div>
+
+  </div>
+</div>
 
 <!-- ═══════ AUTH MODAL ═══════ -->
 <div class="auth-bg" id="auth-bg" onclick="handleAuthBgClick(event)">
@@ -3438,6 +3663,9 @@ function updateNav(){
       <span class="nav-trial-badge"><span class="trial-dot"></span>${days} day${days!==1?'s':''} free</span>
       <button class="lbtn lbtn-sm lbtn-outline" onclick="requireAuth('picks')">My Picks</button>
       <button class="lbtn lbtn-sm" style="background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.25);color:#c6ff00;border-radius:50px;padding:7px 16px;font-size:.85rem;font-weight:600" onclick="requireAuth('bettracker')">📊 Tracker</button>
+      <button class="settings-trigger" onclick="openSettings()" title="Configurações · API · Contactos">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
       <button class="lbtn lbtn-sm lbtn-ghost" onclick="logout()">Sign Out</button>
     `;
   } else {
@@ -4194,6 +4422,120 @@ function addPickToBetTracker(pick){
   }
 }
 
+
+
+/* ═══════════════════════════════════════════
+   SETTINGS — API + Contacts
+═══════════════════════════════════════════ */
+const API_KEY_STORAGE = 'md_odds_api_key';
+const API_USAGE_KEY   = 'md_api_usage';
+
+function openSettings(){
+  SETT.refresh();
+  document.getElementById('settings-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSettings(){
+  document.getElementById('settings-bg').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleSettingsBgClick(e){
+  if(e.target.id==='settings-bg') closeSettings();
+}
+
+const SETT = {
+  refresh(){
+    const key = localStorage.getItem(API_KEY_STORAGE) || '';
+    const dot = document.getElementById('api-status-dot');
+    const txt = document.getElementById('api-status-txt');
+    const usageTxt = document.getElementById('api-usage-txt');
+    const savedRow = document.getElementById('api-key-saved-row');
+    const inputRow = document.getElementById('api-key-input-row');
+    const masked  = document.getElementById('api-key-masked');
+
+    if(key){
+      if(dot) { dot.classList.add('ok'); }
+      if(txt) txt.textContent = 'Odds API ✓ (direct)';
+      const usage = parseInt(localStorage.getItem(API_USAGE_KEY)||'0');
+      if(usageTxt) usageTxt.textContent = usage+'/500 req';
+      // Show masked key
+      const m = key.length > 12 ? key.slice(0,6)+'...'+key.slice(-4) : key;
+      if(masked) masked.textContent = key; // show full key (user can copy)
+      if(savedRow) savedRow.style.display = '';
+      if(inputRow) inputRow.style.display = 'none';
+    } else {
+      if(dot) dot.classList.remove('ok');
+      if(txt) txt.textContent = 'Sem API configurada';
+      if(usageTxt) usageTxt.textContent = '';
+      if(savedRow) savedRow.style.display = 'none';
+      if(inputRow) inputRow.style.display = '';
+    }
+  },
+
+  connectAPI(){
+    const inp = document.getElementById('api-key-input');
+    const key = inp ? inp.value.trim() : '';
+    if(!key || key.length < 10){
+      toast('Introduz uma Chave API válida', 'w');
+      return;
+    }
+    const btn = document.getElementById('api-connect-btn');
+    if(btn){ btn.disabled=true; btn.textContent='A ligar...'; }
+    // Validate the key with a quick ping to the API
+    fetch(`https://api.the-odds-api.com/v4/sports/?apiKey=${key}`)
+      .then(r=>{
+        const remaining = r.headers.get('x-requests-remaining') || '—';
+        const used      = r.headers.get('x-requests-used') || '0';
+        if(r.ok){
+          localStorage.setItem(API_KEY_STORAGE, key);
+          localStorage.setItem(API_USAGE_KEY, used);
+          toast('API ligada com sucesso! ⚡', 's');
+          this.refresh();
+          // Trigger picks reload with real data if on picks page
+          if(window._currentPage==='picks' && typeof PM!=='undefined'){
+            PM.loadPreview();
+          }
+        } else {
+          toast('Chave API inválida. Verifica em the-odds-api.com', 'e');
+        }
+      })
+      .catch(()=>{
+        // If CORS or network issue, save anyway (can't validate in browser)
+        localStorage.setItem(API_KEY_STORAGE, key);
+        toast('Chave guardada! Será usada para carregar dados reais.', 's');
+        this.refresh();
+      })
+      .finally(()=>{
+        if(btn){ btn.disabled=false; btn.textContent='⚡ Ligar'; }
+      });
+  },
+
+  copyKey(){
+    const key = localStorage.getItem(API_KEY_STORAGE) || '';
+    if(!key) return;
+    navigator.clipboard?.writeText(key).then(()=>toast('Chave copiada!','s')).catch(()=>{});
+  },
+
+  deleteKey(){
+    if(!confirm('Remover a Chave API?')) return;
+    localStorage.removeItem(API_KEY_STORAGE);
+    localStorage.removeItem(API_USAGE_KEY);
+    const inp = document.getElementById('api-key-input');
+    if(inp) inp.value = '';
+    this.refresh();
+    toast('API removida','i');
+  },
+
+  getKey(){
+    return localStorage.getItem(API_KEY_STORAGE) || null;
+  },
+};
+
+// Allow pressing Enter in API input
+document.addEventListener('DOMContentLoaded', ()=>{
+  const inp = document.getElementById('api-key-input');
+  if(inp) inp.addEventListener('keydown', e=>{ if(e.key==='Enter') SETT.connectAPI(); });
+});
 
 </script>
 </body>
