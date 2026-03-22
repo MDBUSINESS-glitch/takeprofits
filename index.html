@@ -4547,8 +4547,10 @@ const SETT = {
     if(key){
       if(dot) { dot.classList.add('ok'); }
       if(txt) txt.textContent = 'Odds API ✓ (direct)';
-      const usage = parseInt(localStorage.getItem(API_USAGE_KEY)||'0');
-      if(usageTxt) usageTxt.textContent = usage+'/500 req';
+      const usage2 = parseInt(localStorage.getItem(API_USAGE_KEY)||'0');
+      const rem2   = localStorage.getItem('md_api_remaining');
+      const remTxt = rem2 ? ` · ${rem2} restantes` : '';
+      if(usageTxt) usageTxt.textContent = `${usage2}/500 req${remTxt}`;
       // Show masked key
       const m = key.length > 12 ? key.slice(0,6)+'...'+key.slice(-4) : key;
       if(masked) masked.textContent = key; // show full key (user can copy)
@@ -4741,18 +4743,38 @@ const RealData = {
     const key = SETT.getKey(); if(!key) return null;
     const cacheKey = 'sport_' + cfg.key;
     const cached = this._cache[cacheKey];
-    if(cached && Date.now()-cached.ts < 8*60*1000) return cached.data; // 8min cache
+    if(cached && Date.now()-cached.ts < 30*60*1000) return cached.data; // 30min cache to save credits
+
     try {
-      const url = `${ODDS_API_BASE}/sports/${cfg.key}/odds/?apiKey=${key}&regions=eu,uk,us&markets=${cfg.markets}&oddsFormat=decimal&dateFormat=iso`;
+      // Only request eu+uk regions (saves bandwidth, more bookmakers for Europe)
+      const regions = cfg.sport === 'Soccer' ? 'eu,uk' : 'eu,uk,us';
+      const url = `${ODDS_API_BASE}/sports/${cfg.key}/odds/?apiKey=${key}&regions=${regions}&markets=${cfg.markets}&oddsFormat=decimal&dateFormat=iso`;
       const r = await fetch(url);
-      const used = r.headers.get('x-requests-used');
-      if(used) localStorage.setItem(API_USAGE_KEY, used);
-      if(r.status === 401) { toast('API key inválida ⚙️','e'); return null; }
-      if(!r.ok) return null;
+
+      // Track API usage
+      const used     = r.headers.get('x-requests-used');
+      const remaining= r.headers.get('x-requests-remaining');
+      if(used)       localStorage.setItem(API_USAGE_KEY, used);
+      if(remaining)  localStorage.setItem('md_api_remaining', remaining);
+
+      if(r.status === 401) {
+        toast('❌ API key inválida ou créditos esgotados. Verifica em ⚙️ Configurações','e');
+        return { _error: 401 };
+      }
+      if(r.status === 422) return { _error: 422 }; // sport not available on this plan
+      if(r.status === 429) {
+        toast('❌ Rate limit — aguarda 1 minuto e tenta novamente','w');
+        return { _error: 429 };
+      }
+      if(!r.ok) return { _error: r.status };
+
       const data = await r.json();
       this._cache[cacheKey] = { data, ts: Date.now() };
       return data;
-    } catch(e) { return null; }
+    } catch(e) {
+      console.error('[MD] fetch error for', cfg.key, e.message);
+      return { _error: 'network', _msg: e.message };
+    }
   },
 
   /* ── Fetch player props for a specific event ── */
@@ -5016,21 +5038,24 @@ const RealData = {
   /* ── Main loader ── */
   async loadAllSports(forceShowAll) {
     const apiKey = SETT.getKey();
-    if(!apiKey) return;
+    if(!apiKey) {
+      const g = document.getElementById('picks-grid');
+      if(g) g.innerHTML = '<div class="empty-wrap"><span class="empty-ico">⚙️</span><div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:10px">API não configurada</div><button onclick="openSettings()" style="padding:10px 24px;border-radius:50px;background:var(--lime);color:#000;border:none;font-family:Syne,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer">⚙️ Configurar API</button></div>';
+      return;
+    }
+    const remaining = parseInt(localStorage.getItem('md_api_remaining') || '-1');
+    const usedSoFar = parseInt(localStorage.getItem(API_USAGE_KEY) || '0');
+    if(remaining === 0) {
+      const g = document.getElementById('picks-grid');
+      if(g) g.innerHTML = '<div class="empty-wrap"><span class="empty-ico">🔴</span><div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Créditos API esgotados (' + usedSoFar + '/500)</div><div style="font-size:.84rem;color:var(--t3);max-width:380px;margin:0 auto;line-height:1.6">Aguarda o próximo mês ou actualiza o plano.</div><button onclick="RealData._cache={};localStorage.removeItem(\'md_api_remaining\');RealData.loadAllSports()" style="margin-top:14px;padding:9px 20px;border-radius:50px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:.84rem;cursor:pointer;font-weight:600">Tentar mesmo assim</button></div>';
+      toast('Créditos esgotados.','e'); return;
+    }
     if(this._loading) return;
     if(forceShowAll) this._lowThreshold = true;
     this._loading = true;
-
+    const remDisp = remaining >= 0 ? ' · ' + remaining + ' créditos' : '';
     const grid = document.getElementById('picks-grid');
-    if(grid) grid.innerHTML = `<div class="empty-wrap"><span class="empty-ico" style="display:inline-block;animation:spin 1s linear infinite">⚡</span><div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">A carregar picks reais...</div><div style="font-size:.76rem;color:var(--t3);margin-top:4px">Pinnacle · Bet365 · Unibet · 1xBet</div></div>`;
-    if(!document.getElementById('spin-style')){
-      const s=document.createElement('style');s.id='spin-style';
-      s.textContent='@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}';
-      document.head.appendChild(s);
-    }
-
-    let allPicks = [];
-    const gamesWithProps = [];
+    if(grid) grid.innerHTML = '<div class="empty-wrap"><span class="empty-ico" style="display:inline-block;animation:spin 1s linear infinite">⚡</span><div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">A carregar picks reais...</div><div style="font-size:.72rem;color:var(--t3);margin-top:4px">Pinnacle · Bet365 · Unibet' + remDisp + '</div></div>';
     const statusLog = [];
 
     // Helper: update loading text in grid
@@ -5044,7 +5069,21 @@ const RealData = {
       try {
         updateStatus(`A carregar ${cfg.label}...`);
         const games = await this.fetchSportOdds(cfg);
-        const count = games?.length || 0;
+        // Check for API errors
+        if(games?._error) {
+          const errMsg = games._error === 401 ? '⚠️ key inválida' :
+                         games._error === 422 ? '(plano não inclui)' :
+                         games._error === 429 ? '⚠️ rate limit' :
+                         games._error === 'network' ? '⚠️ rede' :
+                         `err ${games._error}`;
+          statusLog.push(`${cfg.label}: ${errMsg}`);
+          console.warn(`[MD] ${cfg.label}: error ${games._error}`);
+          // If 401 (key invalid), abort all remaining sports
+          if(games._error === 401) { this._loading = false; return; }
+          continue;
+        }
+
+        const count = Array.isArray(games) ? games.length : 0;
         let teamPicks = 0;
         if(count > 0) {
           games.forEach(g => {
@@ -5054,10 +5093,10 @@ const RealData = {
             if(cfg.propMarkets) gamesWithProps.push({ game: g, cfg });
           });
         }
-        statusLog.push(`${cfg.sport}: ${count} jogos / ${teamPicks} picks`);
+        statusLog.push(`${cfg.label}: ${count} jogos / ${teamPicks} picks`);
         console.log(`[MD] ${cfg.label}: ${count} games → ${teamPicks} team picks`);
       } catch(e) {
-        statusLog.push(`${cfg.sport}: erro`);
+        statusLog.push(`${cfg.label}: erro (${e.message})`);
         console.warn('[MD] Sport error:', cfg.key, e);
       }
     }
