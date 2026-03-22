@@ -4845,13 +4845,20 @@ const RealData = {
       });
 
       // Only show the most +EV side (prevents showing contradictory Over+Under)
-      const minEV = RealData._lowThreshold ? -15 : 1.0;
-      const positives = withEV.filter(o => o.ev >= minEV && o.ev <= 25);
+      // Always include all picks — use EV as a sorting/badge signal, not a filter
+      // This ensures picks always appear; +EV shown in green, rest in grey
+      const minEV = RealData._lowThreshold ? -50 : -10; // show all with reasonable odds
+      const positives = withEV.filter(o => o.ev >= minEV && o.ev <= 30);
       if(!positives.length) return;
 
       // For 2-outcome markets (totals, h2h without draw), only show best EV side
-      const isBinary = !RealData._lowThreshold && ['totals','alternate_totals','spreads','alternate_spreads'].includes(mktKey);
-      const toShow = (isBinary && positives.length > 1) ? [positives.reduce((a,b) => a.ev > b.ev ? a : b)] : positives;
+      // Show both sides of spreads (Team A -1 AND Team B +1 are separate picks)
+      // Only collapse Over/Under same-point totals to best side
+      const isSamePtTotals = !RealData._lowThreshold &&
+        ['totals','alternate_totals'].includes(mktKey) &&
+        positives.length > 1 &&
+        new Set(positives.map(o => String(o.point))).size === 1;
+      const toShow = isSamePtTotals ? [positives.reduce((a,b) => a.ev > b.ev ? a : b)] : positives;
 
       toShow.forEach(o => {
         const { odds, bookmaker, name: outName, point, fp: fairProb, fairOdds, ev } = o;
@@ -4965,8 +4972,8 @@ const RealData = {
       [over, under].forEach(side => {
         const fp = (1/side.odds) / or * 100;
         const ev = ((fp/100) * (side.odds-1) - (1-fp/100)) * 100;
-        const minEVprop = RealData._lowThreshold ? -15 : 1.0;
-        if(ev < minEVprop || ev > 25) return;
+        const minEVprop = RealData._lowThreshold ? -50 : -10;
+        if(ev < minEVprop || ev > 30) return;
 
         // In normal mode only show best EV side; in lowThreshold show both sides
         if(!RealData._lowThreshold) {
@@ -5111,8 +5118,11 @@ const RealData = {
     const props = deduped.filter(p => p.isPlayerProp).length;
     const team  = deduped.length - props;
     const negEV = deduped.filter(p => parseFloat(p.ev_pct) < 0).length;
-    const mode  = this._lowThreshold ? (negEV > 0 ? ` · ${negEV} com EV negativo incluídos` : '') : '';
-    toast(`✅ ${deduped.length} picks${mode}`, 's');
+    const positEV = deduped.filter(p => parseFloat(p.ev_pct) >= 1.0).length;
+    const negEV2  = deduped.filter(p => parseFloat(p.ev_pct) < 0).length;
+    const evInfo  = positEV > 0 ? ` · ${positEV} com EV+` : '';
+    toast(`✅ ${deduped.length} picks${evInfo}`, 's');
+    this._lowThreshold = false;
     // Reset low threshold after load so next refresh is normal
     this._lowThreshold = false;
   },
