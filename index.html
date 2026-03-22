@@ -3842,16 +3842,15 @@ const BT = {
     set('bttr-wr',      s.wr.toFixed(0)+'%');
     set('bttr-wager',   fmzn2(s.totalStake));
     set('bttr-avgodds', s.avgOdds.toFixed(2)||'—');
-    // Best/Worst
-    const profits = bets.map(b=>{ const sk=parseFloat(b.stake||0); const od=parseFloat(b.odds||1); return b.status==='won'?sk*(od-1):b.status==='lost'?-sk:0; }).filter((_,i)=>bets[i].status!=='pending');
+    const profits = bets.map((b,i)=>{ const sk=parseFloat(b.stake||0); const od=parseFloat(b.odds||1); return b.status==='won'?sk*(od-1):b.status==='lost'?-sk:0; }).filter((v,i)=>bets[i].status!=='pending');
     const best = profits.length?Math.max(...profits):0;
     const worst= profits.length?Math.min(...profits):0;
     set('bttr-best',   'MZN +'+best.toFixed(0));
     set('bttr-worst',  'MZN '+worst.toFixed(0));
     set('bttr-period', _trackerPeriod==='day'?'1d':_trackerPeriod==='week'?'7d':'30d');
-    this.renderProfitChart('bt-tracker-chart', bets, _trackerPeriod);
-    this.renderHistory();
+    this.renderHistory();   // always render history first (fast)
     this.updateCapital();
+    this.renderProfitChart('bt-tracker-chart', bets, _trackerPeriod); // chart last
   },
 
   renderHistory(){
@@ -3915,14 +3914,20 @@ const BT = {
     const bets = getBets();
     bets.push({ match, market, odds, fair, stake, score, status, type, sport, house, date: new Date().toISOString() });
     saveBets(bets);
+    // Clear form fields
     if(!fromPick){
       ['bt-inp-match','bt-inp-market','bt-inp-odds','bt-inp-fair','bt-inp-stake','bt-inp-score'].forEach(id=>{
         const el=document.getElementById(id); if(el) el.value='';
       });
     }
-    this.renderTracker();
-    this.renderDashboard();
-    toast(fromPick ? 'Aposta adicionada ao Bet Tracker ✓':'Aposta adicionada!','s');
+    // Always switch to Tracker tab so user sees the new entry immediately
+    this.switchTab('tracker');
+    // Scroll the table into view
+    setTimeout(()=>{
+      const tbody=document.getElementById('bt-history-tbody');
+      if(tbody) tbody.closest('.bt-table-wrap')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }, 150);
+    toast(fromPick ? 'Aposta adicionada ao Bet Tracker ✓' : 'Aposta adicionada! ✓', 's');
   },
 
   updateStatus(i, newStatus){
