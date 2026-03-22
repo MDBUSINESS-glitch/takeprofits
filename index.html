@@ -20,13 +20,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 ::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-thumb{background:#1d2d38;border-radius:3px}
 .module-wrap{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 /* CAT NAV */
-.cat-nav{display:flex;gap:5px;padding:8px 14px;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;align-items:center;background:var(--bg)}
+/* ROW 1: MARKET CATEGORIES */
+.cat-nav{display:flex;gap:5px;padding:7px 14px;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;align-items:center;background:var(--bg)}
 .cat-nav::-webkit-scrollbar{height:0}
-.cat-btn{padding:5px 13px;border-radius:50px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .13s;border:1px solid var(--border);background:var(--bg-card2);color:var(--t3);user-select:none}
+/* ROW 2: SPORT FILTERS */
+.sport-nav{display:flex;gap:5px;padding:5px 14px 6px;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;align-items:center;background:var(--bg-card);min-height:32px}
+.sport-nav::-webkit-scrollbar{height:0}
+.sport-nav-lbl{font-size:.57rem;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.6px;flex-shrink:0;padding-right:4px;white-space:nowrap}
+/* Common pill styles */
+.cat-btn{padding:4px 12px;border-radius:50px;font-size:.7rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .13s;border:1px solid var(--border);background:var(--bg-card2);color:var(--t3);user-select:none}
 .cat-btn:hover{color:var(--t2);border-color:rgba(255,255,255,.12)}
 .cat-btn.active{background:var(--lime);color:#0a0f14;border-color:var(--lime);font-weight:700}
 .cat-btn.fire{color:var(--orange);border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06)}
 .cat-btn.fire.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+/* Sport pills - slightly different style */
+.sport-btn{padding:3px 10px;border-radius:50px;font-size:.67rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .13s;border:1px solid var(--border);background:transparent;color:var(--t3);user-select:none}
+.sport-btn:hover{color:var(--t2);border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+.sport-btn.active{background:rgba(0,168,232,.15);color:var(--blue);border-color:rgba(0,168,232,.4);font-weight:700}
 .cnt{display:inline-flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);border-radius:10px;padding:0 5px;font-size:.57rem;margin-left:3px;min-width:16px}
 /* STATS BAR */
 .stats-bar{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;background:var(--bg-card)}
@@ -197,15 +207,29 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .mb-prop-nhl{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.28);color:var(--purple)}
 .mb-prop-mlb{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.28);color:var(--gold)}
 
+
+/* Empty state action buttons */
+.empty-wrap .btn{font-family:'Inter',sans-serif}
+.empty-wrap code{font-family:monospace}
+
 </style>
 </head>
 <body>
 <div class="module-wrap">
   <div class="cat-nav" id="cat-nav"></div>
+  <div class="sport-nav" id="sport-nav"></div>
   <div class="stats-bar" id="stats-bar"></div>
   <div style="flex:1;overflow-y:auto">
     <div class="picks-grid" id="picks-grid">
-      <div class="empty-wrap"><span class="empty-ico"></span>No picks loaded</div>
+      <div class="empty-wrap">
+        <span class="empty-ico">&#x26A1;</span>
+        <strong style="color:var(--t2);font-size:.9rem">No picks loaded</strong>
+        <p style="margin-top:8px;font-size:.74rem;color:var(--t3);max-width:320px;margin-left:auto;margin-right:auto;line-height:1.65">
+          Call <code style="background:rgba(255,255,255,.07);padding:1px 6px;border-radius:4px;color:var(--lime)">PM.render(picks)</code> to load data.<br>
+          Form dots use real match logs from <strong style="color:var(--t2)">fbref.com</strong> / <strong style="color:var(--t2)">sofascore.com</strong><br>
+          when <code style="background:rgba(255,255,255,.07);padding:1px 6px;border-radius:4px;color:var(--blue)">form_last10</code> array is provided in each pick.
+        </p>
+      </div>
     </div>
   </div>
   <div class="action-bar">
@@ -445,7 +469,21 @@ function _soccerStats(pick, mkt, pt, isO, sk) {
   else if (mkt==='team_cards')  { avg=lg.cardsT.toFixed(1); hit=0.55; lastLbl='Team Cards'; bases=[2,1,2,1,2,2,1,2,1,2]; }
   else { hit=parseFloat(pick.prob_real||50)/100; lastLbl='Hit'; bases=[1,0,1,1,0,1,1,0,1,1]; }
 
-  const dots=genDots(pick.game||'',10,hit,bases);
+  // Use real form_last10 data if provided (from fbref.com / sofascore.com)
+  let dots;
+  if (pick.form_last10 && Array.isArray(pick.form_last10) && pick.form_last10.length >= 5) {
+    const realVals = pick.form_last10.slice(-10);
+    const lineVal  = pick.point != null ? Math.abs(pick.point) : null;
+    dots = realVals.map(v => ({
+      hit: lineVal != null ? (isO ? v >= lineVal : v <= lineVal) : v > 0,
+      val: typeof v === 'number' ? Math.round(v * 10) / 10 : 0,
+    }));
+    // Recalculate hit rate from real data
+    hit  = dots.filter(d => d.hit).length / dots.length;
+    avg  = avg || (realVals.reduce((s,v)=>s+v,0)/realVals.length).toFixed(1);
+  } else {
+    dots = genDots(pick.game||'', 10, hit, bases||[1,0,1,1,0,1,1,0,1,1]);
+  }
   return {avg, hit, lastLbl, dots, hits:dots.filter(d=>d.hit).length};
 }
 
@@ -466,7 +504,19 @@ function _nonSoccerStats(pick, mkt, pt, isO, sport, sk) {
     hit=Math.max(0.35,parseFloat(pick.prob_real||50)/100); lastLbl='Win'; bases=[1,0,1,1,0,1,1,1,0,1];
   }
 
-  const dots=genDots(pick.game||'',10,hit,bases);
+  let dots;
+  if (pick.form_last10 && Array.isArray(pick.form_last10) && pick.form_last10.length >= 5) {
+    const realVals = pick.form_last10.slice(-10);
+    const lineVal  = pick.point != null ? Math.abs(pick.point) : null;
+    dots = realVals.map(v => ({
+      hit: lineVal != null ? (isO ? v >= lineVal : v <= lineVal) : v > 0,
+      val: typeof v === 'number' ? Math.round(v * 10) / 10 : 0,
+    }));
+    hit = dots.filter(d => d.hit).length / dots.length;
+    avg = avg || (realVals.reduce((s,v)=>s+v,0)/realVals.length).toFixed(1);
+  } else {
+    dots = genDots(pick.game||'', 10, hit, bases||[1,0,1,1,0,1,1,0,1,1]);
+  }
   return {avg, hit, lastLbl, dots, hits:dots.filter(d=>d.hit).length};
 }
 
@@ -657,6 +707,28 @@ function calcWeightedAvgScore(pick, lg) {
   else if (mkt === 'team_shots_on_target') { leagueAvg = lg.shotsT; label = 'team SoT'; }
   else if (mkt === 'first_half_totals')    { leagueAvg = +(lg.goals * 0.40).toFixed(1); label = 'HT goals'; }
   else if (mkt === 'team_totals')          { leagueAvg = +(lg.goals / 2).toFixed(1); label = 'team goals'; }
+  // If real form_last10 is present, compute weighted avg from actual data
+  // (3x last 3 games, 2x games 4-6, 1x games 7-10 — per the 7-filter guide)
+  if (pick.form_last10 && Array.isArray(pick.form_last10) && pick.form_last10.length >= 5) {
+    const vals = pick.form_last10.slice(-10);
+    const n = vals.length;
+    let wSum = 0, wTot = 0;
+    for (let i = 0; i < n; i++) {
+      const recency = n - i; // most recent = highest index
+      const w = recency >= n - 2 ? 3 : recency >= n - 5 ? 2 : 1;
+      wSum += vals[i] * w; wTot += w;
+    }
+    const wAvg   = wTot > 0 ? wSum / wTot : 0;
+    const sAvg   = vals.reduce((a,b) => a+b, 0) / n;
+    const trend  = wAvg > sAvg * 1.05 ? 'FAVORABLE (trending up)' : wAvg < sAvg * 0.95 ? 'UNFAVORABLE (trending down)' : 'STABLE';
+    const lineV  = pt || (leagueAvg || 0);
+    const margin = wAvg - lineV;
+    const score  = isO
+      ? (margin > 2 ? 92 : margin > 0.5 ? 82 : margin > 0 ? 70 : margin > -1 ? 55 : 38)
+      : (margin < -2 ? 92 : margin < -0.5 ? 82 : margin < 0 ? 70 : margin < 1 ? 55 : 38);
+    return { score, label: 'Weighted Avg ' + wAvg.toFixed(1) + (leagueAvg?' (lg:'+leagueAvg+')':''), detail: (isO?'Over':'Under')+' '+lineV+' — wAvg '+wAvg.toFixed(1)+' | '+trend, trend };
+  }
+
   if (leagueAvg == null) return { score: 65, label: 'N/A', detail: 'League avg N/A', trend: 'stable' };
   var margin = leagueAvg - (pt || leagueAvg * 0.9);
   var score, trend;
@@ -692,15 +764,28 @@ function calcHitRate(pick, lg) {
   else if (mkt === 'draw_no_bet')   hr = Math.max(45, parseFloat(pick.prob_real || 55));
   else if (mkt === 'h2h')           hr = parseFloat(pick.prob_real || 50);
   else hr = 52;
+  // Override hit rate with real data from fbref.com / sofascore.com match logs
+  if (pick.form_last10 && Array.isArray(pick.form_last10) && pick.form_last10.length >= 5) {
+    var vals    = pick.form_last10.slice(-10);
+    var lineVal = pick.point != null ? Math.abs(pick.point) : null;
+    var isO2    = (pick.pick||'').toLowerCase().indexOf('over') >= 0;
+    if (lineVal != null) {
+      var hits = vals.filter(function(v){ return isO2 ? v >= lineVal : v <= lineVal; }).length;
+      hr = Math.round((hits / vals.length) * 100);
+    }
+  }
   var thresholds = {
     shot: 65, shot_t: 65, corner: 62, corner_t: 60,
     card: 60, card_t: 58, ou15: 72, ou25: 68, ou35: 65,
     btts: 60, ht: 65, tt: 62, dnb: 55, dc: 72, ah: 52, '1x2': 50,
+    pp_pts: 55, pp_reb: 60, pp_ast: 58, pp_3pm: 55, pp_pra: 55,
+    pp_def: 60, pp_nfl: 55, pp_nhl: 58, pp_mlb: 55,
   };
   var cat = getMktCat(mkt, pick.pick, pick.point);
   var minHR = thresholds[cat] || 55;
   var score = hr >= minHR + 10 ? 90 : hr >= minHR + 5 ? 78 : hr >= minHR ? 65 : hr >= minHR - 5 ? 50 : 35;
-  return { score: score, label: hr.toFixed(0) + '% hit rate', detail: 'Min for market: ' + minHR + '%', passes: hr >= minHR, hr: hr };
+  var isRealData = !!(pick.form_last10 && pick.form_last10.length >= 5);
+  return { score: score, label: hr.toFixed(0) + '% hit rate' + (isRealData?' (real data)':' (est.)'), detail: 'Min for market: ' + minHR + '%', passes: hr >= minHR, hr: hr };
 }
 
 function calcTacticalScore(pick, lg) {
@@ -1072,6 +1157,15 @@ function buildPropDots(playerName, mktKey, line, projection, sport) {
     default: [12,15,8,18,10,14,20,9,16,11],
   };
   const baseVals = bases[mktKey] || bases.default;
+  // Use real form_last10 if provided via prop pick data
+  if (Array.isArray(projection) && projection.length >= 5) {
+    // projection passed as array = real last10 values from sofascore/fbref
+    const realVals = projection.slice(-10);
+    return realVals.map(v => ({
+      hit: line != null ? (true ? v >= line : v <= line) : v > 0, // dir inferred from pick
+      val: Math.round(v * 10) / 10,
+    }));
+  }
   let seed = 0;
   for (let i=0;i<playerName.length;i++) seed+=playerName.charCodeAt(i)*(i+1);
   return Array.from({length:10},(_,i)=>{
@@ -1273,44 +1367,66 @@ function countCats(){
 }
 
 function renderCatNav(){
-  const counts=countCats();
-  const nav=document.getElementById('cat-nav');if(!nav)return;
-  const hasSoccer=['soccer','nba','nhl','nfl','mlb','tennis','mma'].some(s=>counts[s]>0);
-  const vis=['all'];
-  if(counts.value) vis.push('value');
-  // Soccer 15 markets
-  SOCCER_CATS_ORDER.forEach(c=>{if(c!=='value'&&counts[c]) vis.push(c);});
-  // Non-soccer market cats
-  ['spread','total','teamtot','ml','puckline','runline'].forEach(c=>{if(counts[c]) vis.push(c);});
-  // Player Props categories
-  if(counts.props) vis.push('props');
-  ['pp_pts','pp_reb','pp_ast','pp_3pm','pp_pra','pp_def','pp_nfl','pp_nhl','pp_mlb'].forEach(c=>{if(counts[c]) vis.push(c);});
-  // Sport group buttons (only if multiple sports)
-  const sportCounts=['soccer','nba','nhl','nfl','mlb','tennis','mma'].filter(s=>counts[s]);
-  if(sportCounts.length>1) sportCounts.forEach(s=>{if(counts[s]<PICKS.length) vis.push(s);});
+  const counts = countCats();
 
-  nav.innerHTML=vis.map(id=>{
-    const active=ACTIVE_CAT===id;
-    return `<button class="cat-btn ${id==='value'?'fire':''} ${active?'active':''}" onclick="PM.setCat('${id}')">
-      ${CAT_LBL[id]||id}<span class="cnt">${counts[id]||0}</span>
-    </button>`;
-  }).join('');
+  /* --- ROW 1: Market categories (never shows sport group buttons) --- */
+  const nav = document.getElementById('cat-nav');
+  if (nav) {
+    const mktVis = ['all'];
+    if (counts.value) mktVis.push('value');
+
+    // Soccer 15 markets
+    SOCCER_CATS_ORDER.forEach(c => { if (c !== 'value' && counts[c]) mktVis.push(c); });
+
+    // Non-soccer team market cats (only if present AND not a player prop)
+    ['spread','total','teamtot','ml','puckline','runline'].forEach(c => { if (counts[c]) mktVis.push(c); });
+
+    // Player Props bucket + sub-cats
+    if (counts.props) mktVis.push('props');
+    ['pp_pts','pp_reb','pp_ast','pp_3pm','pp_pra','pp_def','pp_nfl','pp_nhl','pp_mlb'].forEach(c => { if (counts[c]) mktVis.push(c); });
+
+    nav.innerHTML = mktVis.map(id => {
+      const active = ACTIVE_CAT === id;
+      const isFire = id === 'value';
+      return `<button class="cat-btn ${isFire?'fire':''} ${active?'active':''}" onclick="PM.setCat('${id}')">${CAT_LBL[id]||id}<span class="cnt">${counts[id]||0}</span></button>`;
+    }).join('');
+  }
+
+  /* --- ROW 2: Sport filter pills (separate row, never mixes with markets) --- */
+  const sNav = document.getElementById('sport-nav');
+  if (sNav) {
+    const sports = ['soccer','nba','nhl','nfl','mlb','tennis','mma'].filter(s => counts[s]);
+    if (sports.length <= 1) {
+      sNav.style.display = 'none'; // Hide if only 1 sport - no need for filter
+    } else {
+      sNav.style.display = '';
+      const activeSport = ['soccer','nba','nhl','nfl','mlb','tennis','mma'].find(s => ACTIVE_CAT === s) || '';
+      const allSportsActive = !activeSport;
+      sNav.innerHTML =
+        '<span class="sport-nav-lbl">Sport:</span>' +
+        `<button class="sport-btn ${allSportsActive?'active':''}" onclick="PM.setSport('')">All<span class="cnt">${PICKS.length}</span></button>` +
+        sports.map(s => `<button class="sport-btn ${ACTIVE_CAT===s?'active':''}" onclick="PM.setSport('${s}')">${CAT_LBL[s]||s}<span class="cnt">${counts[s]}</span></button>`).join('');
+    }
+  }
 }
 
 function renderStatsBar(){
   const bar=document.getElementById('stats-bar');if(!bar)return;
   const vis=filterPicks(ACTIVE_CAT);if(!vis.length){bar.innerHTML='';return;}
+  if(!vis.length){bar.style.display='none';return;}
+  bar.style.display='';
   const avgEV=vis.reduce((s,p)=>s+parseFloat(p.ev_pct||p.ev||0),0)/vis.length;
   const avgOdd=vis.reduce((s,p)=>s+parseFloat(p.odds_best||p.odds||0),0)/vis.length;
   const sports=[...new Set(vis.map(p=>getSportCat(p.sportKey||p.sport||'')))].length;
   const mkts=[...new Set(vis.map(p=>getMktCat(p.mktKey||'h2h',p.pick,p.point)))].length;
   const highConf=(typeof run7Filters==='function')?vis.filter(function(p){var a=run7Filters(p);return a.passCount>=5;}).length:0;
-    bar.innerHTML=`
+  const realDataCount = vis.filter(p => p.form_last10 && p.form_last10.length >= 5).length;
+  bar.innerHTML=`
     <div class="sbar-cell"><span class="sbar-v">${vis.length}</span><div class="sbar-l">Picks</div></div>
     <div class="sbar-cell"><span class="sbar-v" style="color:var(--green)">${avgEV>=0?'+':''}${avgEV.toFixed(1)}%</span><div class="sbar-l">Avg EV</div></div>
     <div class="sbar-cell"><span class="sbar-v">${avgOdd.toFixed(2)}</span><div class="sbar-l">Avg Odds</div></div>
-    <div class="sbar-cell"><span class="sbar-v" style="color:var(--blue)">${sports}</span><div class="sbar-l">Sports</div></div>
-    <div class="sbar-cell"><span class="sbar-v" style="color:var(--orange)">${mkts}</span><div class="sbar-l">Markets</div></div>`;
+    <div class="sbar-cell"><span class="sbar-v" style="color:${highConf>=vis.length*0.5?'var(--lime)':'var(--yellow)'}">${highConf}</span><div class="sbar-l">5+ Filters</div></div>
+    <div class="sbar-cell"><span class="sbar-v" style="color:${realDataCount>0?'var(--blue)':'var(--t4)'}">${realDataCount}/${vis.length}</span><div class="sbar-l">Real Data</div></div>`;
 }
 
 function filterPicks(cat){
@@ -1333,7 +1449,39 @@ function filterPicks(cat){
 function renderGrid(){
   const grid=document.getElementById('picks-grid');if(!grid)return;
   const vis=filterPicks(ACTIVE_CAT);
-  if(!vis.length){grid.innerHTML=`<div class="empty-wrap"><span class="empty-ico">🔍</span>No picks in this category</div>`;return;}
+
+  if(!vis.length){
+    // Different message when module has no picks at all vs category filter empty
+    if(PICKS.length===0){
+      grid.innerHTML=`
+        <div class="empty-wrap" style="grid-column:1/-1">
+          <span class="empty-ico" style="font-size:2.8rem;opacity:.2">&#x26A1;</span>
+          <div style="margin-top:10px;font-size:.88rem;font-weight:700;color:var(--t2)">Aguardando picks</div>
+          <p style="margin-top:8px;font-size:.74rem;color:var(--t3);max-width:340px;margin:8px auto 0;line-height:1.7">
+            Chama <code style="background:rgba(255,255,255,.07);padding:1px 6px;border-radius:4px;color:var(--lime);font-size:.72rem">PM.render(picks)</code>
+            com os picks do teu pipeline.<br>
+            Os form dots usam dados reais do
+            <strong style="color:var(--t2)">fbref.com</strong> /
+            <strong style="color:var(--t2)">sofascore.com</strong>
+            quando forneces <code style="background:rgba(255,255,255,.07);padding:1px 6px;border-radius:4px;color:var(--blue);font-size:.72rem">form_last10</code>.
+          </p>
+          <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-lime" onclick="PM.loadPreview()" style="font-size:.75rem;padding:7px 16px">
+              &#x25B6; Preview UI
+            </button>
+            <button class="btn btn-ghost" onclick="window.open('https://fbref.com','_blank')" style="font-size:.73rem;padding:7px 14px">
+              fbref.com &#x2197;
+            </button>
+            <button class="btn btn-ghost" onclick="window.open('https://sofascore.com','_blank')" style="font-size:.73rem;padding:7px 14px">
+              sofascore.com &#x2197;
+            </button>
+          </div>
+        </div>`;
+    } else {
+      grid.innerHTML=`<div class="empty-wrap" style="grid-column:1/-1"><span class="empty-ico">&#x1F50D;</span>Sem picks nesta categoria</div>`;
+    }
+    return;
+  }
   grid.innerHTML=vis.map(p=>buildCard(p,PICKS.indexOf(p))).join('');
   updateActionBar();
 }
@@ -1353,21 +1501,34 @@ function updateActionBar(){
    PUBLIC API  window.PM
 =============================================================== */
 window.PM = {
-  render(picks){
-    PICKS=(picks||[]).map(p=>({
+  init() {
+    // Called on DOMContentLoaded - renders empty state
+    PICKS = []; SELECTED.clear(); ACTIVE_CAT = 'all';
+    renderCatNav(); renderStatsBar(); renderGrid();
+  },
+  render(picks) {
+    PICKS = (picks||[]).map(p => ({
       ...p,
-      sportKey:p.sportKey||guessKey(p.sport||''),
-      point:p.point??extractPt(p.pick||p.market||''),
-      ev_pct:String(p.ev_pct||p.ev||'0'),
-      odds_best:String(p.odds_best||p.odds||'2'),
-      kelly_pct:String(p.kelly_pct||p.kelly||'0'),
-      prob_real:String(p.prob_real||'50'),
-      fair_odd:String(p.fair_odd||p.fair||'0'),
+      sportKey:   p.sportKey   || guessKey(p.sport||''),
+      point:      p.point != null ? p.point : extractPt(p.pick||p.market||''),
+      ev_pct:     String(p.ev_pct   || p.ev    || '0'),
+      odds_best:  String(p.odds_best|| p.odds  || '2'),
+      kelly_pct:  String(p.kelly_pct|| p.kelly || '0'),
+      prob_real:  String(p.prob_real|| '50'),
+      fair_odd:   String(p.fair_odd || p.fair  || '0'),
+      // form_last10: real values from fbref.com / sofascore.com match logs
+      // if not provided, engine falls back to league statistical averages
+      form_last10: p.form_last10 || null,
     }));
-    SELECTED.clear();ACTIVE_CAT='all';
-    renderCatNav();renderStatsBar();renderGrid();
+    SELECTED.clear(); ACTIVE_CAT = 'all';
+    renderCatNav(); renderStatsBar(); renderGrid();
   },
   setCat(cat){ACTIVE_CAT=cat;renderCatNav();renderStatsBar();renderGrid();},
+  setSport(sport){
+    // Sport filter: if empty = all, else filter by sport category
+    ACTIVE_CAT = sport || 'all';
+    renderCatNav();renderStatsBar();renderGrid();
+  },
   handleClick(i,e){if(e.target.closest('.xbtn'))return;this.toggleSel(i);},
   toggleSel(i){
     const card=document.getElementById('card-'+i);if(!card)return;
@@ -1379,7 +1540,70 @@ window.PM = {
     const p=document.getElementById('xpanel-'+i),b=document.getElementById('xbtn-'+i);if(!p)return;
     const open=p.classList.toggle('open');if(b)b.classList.toggle('open',open);
   },
-  clearSel(){SELECTED.clear();document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('selected'));updateActionBar();},
+
+  /* Preview picks — activated via "Preview UI" button.
+     Uses real-like data (fbref/sofascore style) with form_last10 arrays.
+     Replace with PM.render(yourPicks) in production. */
+  loadPreview(){
+    const N = Date.now();
+    PM.render([
+      // ---- Soccer (all 15 markets) ----
+      {pick:'Juventus',         home:'Juventus',away:'Sassuolo',   sport:'Serie A',      icon:'&#x1F1EE;&#x1F1F9;',sportKey:'soccer_italy_serie_a',mktKey:'h2h',          odds_best:'1.60',fair_odd:'1.45',ev_pct:'10.3',kelly_pct:'6.8',prob_real:'62.5',point:null,   game_time:new Date(N+3.5*36e5).toISOString(),bookmaker:'Bet365'},
+      {pick:'Home or Draw',     home:'Man City', away:'Arsenal',   sport:'Premier League',icon:'&#x1F3F4;',          sportKey:'soccer_epl',          mktKey:'double_chance',odds_best:'1.25',fair_odd:'1.14',ev_pct:'9.6', kelly_pct:'5.8',prob_real:'80.0',point:null,   game_time:new Date(N+5*36e5).toISOString(), bookmaker:'Pinnacle',
+        form_last10:[1,1,1,0,1,1,1,1,0,1]},
+      {pick:'Yes',              home:'Liverpool', away:'Chelsea',  sport:'Premier League',icon:'&#x1F3F4;',          sportKey:'soccer_epl',          mktKey:'btts',         odds_best:'1.72',fair_odd:'1.55',ev_pct:'11.0',kelly_pct:'7.1',prob_real:'58.1',point:null,   game_time:new Date(N+5*36e5).toISOString(), bookmaker:'Pinnacle',
+        form_last10:[1,1,0,1,1,0,1,0,1,1]},
+      {pick:'Over 1.5',         home:'Bayern',   away:'Dortmund', sport:'Bundesliga',    icon:'&#x1F1E9;&#x1F1EA;', sportKey:'soccer_germany_bundesliga',mktKey:'totals',   odds_best:'1.22',fair_odd:'1.12',ev_pct:'8.9', kelly_pct:'5.2',prob_real:'89.3',point:1.5,   game_time:new Date(N+6*36e5).toISOString(), bookmaker:'Bet365',
+        form_last10:[3,2,4,3,2,3,4,2,3,3]},
+      {pick:'Over 2.5',         home:'Real Madrid',away:'Atletico',sport:'La Liga',      icon:'&#x1F1EA;&#x1F1F8;', sportKey:'soccer_spain_la_liga', mktKey:'totals',      odds_best:'1.90',fair_odd:'1.70',ev_pct:'11.8',kelly_pct:'7.0',prob_real:'58.8',point:2.5,   game_time:new Date(N+4*36e5).toISOString(), bookmaker:'Bet365',
+        form_last10:[3,1,2,4,2,3,1,3,2,4]},
+      {pick:'Under 3.5',        home:'Atletico', away:'Villarreal',sport:'La Liga',      icon:'&#x1F1EA;&#x1F1F8;', sportKey:'soccer_spain_la_liga', mktKey:'alternate_totals',odds_best:'1.55',fair_odd:'1.40',ev_pct:'10.7',kelly_pct:'6.5',prob_real:'71.4',point:3.5,game_time:new Date(N+4*36e5).toISOString(), bookmaker:'Unibet',
+        form_last10:[2,1,3,2,1,2,3,2,1,2]},
+      {pick:'Over 0.5',         home:'PSG',      away:'Lyon',     sport:'Ligue 1',       icon:'&#x1F1EB;&#x1F1F7;', sportKey:'soccer_france_ligue_one',mktKey:'first_half_totals',odds_best:'1.50',fair_odd:'1.36',ev_pct:'10.3',kelly_pct:'7.2',prob_real:'73.5',point:0.5,game_time:new Date(N+7*36e5).toISOString(), bookmaker:'Bwin',
+        form_last10:[1,0,1,1,0,1,1,0,1,1]},
+      {pick:'Over 0.5',         home:'Fortuna Sittard',away:'Twente',sport:'Eredivisie',icon:'&#x1F1F3;&#x1F1F1;', sportKey:'soccer_netherlands_eredivisie',mktKey:'team_totals',odds_best:'1.50',fair_odd:'1.35',ev_pct:'11.1',kelly_pct:'7.4',prob_real:'74.1',point:0.5,game_time:new Date(N+2*36e5).toISOString(), bookmaker:'Unibet',
+        form_last10:[1,0,2,1,0,1,2,1,1,0]},
+      {pick:'Over 4.5',         home:'Hull City',away:'Sheff Wed',sport:'Championship',  icon:'&#x1F3F4;',          sportKey:'soccer_epl',          mktKey:'cards',        odds_best:'1.80',fair_odd:'1.60',ev_pct:'12.5',kelly_pct:'7.8',prob_real:'62.5',point:4.5,   game_time:new Date(N+1*36e5).toISOString(), bookmaker:'Bet365',
+        form_last10:[5,4,5,4,3,2,5,4,4,3]},
+      {pick:'Over 9.5',         home:'Liverpool', away:'Chelsea', sport:'Premier League',icon:'&#x1F3F4;',          sportKey:'soccer_epl',          mktKey:'corners',      odds_best:'1.85',fair_odd:'1.64',ev_pct:'12.8',kelly_pct:'7.8',prob_real:'60.9',point:9.5,   game_time:new Date(N+7*36e5).toISOString(), bookmaker:'Bet365',
+        form_last10:[10,12,9,11,8,10,13,9,11,10]},
+      {pick:'Over 5.5',         home:'Man Utd',  away:'Tottenham',sport:'Premier League',icon:'&#x1F3F4;',          sportKey:'soccer_epl',          mktKey:'team_corners', odds_best:'1.75',fair_odd:'1.57',ev_pct:'11.5',kelly_pct:'7.1',prob_real:'63.7',point:5.5,   game_time:new Date(N+8*36e5).toISOString(), bookmaker:'Bwin',
+        form_last10:[5,6,4,5,3,5,7,4,5,6]},
+      {pick:'Over 1.5',         home:'Juventus', away:'Sassuolo', sport:'Serie A',       icon:'&#x1F1EE;&#x1F1F9;',sportKey:'soccer_italy_serie_a', mktKey:'team_cards',   odds_best:'1.90',fair_odd:'1.65',ev_pct:'15.2',kelly_pct:'9.2',prob_real:'60.6',point:1.5,   game_time:new Date(N+3.5*36e5).toISOString(),bookmaker:'Bet365',
+        form_last10:[2,1,2,1,2,2,1,2,1,2]},
+      {pick:'Over 7.5',         home:'PSG',      away:'Lyon',     sport:'Ligue 1',       icon:'&#x1F1EB;&#x1F1F7;', sportKey:'soccer_france_ligue_one',mktKey:'shots_on_target',odds_best:'1.75',fair_odd:'1.56',ev_pct:'12.2',kelly_pct:'7.9',prob_real:'64.1',point:7.5,game_time:new Date(N+10*36e5).toISOString(),bookmaker:'Bwin',
+        form_last10:[4,5,4,3,5,7,4,3,4,5]},
+      {pick:'Over 2.5',         home:'Juventus', away:'Sassuolo', sport:'Serie A',       icon:'&#x1F1EE;&#x1F1F9;',sportKey:'soccer_italy_serie_a', mktKey:'team_shots_on_target',odds_best:'1.80',fair_odd:'1.58',ev_pct:'13.9',kelly_pct:'8.8',prob_real:'63.3',point:2.5,game_time:new Date(N+3.5*36e5).toISOString(),bookmaker:'Bet365',
+        form_last10:[3,4,5,4,2,3,6,4,3,2]},
+      {pick:'Real Madrid',      home:'Real Madrid',away:'Atletico',sport:'La Liga',      icon:'&#x1F1EA;&#x1F1F8;', sportKey:'soccer_spain_la_liga', mktKey:'draw_no_bet',  odds_best:'1.45',fair_odd:'1.31',ev_pct:'10.7',kelly_pct:'7.4',prob_real:'76.3',point:null,   game_time:new Date(N+4*36e5).toISOString(), bookmaker:'Pinnacle'},
+      {pick:'Bayern -1.5',      home:'Bayern',   away:'Dortmund', sport:'Bundesliga',    icon:'&#x1F1E9;&#x1F1EA;', sportKey:'soccer_germany_bundesliga',mktKey:'spreads',   odds_best:'1.88',fair_odd:'1.70',ev_pct:'10.6',kelly_pct:'6.2',prob_real:'59.3',point:-1.5,  game_time:new Date(N+6*36e5).toISOString(), bookmaker:'Pinnacle'},
+      // ---- NBA (team market) ----
+      {pick:'Milwaukee Bucks -1.5',home:'Milwaukee Bucks',away:'OKC Thunder',sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba',mktKey:'spreads',odds_best:'1.90',fair_odd:'1.71',ev_pct:'11.1',kelly_pct:'6.4',prob_real:'58.5',point:-1.5,game_time:new Date(N+8*36e5).toISOString(),bookmaker:'FanDuel',
+        form_last10:[1,0,1,1,0,1,1,0,1,1]},
+      // ---- NHL ----
+      {pick:'Over 5.5',         home:'Edmonton Oilers',away:'Ottawa Senators',sport:'NHL',icon:'&#x1F3D2;',sportKey:'icehockey_nhl',mktKey:'totals',odds_best:'1.85',fair_odd:'1.67',ev_pct:'10.8',kelly_pct:'6.5',prob_real:'59.9',point:5.5,game_time:new Date(N+9*36e5).toISOString(),bookmaker:'DraftKings',
+        form_last10:[7,5,6,4,7,6,5,8,6,7]},
+      // ---- Player Props (NBA) ----
+      {isPlayerProp:true,playerName:'Myles Turner',  home:'Indiana Pacers',away:'Phoenix Suns',    sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba',mktKey:'player_points',  pick:'Over 8.5 Points Scored',  point:8.5, odds_best:'1.92',american_odds:'-102',fair_odd:'1.74',ev_pct:'10.3',kelly_pct:'6.5',prob_real:'57.5',game_time:new Date(N+4*36e5).toISOString(),bookmaker:'DraftKings',
+        form_last10:[12.7,14.3,9.2,16.8,11.4,13.6,8.9,15.2,12.1,14.8]},
+      {isPlayerProp:true,playerName:'Quentin Grimes', home:'76ers',         away:'Utah Jazz',       sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba',mktKey:'player_points',  pick:'Under 22.5 Points Scored',point:22.5,odds_best:'1.95',american_odds:'-106',fair_odd:'1.78',ev_pct:'9.6', kelly_pct:'5.8',prob_real:'58.0',game_time:new Date(N+3.5*36e5).toISOString(),bookmaker:'FanDuel',
+        form_last10:[18.6,14.2,20.1,16.8,19.4,15.2,21.3,17.9,14.6,18.1]},
+      {isPlayerProp:true,playerName:'Max Christie',   home:'LA Clippers',   away:'Dallas Mavericks',sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba',mktKey:'player_threes',  pick:'Over 2.5 3-Pointers Made',point:2.5, odds_best:'2.18',american_odds:'+118',fair_odd:'1.86',ev_pct:'17.2',kelly_pct:'11.2',prob_real:'63.1',game_time:new Date(N+2.5*36e5).toISOString(),bookmaker:'BetMGM',
+        form_last10:[3.1,4,2,3,5,2,4,1,3,2]},
+      {isPlayerProp:true,playerName:'Nikola Jokic',   home:'Denver Nuggets',away:'Memphis Grizzlies',sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba',mktKey:'player_points_rebounds_assists',pick:'Over 42.5 Pts+Reb+Ast',point:42.5,odds_best:'1.88',american_odds:'-115',fair_odd:'1.69',ev_pct:'11.2',kelly_pct:'7.0',prob_real:'60.2',game_time:new Date(N+5*36e5).toISOString(),bookmaker:'Pinnacle',
+        form_last10:[48.1,44.2,51.3,46.8,43.2,49.7,45.1,52.4,47.8,43.9]},
+      // ---- NFL ----
+      {isPlayerProp:true,playerName:'Patrick Mahomes',home:'Kansas City Chiefs',away:'Las Vegas Raiders',sport:'NFL',icon:'&#x1F3C8;',sportKey:'americanfootball_nfl',mktKey:'player_passing_yards',pick:'Over 287.5 Passing Yards',point:287.5,odds_best:'1.90',american_odds:'-115',fair_odd:'1.72',ev_pct:'10.5',kelly_pct:'6.2',prob_real:'58.8',game_time:new Date(N+24*36e5).toISOString(),bookmaker:'DraftKings',
+        form_last10:[312,287,295,268,324,278,305,291,316,283]},
+      // ---- NHL Prop ----
+      {isPlayerProp:true,playerName:'Nathan MacKinnon',home:'Colorado Avalanche',away:'Toronto Maple Leafs',sport:'NHL',icon:'&#x1F3D2;',sportKey:'icehockey_nhl',mktKey:'player_shots_on_goal',pick:'Over 3.5 Shots on Goal',point:3.5,odds_best:'2.05',american_odds:'+105',fair_odd:'1.80',ev_pct:'13.9',kelly_pct:'8.1',prob_real:'62.4',game_time:new Date(N+6*36e5).toISOString(),bookmaker:'BetMGM',
+        form_last10:[3.8,4,5,3,6,4,5,3,4,4]},
+      // ---- MLB Prop ----
+      {isPlayerProp:true,playerName:'Spencer Strider', home:'Atlanta Braves',away:'NY Mets',sport:'MLB',icon:'&#x26BE;',sportKey:'baseball_mlb',mktKey:'player_strikeouts',pick:'Over 7.5 Strikeouts',point:7.5,odds_best:'1.87',american_odds:'-120',fair_odd:'1.67',ev_pct:'11.5',kelly_pct:'7.3',prob_real:'61.8',game_time:new Date(N+30*36e5).toISOString(),bookmaker:'Caesars',
+        form_last10:[9.2,7,8,11,6,9,8,10,7,9]},
+    ]);
+  },
+    clearSel(){SELECTED.clear();document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('selected'));updateActionBar();},
   createTicket(){
     const legs=[...SELECTED].map(i=>PICKS[i]).filter(Boolean);if(!legs.length)return;
     const co=legs.reduce((p,l)=>p*parseFloat(l.odds_best||l.odds||1),1);
@@ -1414,39 +1638,39 @@ function toast(msg,type='i'){
   setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3500);
 }
 
-/* ===============================================================
-   DEMO - 17 picks (all 15 soccer + 2 non-soccer)
-=============================================================== */
-const now=Date.now();
-document.addEventListener('DOMContentLoaded',()=>PM.render([
-  {pick:'Juventus',                home:'Juventus',away:'Sassuolo',sport:'Serie A',icon:'🇮🇹',sportKey:'soccer_italy_serie_a',mktKey:'h2h',odds_best:'1.60',fair_odd:'1.45',ev_pct:'10.3',kelly_pct:'6.8',prob_real:'62.5',point:null,game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Home or Draw',            home:'Man City',away:'Arsenal',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'double_chance',odds_best:'1.25',fair_odd:'1.14',ev_pct:'9.6',kelly_pct:'5.8',prob_real:'80.0',point:null,game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
-  {pick:'Yes',                     home:'Liverpool',away:'Chelsea',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'btts',odds_best:'1.72',fair_odd:'1.55',ev_pct:'11.0',kelly_pct:'7.1',prob_real:'58.1',point:null,game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
-  {pick:'Over 1.5',                home:'Bayern',away:'Dortmund',sport:'Bundesliga',icon:'🇩🇪',sportKey:'soccer_germany_bundesliga',mktKey:'totals',odds_best:'1.22',fair_odd:'1.12',ev_pct:'8.9',kelly_pct:'5.2',prob_real:'89.3',point:1.5,game_time:new Date(now+6*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Over 2.5',                home:'Real Madrid',away:'Atletico',sport:'La Liga',icon:'🇪🇸',sportKey:'soccer_spain_la_liga',mktKey:'totals',odds_best:'1.90',fair_odd:'1.70',ev_pct:'11.8',kelly_pct:'7.0',prob_real:'58.8',point:2.5,game_time:new Date(now+4*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Under 3.5',               home:'Atletico',away:'Villarreal',sport:'La Liga',icon:'🇪🇸',sportKey:'soccer_spain_la_liga',mktKey:'alternate_totals',odds_best:'1.55',fair_odd:'1.40',ev_pct:'10.7',kelly_pct:'6.5',prob_real:'71.4',point:3.5,game_time:new Date(now+4*36e5).toISOString(),bookmaker:'Unibet'},
-  {pick:'Over 0.5',                home:'PSG',away:'Lyon',sport:'Ligue 1',icon:'🇫🇷',sportKey:'soccer_france_ligue_one',mktKey:'first_half_totals',odds_best:'1.50',fair_odd:'1.36',ev_pct:'10.3',kelly_pct:'7.2',prob_real:'73.5',point:0.5,game_time:new Date(now+7*36e5).toISOString(),bookmaker:'Bwin'},
-  {pick:'Over 0.5',                home:'Fortuna Sittard',away:'FC Twente',sport:'Eredivisie',icon:'🇳🇱',sportKey:'soccer_netherlands_eredivisie',mktKey:'team_totals',odds_best:'1.50',fair_odd:'1.35',ev_pct:'11.1',kelly_pct:'7.4',prob_real:'74.1',point:0.5,game_time:new Date(now+2*36e5).toISOString(),bookmaker:'Unibet'},
-  {pick:'Over 4.5',                home:'Hull City',away:'Sheffield Wed',sport:'Championship',icon:'[',sportKey:'soccer_epl',mktKey:'cards',odds_best:'1.80',fair_odd:'1.60',ev_pct:'12.5',kelly_pct:'7.8',prob_real:'62.5',point:4.5,game_time:new Date(now+1*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Over 9.5',                home:'Liverpool',away:'Chelsea',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'corners',odds_best:'1.85',fair_odd:'1.64',ev_pct:'12.8',kelly_pct:'7.8',prob_real:'60.9',point:9.5,game_time:new Date(now+7*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Over 5.5',                home:'Man Utd',away:'Tottenham',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'team_corners',odds_best:'1.75',fair_odd:'1.57',ev_pct:'11.5',kelly_pct:'7.1',prob_real:'63.7',point:5.5,game_time:new Date(now+8*36e5).toISOString(),bookmaker:'Bwin'},
-  {pick:'Over 1.5',                home:'Juventus',away:'Sassuolo',sport:'Serie A',icon:'🇮🇹',sportKey:'soccer_italy_serie_a',mktKey:'team_cards',odds_best:'1.90',fair_odd:'1.65',ev_pct:'15.2',kelly_pct:'9.2',prob_real:'60.6',point:1.5,game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Over 7.5',                home:'PSG',away:'Lyon',sport:'Ligue 1',icon:'🇫🇷',sportKey:'soccer_france_ligue_one',mktKey:'shots_on_target',odds_best:'1.75',fair_odd:'1.56',ev_pct:'12.2',kelly_pct:'7.9',prob_real:'64.1',point:7.5,game_time:new Date(now+10*36e5).toISOString(),bookmaker:'Bwin'},
-  {pick:'Over 2.5',                home:'Juventus',away:'Sassuolo',sport:'Serie A',icon:'🇮🇹',sportKey:'soccer_italy_serie_a',mktKey:'team_shots_on_target',odds_best:'1.80',fair_odd:'1.58',ev_pct:'13.9',kelly_pct:'8.8',prob_real:'63.3',point:2.5,game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Real Madrid',             home:'Real Madrid',away:'Atletico',sport:'La Liga',icon:'🇪🇸',sportKey:'soccer_spain_la_liga',mktKey:'draw_no_bet',odds_best:'1.45',fair_odd:'1.31',ev_pct:'10.7',kelly_pct:'7.4',prob_real:'76.3',point:null,game_time:new Date(now+4*36e5).toISOString(),bookmaker:'Pinnacle'},
-  {pick:'Bayern -1.5',             home:'Bayern',away:'Dortmund',sport:'Bundesliga',icon:'🇩🇪',sportKey:'soccer_germany_bundesliga',mktKey:'spreads',odds_best:'1.88',fair_odd:'1.70',ev_pct:'10.6',kelly_pct:'6.2',prob_real:'59.3',point:-1.5,game_time:new Date(now+6*36e5).toISOString(),bookmaker:'Pinnacle'},
-  {pick:'Milwaukee Bucks -1.5',    home:'Milwaukee Bucks',away:'OKC Thunder',sport:'NBA',icon:'🏀',sportKey:'basketball_nba',mktKey:'spreads',odds_best:'1.90',fair_odd:'1.71',ev_pct:'11.1',kelly_pct:'6.4',prob_real:'58.5',point:-1.5,game_time:new Date(now+8*36e5).toISOString(),bookmaker:'FanDuel'},
-  {pick:'Over 5.5',                home:'Edmonton Oilers',away:'Ottawa Senators',sport:'NHL',icon:'🏒',sportKey:'icehockey_nhl',mktKey:'totals',odds_best:'1.85',fair_odd:'1.67',ev_pct:'10.8',kelly_pct:'6.5',prob_real:'59.9',point:5.5,game_time:new Date(now+9*36e5).toISOString(),bookmaker:'DraftKings'},
-,
-  // ---- PLAYER PROPS (NBA) ----
-  {isPlayerProp:true, playerName:'Myles Turner',  home:'Indiana Pacers', away:'Phoenix Suns',     sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_points',   pick:'Over 8.5 Points Scored',    point:8.5, odds_best:'1.92',american_odds:'-102',fair_odd:'1.74',ev_pct:'10.3',kelly_pct:'6.5',prob_real:'57.5',game_time:new Date(now+4*36e5).toISOString(), bookmaker:'DraftKings'},
-  {isPlayerProp:true, playerName:'Quentin Grimes', home:'76ers',          away:'Utah Jazz',        sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_points',   pick:'Under 22.5 Points Scored',  point:22.5,odds_best:'1.95',american_odds:'-106',fair_odd:'1.78',ev_pct:'9.6',kelly_pct:'5.8',prob_real:'58.0',game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'FanDuel'},
-  {isPlayerProp:true, playerName:'Max Christie',   home:'LA Clippers',    away:'Dallas Mavericks', sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_threes',   pick:'Over 2.5 3-Pointers Made',  point:2.5, odds_best:'2.18',american_odds:'+118',fair_odd:'1.86',ev_pct:'17.2',kelly_pct:'11.2',prob_real:'63.1',game_time:new Date(now+2.5*36e5).toISOString(),bookmaker:'BetMGM'},
-  {isPlayerProp:true, playerName:'Nikola Jokic',   home:'Denver Nuggets', away:'Memphis Grizzlies',sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_points_rebounds_assists',pick:'Over 42.5 Pts+Reb+Ast',point:42.5,odds_best:'1.88',american_odds:'-115',fair_odd:'1.69',ev_pct:'11.2',kelly_pct:'7.0',prob_real:'60.2',game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
-  {isPlayerProp:true, playerName:'Patrick Mahomes',home:'Kansas City Chiefs',away:'Las Vegas Raiders',sport:'NFL',icon:'&#x1F3C8;',sportKey:'americanfootball_nfl',mktKey:'player_passing_yards',pick:'Over 287.5 Passing Yards',point:287.5,odds_best:'1.90',american_odds:'-115',fair_odd:'1.72',ev_pct:'10.5',kelly_pct:'6.2',prob_real:'58.8',game_time:new Date(now+24*36e5).toISOString(),bookmaker:'DraftKings'},
-  {isPlayerProp:true, playerName:'Nathan MacKinnon',home:'Colorado Avalanche',away:'Toronto Maple Leafs',sport:'NHL',icon:'&#x1F3D2;',sportKey:'icehockey_nhl',mktKey:'player_shots_on_goal',pick:'Over 3.5 Shots on Goal',point:3.5,odds_best:'2.05',american_odds:'+105',fair_odd:'1.80',ev_pct:'13.9',kelly_pct:'8.1',prob_real:'62.4',game_time:new Date(now+6*36e5).toISOString(),bookmaker:'BetMGM'},
-  {isPlayerProp:true, playerName:'Spencer Strider', home:'Atlanta Braves', away:'NY Mets',          sport:'MLB',icon:'&#x26BE;',sportKey:'baseball_mlb',   mktKey:'player_strikeouts',pick:'Over 7.5 Strikeouts',       point:7.5, odds_best:'1.87',american_odds:'-120',fair_odd:'1.67',ev_pct:'11.5',kelly_pct:'7.3',prob_real:'61.8',game_time:new Date(now+30*36e5).toISOString(),bookmaker:'Caesars'},
-]));
+/* ================================================================
+   READY — No demo data loaded.
+   Feed picks via: PM.render(picks)
+   where picks come from buildPalpitesAlgo() or your data pipeline.
+
+   Pick schema:
+   {
+     // TEAM MARKETS
+     pick, home, away, sport, icon, sportKey, mktKey,
+     odds_best, fair_odd, ev_pct, kelly_pct, prob_real,
+     point, game_time, bookmaker,
+
+     // PLAYER PROPS (add isPlayerProp:true)
+     isPlayerProp, playerName,
+     projection,         // float — model projection for this stat
+     american_odds,      // string — e.g. "-102" or "+128"
+     form_last10,        // array of 10 floats — actual recent values
+                         // from sofascore.com / fbref.com match logs
+
+     // DATA SOURCES (used by 7-filter engine):
+     // F1 Weighted Avg  -> form_last10 from fbref.com/sofascore.com
+     // F2 Hit Rate      -> form_last10 vs point line
+     // F3 Tactical      -> league_stats from fbref.com league tables
+     // F4 Correlations  -> derived internally
+     // F5 Matchup       -> ev_pct + fair_odd (from Pinnacle/sharp)
+     // F6 EV Check      -> odds_best vs prob_real (devigged Pinnacle)
+     // F7 Externals     -> is_starter, referee_avg_cards, weather
+     //                     from transfermarkt.com / flashscore.com
+   }
+================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  PM.init();
+});
 </script>
 </body>
 </html>
