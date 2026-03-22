@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Picks Module — Manuel Dança</title>
+<title>Picks Module - Manuel Danca</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -120,6 +120,32 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .t-w{background:rgba(22,17,6,.95);border-color:rgba(245,158,11,.3);color:var(--gold)}
 @keyframes tIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 @media(max-width:600px){.picks-grid{grid-template-columns:1fr}}
+
+/* 7-FILTER PANEL STYLES */
+.filter-panel{background:rgba(0,0,0,.2);border:1px solid var(--border2);border-radius:8px;padding:9px;margin-bottom:8px}
+.fp-title{font-size:.57rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between}
+.fp-score-badge{padding:2px 8px;border-radius:20px;font-size:.57rem;font-weight:700;border:1px solid}
+.fp-score-high{background:rgba(124,194,69,.12);border-color:rgba(124,194,69,.3);color:var(--green)}
+.fp-score-mid {background:rgba(245,158,11,.1); border-color:rgba(245,158,11,.3);color:var(--yellow)}
+.fp-score-low {background:rgba(230,94,76,.1);  border-color:rgba(230,94,76,.3);color:var(--red)}
+.filter-rows{display:flex;flex-direction:column;gap:5px}
+.filter-row{display:flex;align-items:flex-start;gap:7px}
+.f-id{font-size:.56rem;font-weight:700;color:var(--t4);font-family:monospace;width:22px;flex-shrink:0;padding-top:1px}
+.f-lbl{font-size:.63rem;color:var(--t2)}
+.f-val{font-size:.63rem;font-weight:700;white-space:nowrap}
+.f-bar-wrap{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-top:2px}
+.f-bar{height:100%;border-radius:2px;transition:width .4s}
+.f-det{font-size:.54rem;color:var(--t4);margin-top:2px}
+.f-pass{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.54rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.f-pass.ok{background:rgba(34,197,94,.15);color:#22c55e}
+.f-pass.warn{background:rgba(245,158,11,.15);color:var(--yellow)}
+.f-pass.fail{background:rgba(230,94,76,.15);color:var(--red)}
+.corr-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.ctag{padding:2px 6px;border-radius:4px;font-size:.56rem;font-weight:700;border:1px solid}
+.ctag-pos{background:rgba(34,197,94,.09);border-color:rgba(34,197,94,.28);color:#22c55e}
+.ctag-neg{background:rgba(230,94,76,.09);border-color:rgba(230,94,76,.25);color:var(--red)}
+.ctag-neu{background:rgba(255,255,255,.04);border-color:var(--border2);color:var(--t3)}
+
 </style>
 </head>
 <body>
@@ -128,7 +154,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
   <div class="stats-bar" id="stats-bar"></div>
   <div style="flex:1;overflow-y:auto">
     <div class="picks-grid" id="picks-grid">
-      <div class="empty-wrap"><span class="empty-ico">⚡</span>No picks loaded</div>
+      <div class="empty-wrap"><span class="empty-ico"></span>No picks loaded</div>
     </div>
   </div>
   <div class="action-bar">
@@ -148,8 +174,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 <script>
 'use strict';
 
-/* ═══════════════════════════════════════════════════════════════
-   SOCCER — 15 MARKET CATEGORIES (from screenshot, English labels)
+/* ===============================================================
+   SOCCER - 15 MARKET CATEGORIES (from screenshot, English labels)
    1.  Value Bets (EV >= 3%)
    2.  1X2 / Moneyline
    3.  Double Chance
@@ -167,9 +193,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
    15. Team Shots on Target
    + Asian Handicap  (spreads)
    + Draw No Bet
-═══════════════════════════════════════════════════════════════ */
+=============================================================== */
 
-/* ── Category labels (English) ── */
+/* Category labels (English) */
 const CAT_LBL = {
   all:'All',  value:'🔥 Value Bets',
   /* Soccer 15 markets */
@@ -197,7 +223,7 @@ const SOCCER_CATS_ORDER = [
   'ah','dnb',
 ];
 
-/* ── getMktCat: maps any API mktKey → category id ── */
+/* getMktCat: maps any API mktKey -> category id */
 function getMktCat(mktKey, pickStr, point) {
   const o  = (pickStr||'').toLowerCase();
   const pt = point != null ? Math.abs(point) : null;
@@ -250,7 +276,7 @@ function getSportCat(sk) {
   return 'soccer';
 }
 
-/* ── Market badge HTML ── */
+/* Market badge HTML */
 const BADGE_CLS = {
   '1x2':'mb-ml', dc:'mb-dc', btts:'mb-btts', dnb:'mb-dnb', ah:'mb-ah',
   ou15:'mb-ou',  ou25:'mb-ou', ou35:'mb-ou', ht:'mb-ht', tt:'mb-tt',
@@ -270,7 +296,7 @@ function badgeHtml(mktKey, pickStr, point) {
   return `<span class="mkt-badge ${BADGE_CLS[c]||'mb-ml'}">${BADGE_LBL[c]||'MKT'}</span>`;
 }
 
-/* ── English label for the market line in card ── */
+/* English label for the market line in card */
 function pickMktLabel(mktKey, pickStr, point) {
   const pt = point != null ? Math.abs(point) : null;
   const o  = (pickStr||'').toLowerCase();
@@ -296,9 +322,9 @@ function pickMktLabel(mktKey, pickStr, point) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   LEAGUE STATS — All 15 soccer market averages by league
-═══════════════════════════════════════════════════════════════ */
+/* ===============================================================
+   LEAGUE STATS - All 15 soccer market averages by league
+=============================================================== */
 const LEAGUE_STATS = {
   soccer_epl:                   {goals:2.75,btts:52,dc:72,ou15:78,ou25:52,ou35:28,corners:10.2,cornersT:5.1,cards:3.8,cardsT:1.9,shots:13.5,shotsT:6.8,over05HT:68},
   soccer_spain_la_liga:         {goals:2.62,btts:49,dc:70,ou15:76,ou25:50,ou35:26,corners:9.8, cornersT:4.9,cards:4.2,cardsT:2.1,shots:12.8,shotsT:6.4,over05HT:64},
@@ -323,9 +349,9 @@ const NS_STATS = {  // non-soccer
   default:              {avgTotal:50, avgSpread:5,  teamTotal:25, homeWin:55},
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   STATS ENGINE — Avg + Last 10 + form dots (all 15 soccer markets)
-═══════════════════════════════════════════════════════════════ */
+/* ===============================================================
+   STATS ENGINE - Avg + Last 10 + form dots (all 15 soccer markets)
+=============================================================== */
 function buildStats(pick) {
   const sk    = pick.sportKey||pick.sport||'';
   const sport = getSportCat(sk);
@@ -342,7 +368,7 @@ function _soccerStats(pick, mkt, pt, isO, sk) {
   const lg = LEAGUE_STATS[sk] || LEAGUE_STATS.default;
   let avg=null, hit=0, lastLbl=null, bases=null;
 
-  // ── All 15 soccer market types ──────────────────────
+  // -- All 15 soccer market types ----------------------
   if (mkt==='h2h')              { hit=parseFloat(pick.prob_real||50)/100; lastLbl='1X2 Win'; bases=[1,0,1,1,0,1,1,1,0,1]; }
   else if (mkt==='double_chance') { avg=null; hit=lg.dc/100; lastLbl='DC Hit'; bases=[1,1,1,0,1,1,1,1,0,1]; }
   else if (mkt==='btts')        { hit=lg.btts/100; lastLbl='w/ BTTS'; bases=[1,1,0,1,1,0,1,0,1,1]; }
@@ -388,7 +414,7 @@ function _nonSoccerStats(pick, mkt, pt, isO, sport, sk) {
   return {avg, hit, lastLbl, dots, hits:dots.filter(d=>d.hit).length};
 }
 
-/* ── Deterministic form dots ── */
+/* Deterministic form dots */
 function genDots(gameName, n, hitRate, baseVals) {
   let seed=0;
   for(let i=0;i<gameName.length;i++) seed+=gameName.charCodeAt(i)*(i+1);
@@ -400,7 +426,7 @@ function genDots(gameName, n, hitRate, baseVals) {
   });
 }
 
-/* ── Avg chip label ── */
+/* Avg chip label */
 function avgChipLabel(mktKey,sportCat) {
   const m={
     shots_on_target:'Avg SoT',team_shots_on_target:'Avg Team SoT',
@@ -414,16 +440,16 @@ function avgChipLabel(mktKey,sportCat) {
   return m[mktKey]||'Avg';
 }
 
-/* ── Pick display name ── */
+/* Pick display name */
 function pickDisplay(pick,mktKey,point) {
   const p=pick||'', o=p.toLowerCase();
-  const arrow=o.startsWith('over')||o==='yes'?'↑ ':o.startsWith('under')||o==='no'?'↓ ':'';
+  const arrow=o.startsWith('over')||o==='yes'?'^ ':o.startsWith('under')||o==='no'?'v ':'';
   return arrow+p;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ===============================================================
    RING SVG
-═══════════════════════════════════════════════════════════════ */
+=============================================================== */
 function ringHtml(score){
   const r=21,circ=2*Math.PI*r,dash=(score/100)*circ;
   const c=score>=90?'#22c55e':score>=75?'#7cc245':score>=60?'#fbbf24':'#fb923c';
@@ -435,9 +461,9 @@ function ringHtml(score){
   </svg><div class="ring-num" style="color:${c}">${score}</div></div>`;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ===============================================================
    BUILD CARD
-═══════════════════════════════════════════════════════════════ */
+=============================================================== */
 function buildCard(p, i) {
   const ev    = parseFloat(p.ev_pct||p.ev||0);
   const prob  = parseFloat(p.prob_real||50);
@@ -445,9 +471,11 @@ function buildCard(p, i) {
   const kelly = parseFloat(p.kelly_pct||p.kelly||0);
   const fair  = parseFloat(p.fair_odd||p.fair||0);
   const isVal = ev >= 3;
-  const score = Math.min(100,Math.max(10,Math.round(
+  const _baseScore = Math.min(100,Math.max(10,Math.round(
     Math.min(40,ev>0?ev*4:0)+Math.min(35,prob>50?(prob-50)*0.7:0)+(odds>=1.5&&odds<=3.5?25:15)
   )));
+  const _analysis = (typeof run7Filters==='function') ? run7Filters(p) : null;
+  const score = _analysis ? _analysis.composite : _baseScore;
   const mktKey   = p.mktKey||'h2h';
   const sportCat = getSportCat(p.sportKey||p.sport||'');
   const stats    = buildStats(p);
@@ -501,11 +529,12 @@ function buildCard(p, i) {
       <div class="ev-cell"><div class="v" style="color:var(--blue)">${prob.toFixed(0)}%</div><div class="l">Prob</div></div>
       <div class="ev-cell"><div class="v" style="color:var(--yellow)">${kelly.toFixed(1)}%</div><div class="l">Kelly</div></div>
       <div class="ev-cell"><div class="v" style="color:var(--gold);font-size:.66rem">MZN ${stake}</div><div class="l">Stake</div></div>
-      <div class="ev-cell"><div class="v">${fair>0?fair.toFixed(2):'—'}</div><div class="l">Fair</div></div>
+      <div class="ev-cell"><div class="v">${fair>0?fair.toFixed(2):'-'}</div><div class="l">Fair</div></div>
     </div>
+    ${_analysis ? filterPanelHtml(_analysis) : ''}
     <div class="analysis-box">
       <div class="ab-hdr"><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>Model Analysis</div>
-      <div class="ab-txt">${reasoning}</div>
+      <div class="ab-txt">${reasoning}${_analysis?' <span style=\'color:var(--lime)\'>Filters: '+_analysis.passCount+'/7 passed.</span>':''}</div>
     </div>
   </div>
 </div>`;
@@ -517,14 +546,14 @@ function autoReasoning(p,ev,prob,stats,sportCat){
   const lg=LEAGUE_STATS[sk]||LEAGUE_STATS.default;
   const ns=NS_STATS[sk]||NS_STATS.default;
   const parts=[];
-  if(ev>=5) parts.push(`<strong>Strong edge +${ev.toFixed(1)}% EV</strong> vs fair ${p.fair_odd||'—'}.`);
+  if(ev>=5) parts.push(`<strong>Strong edge +${ev.toFixed(1)}% EV</strong> vs fair ${p.fair_odd||'-'}.`);
   else if(ev>=2) parts.push(`Positive edge +${ev.toFixed(1)}% EV.`);
   else parts.push(`+${ev.toFixed(1)}% EV detected.`);
   if(sportCat==='soccer'){
     if(mkt==='btts')                        parts.push(`League BTTS rate ${lg.btts}%.`);
-    else if(mkt==='double_chance')           parts.push(`DC covers 2/3 outcomes — ${lg.dc}% hit rate.`);
+    else if(mkt==='double_chance')           parts.push(`DC covers 2/3 outcomes - ${lg.dc}% hit rate.`);
     else if(mkt==='draw_no_bet')             parts.push('DNB eliminates draw risk.');
-    else if(mkt==='totals'||mkt==='alternate_totals'){const r=pt<=1.5?lg.ou15:pt<=2.5?lg.ou25:lg.ou35;parts.push(`League avg ${lg.goals.toFixed(1)} goals/match — ${isO?'Over':'Under'} ${pt||2.5} hits ${r}% of games.`);}
+    else if(mkt==='totals'||mkt==='alternate_totals'){const r=pt<=1.5?lg.ou15:pt<=2.5?lg.ou25:lg.ou35;parts.push(`League avg ${lg.goals.toFixed(1)} goals/match - ${isO?'Over':'Under'} ${pt||2.5} hits ${r}% of games.`);}
     else if(mkt==='first_half_totals')       parts.push(`${lg.over05HT}% of matches have a HT goal.`);
     else if(mkt==='team_totals')             parts.push(`Team avg ${(lg.goals/2).toFixed(1)} goals/game.`);
     else if(mkt==='corners')                 parts.push(`League avg ${lg.corners.toFixed(1)} corners/match.`);
@@ -534,17 +563,233 @@ function autoReasoning(p,ev,prob,stats,sportCat){
     else if(mkt==='shots_on_target')         parts.push(`League avg ${lg.shots.toFixed(1)} SoT/match.`);
     else if(mkt==='team_shots_on_target')    parts.push(`League avg ${lg.shotsT.toFixed(1)} SoT per team.`);
   } else {
-    if(mkt==='totals') parts.push(`League avg total: ${ns.avgTotal?.toFixed(1)||'—'}.`);
-    if(mkt==='team_totals') parts.push(`Avg team total: ${ns.teamTotal?.toFixed(1)||'—'}.`);
+    if(mkt==='totals') parts.push(`League avg total: ${ns.avgTotal?.toFixed(1)||'-'}.`);
+    if(mkt==='team_totals') parts.push(`Avg team total: ${ns.teamTotal?.toFixed(1)||'-'}.`);
   }
   if(prob>=70) parts.push(`High confidence ~${prob.toFixed(0)}%.`);
   if(stats.hits!=null) parts.push(`Hit ${stats.hits}/10 last games.`);
   return parts.join(' ');
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ===============================================================
    STATE & RENDER
-═══════════════════════════════════════════════════════════════ */
+=============================================================== */
+
+/* ============================================================
+   7-FILTER ANALYSIS ENGINE
+   F1: Weighted Average  F2: Hit Rate  F3: Tactical Context
+   F4: Correlations      F5: Matchup   F6: EV/Odds Check
+   F7: External Conditions
+   Source: player_stats_guide - fbref/sofascore/whoscored
+============================================================ */
+
+function calcWeightedAvgScore(pick, lg) {
+  var mkt = pick.mktKey || 'h2h';
+  var pt  = pick.point != null ? Math.abs(pick.point) : null;
+  var o   = (pick.pick || '').toLowerCase();
+  var isO = o.indexOf('over') >= 0;
+  var leagueAvg = null, label = '';
+  if (mkt === 'totals' || mkt === 'alternate_totals') { leagueAvg = lg.goals; label = 'goals/match'; }
+  else if (mkt === 'corners')       { leagueAvg = lg.corners;   label = 'CK/match'; }
+  else if (mkt === 'team_corners')  { leagueAvg = lg.cornersT;  label = 'team CK'; }
+  else if (mkt === 'cards' || mkt === 'player_cards') { leagueAvg = lg.cards; label = 'cards/match'; }
+  else if (mkt === 'team_cards')    { leagueAvg = lg.cardsT;    label = 'team cards'; }
+  else if (mkt === 'shots_on_target')      { leagueAvg = lg.shots;  label = 'SoT/match'; }
+  else if (mkt === 'team_shots_on_target') { leagueAvg = lg.shotsT; label = 'team SoT'; }
+  else if (mkt === 'first_half_totals')    { leagueAvg = +(lg.goals * 0.40).toFixed(1); label = 'HT goals'; }
+  else if (mkt === 'team_totals')          { leagueAvg = +(lg.goals / 2).toFixed(1); label = 'team goals'; }
+  if (leagueAvg == null) return { score: 65, label: 'N/A', detail: 'League avg N/A', trend: 'stable' };
+  var margin = leagueAvg - (pt || leagueAvg * 0.9);
+  var score, trend;
+  if (isO) {
+    score = margin > 0.5 ? 85 : margin > 0 ? 72 : margin > -0.3 ? 58 : 42;
+    trend = margin > 0.3 ? 'FAVORABLE' : margin > 0 ? 'NEUTRAL' : 'UNFAVORABLE';
+  } else {
+    score = margin < -0.5 ? 85 : margin < 0 ? 72 : margin < 0.3 ? 58 : 42;
+    trend = margin < -0.3 ? 'FAVORABLE' : margin < 0 ? 'NEUTRAL' : 'UNFAVORABLE';
+  }
+  return { score: score, label: 'Avg ' + leagueAvg + ' ' + label, detail: (isO ? 'Over' : 'Under') + ' ' + (pt || '?') + ' vs avg ' + leagueAvg + ' (' + trend + ')', trend: trend };
+}
+
+function calcHitRate(pick, lg) {
+  var mkt = pick.mktKey || 'h2h';
+  var pt  = pick.point != null ? Math.abs(pick.point) : null;
+  var o   = (pick.pick || '').toLowerCase();
+  var isO = o.indexOf('over') >= 0;
+  var hr  = 50;
+  if (mkt === 'btts')                     hr = lg.btts;
+  else if (mkt === 'double_chance')        hr = lg.dc;
+  else if (mkt === 'first_half_totals')    hr = lg.over05HT;
+  else if (mkt === 'totals' || mkt === 'alternate_totals') {
+    if (isO) hr = pt <= 1.5 ? lg.ou15 : pt <= 2.5 ? lg.ou25 : lg.ou35;
+    else hr = 100 - (pt <= 1.5 ? lg.ou15 : pt <= 2.5 ? lg.ou25 : lg.ou35);
+  }
+  else if (mkt === 'corners')  hr = (isO && pt && pt < lg.corners)  ? 62 : isO ? 40 : 60;
+  else if (mkt === 'team_corners') hr = (isO && pt && pt < lg.cornersT) ? 60 : 45;
+  else if (mkt === 'cards' || mkt === 'player_cards') hr = (isO && pt && pt < lg.cards) ? 60 : 40;
+  else if (mkt === 'team_cards')   hr = (isO && pt && pt < lg.cardsT) ? 58 : 44;
+  else if (mkt === 'shots_on_target')      hr = (isO && pt && pt < lg.shots)  ? 65 : 42;
+  else if (mkt === 'team_shots_on_target') hr = (isO && pt && pt < lg.shotsT) ? 65 : 42;
+  else if (mkt === 'draw_no_bet')   hr = Math.max(45, parseFloat(pick.prob_real || 55));
+  else if (mkt === 'h2h')           hr = parseFloat(pick.prob_real || 50);
+  else hr = 52;
+  var thresholds = {
+    shot: 65, shot_t: 65, corner: 62, corner_t: 60,
+    card: 60, card_t: 58, ou15: 72, ou25: 68, ou35: 65,
+    btts: 60, ht: 65, tt: 62, dnb: 55, dc: 72, ah: 52, '1x2': 50,
+  };
+  var cat = getMktCat(mkt, pick.pick, pick.point);
+  var minHR = thresholds[cat] || 55;
+  var score = hr >= minHR + 10 ? 90 : hr >= minHR + 5 ? 78 : hr >= minHR ? 65 : hr >= minHR - 5 ? 50 : 35;
+  return { score: score, label: hr.toFixed(0) + '% hit rate', detail: 'Min for market: ' + minHR + '%', passes: hr >= minHR, hr: hr };
+}
+
+function calcTacticalScore(pick, lg) {
+  var mkt = pick.mktKey || 'h2h';
+  var ev  = parseFloat(pick.ev_pct || pick.ev || 0);
+  var sport = getSportCat(pick.sportKey || '');
+  if (sport !== 'soccer') return { score: 65, label: 'Sport context', detail: 'Non-soccer matchup' };
+  var cat = getMktCat(mkt, pick.pick, pick.point);
+  var o   = (pick.pick || '').toLowerCase();
+  var isO = o.indexOf('over') >= 0;
+  var score = 60, notes = [];
+  if (cat === 'card' || cat === 'card_t')     { score = lg.cards >= 4.0 ? 80 : lg.cards >= 3.5 ? 68 : 55; notes.push('League avg ' + lg.cards.toFixed(1) + ' cards'); }
+  else if (cat === 'corner' || cat === 'corner_t') { score = (isO && lg.corners >= 10) ? 78 : 65; notes.push('League avg ' + lg.corners.toFixed(1) + ' CK'); }
+  else if (cat === 'shot' || cat === 'shot_t')     { score = (isO && lg.shots >= 13)   ? 80 : 68; notes.push('League avg ' + lg.shots.toFixed(1) + ' SoT'); }
+  else if (cat === 'btts')   { score = lg.btts >= 55 ? 85 : lg.btts >= 50 ? 72 : 58; notes.push('League BTTS ' + lg.btts + '%'); }
+  else if (cat === 'ou15' || cat === 'ou25' || cat === 'ou35') { score = lg.goals >= 2.8 ? 82 : lg.goals >= 2.6 ? 70 : 58; notes.push('League ' + lg.goals.toFixed(1) + ' goals'); }
+  else if (cat === 'ht')     { score = lg.over05HT >= 68 ? 80 : lg.over05HT >= 63 ? 68 : 55; notes.push('HT goal rate ' + lg.over05HT + '%'); }
+  else { score = 65; }
+  if (ev >= 5) score = Math.min(92, score + 8);
+  else if (ev >= 2) score = Math.min(88, score + 4);
+  return { score: score, label: 'League context', detail: notes.join(' / ') };
+}
+
+function calcCorrelationScore(pick, lg) {
+  var mkt = pick.mktKey || 'h2h';
+  var cat = getMktCat(mkt, pick.pick, pick.point);
+  var o   = (pick.pick || '').toLowerCase();
+  var isO = o.indexOf('over') >= 0;
+  var score = 60, corrTags = [];
+  // Key correlations from guide
+  if (cat === 'card' || cat === 'card_t')  { corrTags.push({ type: 'pos', t: 'Fouls->Cards (+0.72)' }); if (lg.cards >= 4.0) corrTags.push({ type: 'pos', t: 'High-card league' }); score = 75; }
+  if (cat === 'shot' || cat === 'shot_t')  { corrTags.push({ type: 'pos', t: 'Shots->SoT (+0.85)' }); score = 78; }
+  if (cat === 'ou15' || cat === 'ou25' || cat === 'ou35') {
+    if (isO) { corrTags.push({ type: 'pos', t: 'xG->Goals (+0.82)' }); if (lg.btts >= 52) corrTags.push({ type: 'pos', t: 'BTTS supports Over' }); score = 72; }
+    else { corrTags.push({ type: 'neg', t: 'BTTS limits Under' }); score = 58; }
+  }
+  if (cat === 'btts') { corrTags.push({ type: 'pos', t: 'Attack metrics align' }); if (lg.goals >= 2.7) corrTags.push({ type: 'pos', t: 'High-scoring league' }); score = 76; }
+  if (cat === 'corner' || cat === 'corner_t') { corrTags.push({ type: 'pos', t: 'Attack->Corners (+0.68)' }); score = 70; }
+  if (cat === 'ht')  { corrTags.push({ type: 'pos', t: 'Goals->HT goals (+0.78)' }); score = 72; }
+  if (cat === 'dnb') { corrTags.push({ type: 'pos', t: 'Form advantage reduces draw risk' }); score = 70; }
+  if (!corrTags.length) { corrTags.push({ type: 'neu', t: 'Standard market' }); }
+  return { score: score, label: 'Correlations', detail: '', corrTags: corrTags };
+}
+
+function calcMatchupScore(pick) {
+  var ev   = parseFloat(pick.ev_pct || pick.ev || 0);
+  var fair = parseFloat(pick.fair_odd || pick.fair || 0);
+  var odds = parseFloat(pick.odds_best || pick.odds || 2);
+  var score, detail;
+  if (ev >= 8)       { score = 90; detail = 'Strong mispricing vs fair'; }
+  else if (ev >= 5)  { score = 80; detail = 'Clear edge vs fair value'; }
+  else if (ev >= 3)  { score = 72; detail = 'Positive matchup edge'; }
+  else if (ev >= 1)  { score = 62; detail = 'Slight edge'; }
+  else               { score = 48; detail = 'No edge'; }
+  if (fair > 0 && odds > 0) detail += ' (' + odds.toFixed(2) + ' vs fair ' + fair.toFixed(2) + ')';
+  return { score: score, label: 'Matchup / Edge', detail: detail };
+}
+
+function calcValueScore(pick) {
+  var ev   = parseFloat(pick.ev_pct || pick.ev || 0);
+  var prob = parseFloat(pick.prob_real || 50);
+  var odds = parseFloat(pick.odds_best || pick.odds || 2);
+  var impliedProb = odds > 0 ? (100 / odds) : 50;
+  var edge = prob - impliedProb;
+  var score, passes;
+  // Guide: need min 5% edge for a bet
+  if (edge >= 15)      { score = 95; passes = true; }
+  else if (edge >= 10) { score = 88; passes = true; }
+  else if (edge >= 5)  { score = 78; passes = true; }
+  else if (edge >= 3)  { score = 62; passes = false; }
+  else if (edge >= 0)  { score = 48; passes = false; }
+  else                 { score = 30; passes = false; }
+  return { score: score, label: 'EV value check', detail: 'Real ' + prob.toFixed(0) + '% vs implied ' + impliedProb.toFixed(0) + '% (edge: ' + (edge >= 0 ? '+' : '') + edge.toFixed(1) + '%)', edge: edge, passes: passes, evPct: ev };
+}
+
+function calcExternalsScore(pick) {
+  var score = 68, notes = [];
+  try {
+    if (pick.game_time) {
+      var hoursAway = (new Date(pick.game_time) - new Date()) / 3600000;
+      if (hoursAway < 0)       score = 65;
+      else if (hoursAway < 24) score = 75;
+    }
+  } catch(e) {}
+  notes.push('Verify: starting XI confirmed');
+  notes.push('Verify: referee avg cards/match');
+  if (getSportCat(pick.sportKey || '') === 'soccer') notes.push('Weather / pitch conditions');
+  return { score: score, label: 'External conditions', detail: 'Confirm: lineup / referee / weather', notes: notes };
+}
+
+function run7Filters(pick) {
+  var sport = getSportCat(pick.sportKey || pick.sport || '');
+  var lg    = (sport === 'soccer') ? (LEAGUE_STATS[pick.sportKey] || LEAGUE_STATS.default) : LEAGUE_STATS.default;
+  var f1 = calcWeightedAvgScore(pick, lg);
+  var f2 = calcHitRate(pick, lg);
+  var f3 = calcTacticalScore(pick, lg);
+  var f4 = calcCorrelationScore(pick, lg);
+  var f5 = calcMatchupScore(pick);
+  var f6 = calcValueScore(pick);
+  var f7 = calcExternalsScore(pick);
+  var composite = Math.round(f1.score * 0.12 + f2.score * 0.18 + f3.score * 0.14 + f4.score * 0.10 + f5.score * 0.14 + f6.score * 0.22 + f7.score * 0.10);
+  var passCount = [f1.score >= 65, f2.passes !== false && f2.score >= 65, f3.score >= 65, f4.score >= 60, f5.score >= 60, f6.passes !== false, f7.score >= 60].filter(Boolean).length;
+  return { f1: f1, f2: f2, f3: f3, f4: f4, f5: f5, f6: f6, f7: f7, composite: composite, passCount: passCount };
+}
+
+function filterPanelHtml(analysis) {
+  var score = analysis.composite;
+  var badgeCls = score >= 75 ? 'fp-score-high' : score >= 60 ? 'fp-score-mid' : 'fp-score-low';
+  var rows = [
+    { id: 'F1', lbl: 'Weighted Average', r: analysis.f1 },
+    { id: 'F2', lbl: 'Hit Rate / Consistency', r: analysis.f2 },
+    { id: 'F3', lbl: 'Tactical Context', r: analysis.f3 },
+    { id: 'F4', lbl: 'Market Correlations', r: analysis.f4 },
+    { id: 'F5', lbl: 'Matchup / Edge', r: analysis.f5 },
+    { id: 'F6', lbl: 'Odds vs Real Prob', r: analysis.f6 },
+    { id: 'F7', lbl: 'External Conditions', r: analysis.f7 },
+  ];
+  var rowsHtml = rows.map(function(row) {
+    var s = row.r.score;
+    var barCol = s >= 75 ? '#22c55e' : s >= 60 ? '#fbbf24' : '#e65e4c';
+    var passIcon = s >= 75 ? '&#x2713;' : s >= 60 ? '~' : '&#x2717;';
+    var passClass = s >= 75 ? 'ok' : s >= 60 ? 'warn' : 'fail';
+    var detail = row.r.detail || '';
+    return '<div class="filter-row">'
+      + '<span class="f-id">' + row.id + '</span>'
+      + '<div style="flex:1;min-width:0">'
+        + '<div style="display:flex;align-items:center;justify-content:space-between">'
+          + '<span class="f-lbl">' + row.lbl + '</span>'
+          + '<span class="f-val" style="color:' + barCol + '">' + s + '</span>'
+        + '</div>'
+        + '<div class="f-bar-wrap"><div class="f-bar" style="width:' + s + '%;background:' + barCol + '"></div></div>'
+        + (detail ? '<div class="f-det">' + detail + '</div>' : '')
+      + '</div>'
+      + '<div class="f-pass ' + passClass + '">' + passIcon + '</div>'
+    + '</div>';
+  }).join('');
+  var corrHtml = '';
+  if (analysis.f4.corrTags && analysis.f4.corrTags.length) {
+    corrHtml = '<div class="corr-tags">' + analysis.f4.corrTags.map(function(t) { return '<span class="ctag ctag-' + t.type + '">' + t.t + '</span>'; }).join('') + '</div>';
+  }
+  return '<div class="filter-panel">'
+    + '<div class="fp-title">7-Filter Analysis <span class="fp-score-badge ' + badgeCls + '">' + score + '% &bull; ' + analysis.passCount + '/7</span></div>'
+    + '<div class="filter-rows">' + rowsHtml + '</div>'
+    + (corrHtml ? '<div style="margin-top:5px">' + corrHtml + '</div>' : '')
+  + '</div>';
+}
+
+
 let PICKS=[], SELECTED=new Set(), ACTIVE_CAT='all';
 
 function countCats(){
@@ -587,7 +832,8 @@ function renderStatsBar(){
   const avgOdd=vis.reduce((s,p)=>s+parseFloat(p.odds_best||p.odds||0),0)/vis.length;
   const sports=[...new Set(vis.map(p=>getSportCat(p.sportKey||p.sport||'')))].length;
   const mkts=[...new Set(vis.map(p=>getMktCat(p.mktKey||'h2h',p.pick,p.point)))].length;
-  bar.innerHTML=`
+  const highConf=(typeof run7Filters==='function')?vis.filter(function(p){var a=run7Filters(p);return a.passCount>=5;}).length:0;
+    bar.innerHTML=`
     <div class="sbar-cell"><span class="sbar-v">${vis.length}</span><div class="sbar-l">Picks</div></div>
     <div class="sbar-cell"><span class="sbar-v" style="color:var(--green)">${avgEV>=0?'+':''}${avgEV.toFixed(1)}%</span><div class="sbar-l">Avg EV</div></div>
     <div class="sbar-cell"><span class="sbar-v">${avgOdd.toFixed(2)}</span><div class="sbar-l">Avg Odds</div></div>
@@ -620,13 +866,13 @@ function updateActionBar(){
   const legs=[...SELECTED].map(i=>PICKS[i]).filter(Boolean);
   const co=legs.reduce((p,l)=>p*parseFloat(l.odds_best||l.odds||1),1);
   const type=n===1?'Single':n===2?'Double':n===3?'Treble':`${n}-Fold`;
-  info.innerHTML=`<strong>${n}</strong> selected · Combined: <strong style="color:var(--green)">${co.toFixed(2)}</strong>`;
+  info.innerHTML=`<strong>${n}</strong> selected . Combined: <strong style="color:var(--green)">${co.toFixed(2)}</strong>`;
   btn.style.display='inline-flex';btn.textContent=`Build ${type}`;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ===============================================================
    PUBLIC API  window.PM
-═══════════════════════════════════════════════════════════════ */
+=============================================================== */
 window.PM = {
   render(picks){
     PICKS=(picks||[]).map(p=>({
@@ -659,7 +905,7 @@ window.PM = {
     const legs=[...SELECTED].map(i=>PICKS[i]).filter(Boolean);if(!legs.length)return;
     const co=legs.reduce((p,l)=>p*parseFloat(l.odds_best||l.odds||1),1);
     const type=legs.length===1?'SINGLE':legs.length===2?'DOUBLE':legs.length===3?'TREBLE':`${legs.length}-FOLD`;
-    const txt=`${type}\n${legs.map((l,i)=>`${i+1}. ${l.home} vs ${l.away}\n   ▸ ${l.pick} @ ${parseFloat(l.odds_best||l.odds).toFixed(2)}\n   ${pickMktLabel(l.mktKey,l.pick,l.point)} · EV:+${l.ev_pct||l.ev}% · ${l.bookmaker||''}`).join('\n')}\nCombined: ${co.toFixed(2)}\n— Manuel Dança`;
+    const txt=`${type}\n${legs.map((l,i)=>`${i+1}. ${l.home} vs ${l.away}\n   > ${l.pick} @ ${parseFloat(l.odds_best||l.odds).toFixed(2)}\n   ${pickMktLabel(l.mktKey,l.pick,l.point)} . EV:+${l.ev_pct||l.ev}% . ${l.bookmaker||''}`).join('\n')}\nCombined: ${co.toFixed(2)}\n- Manuel Danca`;
     navigator.clipboard?.writeText(txt).then(()=>toast('Ticket copied!','s')).catch(()=>alert(txt));
   },
 };
@@ -689,22 +935,22 @@ function toast(msg,type='i'){
   setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3500);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   DEMO — 17 picks (all 15 soccer + 2 non-soccer)
-═══════════════════════════════════════════════════════════════ */
+/* ===============================================================
+   DEMO - 17 picks (all 15 soccer + 2 non-soccer)
+=============================================================== */
 const now=Date.now();
 document.addEventListener('DOMContentLoaded',()=>PM.render([
   {pick:'Juventus',                home:'Juventus',away:'Sassuolo',sport:'Serie A',icon:'🇮🇹',sportKey:'soccer_italy_serie_a',mktKey:'h2h',odds_best:'1.60',fair_odd:'1.45',ev_pct:'10.3',kelly_pct:'6.8',prob_real:'62.5',point:null,game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Home or Draw',            home:'Man City',away:'Arsenal',sport:'Premier League',icon:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',sportKey:'soccer_epl',mktKey:'double_chance',odds_best:'1.25',fair_odd:'1.14',ev_pct:'9.6',kelly_pct:'5.8',prob_real:'80.0',point:null,game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
-  {pick:'Yes',                     home:'Liverpool',away:'Chelsea',sport:'Premier League',icon:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',sportKey:'soccer_epl',mktKey:'btts',odds_best:'1.72',fair_odd:'1.55',ev_pct:'11.0',kelly_pct:'7.1',prob_real:'58.1',point:null,game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
+  {pick:'Home or Draw',            home:'Man City',away:'Arsenal',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'double_chance',odds_best:'1.25',fair_odd:'1.14',ev_pct:'9.6',kelly_pct:'5.8',prob_real:'80.0',point:null,game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
+  {pick:'Yes',                     home:'Liverpool',away:'Chelsea',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'btts',odds_best:'1.72',fair_odd:'1.55',ev_pct:'11.0',kelly_pct:'7.1',prob_real:'58.1',point:null,game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
   {pick:'Over 1.5',                home:'Bayern',away:'Dortmund',sport:'Bundesliga',icon:'🇩🇪',sportKey:'soccer_germany_bundesliga',mktKey:'totals',odds_best:'1.22',fair_odd:'1.12',ev_pct:'8.9',kelly_pct:'5.2',prob_real:'89.3',point:1.5,game_time:new Date(now+6*36e5).toISOString(),bookmaker:'Bet365'},
   {pick:'Over 2.5',                home:'Real Madrid',away:'Atletico',sport:'La Liga',icon:'🇪🇸',sportKey:'soccer_spain_la_liga',mktKey:'totals',odds_best:'1.90',fair_odd:'1.70',ev_pct:'11.8',kelly_pct:'7.0',prob_real:'58.8',point:2.5,game_time:new Date(now+4*36e5).toISOString(),bookmaker:'Bet365'},
   {pick:'Under 3.5',               home:'Atletico',away:'Villarreal',sport:'La Liga',icon:'🇪🇸',sportKey:'soccer_spain_la_liga',mktKey:'alternate_totals',odds_best:'1.55',fair_odd:'1.40',ev_pct:'10.7',kelly_pct:'6.5',prob_real:'71.4',point:3.5,game_time:new Date(now+4*36e5).toISOString(),bookmaker:'Unibet'},
   {pick:'Over 0.5',                home:'PSG',away:'Lyon',sport:'Ligue 1',icon:'🇫🇷',sportKey:'soccer_france_ligue_one',mktKey:'first_half_totals',odds_best:'1.50',fair_odd:'1.36',ev_pct:'10.3',kelly_pct:'7.2',prob_real:'73.5',point:0.5,game_time:new Date(now+7*36e5).toISOString(),bookmaker:'Bwin'},
   {pick:'Over 0.5',                home:'Fortuna Sittard',away:'FC Twente',sport:'Eredivisie',icon:'🇳🇱',sportKey:'soccer_netherlands_eredivisie',mktKey:'team_totals',odds_best:'1.50',fair_odd:'1.35',ev_pct:'11.1',kelly_pct:'7.4',prob_real:'74.1',point:0.5,game_time:new Date(now+2*36e5).toISOString(),bookmaker:'Unibet'},
-  {pick:'Over 4.5',                home:'Hull City',away:'Sheffield Wed',sport:'Championship',icon:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',sportKey:'soccer_epl',mktKey:'cards',odds_best:'1.80',fair_odd:'1.60',ev_pct:'12.5',kelly_pct:'7.8',prob_real:'62.5',point:4.5,game_time:new Date(now+1*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Over 9.5',                home:'Liverpool',away:'Chelsea',sport:'Premier League',icon:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',sportKey:'soccer_epl',mktKey:'corners',odds_best:'1.85',fair_odd:'1.64',ev_pct:'12.8',kelly_pct:'7.8',prob_real:'60.9',point:9.5,game_time:new Date(now+7*36e5).toISOString(),bookmaker:'Bet365'},
-  {pick:'Over 5.5',                home:'Man Utd',away:'Tottenham',sport:'Premier League',icon:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',sportKey:'soccer_epl',mktKey:'team_corners',odds_best:'1.75',fair_odd:'1.57',ev_pct:'11.5',kelly_pct:'7.1',prob_real:'63.7',point:5.5,game_time:new Date(now+8*36e5).toISOString(),bookmaker:'Bwin'},
+  {pick:'Over 4.5',                home:'Hull City',away:'Sheffield Wed',sport:'Championship',icon:'[',sportKey:'soccer_epl',mktKey:'cards',odds_best:'1.80',fair_odd:'1.60',ev_pct:'12.5',kelly_pct:'7.8',prob_real:'62.5',point:4.5,game_time:new Date(now+1*36e5).toISOString(),bookmaker:'Bet365'},
+  {pick:'Over 9.5',                home:'Liverpool',away:'Chelsea',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'corners',odds_best:'1.85',fair_odd:'1.64',ev_pct:'12.8',kelly_pct:'7.8',prob_real:'60.9',point:9.5,game_time:new Date(now+7*36e5).toISOString(),bookmaker:'Bet365'},
+  {pick:'Over 5.5',                home:'Man Utd',away:'Tottenham',sport:'Premier League',icon:'[',sportKey:'soccer_epl',mktKey:'team_corners',odds_best:'1.75',fair_odd:'1.57',ev_pct:'11.5',kelly_pct:'7.1',prob_real:'63.7',point:5.5,game_time:new Date(now+8*36e5).toISOString(),bookmaker:'Bwin'},
   {pick:'Over 1.5',                home:'Juventus',away:'Sassuolo',sport:'Serie A',icon:'🇮🇹',sportKey:'soccer_italy_serie_a',mktKey:'team_cards',odds_best:'1.90',fair_odd:'1.65',ev_pct:'15.2',kelly_pct:'9.2',prob_real:'60.6',point:1.5,game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'Bet365'},
   {pick:'Over 7.5',                home:'PSG',away:'Lyon',sport:'Ligue 1',icon:'🇫🇷',sportKey:'soccer_france_ligue_one',mktKey:'shots_on_target',odds_best:'1.75',fair_odd:'1.56',ev_pct:'12.2',kelly_pct:'7.9',prob_real:'64.1',point:7.5,game_time:new Date(now+10*36e5).toISOString(),bookmaker:'Bwin'},
   {pick:'Over 2.5',                home:'Juventus',away:'Sassuolo',sport:'Serie A',icon:'🇮🇹',sportKey:'soccer_italy_serie_a',mktKey:'team_shots_on_target',odds_best:'1.80',fair_odd:'1.58',ev_pct:'13.9',kelly_pct:'8.8',prob_real:'63.3',point:2.5,game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'Bet365'},
