@@ -4642,19 +4642,19 @@ const ODDS_API_BASE = 'https://api.the-odds-api.com/v4';
 ───────────────────────────────────────────────────────────── */
 const SPORTS_CONFIG = [
   // ⚽ Soccer leagues (h2h = 1X2, spreads = AH, totals = O/U, btts)
-  { key:'soccer_epl',                 sport:'Soccer', label:'Premier League',    markets:'h2h,totals,spreads,btts',
+  { key:'soccer_epl',                 sport:'Soccer', label:'Premier League',    markets:'h2h,totals,spreads,btts,team_totals',
     propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
-  { key:'soccer_spain_la_liga',       sport:'Soccer', label:'La Liga',           markets:'h2h,totals,spreads,btts',
+  { key:'soccer_spain_la_liga',       sport:'Soccer', label:'La Liga',           markets:'h2h,totals,spreads,btts,team_totals',
     propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
-  { key:'soccer_germany_bundesliga',  sport:'Soccer', label:'Bundesliga',        markets:'h2h,totals,spreads,btts',
+  { key:'soccer_germany_bundesliga',  sport:'Soccer', label:'Bundesliga',        markets:'h2h,totals,spreads,btts,team_totals',
     propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
-  { key:'soccer_italy_serie_a',       sport:'Soccer', label:'Serie A',           markets:'h2h,totals,spreads,btts',
+  { key:'soccer_italy_serie_a',       sport:'Soccer', label:'Serie A',           markets:'h2h,totals,spreads,btts,team_totals',
     propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
-  { key:'soccer_france_ligue_one',    sport:'Soccer', label:'Ligue 1',           markets:'h2h,totals,spreads,btts',
+  { key:'soccer_france_ligue_one',    sport:'Soccer', label:'Ligue 1',           markets:'h2h,totals,spreads,btts,team_totals',
     propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
-  { key:'soccer_uefa_champs_league',  sport:'Soccer', label:'Champions League',  markets:'h2h,totals,spreads,btts',
+  { key:'soccer_uefa_champs_league',  sport:'Soccer', label:'Champions League',  markets:'h2h,totals,spreads,btts,team_totals',
     propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
-  { key:'soccer_portugal_primeira_liga',sport:'Soccer',label:'Primeira Liga',   markets:'h2h,totals,spreads,btts',
+  { key:'soccer_portugal_primeira_liga',sport:'Soccer',label:'Primeira Liga',   markets:'h2h,totals,spreads,btts,team_totals',
     propMarkets:'player_goal_scorer_anytime,player_shots_on_target,player_cards,player_tackles,player_fouls_committed,player_saves,player_assists' },
   // 🏀 NBA — team markets + player props
   { key:'basketball_nba',             sport:'NBA',    label:'NBA',               markets:'h2h,totals,spreads,team_totals',
@@ -4729,6 +4729,7 @@ function validOdds(odds, mktKey) {
 const RealData = {
   _cache: {},
   _loading: false,
+  _lowThreshold: false,   // set true to show picks with EV < 0% as well
 
   /* ── Fetch sport-level odds (team markets) ── */
   async fetchSportOdds(cfg) {
@@ -4830,12 +4831,13 @@ const RealData = {
       });
 
       // Only show the most +EV side (prevents showing contradictory Over+Under)
-      const positives = withEV.filter(o => o.ev >= 1.0 && o.ev <= 25);
+      const minEV = RealData._lowThreshold ? -15 : 1.0;
+      const positives = withEV.filter(o => o.ev >= minEV && o.ev <= 25);
       if(!positives.length) return;
 
       // For 2-outcome markets (totals, h2h without draw), only show best EV side
-      const isBinary = ['totals','alternate_totals','spreads','alternate_spreads'].includes(mktKey);
-      const toShow = isBinary ? [positives.reduce((a,b) => a.ev > b.ev ? a : b)] : positives;
+      const isBinary = !RealData._lowThreshold && ['totals','alternate_totals','spreads','alternate_spreads'].includes(mktKey);
+      const toShow = (isBinary && positives.length > 1) ? [positives.reduce((a,b) => a.ev > b.ev ? a : b)] : positives;
 
       toShow.forEach(o => {
         const { odds, bookmaker, name: outName, point, fp: fairProb, fairOdds, ev } = o;
@@ -4949,13 +4951,16 @@ const RealData = {
       [over, under].forEach(side => {
         const fp = (1/side.odds) / or * 100;
         const ev = ((fp/100) * (side.odds-1) - (1-fp/100)) * 100;
-        if(ev < 1.0 || ev > 25) return;
+        const minEVprop = RealData._lowThreshold ? -15 : 1.0;
+        if(ev < minEVprop || ev > 25) return;
 
-        // Only show best EV side for props too
-        const otherSide = side === over ? under : over;
-        const otherFP   = (1/otherSide.odds) / or * 100;
-        const otherEV   = ((otherFP/100) * (otherSide.odds-1) - (1-otherFP/100)) * 100;
-        if(otherEV > ev) return; // other side is better, skip this one
+        // In normal mode only show best EV side; in lowThreshold show both sides
+        if(!RealData._lowThreshold) {
+          const otherSide = side === over ? under : over;
+          const otherFP   = (1/otherSide.odds) / or * 100;
+          const otherEV   = ((otherFP/100) * (otherSide.odds-1) - (1-otherFP/100)) * 100;
+          if(otherEV > ev) return; // other side is better, skip this one
+        }
 
         const meta = PROP_MKT_META[side.mktKey] || {};
         const pt   = side.point != null ? parseFloat(side.point) : null;
@@ -4988,10 +4993,11 @@ const RealData = {
   },
 
   /* ── Main loader ── */
-  async loadAllSports() {
+  async loadAllSports(forceShowAll) {
     const apiKey = SETT.getKey();
     if(!apiKey) return;
     if(this._loading) return;
+    if(forceShowAll) this._lowThreshold = true;
     this._loading = true;
 
     const grid = document.getElementById('picks-grid');
@@ -5029,7 +5035,7 @@ const RealData = {
     this._loading = false;
 
     if(!allPicks.length) {
-      if(grid) grid.innerHTML = `<div class="empty-wrap"><span class="empty-ico">🕐</span><div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Sem picks +EV disponíveis agora</div><div style="font-size:.84rem;color:var(--t3);max-width:380px;margin:0 auto;line-height:1.65">A API está ligada mas os bookmakers não têm margin suficiente para gerar EV positivo neste momento. Tenta em horas de jogo ou aumenta a sensibilidade abaixo.</div><button onclick="RealData._lowThreshold=true;RealData.loadAllSports()" style="margin-top:16px;padding:9px 22px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">↓ Mostrar EV ≥ 0% também</button></div>`;
+      if(grid) grid.innerHTML = `<div class="empty-wrap"><span class="empty-ico">🕐</span><div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Sem picks +EV disponíveis agora</div><div style="font-size:.84rem;color:var(--t3);max-width:380px;margin:0 auto;line-height:1.65">A API está ligada mas os bookmakers não têm margin suficiente para gerar EV positivo neste momento. Tenta em horas de jogo ou aumenta a sensibilidade abaixo.</div><button onclick="RealData.loadAllSports(true)" style="margin-top:16px;padding:9px 22px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">↓ Mostrar EV ≥ 0% também</button></div>`;
       toast('Sem picks +EV agora. Tenta em horas de jogo.','i');
       return;
     }
@@ -5045,7 +5051,11 @@ const RealData = {
     PM.render(deduped.slice(0, 150));
     const props = deduped.filter(p => p.isPlayerProp).length;
     const team  = deduped.length - props;
-    toast(`✅ ${deduped.length} picks reais · ${team} team · ${props} player props`, 's');
+    const negEV = deduped.filter(p => parseFloat(p.ev_pct) < 0).length;
+    const mode  = this._lowThreshold ? (negEV > 0 ? ` · ${negEV} com EV negativo incluídos` : '') : '';
+    toast(`✅ ${deduped.length} picks${mode}`, 's');
+    // Reset low threshold after load so next refresh is normal
+    this._lowThreshold = false;
   },
 };
 
