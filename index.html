@@ -265,6 +265,58 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
   .metrics .metric:nth-child(3){border-top:1px solid var(--border2)}
   .metrics .metric:nth-child(4){border-top:1px solid var(--border2);border-right:none}
 }
+
+/* ================================================================
+   PROP QUALITY / VOLATILITY BADGE
+================================================================ */
+.vol-badge{display:inline-flex;align-items:center;padding:1px 6px;border-radius:4px;font-size:.56rem;font-weight:700;border:1px solid;margin-left:4px}
+.vol-low  {background:rgba(34,197,94,.1); border-color:rgba(34,197,94,.3); color:#22c55e}
+.vol-med  {background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:var(--yellow)}
+.vol-high {background:rgba(230,94,76,.1); border-color:rgba(230,94,76,.3); color:var(--red)}
+
+/* ================================================================
+   NBA PROJECTION TABLE (shown when category is NBA props)
+================================================================ */
+.proj-table-wrap{overflow-x:auto;padding:0 10px 8px;border-bottom:1px solid var(--border2)}
+.proj-table-wrap::-webkit-scrollbar{height:4px}
+.proj-table{width:100%;border-collapse:collapse;font-size:.68rem;min-width:640px}
+.proj-table th{
+  padding:6px 10px;text-align:right;font-size:.57rem;font-weight:700;
+  color:var(--t3);text-transform:uppercase;letter-spacing:.4px;
+  border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;
+}
+.proj-table th:first-child,.proj-table th:nth-child(2){text-align:left}
+.proj-table th:hover{color:var(--t2)}
+.proj-table th.sort-asc::after{content:' \25B2'}
+.proj-table th.sort-desc::after{content:' \25BC'}
+.proj-table td{
+  padding:8px 10px;text-align:right;
+  border-bottom:1px solid var(--border2);
+  font-weight:600;color:var(--t1);
+}
+.proj-table td:first-child,.proj-table td:nth-child(2){text-align:left}
+.proj-table tr:hover td{background:rgba(255,255,255,.025)}
+.proj-table tr.selected-row td{background:rgba(181,255,59,.04)}
+.pt-player{display:flex;align-items:center;gap:6px}
+.pt-team{font-size:.6rem;color:var(--t3);font-weight:500}
+.pt-matchup{font-size:.6rem;color:var(--blue);font-weight:500;text-decoration:none}
+.pt-matchup:hover{color:var(--t1)}
+.pt-num{color:var(--blue);font-weight:700}
+.pt-num.hi{color:#22c55e}
+.pt-num.lo{color:var(--red)}
+.proj-table-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px 6px;font-size:.6rem;color:var(--t3);
+  border-bottom:1px solid var(--border2);
+}
+.proj-table-hdr strong{color:var(--t1);font-size:.7rem}
+.pt-lock{color:var(--t4);font-size:.7rem}
+
+/* ================================================================
+   LEAGUE SECTION HEADER IN SPORT NAV
+================================================================ */
+.sport-nav-sep{width:1px;height:14px;background:var(--border3);flex-shrink:0;margin:0 3px}
+
 </style>
 </head>
 <body>
@@ -292,6 +344,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
   <div class="stats-bar" id="stats-bar"></div>
   <!-- GRID -->
   <div style="flex:1;overflow-y:auto">
+    <div id="proj-table-container" style="display:none"></div>
     <div class="picks-grid" id="picks-grid">
       <div class="empty-wrap">
         <span class="empty-ico">&#x26A1;</span>
@@ -391,12 +444,44 @@ function getMktCat(mktKey, pickStr, point) {
 
 function getSportCat(sk) {
   const s = (sk||'').toLowerCase();
-  if (s.includes('basketball')||s.includes('nba')) return 'nba';
-  if (s.includes('nfl')||s.includes('american'))   return 'nfl';
-  if (s.includes('nhl')||s.includes('hockey'))     return 'nhl';
-  if (s.includes('baseball')||s.includes('mlb'))   return 'mlb';
-  if (s.includes('tennis')||s.includes('atp')||s.includes('wta')) return 'tennis';
-  if (s.includes('mma')||s.includes('boxing')||s.includes('ufc')) return 'mma';
+  // Basketball
+  if (s.includes('basketball_nba')||s.includes('nba')) return 'nba';
+  if (s.includes('ncaamb')||s.includes('ncaawb')||s.includes('ncaa_basketball')||s.includes('college_basketball')) return 'ncaabb';
+  if (s.includes('euroliga')||s.includes('euroleague')) return 'euroliga';
+  if (s.includes('basketball')) return 'nba';
+  // American Football
+  if (s.includes('nfl')||s.includes('americanfootball_nfl')) return 'nfl';
+  if (s.includes('ncaafb')||s.includes('college_football')) return 'ncaafb';
+  if (s.includes('americanfootball')) return 'nfl';
+  // Hockey
+  if (s.includes('nhl')||s.includes('icehockey_nhl')) return 'nhl';
+  if (s.includes('shl')||s.includes('sweden')) return 'shl';
+  if (s.includes('hockey')) return 'nhl';
+  // Baseball
+  if (s.includes('baseball_mlb')||s.includes('mlb')) return 'mlb';
+  if (s.includes('baseball')) return 'mlb';
+  // Tennis
+  if (s.includes('atp')||s.includes('wta')||s.includes('tennis')) return 'tennis';
+  // Rugby
+  if (s.includes('nrl')||s.includes('rugby_league')) return 'rugby_league';
+  if (s.includes('super_rugby')) return 'rugby_union';
+  if (s.includes('six_nations')||s.includes('rugby_world_cup')||s.includes('rugby_union')) return 'rugby_union';
+  if (s.includes('rugby')) return 'rugby_union';
+  // Cricket
+  if (s.includes('cricket_odi')||s.includes('odi')) return 'cricket';
+  if (s.includes('cricket_test')||s.includes('test_cricket')) return 'cricket';
+  if (s.includes('ipl')||s.includes('cricket')) return 'cricket';
+  // MMA / Combat
+  if (s.includes('mma')||s.includes('ufc')||s.includes('boxing')) return 'mma';
+  // Golf
+  if (s.includes('golf')||s.includes('pga')||s.includes('masters')) return 'golf';
+  // AFL
+  if (s.includes('afl')||s.includes('aussie_rules')) return 'afl';
+  // Darts
+  if (s.includes('darts')) return 'darts';
+  // Snooker
+  if (s.includes('snooker')) return 'snooker';
+  // Soccer fallback
   return 'soccer';
 }
 
@@ -856,68 +941,81 @@ function filterPanelHtml(analysis) {
 
 /* ---- Player Props market keys (The Odds API) ---- */
 const PROP_KEYS = {
-  // NBA
-  player_points:          { lbl:'Points Scored',       sport:'nba', icon:'pts', cat:'pp_pts', minLine:5  },
-  player_rebounds:        { lbl:'Rebounds',             sport:'nba', icon:'reb', cat:'pp_reb', minLine:2  },
-  player_assists:         { lbl:'Assists',              sport:'nba', icon:'ast', cat:'pp_ast', minLine:1  },
-  player_threes:          { lbl:'3-Pointers Made',      sport:'nba', icon:'3pm', cat:'pp_3pm', minLine:0.5},
-  player_steals:          { lbl:'Steals',               sport:'nba', icon:'stl', cat:'pp_def', minLine:0.5},
-  player_blocks:          { lbl:'Blocks',               sport:'nba', icon:'blk', cat:'pp_def', minLine:0.5},
-  player_points_rebounds_assists: { lbl:'Pts+Reb+Ast', sport:'nba', icon:'PRA', cat:'pp_pra', minLine:10 },
-  player_points_rebounds: { lbl:'Pts+Reb',             sport:'nba', icon:'P+R', cat:'pp_pra', minLine:8  },
-  player_points_assists:  { lbl:'Pts+Ast',             sport:'nba', icon:'P+A', cat:'pp_pra', minLine:8  },
-  player_turnovers:       { lbl:'Turnovers',            sport:'nba', icon:'to',  cat:'pp_pts', minLine:0.5},
-  player_double_double:   { lbl:'Double Double',        sport:'nba', icon:'DD',  cat:'pp_pra', minLine:0.5},
-  // NFL
-  player_passing_yards:   { lbl:'Passing Yards',        sport:'nfl', icon:'pyds',cat:'pp_nfl', minLine:150},
-  player_passing_tds:     { lbl:'Passing TDs',          sport:'nfl', icon:'ptd', cat:'pp_nfl', minLine:0.5},
-  player_rushing_yards:   { lbl:'Rushing Yards',        sport:'nfl', icon:'ryds',cat:'pp_nfl', minLine:30 },
-  player_receptions:      { lbl:'Receptions',           sport:'nfl', icon:'rec', cat:'pp_nfl', minLine:2  },
-  player_receiving_yards: { lbl:'Receiving Yards',      sport:'nfl', icon:'rcv', cat:'pp_nfl', minLine:20 },
-  player_reception_tds:   { lbl:'Receiving TDs',        sport:'nfl', icon:'rtd', cat:'pp_nfl', minLine:0.5},
-  player_rush_tds:        { lbl:'Rushing TDs',          sport:'nfl', icon:'rutd',cat:'pp_nfl', minLine:0.5},
-  player_anytime_td:      { lbl:'Anytime TD Scorer',    sport:'nfl', icon:'TD',  cat:'pp_nfl', minLine:0.5},
-  player_kicking_points:  { lbl:'Kicking Points',       sport:'nfl', icon:'kp',  cat:'pp_nfl', minLine:3  },
-  // NHL
-  player_goals:           { lbl:'Goals',                sport:'nhl', icon:'g',   cat:'pp_nhl', minLine:0.5},
-  player_assists_hockey:  { lbl:'Assists',              sport:'nhl', icon:'a',   cat:'pp_nhl', minLine:0.5},
-  player_points_hockey:   { lbl:'Points (G+A)',         sport:'nhl', icon:'pts', cat:'pp_nhl', minLine:0.5},
-  player_shots_on_goal:   { lbl:'Shots on Goal',        sport:'nhl', icon:'sog', cat:'pp_nhl', minLine:1.5},
-  player_blocked_shots:   { lbl:'Blocked Shots',        sport:'nhl', icon:'blk', cat:'pp_nhl', minLine:0.5},
-  player_saves:           { lbl:'Saves (Goalie)',        sport:'nhl', icon:'sv',  cat:'pp_nhl', minLine:20 },
-  // MLB
-  player_home_runs:       { lbl:'Home Runs',            sport:'mlb', icon:'HR',  cat:'pp_mlb', minLine:0.5},
-  player_hits:            { lbl:'Hits',                 sport:'mlb', icon:'H',   cat:'pp_mlb', minLine:0.5},
-  player_rbis:            { lbl:'RBIs',                 sport:'mlb', icon:'RBI', cat:'pp_mlb', minLine:0.5},
-  player_strikeouts:      { lbl:'Strikeouts (Pitcher)', sport:'mlb', icon:'K',   cat:'pp_mlb', minLine:3  },
-  player_earned_runs:     { lbl:'Earned Runs',          sport:'mlb', icon:'ER',  cat:'pp_mlb', minLine:0.5},
-  player_walks:           { lbl:'Walks (Pitcher)',      sport:'mlb', icon:'BB',  cat:'pp_mlb', minLine:0.5},
-  player_total_bases:     { lbl:'Total Bases',          sport:'mlb', icon:'TB',  cat:'pp_mlb', minLine:1  },
+  // ---- NBA (all markets — medium/low volatility first = best value) ----
+  player_points:          { lbl:'Points Scored',       sport:'nba', icon:'PTS', cat:'pp_pts', minLine:5,   vol:'med',  quality:'efficient'    },
+  player_rebounds:        { lbl:'Rebounds',            sport:'nba', icon:'REB', cat:'pp_reb', minLine:2,   vol:'low',  quality:'matchup-dep'  },
+  player_assists:         { lbl:'Assists',             sport:'nba', icon:'AST', cat:'pp_ast', minLine:1,   vol:'low',  quality:'high-value'   },
+  player_points_rebounds_assists:{ lbl:'PRA',          sport:'nba', icon:'PRA', cat:'pp_pra', minLine:10,  vol:'low',  quality:'best'         },
+  player_points_rebounds: { lbl:'Pts + Reb',           sport:'nba', icon:'P+R', cat:'pp_pr',  minLine:8,   vol:'low',  quality:'solid'        },
+  player_points_assists:  { lbl:'Pts + Ast',           sport:'nba', icon:'P+A', cat:'pp_pa',  minLine:8,   vol:'low',  quality:'solid'        },
+  player_threes:          { lbl:'3-Pointers Made',     sport:'nba', icon:'3PM', cat:'pp_3pm', minLine:0.5, vol:'med',  quality:'streak-based' },
+  player_steals:          { lbl:'Steals',              sport:'nba', icon:'STL', cat:'pp_stl', minLine:0.5, vol:'high', quality:'situational'  },
+  player_blocks:          { lbl:'Blocks',              sport:'nba', icon:'BLK', cat:'pp_blk', minLine:0.5, vol:'high', quality:'situational'  },
+  player_steals_blocks:   { lbl:'Steals + Blocks',     sport:'nba', icon:'S+B', cat:'pp_def', minLine:1,   vol:'high', quality:'advanced'     },
+  player_turnovers:       { lbl:'Turnovers',           sport:'nba', icon:'TOV', cat:'pp_to',  minLine:0.5, vol:'med',  quality:'advanced'     },
+  player_double_double:   { lbl:'Double Double',       sport:'nba', icon:'DD',  cat:'pp_pra', minLine:0.5, vol:'med',  quality:'advanced'     },
+  player_triple_double:   { lbl:'Triple Double',       sport:'nba', icon:'TD',  cat:'pp_pra', minLine:0.5, vol:'high', quality:'advanced'     },
+  player_fantasy_score:   { lbl:'Fantasy Score',       sport:'nba', icon:'DFS', cat:'pp_pra', minLine:20,  vol:'low',  quality:'best'         },
+  // ---- NFL ----
+  player_passing_yards:   { lbl:'Passing Yards',       sport:'nfl', icon:'PYDS',cat:'pp_nfl_pass',minLine:150, vol:'low',  quality:'strong'    },
+  player_passing_completions:{ lbl:'Completions',      sport:'nfl', icon:'COMP',cat:'pp_nfl_comp',minLine:15,  vol:'low',  quality:'efficient' },
+  player_passing_tds:     { lbl:'Passing TDs',         sport:'nfl', icon:'PTD', cat:'pp_nfl', minLine:0.5, vol:'high', quality:'avoid'        },
+  player_passing_interceptions:{ lbl:'Interceptions',  sport:'nfl', icon:'INT', cat:'pp_nfl', minLine:0.5, vol:'high', quality:'risky'        },
+  player_rushing_yards:   { lbl:'Rushing Yards',       sport:'nfl', icon:'RYDS',cat:'pp_nfl_rush',minLine:30,  vol:'med',  quality:'volume-dep'},
+  player_rush_tds:        { lbl:'Rushing TDs',         sport:'nfl', icon:'RTD', cat:'pp_nfl', minLine:0.5, vol:'high', quality:'avoid'        },
+  player_receptions:      { lbl:'Receptions',          sport:'nfl', icon:'REC', cat:'pp_nfl_comp',minLine:2,   vol:'low',  quality:'efficient' },
+  player_receiving_yards: { lbl:'Receiving Yards',     sport:'nfl', icon:'RCYDS',cat:'pp_nfl_rec',minLine:20,  vol:'med',  quality:'matchup'   },
+  player_reception_tds:   { lbl:'Receiving TDs',       sport:'nfl', icon:'WTD', cat:'pp_nfl', minLine:0.5, vol:'high', quality:'avoid'        },
+  player_anytime_td:      { lbl:'Anytime TD',          sport:'nfl', icon:'TD',  cat:'pp_nfl', minLine:0.5, vol:'high', quality:'avoid'        },
+  player_kicking_points:  { lbl:'Kicking Points',      sport:'nfl', icon:'KP',  cat:'pp_nfl', minLine:3,   vol:'low',  quality:'solid'        },
+  // ---- NHL ----
+  player_shots_on_goal:   { lbl:'Shots on Goal',        sport:'nhl', icon:'SOG', cat:'pp_nhl_sog',minLine:1.5, vol:'low',  quality:'best'      },
+  player_points_hockey:   { lbl:'Points (G+A)',         sport:'nhl', icon:'PTS', cat:'pp_nhl_pts',minLine:0.5, vol:'med',  quality:'solid'     },
+  player_assists_hockey:  { lbl:'Assists',              sport:'nhl', icon:'AST', cat:'pp_nhl', minLine:0.5, vol:'med',  quality:'secondary'    },
+  player_goals:           { lbl:'Goals',                sport:'nhl', icon:'G',   cat:'pp_nhl', minLine:0.5, vol:'high', quality:'avoid'        },
+  player_blocked_shots:   { lbl:'Blocked Shots',        sport:'nhl', icon:'BLK', cat:'pp_nhl', minLine:0.5, vol:'med',  quality:'situational'  },
+  player_saves:           { lbl:'Saves (Goalie)',        sport:'nhl', icon:'SV',  cat:'pp_nhl', minLine:20,  vol:'low',  quality:'strong'       },
+  // ---- MLB ----
+  player_strikeouts:      { lbl:'Strikeouts (Pitcher)', sport:'mlb', icon:'K',   cat:'pp_mlb_k', minLine:3,   vol:'low',  quality:'best'       },
+  player_total_bases:     { lbl:'Total Bases',          sport:'mlb', icon:'TB',  cat:'pp_mlb_tb',minLine:1,   vol:'med',  quality:'good-alt'   },
+  player_hits:            { lbl:'Hits',                 sport:'mlb', icon:'H',   cat:'pp_mlb_h', minLine:0.5, vol:'med',  quality:'simple'     },
+  player_runs_scored:     { lbl:'Runs Scored',          sport:'mlb', icon:'R',   cat:'pp_mlb', minLine:0.5, vol:'med',  quality:'situational'  },
+  player_rbis:            { lbl:'RBIs',                 sport:'mlb', icon:'RBI', cat:'pp_mlb', minLine:0.5, vol:'high', quality:'situational'  },
+  player_home_runs:       { lbl:'Home Runs',            sport:'mlb', icon:'HR',  cat:'pp_mlb', minLine:0.5, vol:'high', quality:'avoid'        },
+  player_earned_runs:     { lbl:'Earned Runs',          sport:'mlb', icon:'ER',  cat:'pp_mlb', minLine:0.5, vol:'high', quality:'risky'        },
+  player_walks:           { lbl:'Walks (Pitcher)',      sport:'mlb', icon:'BB',  cat:'pp_mlb', minLine:0.5, vol:'med',  quality:'advanced'     },
 };
 
-/* ---- NBA player season averages (2024-25) ---- */
+/* ---- NBA player projections (2024-25 season averages)
+   Format: [pts, reb, ast, 3pm, stl, blk, pra, pr, pa, dfs, fb_pct]
+   Source: season averages as reference baseline
+   When form_last10 provided in pick, weighted avg is used instead.
+---- */
 const NBA_AVGS = {
-  // Format: [pts, reb, ast, 3pm, stl, blk, pra]
-  default:           [16.0, 5.5, 3.5, 1.5, 1.0, 0.8, 25.0],
-  // Stars
-  'luka doncic':     [28.1, 8.6, 8.0, 3.2, 1.3, 0.6, 44.7],
-  'giannis':         [30.4, 11.5, 6.5, 0.5, 1.2, 1.1, 48.4],
-  'nikola jokic':    [26.4, 12.7, 9.0, 0.8, 1.4, 0.7, 48.1],
-  'jayson tatum':    [26.9, 8.1, 5.0, 3.0, 1.0, 0.6, 40.0],
-  'shai gilgeous':   [32.7, 5.3, 6.4, 1.7, 2.0, 1.1, 44.4],
-  'anthony edwards': [27.4, 5.4, 5.1, 2.8, 1.3, 0.5, 37.9],
-  'lebron james':    [23.8, 8.3, 9.0, 1.6, 1.1, 0.5, 41.1],
-  'stephen curry':   [24.4, 4.4, 6.2, 4.8, 1.0, 0.4, 35.0],
-  'kevin durant':    [27.1, 6.2, 4.0, 1.5, 0.8, 1.2, 37.3],
-  'joel embiid':     [24.2, 10.5, 4.2, 1.1, 1.0, 1.7, 38.9],
-  'damian lillard':  [25.0, 4.5, 7.5, 4.0, 0.9, 0.3, 37.0],
-  'james harden':    [21.0, 5.5, 8.5, 2.8, 1.5, 0.7, 35.0],
-  'myles turner':    [14.3, 6.8, 1.5, 1.8, 0.8, 2.3, 22.6],
-  'quentin grimes':  [14.8, 3.2, 2.8, 2.2, 0.9, 0.3, 20.8],
-  'max christie':    [9.5,  2.8, 2.2, 1.8, 0.7, 0.2, 14.5],
-  'tyrese maxey':    [26.3, 3.8, 6.2, 2.8, 1.2, 0.4, 36.3],
-  'zion williamson': [23.0, 5.8, 3.8, 0.4, 1.0, 0.5, 32.6],
-  'victor wembanyama':[24.6, 10.4, 3.9, 1.8, 1.2, 3.6, 38.9],
+  default:              [16.0, 5.5, 3.5, 1.5, 1.0, 0.8, 25.0, 21.5, 19.5, 32.0, 14.0],
+  // Elite tier
+  'luka doncic':        [35.3, 8.4, 8.6, 3.7, 1.4, 0.5, 52.3, 43.7, 43.9, 66.1, 15.9],
+  'shai gilgeous':      [29.8, 4.5, 7.5, 1.5, 2.0, 0.6, 41.8, 34.3, 37.3, 52.5, 16.2],
+  'kawhi leonard':      [29.4, 6.8, 4.3, 2.4, 1.6, 0.4, 40.5, 36.2, 33.7, 50.5, 15.2],
+  'nikola jokic':       [26.4, 12.7, 9.0, 0.8, 1.4, 0.7, 48.1, 39.1, 35.4, 62.0, 16.5],
+  'giannis':            [30.4, 11.5, 6.5, 0.5, 1.2, 1.1, 48.4, 41.9, 36.9, 62.0, 16.0],
+  'jayson tatum':       [26.9, 8.1, 5.0, 3.0, 1.0, 0.6, 40.0, 35.0, 31.9, 52.0, 14.8],
+  'victor wembanyama':  [24.6, 10.4, 3.9, 1.8, 1.2, 3.6, 38.9, 35.0, 28.5, 58.0, 15.5],
+  'anthony edwards':    [27.4, 5.4, 5.1, 2.8, 1.3, 0.5, 37.9, 32.8, 32.5, 48.0, 14.5],
+  // Second tier
+  'stephen curry':      [24.4, 4.4, 6.2, 4.8, 1.0, 0.4, 35.0, 28.8, 30.6, 45.0, 14.0],
+  'kevin durant':       [27.1, 6.2, 4.0, 1.5, 0.8, 1.2, 37.3, 33.3, 31.1, 48.0, 14.2],
+  'joel embiid':        [24.2, 10.5, 4.2, 1.1, 1.0, 1.7, 38.9, 34.7, 28.4, 52.0, 15.0],
+  'lebron james':       [23.8, 8.3, 9.0, 1.6, 1.1, 0.5, 41.1, 32.1, 32.8, 52.0, 14.8],
+  'damian lillard':     [25.0, 4.5, 7.5, 4.0, 0.9, 0.3, 37.0, 29.5, 32.5, 46.0, 13.8],
+  'tyrese maxey':       [26.3, 3.8, 6.2, 2.8, 1.2, 0.4, 36.3, 30.1, 32.5, 46.5, 14.0],
+  'james harden':       [21.0, 5.5, 8.5, 2.8, 1.5, 0.7, 35.0, 26.5, 29.5, 44.0, 13.5],
+  'zion williamson':    [23.0, 5.8, 3.8, 0.4, 1.0, 0.5, 32.6, 28.8, 26.8, 42.0, 13.2],
+  // Role players / props targets
+  'myles turner':       [14.3, 6.8, 1.5, 1.8, 0.8, 2.3, 22.6, 21.1, 15.8, 32.0, 12.0],
+  'quentin grimes':     [14.8, 3.2, 2.8, 2.2, 0.9, 0.3, 20.8, 18.0, 17.6, 28.0, 11.5],
+  'max christie':       [9.5,  2.8, 2.2, 1.8, 0.7, 0.2, 14.5, 12.3, 11.7, 20.0, 10.0],
+  'nathan mackinnon':   [24.6, 10.4, 3.9, 1.8, 1.2, 3.6, 38.9, 35.0, 28.5, 58.0, 15.5], // also used for hockey lookup by name
 };
 
 /* ---- NFL player season averages (2024) ---- */
@@ -969,7 +1067,15 @@ function getPlayerAvg(playerName, mktKey, sport) {
     let row = null;
     for (const k in avgs) { if (pn.includes(k)) { row = avgs[k]; break; } }
     row = row || avgs.default;
-    const COLS = { player_points:0, player_rebounds:1, player_assists:2, player_threes:3, player_steals:4, player_blocks:5, player_points_rebounds_assists:6, player_points_rebounds:6, player_points_assists:6 };
+    const COLS = {
+      player_points:0, player_rebounds:1, player_assists:2,
+      player_threes:3, player_steals:4, player_blocks:5,
+      player_points_rebounds_assists:6,
+      player_points_rebounds:7, player_points_assists:8,
+      player_fantasy_score:9,
+      player_steals_blocks:4, // use steals as proxy
+      player_turnovers:2,     // use ast as proxy for TO
+    };
     const col = COLS[mktKey];
     if (col !== undefined) return row[col];
   }
@@ -1101,9 +1207,13 @@ let PICKS = [], SELECTED = new Set(), ACTIVE_CAT = 'all', SORT_BY = 'ev', MIN_EV
    SPORT COLORS / ICONS
 ================================================================ */
 const SPORT_COLOR = {
-  soccer:'#7cc245', nba:'#00a8e8', nfl:'#fb923c',
-  nhl:'#a78bfa',    mlb:'#f59e0b', tennis:'#22c55e',
-  mma:'#e65e4c',    default:'#6c7e8f',
+  soccer:'#7cc245',      nba:'#00a8e8',      nfl:'#fb923c',
+  nhl:'#a78bfa',         mlb:'#f59e0b',      tennis:'#22c55e',
+  mma:'#e65e4c',         golf:'#34d399',     afl:'#f59e0b',
+  rugby_league:'#fb923c',rugby_union:'#f97316',
+  cricket:'#a3e635',     ncaabb:'#60a5fa',   ncaafb:'#fb923c',
+  euroliga:'#818cf8',    shl:'#c084fc',      darts:'#22d3ee',
+  snooker:'#4ade80',     default:'#6c7e8f',
 };
 const SPORT_ICON_PATH = {
   soccer: '<circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 0v20M2 12h20M6.3 4.5l11.4 15M17.7 4.5L6.3 19.5"/>',
@@ -1114,6 +1224,17 @@ const SPORT_ICON_PATH = {
   tennis: '<circle cx="12" cy="12" r="10"/><path d="M4.2 4.2C8 8 8 16 4.2 19.8m15.6 0C16 16 16 8 19.8 4.2"/>',
   mma:    '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>',
   default:'<circle cx="12" cy="12" r="10"/>',
+  rugby_league: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 0l4 6-4 8-4-8 4-6z"/>',
+  rugby_union:  '<path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 0l4 6-4 8-4-8 4-6z"/>',
+  cricket: '<path stroke-linecap="round" stroke-linejoin="round" d="M5 19l7-14 7 14M5 19h14M9 13h6"/>',
+  ncaabb: '<circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 0v20M2 12h20"/>',
+  ncaafb: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 8v8m-4-4h8"/>',
+  euroliga: '<circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 0v20M2 12h20"/>',
+  shl: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+  golf: '<circle cx="12" cy="19" r="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 17V7m0 0l6 4-6-4z"/>',
+  afl: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-4 9l4-6 4 6-4 6-4-6z"/>',
+  darts: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="2"/>',
+  snooker: '<circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/><circle cx="12" cy="15" r="2"/>',
 };
 
 /* ================================================================
@@ -1129,12 +1250,39 @@ const CAT_LBL = {
   ah:'Asian Handicap',  dnb:'Draw No Bet',
   spread:'Point Spread',  total:'Total Points',  teamtot:'Team Total',  ml:'Moneyline',
   puckline:'Puck Line',  runline:'Run Line',
-  soccer:'&#x26BD; Soccer',  nba:'&#x1F3C0; NBA',  nhl:'&#x1F3D2; NHL',
-  nfl:'&#x1F3C8; NFL',  mlb:'&#x26BE; MLB',  tennis:'&#x1F3BE; Tennis',  mma:'&#x1F94A; MMA',
+  /* Soccer */
+  soccer:'&#x26BD; Soccer',
+  /* Basketball */
+  nba:'&#x1F3C0; NBA',  ncaabb:'&#x1F3C0; NCAA Basketball',  euroliga:'&#x1F3C0; Euroliga',
+  /* NFL/NCAAFB */
+  nfl:'&#x1F3C8; NFL',  ncaafb:'&#x1F3C8; NCAA Football',
+  /* Hockey */
+  nhl:'&#x1F3D2; NHL',  shl:'&#x1F3D2; SHL (Sweden)',
+  /* Baseball */
+  mlb:'&#x26BE; MLB',
+  /* Tennis */
+  tennis:'&#x1F3BE; Tennis',
+  /* Rugby */
+  rugby_league:'&#x1F3C9; Rugby League',  rugby_union:'&#x1F3C9; Rugby Union',
+  /* Cricket */
+  cricket:'&#x1F3CF; Cricket',
+  /* Combat */
+  mma:'&#x1F94A; MMA / UFC',
+  /* Other */
+  golf:'&#x26F3; Golf',  afl:'&#x1F3C9; AFL',  darts:'&#x1F3AF; Darts',  snooker:'&#x1F3B1; Snooker',
+  /* Player Props */
   'props':'&#x1F464; Player Props',
+  /* NBA Props */
   pp_pts:'Points',  pp_reb:'Rebounds',  pp_ast:'Assists',  pp_3pm:'3-Pointers',
-  pp_pra:'PRA Combo',  pp_def:'Defense',
-  pp_nfl:'NFL Props',  pp_nhl:'NHL Props',  pp_mlb:'MLB Props',
+  pp_pra:'PRA',  pp_pr:'Pts+Reb',  pp_pa:'Pts+Ast',
+  pp_stl:'Steals',  pp_blk:'Blocks',  pp_def:'Stl+Blk',  pp_to:'Turnovers',
+  /* NFL Props */
+  pp_nfl_pass:'Pass Yds',  pp_nfl_rush:'Rush Yds',  pp_nfl_rec:'Rec Yds',
+  pp_nfl_comp:'Completions',  pp_nfl:'NFL Props',
+  /* NHL Props */
+  pp_nhl_sog:'Shots on Goal',  pp_nhl_pts:'Points (G+A)',  pp_nhl:'NHL Props',
+  /* MLB Props */
+  pp_mlb_k:'Strikeouts',  pp_mlb_h:'Hits',  pp_mlb_tb:'Total Bases',  pp_mlb:'MLB Props',
 };
 
 const SOCCER_CATS_ORDER = [
@@ -1222,6 +1370,14 @@ function buildTags(ev, prob, projection, line, mktKey, sport) {
     if (mktKey === 'double_chance') tags.push({cls:'tag-neu', t:'DC'});
   }
 
+  // Add volatility tag if prop market
+  if (isPropKey && typeof mktKey === 'string') {
+    const meta = (typeof PROP_KEYS !== 'undefined') ? PROP_KEYS[mktKey] : null;
+    if (meta) {
+      if (meta.vol === 'low') tags.push({cls:'vol-low',  t:'Low Vol'});
+      else if (meta.vol === 'high') tags.push({cls:'vol-high', t:'High Vol'});
+    }
+  }
   return tags.slice(0, 3);
 }
 
@@ -1506,6 +1662,101 @@ function countCats() {
 /* ================================================================
    RENDER NAV
 ================================================================ */
+
+/* ================================================================
+   NBA PROJECTION TABLE — rendered when category = pp_pts/pp_reb/etc
+   Style: Rotowire / FantasyPros projections table
+================================================================ */
+function renderProjTable(picks, container) {
+  const propPicks = picks.filter(p => isPropKey(p.mktKey));
+  if (!propPicks.length) return '';
+
+  // Build unique player rows with all their stat projections
+  const playerMap = {};
+  propPicks.forEach(p => {
+    const pname = p.playerName || p.home || 'Player';
+    const sport = getSportCat(p.sportKey||p.sport||'');
+    const key   = pname.toLowerCase() + '|' + sport;
+    if (!playerMap[key]) {
+      playerMap[key] = {
+        name: pname, team: p.away || '', matchup: `${p.home} vs. ${p.away}`,
+        sport, game_time: p.game_time,
+        stats: {}, picks: [],
+      };
+    }
+    // Map mktKey -> stat column
+    const colMap = {
+      player_points:'PTS', player_rebounds:'REB', player_assists:'AST',
+      player_threes:'3PM', player_blocks:'BLK', player_steals:'STL',
+      player_turnovers:'TO', player_fantasy_score:'DFS',
+      player_points_rebounds_assists:'PRA',
+      player_points_rebounds:'PR',  player_points_assists:'PA',
+    };
+    const col = colMap[p.mktKey];
+    if (col) {
+      const proj = computeProjection(p);
+      playerMap[key].stats[col] = proj ? proj.toFixed(1) : '--';
+    }
+    playerMap[key].picks.push(p);
+  });
+
+  const players = Object.values(playerMap);
+  if (!players.length) return '';
+
+  const COLS = ['PTS','REB','AST','3PM','BLK','STL','TO','PRA','PR','PA','DFS'];
+  const hasCol = {};
+  COLS.forEach(c => { hasCol[c] = players.some(p => p.stats[c] && p.stats[c] !== '--'); });
+  const activeCols = COLS.filter(c => hasCol[c]);
+
+  // Date stamp
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
+  const timeStr = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+
+  return `
+  <div class="proj-table-wrap">
+    <div class="proj-table-hdr">
+      <strong>&#x1F4CA; Player Projections</strong>
+      <span>Projections for ${dateStr}. Last update: ${dateStr}, at ${timeStr}</span>
+    </div>
+    <table class="proj-table">
+      <thead>
+        <tr>
+          <th style="min-width:140px">Player</th>
+          <th style="min-width:50px">Team</th>
+          <th style="min-width:110px">Matchup</th>
+          ${activeCols.map(c => `<th>${c}</th>`).join('')}
+          <th>Prob</th>
+          <th>Edge</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${players.map(pl => {
+          const best = pl.picks.sort((a,b) => parseFloat(b.ev_pct||0)-parseFloat(a.ev_pct||0))[0] || {};
+          const ev   = parseFloat(best.ev_pct||0);
+          const prob = parseFloat(best.prob_real||50);
+          return `<tr>
+            <td><div class="pt-player">
+              <span style="font-weight:700">${pl.name}</span>
+              <span class="pt-team">${pl.team}</span>
+            </div></td>
+            <td><span class="pt-team">${pl.team||'--'}</span></td>
+            <td><span class="pt-matchup">${pl.matchup}</span></td>
+            ${activeCols.map(c => {
+              const v = pl.stats[c];
+              if (!v || v === '--') return `<td class="pt-lock">&#x1F512;</td>`;
+              const num = parseFloat(v);
+              return `<td class="pt-num ${num > 20 ? 'hi' : ''}">${v}</td>`;
+            }).join('')}
+            <td style="color:var(--blue);font-weight:700">${prob.toFixed(1)}%</td>
+            <td style="color:${ev>=5?'#22c55e':ev>=3?'var(--yellow)':'var(--orange)'};font-weight:700">${ev>=0?'+':''}${ev.toFixed(1)}%</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
 function renderCatNav() {
   const counts = countCats();
 
@@ -1517,7 +1768,14 @@ function renderCatNav() {
     SOCCER_CATS_ORDER.forEach(c => { if (c !== 'value' && counts[c]) mktVis.push(c); });
     ['spread','total','teamtot','ml','puckline','runline'].forEach(c => { if (counts[c]) mktVis.push(c); });
     if (counts.props) mktVis.push('props');
-    ['pp_pts','pp_reb','pp_ast','pp_3pm','pp_pra','pp_def','pp_nfl','pp_nhl','pp_mlb'].forEach(c => { if (counts[c]) mktVis.push(c); });
+    // NBA props sub-cats
+    ['pp_pts','pp_reb','pp_ast','pp_3pm','pp_pra','pp_pr','pp_pa','pp_stl','pp_blk','pp_def','pp_to'].forEach(c => { if (counts[c]) mktVis.push(c); });
+    // NFL props sub-cats
+    ['pp_nfl_pass','pp_nfl_rush','pp_nfl_rec','pp_nfl_comp','pp_nfl'].forEach(c => { if (counts[c]) mktVis.push(c); });
+    // NHL props sub-cats
+    ['pp_nhl_sog','pp_nhl_pts','pp_nhl'].forEach(c => { if (counts[c]) mktVis.push(c); });
+    // MLB props sub-cats
+    ['pp_mlb_k','pp_mlb_h','pp_mlb_tb','pp_mlb'].forEach(c => { if (counts[c]) mktVis.push(c); });
     nav.innerHTML = mktVis.map(id => {
       const active = ACTIVE_CAT === id;
       return `<button class="cat-btn ${id==='value'?'fire':''} ${active?'active':''}" onclick="PM.setCat('${id}')">${CAT_LBL[id]||id}<span class="cnt">${counts[id]||0}</span></button>`;
@@ -1527,7 +1785,17 @@ function renderCatNav() {
   // ROW 2: Sport filters (only when 2+ sports)
   const sNav = document.getElementById('sport-nav');
   if (sNav) {
-    const sports = ['soccer','nba','nhl','nfl','mlb','tennis','mma'].filter(s => counts[s]);
+    const sports = [
+      'soccer','nba','ncaabb','euroliga',
+      'nfl','ncaafb',
+      'nhl','shl',
+      'mlb',
+      'tennis',
+      'rugby_league','rugby_union',
+      'cricket',
+      'mma',
+      'golf','afl','darts','snooker',
+    ].filter(s => counts[s]);
     if (sports.length <= 1) {
       sNav.style.display = 'none';
     } else {
@@ -1580,12 +1848,16 @@ function filterPicks(cat) {
     if (cat === 'props') return isPropKey(p.mktKey);
     if (isPropKey(p.mktKey)) {
       const meta = PROP_KEYS[p.mktKey] || {};
+      const pc = meta.cat || 'pp_pts';
       const sc = getSportCat(p.sportKey||p.sport||'');
-      return (meta.cat||'pp_pts') === cat || sc === cat;
+      // parent prop cat (pp_nfl encompasses pp_nfl_pass, pp_nfl_rush etc)
+      const ppParent = pc.startsWith('pp_nfl')?'pp_nfl':pc.startsWith('pp_nhl')?'pp_nhl':pc.startsWith('pp_mlb')?'pp_mlb':null;
+      return pc === cat || sc === cat || ppParent === cat;
     }
     const mc = getMktCat(p.mktKey||'h2h', p.pick, p.point);
     const sc = getSportCat(p.sportKey||p.sport||'');
-    return mc === cat || sc === cat;
+    const parent = getParentSport(sc);
+    return mc === cat || sc === cat || parent === cat;
   });
 }
 
@@ -1771,6 +2043,21 @@ window.PM = {
       {isPlayerProp:true,playerName:'Nathan MacKinnon',home:'Colorado Avalanche',away:'Toronto Maple Leafs',sport:'NHL',sportKey:'icehockey_nhl',mktKey:'player_shots_on_goal',pick:'Over 3.5 Shots on Goal',point:3.5,odds_best:'2.05',fair_odd:'1.80',ev_pct:'13.9',kelly_pct:'8.1',prob_real:'62.4',game_time:new Date(N+6*36e5).toISOString(),bookmaker:'BetMGM',form_last10:[3.8,4,5,3,6,4,5,3,4,4],projection:3.7},
       // MLB
       {isPlayerProp:true,playerName:'Spencer Strider', home:'Atlanta Braves',away:'NY Mets',sport:'MLB',sportKey:'baseball_mlb',mktKey:'player_strikeouts',pick:'Over 7.5 Strikeouts',point:7.5,odds_best:'1.87',fair_odd:'1.67',ev_pct:'11.5',kelly_pct:'7.3',prob_real:'61.8',game_time:new Date(N+30*36e5).toISOString(),bookmaker:'Caesars',form_last10:[9.2,7,8,11,6,9,8,10,7,9]},
+      {isPlayerProp:true,playerName:'Shohei Ohtani', home:'LA Dodgers',away:'SD Padres',sport:'MLB',sportKey:'baseball_mlb',mktKey:'player_total_bases',pick:'Over 1.5 Total Bases',point:1.5,odds_best:'1.78',fair_odd:'1.58',ev_pct:'12.7',kelly_pct:'7.8',prob_real:'63.3',game_time:new Date(N+28*36e5).toISOString(),bookmaker:'DraftKings',form_last10:[2.1,1,3,2,1.5,2,3,1,2,2]},
+      // Tennis
+      {pick:'Jannik Sinner',home:'Jannik Sinner',away:'Novak Djokovic',sport:'Tennis ATP Tour',sportKey:'tennis_atp',mktKey:'h2h',odds_best:'1.55',fair_odd:'1.40',ev_pct:'10.7',kelly_pct:'7.2',prob_real:'70.0',game_time:new Date(N+14*36e5).toISOString(),bookmaker:'Pinnacle'},
+      // Rugby League
+      {pick:'Over 42.5',home:'Melbourne Storm',away:'South Sydney Rabbitohs',sport:'NRL Rugby League',sportKey:'rugby_league_nrl',mktKey:'totals',odds_best:'1.88',fair_odd:'1.70',ev_pct:'10.6',kelly_pct:'6.2',prob_real:'58.8',point:42.5,game_time:new Date(N+22*36e5).toISOString(),bookmaker:'Bet365',form_last10:[46,38,52,44,41,55,39,48,43,50]},
+      // Cricket
+      {pick:'Over 5.5',home:'India',away:'England',sport:'Cricket ODI',sportKey:'cricket_odi',mktKey:'totals',odds_best:'1.75',fair_odd:'1.57',ev_pct:'11.5',kelly_pct:'7.0',prob_real:'63.7',point:5.5,game_time:new Date(N+48*36e5).toISOString(),bookmaker:'Bet365'},
+      // Golf
+      {pick:'Scottie Scheffler',home:'The Masters 2026',away:'Golf Field',sport:'PGA Golf',sportKey:'golf_pga',mktKey:'h2h',odds_best:'4.50',fair_odd:'3.90',ev_pct:'15.4',kelly_pct:'5.2',prob_real:'26.0',game_time:new Date(N+96*36e5).toISOString(),bookmaker:'Pinnacle'},
+      // NCAA Basketball
+      {pick:'Duke Blue Devils',home:'Duke Blue Devils',away:'Kentucky Wildcats',sport:'NCAA Basketball',sportKey:'ncaamb_mens',mktKey:'h2h',odds_best:'1.72',fair_odd:'1.55',ev_pct:'11.0',kelly_pct:'6.8',prob_real:'58.1',game_time:new Date(N+36*36e5).toISOString(),bookmaker:'FanDuel'},
+      // Euroliga
+      {pick:'Over 160.5',home:'Real Madrid',away:'CSKA Moscow',sport:'Euroliga',sportKey:'basketball_euroleague',mktKey:'totals',odds_best:'1.85',fair_odd:'1.66',ev_pct:'11.4',kelly_pct:'6.8',prob_real:'60.5',point:160.5,game_time:new Date(N+20*36e5).toISOString(),bookmaker:'Unibet'},
+      // SHL Hockey
+      {pick:'Over 5.5',home:'Frolunda',away:'Djurgarden',sport:'SHL (Sweden)',sportKey:'icehockey_sweden_hockey_league',mktKey:'totals',odds_best:'2.05',fair_odd:'1.82',ev_pct:'12.6',kelly_pct:'7.2',prob_real:'58.8',point:5.5,game_time:new Date(N+18*36e5).toISOString(),bookmaker:'Unibet'},
     ]);
   },
 };
@@ -1795,6 +2082,16 @@ function guessKey(sport) {
   return '';
 }
 function extractPt(str) { const m = (str||'').match(/\d+\.?\d*/); return m ? parseFloat(m[0]) : null; }
+function getParentSport(sc) {
+  // Maps sub-leagues to parent sport for grouped filtering
+  const map = {
+    ncaabb:'nba', euroliga:'nba',
+    ncaafb:'nfl',
+    shl:'nhl',
+    rugby_league:'rugby', rugby_union:'rugby',
+  };
+  return map[sc] || null;
+}
 function toast(msg, type) {
   type = type||'i';
   const w = document.getElementById('tw'); if (!w) return;
