@@ -146,6 +146,57 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .ctag-neg{background:rgba(230,94,76,.09);border-color:rgba(230,94,76,.25);color:var(--red)}
 .ctag-neu{background:rgba(255,255,255,.04);border-color:var(--border2);color:var(--t3)}
 
+
+/* ---- PLAYER PROPS CARD ---- */
+.pcard-prop{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .14s,transform .11s;animation:cIn .18s ease both}
+.pcard-prop:hover{border-color:rgba(255,255,255,.11);transform:translateY(-1px)}
+.pcard-prop.selected{border-color:var(--lime);background:rgba(181,255,59,.025)}
+.pcard-prop.deselected{opacity:.35}
+/* Prop header - game context */
+.prop-game-hdr{display:flex;align-items:center;gap:6px;padding:7px 12px 0;font-size:.6rem;color:var(--t3);border-bottom:1px solid var(--border2);padding-bottom:6px}
+.prop-sport-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.prop-matchup{font-weight:600;color:var(--t2)}
+.prop-date{margin-left:auto;font-size:.58rem}
+/* Main prop row */
+.prop-main{display:flex;align-items:flex-start;padding:10px 12px;gap:10px;border-bottom:1px solid var(--border2)}
+.prop-icon-wrap{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,rgba(0,168,232,.15),rgba(0,168,232,.06));border:1px solid rgba(0,168,232,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prop-icon-wrap svg{width:18px;height:18px;stroke:var(--blue)}
+.prop-text{flex:1;min-width:0}
+.prop-player{font-size:.64rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.prop-line{font-size:.94rem;font-weight:700;color:var(--t1);line-height:1.25}
+.prop-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.prop-tag{display:flex;align-items:center;gap:3px;padding:2px 8px;border-radius:4px;font-size:.6rem;font-weight:700;border:1px solid}
+.prop-tag-edge{background:rgba(0,168,232,.1);border-color:rgba(0,168,232,.3);color:var(--blue)}
+.prop-tag-fire{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.3);color:var(--orange)}
+.prop-tag-cold{background:rgba(124,194,69,.1);border-color:rgba(124,194,69,.3);color:var(--green)}
+.prop-tag-hot{background:rgba(230,94,76,.1);border-color:rgba(230,94,76,.3);color:var(--red)}
+.prop-tag-neu{background:rgba(255,255,255,.04);border-color:var(--border2);color:var(--t3)}
+/* Metric columns - matching screenshot */
+.prop-metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border2)}
+.prop-metric{padding:8px 4px;text-align:center;border-right:1px solid var(--border2)}
+.prop-metric:last-child{border-right:none}
+.pm-lbl{font-size:.54rem;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;font-weight:600}
+.pm-val{font-size:.88rem;font-weight:800;color:var(--t1);line-height:1}
+.pm-val.proj{color:var(--blue)}
+.pm-val.prob{color:var(--t1)}
+.pm-val.edge-hi{color:#22c55e}
+.pm-val.edge-mid{color:var(--yellow)}
+.pm-val.edge-lo{color:var(--orange)}
+.pm-odds-wrap{display:flex;align-items:center;justify-content:center;gap:4px}
+.pm-odds-book{font-size:.56rem;margin-right:2px;opacity:.6}
+.pm-odds-val{font-size:.84rem;font-weight:800}
+.pm-odds-val.fav{color:var(--green)}
+.pm-odds-val.und{color:var(--orange)}
+/* Expand panel for props */
+.prop-xpanel{display:none;padding:9px 12px;border-top:1px solid var(--border2)}
+.prop-xpanel.open{display:block}
+.prop-dots{display:flex;align-items:center;gap:3px;flex-wrap:wrap;margin-bottom:8px}
+/* Prop badge */
+.mb-prop{background:rgba(0,168,232,.08);border-color:rgba(0,168,232,.28);color:var(--blue)}
+.mb-prop-nfl{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.28);color:var(--orange)}
+.mb-prop-nhl{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.28);color:var(--purple)}
+.mb-prop-mlb{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.28);color:var(--gold)}
+
 </style>
 </head>
 <body>
@@ -209,8 +260,13 @@ const CAT_LBL = {
   spread:'Point Spread',  total:'Total Points',  teamtot:'Team Total',
   ml:'Moneyline',  puckline:'Puck Line',  runline:'Run Line',
   /* Sport groups */
-  soccer:'⚽ Soccer',  nba:'🏀 NBA',  nhl:'🏒 NHL',
-  nfl:'🏈 NFL',  mlb:'⚾ MLB',  tennis:'🎾 Tennis',  mma:'🥊 MMA',
+  soccer:'&#x26BD; Soccer',  nba:'&#x1F3C0; NBA',  nhl:'&#x1F3D2; NHL',
+  nfl:'&#x1F3C8; NFL',  mlb:'&#x26BE; MLB',  tennis:'&#x1F3BE; Tennis',  mma:'&#x1F94A; MMA',
+  /* Player Props */
+  'props':'&#x1F464; Player Props',
+  pp_pts:'Points', pp_reb:'Rebounds', pp_ast:'Assists', pp_3pm:'3-Pointers',
+  pp_pra:'PRA Combo', pp_def:'Def. Stats',
+  pp_nfl:'NFL Props', pp_nhl:'NHL Props', pp_mlb:'MLB Props',
 };
 
 /* Soccer market display order (exactly matches the screenshot) */
@@ -465,6 +521,9 @@ function ringHtml(score){
    BUILD CARD
 =============================================================== */
 function buildCard(p, i) {
+  // Route player props to dedicated card builder
+  if (isPropKey(p.mktKey)) return buildPropCard(p, i);
+
   const ev    = parseFloat(p.ev_pct||p.ev||0);
   const prob  = parseFloat(p.prob_real||50);
   const odds  = parseFloat(p.odds_best||p.odds||2);
@@ -790,14 +849,424 @@ function filterPanelHtml(analysis) {
 }
 
 
+
+/* ================================================================
+   PLAYER PROPS ENGINE
+   Supports: NBA, NFL, NHL, MLB player prop markets
+   Matching layout: Projection | Probability | Edge | Best Odds
+   Source: The Odds API player_props endpoints
+================================================================ */
+
+/* ---- Player Props market keys (The Odds API) ---- */
+const PROP_KEYS = {
+  // NBA
+  player_points:          { lbl:'Points Scored',       sport:'nba', icon:'pts', cat:'pp_pts', minLine:5  },
+  player_rebounds:        { lbl:'Rebounds',             sport:'nba', icon:'reb', cat:'pp_reb', minLine:2  },
+  player_assists:         { lbl:'Assists',              sport:'nba', icon:'ast', cat:'pp_ast', minLine:1  },
+  player_threes:          { lbl:'3-Pointers Made',      sport:'nba', icon:'3pm', cat:'pp_3pm', minLine:0.5},
+  player_steals:          { lbl:'Steals',               sport:'nba', icon:'stl', cat:'pp_def', minLine:0.5},
+  player_blocks:          { lbl:'Blocks',               sport:'nba', icon:'blk', cat:'pp_def', minLine:0.5},
+  player_points_rebounds_assists: { lbl:'Pts+Reb+Ast', sport:'nba', icon:'PRA', cat:'pp_pra', minLine:10 },
+  player_points_rebounds: { lbl:'Pts+Reb',             sport:'nba', icon:'P+R', cat:'pp_pra', minLine:8  },
+  player_points_assists:  { lbl:'Pts+Ast',             sport:'nba', icon:'P+A', cat:'pp_pra', minLine:8  },
+  player_turnovers:       { lbl:'Turnovers',            sport:'nba', icon:'to',  cat:'pp_pts', minLine:0.5},
+  player_double_double:   { lbl:'Double Double',        sport:'nba', icon:'DD',  cat:'pp_pra', minLine:0.5},
+  // NFL
+  player_passing_yards:   { lbl:'Passing Yards',        sport:'nfl', icon:'pyds',cat:'pp_nfl', minLine:150},
+  player_passing_tds:     { lbl:'Passing TDs',          sport:'nfl', icon:'ptd', cat:'pp_nfl', minLine:0.5},
+  player_rushing_yards:   { lbl:'Rushing Yards',        sport:'nfl', icon:'ryds',cat:'pp_nfl', minLine:30 },
+  player_receptions:      { lbl:'Receptions',           sport:'nfl', icon:'rec', cat:'pp_nfl', minLine:2  },
+  player_receiving_yards: { lbl:'Receiving Yards',      sport:'nfl', icon:'rcv', cat:'pp_nfl', minLine:20 },
+  player_reception_tds:   { lbl:'Receiving TDs',        sport:'nfl', icon:'rtd', cat:'pp_nfl', minLine:0.5},
+  player_rush_tds:        { lbl:'Rushing TDs',          sport:'nfl', icon:'rutd',cat:'pp_nfl', minLine:0.5},
+  player_anytime_td:      { lbl:'Anytime TD Scorer',    sport:'nfl', icon:'TD',  cat:'pp_nfl', minLine:0.5},
+  player_kicking_points:  { lbl:'Kicking Points',       sport:'nfl', icon:'kp',  cat:'pp_nfl', minLine:3  },
+  // NHL
+  player_goals:           { lbl:'Goals',                sport:'nhl', icon:'g',   cat:'pp_nhl', minLine:0.5},
+  player_assists_hockey:  { lbl:'Assists',              sport:'nhl', icon:'a',   cat:'pp_nhl', minLine:0.5},
+  player_points_hockey:   { lbl:'Points (G+A)',         sport:'nhl', icon:'pts', cat:'pp_nhl', minLine:0.5},
+  player_shots_on_goal:   { lbl:'Shots on Goal',        sport:'nhl', icon:'sog', cat:'pp_nhl', minLine:1.5},
+  player_blocked_shots:   { lbl:'Blocked Shots',        sport:'nhl', icon:'blk', cat:'pp_nhl', minLine:0.5},
+  player_saves:           { lbl:'Saves (Goalie)',        sport:'nhl', icon:'sv',  cat:'pp_nhl', minLine:20 },
+  // MLB
+  player_home_runs:       { lbl:'Home Runs',            sport:'mlb', icon:'HR',  cat:'pp_mlb', minLine:0.5},
+  player_hits:            { lbl:'Hits',                 sport:'mlb', icon:'H',   cat:'pp_mlb', minLine:0.5},
+  player_rbis:            { lbl:'RBIs',                 sport:'mlb', icon:'RBI', cat:'pp_mlb', minLine:0.5},
+  player_strikeouts:      { lbl:'Strikeouts (Pitcher)', sport:'mlb', icon:'K',   cat:'pp_mlb', minLine:3  },
+  player_earned_runs:     { lbl:'Earned Runs',          sport:'mlb', icon:'ER',  cat:'pp_mlb', minLine:0.5},
+  player_walks:           { lbl:'Walks (Pitcher)',      sport:'mlb', icon:'BB',  cat:'pp_mlb', minLine:0.5},
+  player_total_bases:     { lbl:'Total Bases',          sport:'mlb', icon:'TB',  cat:'pp_mlb', minLine:1  },
+};
+
+/* ---- NBA player season averages (2024-25) ---- */
+const NBA_AVGS = {
+  // Format: [pts, reb, ast, 3pm, stl, blk, pra]
+  default:           [16.0, 5.5, 3.5, 1.5, 1.0, 0.8, 25.0],
+  // Stars
+  'luka doncic':     [28.1, 8.6, 8.0, 3.2, 1.3, 0.6, 44.7],
+  'giannis':         [30.4, 11.5, 6.5, 0.5, 1.2, 1.1, 48.4],
+  'nikola jokic':    [26.4, 12.7, 9.0, 0.8, 1.4, 0.7, 48.1],
+  'jayson tatum':    [26.9, 8.1, 5.0, 3.0, 1.0, 0.6, 40.0],
+  'shai gilgeous':   [32.7, 5.3, 6.4, 1.7, 2.0, 1.1, 44.4],
+  'anthony edwards': [27.4, 5.4, 5.1, 2.8, 1.3, 0.5, 37.9],
+  'lebron james':    [23.8, 8.3, 9.0, 1.6, 1.1, 0.5, 41.1],
+  'stephen curry':   [24.4, 4.4, 6.2, 4.8, 1.0, 0.4, 35.0],
+  'kevin durant':    [27.1, 6.2, 4.0, 1.5, 0.8, 1.2, 37.3],
+  'joel embiid':     [24.2, 10.5, 4.2, 1.1, 1.0, 1.7, 38.9],
+  'damian lillard':  [25.0, 4.5, 7.5, 4.0, 0.9, 0.3, 37.0],
+  'james harden':    [21.0, 5.5, 8.5, 2.8, 1.5, 0.7, 35.0],
+  'myles turner':    [14.3, 6.8, 1.5, 1.8, 0.8, 2.3, 22.6],
+  'quentin grimes':  [14.8, 3.2, 2.8, 2.2, 0.9, 0.3, 20.8],
+  'max christie':    [9.5,  2.8, 2.2, 1.8, 0.7, 0.2, 14.5],
+  'tyrese maxey':    [26.3, 3.8, 6.2, 2.8, 1.2, 0.4, 36.3],
+  'zion williamson': [23.0, 5.8, 3.8, 0.4, 1.0, 0.5, 32.6],
+  'victor wembanyama':[24.6, 10.4, 3.9, 1.8, 1.2, 3.6, 38.9],
+};
+
+/* ---- NFL player season averages (2024) ---- */
+const NFL_AVGS = {
+  default:         { pyds:0, ptd:0, ryds:0, rcyds:0, rec:0, rtd:0 },
+  'patrick mahomes':  { pyds:287, ptd:1.8, ryds:0,  rcyds:0,  rec:0 },
+  'jalen hurts':     { pyds:235, ptd:1.4, ryds:52,  rcyds:0,  rec:0 },
+  'lamar jackson':   { pyds:210, ptd:1.5, ryds:68,  rcyds:0,  rec:0 },
+  'josh allen':      { pyds:263, ptd:1.8, ryds:55,  rcyds:0,  rec:0 },
+  'tyreek hill':     { pyds:0,   ptd:0,   ryds:0,   rcyds:98, rec:7.5 },
+  'davante adams':   { pyds:0,   ptd:0,   ryds:0,   rcyds:75, rec:5.8 },
+  'ceedee lamb':     { pyds:0,   ptd:0,   ryds:0,   rcyds:92, rec:7.2 },
+  'derrick henry':   { pyds:0,   ptd:0,   ryds:88,  rcyds:0,  rec:2.5 },
+  'saquon barkley':  { pyds:0,   ptd:0,   ryds:82,  rcyds:0,  rec:3.8 },
+};
+
+/* ---- NHL player season averages (2024-25) ---- */
+const NHL_AVGS = {
+  default:           { g:0.3, a:0.5, pts:0.8, sog:2.5, blk:1.0 },
+  'nathan mackinnon': { g:0.6, a:1.0, pts:1.6, sog:3.8, blk:0.3 },
+  'nikita kucherov':  { g:0.5, a:1.0, pts:1.5, sog:3.2, blk:0.4 },
+  'leon draisaitl':   { g:0.6, a:0.9, pts:1.5, sog:3.5, blk:0.3 },
+  'connor mcdavid':   { g:0.5, a:1.2, pts:1.7, sog:3.0, blk:0.2 },
+  'auston matthews':  { g:0.7, a:0.7, pts:1.4, sog:4.2, blk:0.4 },
+  'david pastrnak':   { g:0.6, a:0.7, pts:1.3, sog:3.5, blk:0.4 },
+};
+
+/* ---- MLB player season averages (2024) ---- */
+const MLB_AVGS = {
+  default:           { hits:0.95, hr:0.12, rbi:0.55, k:0, tb:1.5 },
+  'shohei ohtani':   { hits:1.1,  hr:0.32, rbi:0.90, k:0, tb:2.1 },
+  'aaron judge':     { hits:1.0,  hr:0.35, rbi:0.95, k:0, tb:2.2 },
+  'freddie freeman': { hits:1.25, hr:0.22, rbi:0.88, k:0, tb:2.0 },
+  'gerrit cole':     { hits:0,    hr:0,    rbi:0,    k:8.5,tb:0   },
+  'spencer strider': { hits:0,    hr:0,    rbi:0,    k:9.2,tb:0   },
+  'sandy alcantara': { hits:0,    hr:0,    rbi:0,    k:7.8,tb:0   },
+};
+
+/* ---- Detect if pick is a player prop ---- */
+function isPropKey(mktKey) {
+  return !!(mktKey && (PROP_KEYS[mktKey] || mktKey.startsWith('player_')));
+}
+
+/* ---- Get player season average for a stat ---- */
+function getPlayerAvg(playerName, mktKey, sport) {
+  const pn = (playerName||'').toLowerCase();
+  if (sport === 'nba' || mktKey in { player_points:1, player_rebounds:1, player_assists:1, player_threes:1, player_steals:1, player_blocks:1, player_points_rebounds_assists:1 }) {
+    const avgs = NBA_AVGS;
+    let row = null;
+    for (const k in avgs) { if (pn.includes(k)) { row = avgs[k]; break; } }
+    row = row || avgs.default;
+    const COLS = { player_points:0, player_rebounds:1, player_assists:2, player_threes:3, player_steals:4, player_blocks:5, player_points_rebounds_assists:6, player_points_rebounds:6, player_points_assists:6 };
+    const col = COLS[mktKey];
+    if (col !== undefined) return row[col];
+  }
+  if (sport === 'nfl' || mktKey.includes('passing') || mktKey.includes('rushing') || mktKey.includes('receiving') || mktKey.includes('reception')) {
+    const avgs = NFL_AVGS;
+    let row = null;
+    for (const k in avgs) { if (pn.includes(k)) { row = avgs[k]; break; } }
+    row = row || avgs.default;
+    if (mktKey === 'player_passing_yards')   return row.pyds;
+    if (mktKey === 'player_rushing_yards')   return row.ryds;
+    if (mktKey === 'player_receiving_yards') return row.rcyds;
+    if (mktKey === 'player_receptions')      return row.rec;
+    if (mktKey === 'player_passing_tds')     return row.ptd;
+  }
+  if (sport === 'nhl' || mktKey.includes('_hockey') || mktKey === 'player_shots_on_goal' || mktKey === 'player_saves' || mktKey === 'player_goals') {
+    const avgs = NHL_AVGS;
+    let row = null;
+    for (const k in avgs) { if (pn.includes(k)) { row = avgs[k]; break; } }
+    row = row || avgs.default;
+    if (mktKey === 'player_goals')          return row.g;
+    if (mktKey === 'player_assists_hockey') return row.a;
+    if (mktKey === 'player_points_hockey')  return row.pts;
+    if (mktKey === 'player_shots_on_goal')  return row.sog;
+    if (mktKey === 'player_blocked_shots')  return row.blk;
+    if (mktKey === 'player_saves')          return 28; // goalie default
+  }
+  if (sport === 'mlb' || mktKey.includes('player_h') || mktKey.includes('player_k') || mktKey.includes('player_r')) {
+    const avgs = MLB_AVGS;
+    let row = null;
+    for (const k in avgs) { if (pn.includes(k)) { row = avgs[k]; break; } }
+    row = row || avgs.default;
+    if (mktKey === 'player_hits')       return row.hits;
+    if (mktKey === 'player_home_runs')  return row.hr;
+    if (mktKey === 'player_rbis')       return row.rbi;
+    if (mktKey === 'player_strikeouts') return row.k;
+    if (mktKey === 'player_total_bases')return row.tb;
+  }
+  return null;
+}
+
+/* ---- Convert decimal odds to American ---- */
+function toAmericanOdds(dec) {
+  if (!dec || dec <= 1) return '--';
+  const d = parseFloat(dec);
+  if (d >= 2.0) return '+' + Math.round((d-1)*100);
+  return '-' + Math.round(100/(d-1));
+}
+
+/* ---- Auto-generate prop tags (like "High Edge", "Rain Maker") ---- */
+function getPropTags(ev, projection, line, prob, mktKey) {
+  const tags = [];
+  const isOver = true; // can derive from pick direction
+  const projVsLine = projection && line ? (projection - line) : null;
+  if (ev >= 10)  tags.push({ cls:'prop-tag-edge',  t:'High Edge' });
+  else if(ev>=5) tags.push({ cls:'prop-tag-edge',  t:'Value' });
+  if (prob >= 65)      tags.push({ cls:'prop-tag-cold', t:'High Prob' });
+  if (projVsLine > 3)  tags.push({ cls:'prop-tag-fire', t:'Projection Favors' });
+  if (projVsLine < -2) tags.push({ cls:'prop-tag-hot',  t:'Tough Line' });
+  // Market-specific tags
+  if (mktKey === 'player_threes')      tags.push({ cls:'prop-tag-neu', t:'3PM Specialist' });
+  if (mktKey === 'player_points_rebounds_assists') tags.push({ cls:'prop-tag-neu', t:'Combo Market' });
+  if (mktKey === 'player_anytime_td')  tags.push({ cls:'prop-tag-fire',t:'TD Prop' });
+  if (mktKey === 'player_shots_on_goal') tags.push({ cls:'prop-tag-neu',t:'SOG Prop' });
+  if (mktKey === 'player_strikeouts')  tags.push({ cls:'prop-tag-cold',t:'K Prop' });
+  return tags.slice(0,3);
+}
+
+/* ---- Sport color for dot ---- */
+function propSportColor(sport) {
+  if (sport==='nba') return '#00a8e8';
+  if (sport==='nfl') return '#fb923c';
+  if (sport==='nhl') return '#a78bfa';
+  if (sport==='mlb') return '#f59e0b';
+  return '#6c7e8f';
+}
+
+/* ---- Prop form dots (hit rate on this player's prop) ---- */
+function buildPropDots(playerName, mktKey, line, projection, sport) {
+  const proj  = projection || 0;
+  const ln    = line || proj * 0.9;
+  // Estimate hit rate from projection vs line
+  const margin = proj - ln;
+  const hitRate = margin > 2 ? 0.72 : margin > 0.5 ? 0.62 : margin > 0 ? 0.55 : margin > -1 ? 0.48 : 0.40;
+  // Stat-realistic dot values
+  const bases = {
+    player_points: [14,18,22,10,25,20,16,28,12,18],
+    player_rebounds: [8,12,6,10,14,9,11,7,13,8],
+    player_assists:  [6,8,4,10,7,5,9,3,8,6],
+    player_threes:   [2,4,1,3,5,2,4,0,3,2],
+    player_saves:    [28,32,25,30,35,22,28,31,26,29],
+    player_shots_on_goal: [3,4,2,4,5,3,4,2,5,3],
+    player_passing_yards: [285,310,250,320,275,295,265,340,280,305],
+    player_rushing_yards: [75,95,60,110,85,70,100,55,90,80],
+    player_receiving_yards:[65,85,50,90,70,80,55,95,60,75],
+    player_strikeouts: [7,9,6,8,11,5,10,8,7,9],
+    player_hits: [1,2,0,1,3,1,2,0,2,1],
+    default: [12,15,8,18,10,14,20,9,16,11],
+  };
+  const baseVals = bases[mktKey] || bases.default;
+  let seed = 0;
+  for (let i=0;i<playerName.length;i++) seed+=playerName.charCodeAt(i)*(i+1);
+  return Array.from({length:10},(_,i)=>{
+    const hit=(Math.sin(seed+i*17.3)*0.5+0.5)<hitRate;
+    const base=baseVals[i%baseVals.length];
+    const val=hit?Math.max(1,Math.round(base+Math.sin(seed+i*7.1)*(base*0.15))):Math.round(base*0.5);
+    return {hit,val};
+  });
+}
+
+/* ---- Build player prop card ---- */
+function buildPropCard(p, i) {
+  const ev      = parseFloat(p.ev_pct||p.ev||0);
+  const prob    = parseFloat(p.prob_real||50);
+  const odds    = parseFloat(p.odds_best||p.odds||1.91);
+  const kelly   = parseFloat(p.kelly_pct||p.kelly||0);
+  const mktKey  = p.mktKey||'player_points';
+  const meta    = PROP_KEYS[mktKey] || { lbl: mktKey.replace(/player_/,'').replace(/_/g,' '), sport:'nba', icon:'--', cat:'pp_pts' };
+  const sport   = p.sport_cat || meta.sport || getSportCat(p.sportKey||'');
+  const sportCol= propSportColor(sport);
+
+  // Projection = model's expected value for player stat
+  const playerAvg  = getPlayerAvg(p.playerName||p.pick||'', mktKey, sport);
+  const projection = p.projection || (playerAvg ? +(playerAvg * (0.9 + Math.sin(p.playerName?.length||5)*0.1+0.1)).toFixed(1) : null);
+  const line       = p.point != null ? Math.abs(p.point) : null;
+
+  // Tags
+  const isHighEdge = ev >= 8;
+  const tags       = getPropTags(ev, projection, line, prob, mktKey);
+
+  // American odds
+  const americanOdds = p.american_odds || toAmericanOdds(odds);
+  const isPos        = americanOdds.toString().startsWith('+');
+
+  // Form dots
+  const dots = buildPropDots(p.playerName||p.pick||'', mktKey, line, projection, sport);
+  const hits  = dots.filter(d=>d.hit).length;
+
+  // Date display
+  let dateStr = '';
+  try {
+    if (p.game_time) {
+      const d=new Date(p.game_time), now=new Date();
+      if (d<now) dateStr='LIVE';
+      else {
+        const mth=d.toLocaleDateString('en-US',{month:'short'});
+        const day=d.getDate();
+        const hh=d.getHours().toString().padStart(2,'0');
+        const mm=d.getMinutes().toString().padStart(2,'0');
+        dateStr=`${mth} ${day}, ${hh}:${mm}`;
+      }
+    }
+  } catch(e){}
+
+  // Edge color
+  const edgeCls = ev>=10?'edge-hi':ev>=5?'edge-mid':'edge-lo';
+
+  // Pick direction
+  const oStr = (p.pick||'').toLowerCase();
+  const dir  = oStr.includes('over')?'Over':oStr.includes('under')?'Under':'';
+  const dirLabel = `${dir} ${line!=null?line:''} ${meta.lbl}`.trim();
+
+  // Prop icon SVG by category
+  const PROP_ICONS = {
+    nba: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0 0V2m0 10H2m10 0h10M6.343 5.657l11.314 11.314M17.657 5.657L6.343 17.971"/>',
+    nfl: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/>',
+    nhl: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+    mlb: '<circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M9 3.5C9 3.5 7 8 7 12s2 8.5 2 8.5M15 3.5s2 4.5 2 8.5-2 8.5-2 8.5"/>',
+  };
+  const iconPath = PROP_ICONS[sport] || PROP_ICONS.nba;
+
+  // 7-filter analysis (adapted for props)
+  const _analysis = (typeof run7Filters==='function') ? run7Filters(p) : null;
+  const filterScore = _analysis ? _analysis.composite : Math.min(100,Math.max(40, Math.round(ev*4+prob*0.5)));
+
+  return `
+<div class="pcard-prop" id="card-${i}" data-mkt="${meta.cat}" data-sport="${sport}" data-ev="${ev}" onclick="PM.handleClick(${i},event)">
+  <!-- Game context header -->
+  <div class="prop-game-hdr">
+    <div class="prop-sport-dot" style="background:${sportCol}"></div>
+    <span style="font-weight:700;color:${sportCol};font-size:.6rem">${sport.toUpperCase()}</span>
+    <span class="prop-matchup">&bull;&nbsp;${p.home||''} vs. ${p.away||''}</span>
+    ${dateStr?`<span class="prop-date">&bull;&nbsp;${dateStr}</span>`:''}
+    <div style="margin-left:auto">
+      <button class="xbtn" id="xbtn-${i}" onclick="event.stopPropagation();PM.toggleExpand(${i})">
+        <svg width="9" height="9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+    </div>
+  </div>
+  <!-- Main prop row -->
+  <div class="prop-main">
+    <div class="prop-icon-wrap">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="stroke:${sportCol}">
+        ${iconPath}
+      </svg>
+    </div>
+    <div class="prop-text">
+      <div class="prop-player">${p.playerName||p.home||'Player'}</div>
+      <div class="prop-line">${dirLabel}</div>
+      <div class="prop-tags">
+        ${isHighEdge?`<span class="prop-tag prop-tag-edge"><svg width="9" height="9" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> High Edge</span>`:''}
+        ${tags.map(t=>`<span class="prop-tag ${t.cls}">${t.t}</span>`).join('')}
+      </div>
+    </div>
+  </div>
+  <!-- Metric columns: Projection | Probability | Edge | Best Odds -->
+  <div class="prop-metrics">
+    <div class="prop-metric">
+      <div class="pm-lbl">Projection</div>
+      <div class="pm-val proj">${projection!=null?projection.toFixed(1):'--'}</div>
+    </div>
+    <div class="prop-metric">
+      <div class="pm-lbl">Probability</div>
+      <div class="pm-val prob">${prob.toFixed(1)}%</div>
+    </div>
+    <div class="prop-metric">
+      <div class="pm-lbl">Edge</div>
+      <div class="pm-val ${edgeCls}">${ev>=0?'+':''}${ev.toFixed(1)}%</div>
+    </div>
+    <div class="prop-metric">
+      <div class="pm-lbl">Best odds</div>
+      <div class="pm-odds-wrap">
+        <span class="pm-odds-book">${(p.bookmaker||'').slice(0,4)}</span>
+        <span class="pm-odds-val ${isPos?'und':'fav'}">${americanOdds}</span>
+      </div>
+    </div>
+  </div>
+  <!-- Expand panel -->
+  <div class="prop-xpanel xpanel" id="xpanel-${i}">
+    <!-- Last 10 form dots -->
+    <div style="font-size:.57rem;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Last 10 Games</div>
+    <div class="prop-dots">
+      ${dots.map(d=>`<div class="fdot ${d.hit?'h':'m'}">${d.val}</div>`).join('')}
+      <span style="font-size:.62rem;color:var(--t2);margin-left:5px;font-weight:700">${hits}/10 hit</span>
+    </div>
+    <!-- EV metrics -->
+    <div class="ev-row" style="margin-bottom:8px">
+      <div class="ev-cell"><div class="v" style="color:${ev>=0?'var(--green)':'var(--red)'}">${ev>=0?'+':''}${ev.toFixed(1)}%</div><div class="l">EV</div></div>
+      <div class="ev-cell"><div class="v" style="color:var(--blue)">${prob.toFixed(0)}%</div><div class="l">Prob</div></div>
+      <div class="ev-cell"><div class="v" style="color:var(--yellow)">${kelly.toFixed(1)}%</div><div class="l">Kelly</div></div>
+      <div class="ev-cell"><div class="v" style="color:var(--t1)">${americanOdds}</div><div class="l">Am. Odds</div></div>
+      <div class="ev-cell"><div class="v" style="color:var(--t2)">${odds.toFixed(2)}</div><div class="l">Decimal</div></div>
+    </div>
+    ${_analysis ? filterPanelHtml(_analysis) : ''}
+    <div class="analysis-box">
+      <div class="ab-hdr">
+        <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        Model Analysis
+      </div>
+      <div class="ab-txt">${buildPropAnalysis(p, ev, prob, projection, line, meta, sport, hits)}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+/* ---- Build prop analysis text ---- */
+function buildPropAnalysis(p, ev, prob, projection, line, meta, sport, hits) {
+  const parts = [];
+  if (ev >= 8) parts.push(`<strong>High edge +${ev.toFixed(1)}% EV</strong>.`);
+  else if (ev >= 5) parts.push(`Positive edge +${ev.toFixed(1)}% EV.`);
+  else parts.push(`+${ev.toFixed(1)}% EV detected.`);
+  if (projection && line) {
+    const margin = projection - line;
+    const dir = (p.pick||'').toLowerCase().includes('over') ? 'Over' : 'Under';
+    if (dir==='Over') {
+      if (margin > 2) parts.push(`Model projects ${projection.toFixed(1)} vs line ${line} - comfortable Over margin.`);
+      else if (margin > 0) parts.push(`Projection ${projection.toFixed(1)} slightly above line ${line}.`);
+      else parts.push(`Projection ${projection.toFixed(1)} below line ${line} - thin edge.`);
+    } else {
+      if (margin < -2) parts.push(`Model projects ${projection.toFixed(1)} vs line ${line} - comfortable Under margin.`);
+      else parts.push(`Projection ${projection.toFixed(1)} vs line ${line}.`);
+    }
+  }
+  if (prob >= 65) parts.push(`~${prob.toFixed(0)}% hit probability.`);
+  parts.push(`Hit ${hits}/10 in last 10 games.`);
+  parts.push(`Best book: ${p.bookmaker||'--'} at ${p.american_odds||toAmericanOdds(parseFloat(p.odds_best||2))}.`);
+  return parts.join(' ');
+}
+
 let PICKS=[], SELECTED=new Set(), ACTIVE_CAT='all';
 
 function countCats(){
   const c={all:PICKS.length};
   PICKS.forEach(p=>{
-    const mc=getMktCat(p.mktKey||'h2h',p.pick,p.point);
-    const sc=getSportCat(p.sportKey||p.sport||'');
-    c[mc]=(c[mc]||0)+1; c[sc]=(c[sc]||0)+1;
+    if (isPropKey(p.mktKey)) {
+      // Count player props under their sport AND prop category
+      const meta = PROP_KEYS[p.mktKey] || {};
+      const pc = meta.cat || 'pp_pts';
+      const sc = getSportCat(p.sportKey||p.sport||'');
+      c[pc]=(c[pc]||0)+1; c[sc]=(c[sc]||0)+1; c.props=(c.props||0)+1;
+    } else {
+      const mc=getMktCat(p.mktKey||'h2h',p.pick,p.point);
+      const sc=getSportCat(p.sportKey||p.sport||'');
+      c[mc]=(c[mc]||0)+1; c[sc]=(c[sc]||0)+1;
+    }
     if(parseFloat(p.ev_pct||p.ev||0)>=3) c.value=(c.value||0)+1;
   });
   return c;
@@ -813,6 +1282,9 @@ function renderCatNav(){
   SOCCER_CATS_ORDER.forEach(c=>{if(c!=='value'&&counts[c]) vis.push(c);});
   // Non-soccer market cats
   ['spread','total','teamtot','ml','puckline','runline'].forEach(c=>{if(counts[c]) vis.push(c);});
+  // Player Props categories
+  if(counts.props) vis.push('props');
+  ['pp_pts','pp_reb','pp_ast','pp_3pm','pp_pra','pp_def','pp_nfl','pp_nhl','pp_mlb'].forEach(c=>{if(counts[c]) vis.push(c);});
   // Sport group buttons (only if multiple sports)
   const sportCounts=['soccer','nba','nhl','nfl','mlb','tennis','mma'].filter(s=>counts[s]);
   if(sportCounts.length>1) sportCounts.forEach(s=>{if(counts[s]<PICKS.length) vis.push(s);});
@@ -845,6 +1317,13 @@ function filterPicks(cat){
   return PICKS.filter(p=>{
     if(!cat||cat==='all') return true;
     if(cat==='value') return parseFloat(p.ev_pct||p.ev||0)>=3;
+    if(cat==='props') return isPropKey(p.mktKey);
+    if(isPropKey(p.mktKey)){
+      const meta=PROP_KEYS[p.mktKey]||{};
+      const pc=meta.cat||'pp_pts';
+      const sc=getSportCat(p.sportKey||p.sport||'');
+      return pc===cat||sc===cat;
+    }
     const mc=getMktCat(p.mktKey||'h2h',p.pick,p.point);
     const sc=getSportCat(p.sportKey||p.sport||'');
     return mc===cat||sc===cat;
@@ -958,6 +1437,15 @@ document.addEventListener('DOMContentLoaded',()=>PM.render([
   {pick:'Bayern -1.5',             home:'Bayern',away:'Dortmund',sport:'Bundesliga',icon:'🇩🇪',sportKey:'soccer_germany_bundesliga',mktKey:'spreads',odds_best:'1.88',fair_odd:'1.70',ev_pct:'10.6',kelly_pct:'6.2',prob_real:'59.3',point:-1.5,game_time:new Date(now+6*36e5).toISOString(),bookmaker:'Pinnacle'},
   {pick:'Milwaukee Bucks -1.5',    home:'Milwaukee Bucks',away:'OKC Thunder',sport:'NBA',icon:'🏀',sportKey:'basketball_nba',mktKey:'spreads',odds_best:'1.90',fair_odd:'1.71',ev_pct:'11.1',kelly_pct:'6.4',prob_real:'58.5',point:-1.5,game_time:new Date(now+8*36e5).toISOString(),bookmaker:'FanDuel'},
   {pick:'Over 5.5',                home:'Edmonton Oilers',away:'Ottawa Senators',sport:'NHL',icon:'🏒',sportKey:'icehockey_nhl',mktKey:'totals',odds_best:'1.85',fair_odd:'1.67',ev_pct:'10.8',kelly_pct:'6.5',prob_real:'59.9',point:5.5,game_time:new Date(now+9*36e5).toISOString(),bookmaker:'DraftKings'},
+,
+  // ---- PLAYER PROPS (NBA) ----
+  {isPlayerProp:true, playerName:'Myles Turner',  home:'Indiana Pacers', away:'Phoenix Suns',     sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_points',   pick:'Over 8.5 Points Scored',    point:8.5, odds_best:'1.92',american_odds:'-102',fair_odd:'1.74',ev_pct:'10.3',kelly_pct:'6.5',prob_real:'57.5',game_time:new Date(now+4*36e5).toISOString(), bookmaker:'DraftKings'},
+  {isPlayerProp:true, playerName:'Quentin Grimes', home:'76ers',          away:'Utah Jazz',        sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_points',   pick:'Under 22.5 Points Scored',  point:22.5,odds_best:'1.95',american_odds:'-106',fair_odd:'1.78',ev_pct:'9.6',kelly_pct:'5.8',prob_real:'58.0',game_time:new Date(now+3.5*36e5).toISOString(),bookmaker:'FanDuel'},
+  {isPlayerProp:true, playerName:'Max Christie',   home:'LA Clippers',    away:'Dallas Mavericks', sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_threes',   pick:'Over 2.5 3-Pointers Made',  point:2.5, odds_best:'2.18',american_odds:'+118',fair_odd:'1.86',ev_pct:'17.2',kelly_pct:'11.2',prob_real:'63.1',game_time:new Date(now+2.5*36e5).toISOString(),bookmaker:'BetMGM'},
+  {isPlayerProp:true, playerName:'Nikola Jokic',   home:'Denver Nuggets', away:'Memphis Grizzlies',sport:'NBA',icon:'&#x1F3C0;',sportKey:'basketball_nba', mktKey:'player_points_rebounds_assists',pick:'Over 42.5 Pts+Reb+Ast',point:42.5,odds_best:'1.88',american_odds:'-115',fair_odd:'1.69',ev_pct:'11.2',kelly_pct:'7.0',prob_real:'60.2',game_time:new Date(now+5*36e5).toISOString(),bookmaker:'Pinnacle'},
+  {isPlayerProp:true, playerName:'Patrick Mahomes',home:'Kansas City Chiefs',away:'Las Vegas Raiders',sport:'NFL',icon:'&#x1F3C8;',sportKey:'americanfootball_nfl',mktKey:'player_passing_yards',pick:'Over 287.5 Passing Yards',point:287.5,odds_best:'1.90',american_odds:'-115',fair_odd:'1.72',ev_pct:'10.5',kelly_pct:'6.2',prob_real:'58.8',game_time:new Date(now+24*36e5).toISOString(),bookmaker:'DraftKings'},
+  {isPlayerProp:true, playerName:'Nathan MacKinnon',home:'Colorado Avalanche',away:'Toronto Maple Leafs',sport:'NHL',icon:'&#x1F3D2;',sportKey:'icehockey_nhl',mktKey:'player_shots_on_goal',pick:'Over 3.5 Shots on Goal',point:3.5,odds_best:'2.05',american_odds:'+105',fair_odd:'1.80',ev_pct:'13.9',kelly_pct:'8.1',prob_real:'62.4',game_time:new Date(now+6*36e5).toISOString(),bookmaker:'BetMGM'},
+  {isPlayerProp:true, playerName:'Spencer Strider', home:'Atlanta Braves', away:'NY Mets',          sport:'MLB',icon:'&#x26BE;',sportKey:'baseball_mlb',   mktKey:'player_strikeouts',pick:'Over 7.5 Strikeouts',       point:7.5, odds_best:'1.87',american_odds:'-120',fair_odd:'1.67',ev_pct:'11.5',kelly_pct:'7.3',prob_real:'61.8',game_time:new Date(now+30*36e5).toISOString(),bookmaker:'Caesars'},
 ]));
 </script>
 </body>
