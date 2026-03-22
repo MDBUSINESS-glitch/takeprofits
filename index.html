@@ -4609,249 +4609,301 @@ document.addEventListener('DOMContentLoaded', ()=>{
 ═══════════════════════════════════════════════════════════════════ */
 const ODDS_API_BASE = 'https://api.the-odds-api.com/v4';
 
-// Sport key map: our sport → odds-api sport key
-const SPORT_KEY_MAP = {
-  soccer_epl:               'soccer_epl',
-  soccer_spain_la_liga:     'soccer_spain_la_liga',
-  soccer_italy_serie_a:     'soccer_italy_serie_a',
-  soccer_germany_bundesliga:'soccer_germany_bundesliga',
-  soccer_france_ligue_one:  'soccer_france_ligue_one',
-  soccer_uefa_champs_league:'soccer_uefa_champs_league',
-  basketball_nba:           'basketball_nba',
-  americanfootball_nfl:     'americanfootball_nfl',
-  icehockey_nhl:            'icehockey_nhl',
-  baseball_mlb:             'baseball_mlb',
-  tennis_atp:               'tennis_atp',
-  mma_mixed_martial_arts:   'mma_mixed_martial_arts',
+// Preferred sharp bookmakers (reliable closing lines, no exchange noise)
+const SHARP_BOOKS = ['pinnacle','betfair_ex_eu','betfair_ex_uk','unibet_eu','nordicbet','betsson','paddypower','williamhill','bet365','bwin','draftkings','fanduel','pointsbetus','bovada'];
+
+// Sports to load — all major markets
+const SPORTS_CONFIG = [
+  // Soccer
+  { key:'soccer_epl',               sport:'Soccer',  label:'Premier League',   markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_spain_la_liga',      sport:'Soccer',  label:'La Liga',          markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_germany_bundesliga', sport:'Soccer',  label:'Bundesliga',       markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_italy_serie_a',      sport:'Soccer',  label:'Serie A',          markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_france_ligue_one',   sport:'Soccer',  label:'Ligue 1',          markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_uefa_champs_league', sport:'Soccer',  label:'Champions League', markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_uefa_europa_league', sport:'Soccer',  label:'Europa League',    markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_portugal_primeira_liga',sport:'Soccer',label:'Primeira Liga',  markets:'h2h,totals,spreads,btts' },
+  { key:'soccer_netherlands_eredivisie',sport:'Soccer',label:'Eredivisie',      markets:'h2h,totals,spreads,btts' },
+  // American sports
+  { key:'basketball_nba',            sport:'NBA',     label:'NBA',              markets:'h2h,totals,spreads,team_totals' },
+  { key:'americanfootball_nfl',      sport:'NFL',     label:'NFL',              markets:'h2h,totals,spreads,team_totals' },
+  { key:'icehockey_nhl',             sport:'NHL',     label:'NHL',              markets:'h2h,totals,spreads' },
+  { key:'baseball_mlb',              sport:'MLB',     label:'MLB',              markets:'h2h,totals,spreads' },
+  // Other
+  { key:'tennis_atp',                sport:'Tennis',  label:'ATP',              markets:'h2h,spreads' },
+  { key:'tennis_wta',                sport:'Tennis',  label:'WTA',              markets:'h2h,spreads' },
+  { key:'mma_mixed_martial_arts',    sport:'MMA',     label:'UFC/MMA',          markets:'h2h,totals' },
+];
+
+// Market key → our internal market category
+const MKT_MAP = {
+  'h2h':             '1x2',
+  'spreads':         'ah',
+  'alternate_spreads':'ah',
+  'totals':          'ou25',   // refined later by point value
+  'alternate_totals':'ou25',
+  'team_totals':     'tt',
+  'btts':            'btts',
+  'draw_no_bet':     'dnb',
+  'double_chance':   'dc',
 };
 
-// Stats site sources (for UI attribution)
+// Stats analysis sources (FBRef, Sofascore, etc.)
 const STATS_SOURCES = {
   soccer: [
-    { name: 'FBRef',       url: 'https://fbref.com',         label: '⭐⭐⭐⭐⭐ Stats completas' },
-    { name: 'Sofascore',   url: 'https://sofascore.com',     label: '⭐⭐⭐⭐⭐ Ratings + heatmaps' },
-    { name: 'FotMob',      url: 'https://fotmob.com',        label: '⭐⭐⭐⭐⭐ App #1 mobile' },
-    { name: 'WhoScored',   url: 'https://whoscored.com',     label: '⭐⭐⭐⭐ Análise tática' },
-    { name: 'TransferMarkt',url:'https://transfermarkt.com', label: '⭐⭐⭐⭐ Valores + lesões' },
+    { name:'FBRef',        url:'https://fbref.com',              label:'Match logs jogo a jogo' },
+    { name:'Sofascore',    url:'https://sofascore.com',          label:'Stats tempo real + ratings' },
+    { name:'FotMob',       url:'https://fotmob.com',             label:'App mobile #1' },
+    { name:'WhoScored',    url:'https://whoscored.com',          label:'Análise tática + pontos fortes' },
+    { name:'Understat',    url:'https://understat.com',          label:'xG + shot maps' },
+    { name:'TransferMarkt',url:'https://transfermarkt.com',      label:'Lesões + árbitros + valores' },
+    { name:'OddsPortal',   url:'https://oddsportal.com',         label:'Melhor odd entre todas as casas' },
+    { name:'Flashscore',   url:'https://flashscore.com',         label:'Live scores + escalações + árbitros' },
+    { name:'FootyStats',   url:'https://footystats.org',         label:'O/U + BTTS + cantos + cartões' },
+    { name:'SoccerStats',  url:'https://soccerstats.com',        label:'Tabelas simplificadas por equipa' },
   ],
   nba: [
-    { name: 'DraftEdge',   url: 'https://draftedge.com',     label: '⭐⭐⭐⭐⭐ Props AI' },
-    { name: 'NBA.com Stats',url:'https://stats.nba.com',     label: '⭐⭐⭐⭐⭐ Oficial' },
-    { name: 'Basketball-Ref',url:'https://basketball-reference.com', label: '⭐⭐⭐⭐⭐ Histórico' },
+    { name:'DraftEdge',       url:'https://draftedge.com',       label:'Player props AI + Floor/Ceil' },
+    { name:'NBA.com Stats',   url:'https://stats.nba.com',       label:'Stats oficiais NBA' },
+    { name:'Basketball-Ref',  url:'https://basketball-reference.com', label:'Histórico completo' },
   ],
   nfl: [
-    { name: 'DraftEdge',   url: 'https://draftedge.com',     label: '⭐⭐⭐⭐⭐ Props AI' },
-    { name: 'Pro-Football-Ref',url:'https://pro-football-reference.com',label:'⭐⭐⭐⭐⭐ Histórico'},
+    { name:'DraftEdge',       url:'https://draftedge.com',       label:'Player props AI' },
+    { name:'Pro-Football-Ref',url:'https://pro-football-reference.com',label:'Histórico NFL' },
   ],
 };
 
 const RealData = {
   _cache: {},
-  _lastFetch: null,
   _loading: false,
 
-  async loadForSport(sportKey) {
-    const apiKey = SETT.getKey();
-    if(!apiKey) return null;
+  /* ─────────────────────────────────────────────────────────
+     Bookmakers to EXCLUDE (exchanges & unreliable sources)
+     Exchange odds like 1000.00 destroy EV calculations
+  ───────────────────────────────────────────────────────── */
+  EXCLUDE_BOOKS: new Set([
+    'betfair_ex_eu','betfair_ex_uk','betfair_sb','betfair',
+    'matchbook','smarkets','betdaq','betfair_ex_aus',
+    'sporttrade','prophet_exchange',
+  ]),
 
-    const cacheKey = sportKey;
-    const cacheAge = this._cache[cacheKey]?.ts;
-    // Cache for 5 minutes
-    if(cacheAge && (Date.now()-cacheAge) < 5*60*1000) return this._cache[cacheKey].data;
-
-    try {
-      const oddsKey = SPORT_KEY_MAP[sportKey] || sportKey;
-      const url = `${ODDS_API_BASE}/sports/${oddsKey}/odds/?apiKey=${apiKey}&regions=eu,uk&markets=h2h,totals,spreads&oddsFormat=decimal&dateFormat=iso`;
-      const res = await fetch(url);
-
-      // Update usage counter
-      const used = res.headers.get('x-requests-used');
-      if(used) localStorage.setItem(API_USAGE_KEY, used);
-
-      if(!res.ok) {
-        if(res.status===401) toast('Chave API inválida. Verifica em Configurações ⚙️','e');
-        return null;
-      }
-      const games = await res.json();
-      this._cache[cacheKey] = { data: games, ts: Date.now() };
-      return games;
-    } catch(e) {
-      console.warn('API fetch error:', e);
-      return null;
-    }
+  /* Sane odds range: reject outliers from corrupted/exchange data */
+  validOdds(odds, mktKey) {
+    if(odds < 1.01) return false;
+    // For h2h/spreads/btts: max ~25.0 is very generous (rare underdogs)
+    const isMain = ['h2h','spreads','btts','draw_no_bet','double_chance'].includes(mktKey);
+    if(isMain && odds > 25) return false;
+    // For totals: max ~5.0 is very generous
+    const isTotals = mktKey.includes('total');
+    if(isTotals && odds > 5) return false;
+    return true;
   },
 
-  // Convert odds-api game to PM pick format
-  gameToPicks(game, sportKey) {
-    const picks = [];
-    if(!game.bookmakers?.length) return picks;
+  /* ── Load single sport ── */
+  async loadForSport(cfg) {
+    const apiKey = SETT.getKey();
+    if(!apiKey) return null;
+    const cacheAge = this._cache[cfg.key]?.ts;
+    if(cacheAge && (Date.now()-cacheAge) < 5*60*1000) return this._cache[cfg.key].data;
+    try {
+      const url = `${ODDS_API_BASE}/sports/${cfg.key}/odds/?apiKey=${apiKey}&regions=eu,uk,us&markets=${cfg.markets}&oddsFormat=decimal&dateFormat=iso`;
+      const res = await fetch(url);
+      const used = res.headers.get('x-requests-used');
+      if(used) localStorage.setItem(API_USAGE_KEY, used);
+      if(res.status === 401) { toast('Chave API inválida ⚙️','e'); return null; }
+      if(!res.ok) return null;
+      const data = await res.json();
+      this._cache[cfg.key] = { data, ts: Date.now() };
+      return data;
+    } catch(e) { console.warn('API error',cfg.key,e); return null; }
+  },
 
-    const home = game.home_team;
-    const away = game.away_team;
-    const commenceTime = game.commence_time;
+  /* ── Convert one game → picks ── */
+  gameToPicks(game, cfg) {
+    const { home_team: home, away_team: away, commence_time: gameTime } = game;
+    const isSoccer = cfg.key.includes('soccer');
+    const isNBA    = cfg.key.includes('basketball');
+    const isNFL    = cfg.key.includes('americanfootball');
+    const isNHL    = cfg.key.includes('icehockey');
+    const isMLB    = cfg.key.includes('baseball');
+    const isTennis = cfg.key.includes('tennis');
+    const isMMA    = cfg.key.includes('mma');
 
-    // Find best odds per (market + outcome) across ALL bookmakers — no duplicate picks
-    // Map: "marketKey|outcomeName|point" -> { bestOdds, bookmaker, outcome }
-    const bestByOutcome = {};
+    /* Step 1 — collect best odds per outcome across NON-EXCHANGE bookmakers */
+    // Structure: mktKey → "outcomeName|point" → { odds, bookmaker }
+    const mkts = {};
 
     game.bookmakers.forEach(bk => {
+      if(this.EXCLUDE_BOOKS.has(bk.key)) return; // skip exchanges!
       bk.markets?.forEach(mkt => {
-        mkt.outcomes?.forEach(outcome => {
-          const key = `${mkt.key}|${outcome.name}|${outcome.point??''}`;
-          const odds = parseFloat(outcome.price||0);
-          if(!bestByOutcome[key] || odds > bestByOutcome[key].odds) {
-            bestByOutcome[key] = {
-              mktKey: mkt.key,
-              outcomeName: outcome.name,
-              point: outcome.point ?? null,
-              odds,
-              bookmaker: bk.title || '',
-            };
+        if(!mkts[mkt.key]) mkts[mkt.key] = {};
+        mkt.outcomes?.forEach(out => {
+          const odds = parseFloat(out.price || 0);
+          if(!this.validOdds(odds, mkt.key)) return;
+          const key = `${out.name}|${out.point ?? ''}`;
+          if(!mkts[mkt.key][key] || odds > mkts[mkt.key][key].odds) {
+            mkts[mkt.key][key] = { odds, bookmaker: bk.title, name: out.name, point: out.point ?? null };
           }
         });
       });
     });
 
-    // Build picks from best odds per outcome
-    Object.values(bestByOutcome).forEach(o => {
-      const { mktKey, outcomeName, point, odds, bookmaker } = o;
+    /* Step 2 — for each market compute fair probs via overround removal */
+    const picks = [];
 
-      // Fair value: use market-wide margin removal
-      // Collect all odds for this market to compute true margin
-      const mktOdds = Object.values(bestByOutcome)
-        .filter(x => x.mktKey === mktKey)
-        .map(x => x.odds);
-      const overround = mktOdds.reduce((s,od) => s + 1/od, 0);
-      const fairProb = (1/odds) / overround * 100; // margin-free probability
-      const fairOdds = (100/fairProb).toFixed(2);
-      const ev = ((fairProb/100 * (odds-1)) - (1-fairProb/100)) * 100;
+    Object.entries(mkts).forEach(([mktKey, outMap]) => {
+      const outArr = Object.values(outMap);
+      if(outArr.length < 2) return;
 
-      if(ev < 2) return; // only +EV
+      // Overround = sum(1/odds) — should be between 1.00 and 1.20 for legit bookmakers
+      const overround = outArr.reduce((s, o) => s + 1/o.odds, 0);
+      if(overround < 0.90 || overround > 1.30) return; // reject garbage data
 
-      // Build a clear pick label: "Team Name Direction Point"
-      let pickLabel = '';
-      const pt = point != null ? Math.abs(point) : null;
-      const ptSign = point != null ? (point >= 0 ? '+' : '') + point : '';
+      outArr.forEach(o => {
+        const { odds, bookmaker, name: outName, point } = o;
+        // True probability after margin removal
+        const fairProb = (1/odds) / overround * 100;
+        const fairOdds = (100/fairProb).toFixed(2);
+        const ev       = ((fairProb/100) * (odds - 1) - (1 - fairProb/100)) * 100;
 
-      if(mktKey === 'h2h') {
-        // Moneyline: outcome name IS the team or "Draw"
-        pickLabel = outcomeName;
-      } else if(mktKey === 'spreads' || mktKey === 'alternate_spreads') {
-        // Handicap: "Team +1.5" or "Team -1.5"
-        pickLabel = `${outcomeName} ${ptSign}`;
-      } else if(mktKey === 'totals' || mktKey === 'alternate_totals') {
-        // Totals: outcomeName is "Over" or "Under"
-        const isSoccer = sportKey.includes('soccer');
-        const unit = isSoccer ? 'Golos' : 'Points';
-        pickLabel = `${outcomeName} ${pt} ${unit}`;
-      } else if(mktKey === 'team_totals') {
-        pickLabel = `${outcomeName} ${pt}`;
-      } else {
-        pickLabel = outcomeName + (point != null ? ' ' + ptSign : '');
-      }
+        if(ev < 1.5 || ev > 30) return; // ignore tiny or suspiciously huge EV
 
-      const sport = sportKey.includes('soccer') ? 'Soccer' :
-                    sportKey.includes('basketball') ? 'NBA' :
-                    sportKey.includes('football') ? 'NFL' :
-                    sportKey.includes('hockey') ? 'NHL' :
-                    sportKey.includes('baseball') ? 'MLB' : 'Sport';
+        /* Step 3 — build clear human-readable pick label */
+        const pt     = point != null ? parseFloat(point) : null;
+        const ptSign = pt != null ? (pt >= 0 ? '+' : '') + pt : '';
+        let label = '';
 
-      picks.push({
-        pick: pickLabel,
-        home, away,
-        sportKey, sport, mktKey,
-        point,
-        odds_best: odds.toFixed(2),
-        fair_odd:  fairOdds,
-        ev_pct:    ev.toFixed(1),
-        prob_real: fairProb.toFixed(1),
-        kelly_pct: Math.max(0, ((fairProb/100 - (1-fairProb/100)/(odds-1)))*100).toFixed(1),
-        bookmaker,
-        game_time: commenceTime,
-        _live: true,
+        switch(mktKey) {
+          case 'h2h':
+            // "Arsenal" / "Manchester City" / "Draw"
+            label = outName;
+            break;
+
+          case 'spreads':
+          case 'alternate_spreads':
+            // "Arsenal -1.5" / "Manchester City +1.5"
+            label = `${outName} ${ptSign}`;
+            break;
+
+          case 'btts':
+            label = outName === 'Yes' ? 'Ambas Marcam — Sim' : 'Ambas Marcam — Não';
+            break;
+
+          case 'draw_no_bet':
+            label = `${outName} — DNB`;
+            break;
+
+          case 'double_chance':
+            label = `DC: ${outName}`;
+            break;
+
+          case 'totals':
+          case 'alternate_totals': {
+            const dir = outName.toLowerCase().startsWith('over') ? '↑ Over' : '↓ Under';
+            const unit = isSoccer ? 'Golos' : isTennis ? 'Games' : isMLB ? 'Runs' : 'Pts';
+            label = `${dir} ${pt} ${unit}`;
+            break;
+          }
+
+          case 'team_totals': {
+            const dir2 = outName.toLowerCase().includes('over') ? '↑' : '↓';
+            // outName from the-odds-api is e.g. "Arsenal Over" or "Arsenal Under"
+            // Split to get team name
+            const parts = outName.split(' ');
+            const teamPart = parts.slice(0, -1).join(' ');
+            const dirWord  = parts[parts.length-1];
+            const arr2 = dirWord.toLowerCase() === 'over' ? '↑' : '↓';
+            label = `${arr2} ${teamPart} Over ${pt} Golos`;
+            break;
+          }
+
+          default:
+            label = outName + (pt != null ? ` ${ptSign}` : '');
+        }
+
+        /* Step 4 — map to internal market category for the filter nav */
+        let internalMkt = mktKey;
+        if(mktKey === 'h2h')                                       internalMkt = isSoccer ? '1x2' : 'ml';
+        else if(mktKey === 'spreads' || mktKey==='alternate_spreads') internalMkt = isSoccer ? 'ah' : 'spread';
+        else if(mktKey === 'btts')                                 internalMkt = 'btts';
+        else if(mktKey === 'draw_no_bet')                          internalMkt = 'dnb';
+        else if(mktKey === 'double_chance')                        internalMkt = 'dc';
+        else if(mktKey === 'team_totals')                          internalMkt = 'tt';
+        else if(mktKey === 'totals' || mktKey==='alternate_totals'){
+          if(pt != null) {
+            const abspt = Math.abs(pt);
+            if(isNBA || isNFL || isNHL || isMLB) internalMkt = 'total';
+            else if(abspt <= 1.5) internalMkt = 'ou15';
+            else if(abspt <= 2.5) internalMkt = 'ou25';
+            else if(abspt <= 3.5) internalMkt = 'ou35';
+            else                  internalMkt = 'ou35';
+          }
+        }
+
+        picks.push({
+          pick:      label,
+          home, away,
+          sportKey:  cfg.key,
+          sport:     cfg.sport,
+          mktKey:    internalMkt,
+          point:     pt,
+          odds_best: odds.toFixed(2),
+          fair_odd:  fairOdds,
+          ev_pct:    ev.toFixed(1),
+          prob_real: fairProb.toFixed(1),
+          kelly_pct: Math.max(0, ((fairProb/100 - (1-fairProb/100)/(odds-1))*100)).toFixed(1),
+          bookmaker,
+          game_time: gameTime,
+          _live: true,
+        });
       });
     });
 
     return picks;
   },
 
+  /* ── Load all configured sports ── */
   async loadAllSports() {
     const apiKey = SETT.getKey();
-    if(!apiKey) {
-      // No API key — do not load demo, just return
-      return;
-    }
-
+    if(!apiKey) return;
     if(this._loading) return;
     this._loading = true;
 
-    // Show loading state
     const grid = document.getElementById('picks-grid');
-    if(grid) grid.innerHTML = `
-      <div class="empty-wrap">
-        <span class="empty-ico" style="animation:spin 1s linear infinite;display:inline-block">⚡</span>
-        <div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">A carregar jogos reais...</div>
-        <div style="font-size:.76rem;color:var(--t3);margin-top:6px">Odds API · the-odds-api.com</div>
-      </div>`;
-
-    // Add spin keyframe if not present
-    if(!document.getElementById('spin-style')) {
-      const s = document.createElement('style');
-      s.id = 'spin-style';
-      s.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+    if(grid) grid.innerHTML = `<div class="empty-wrap"><span class="empty-ico" style="display:inline-block;animation:spin 1s linear infinite">⚡</span><div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">A carregar jogos reais...</div><div style="font-size:.76rem;color:var(--t3);margin-top:4px">Pinnacle · Bet365 · Unibet · 1xBet · Winamax</div></div>`;
+    if(!document.getElementById('spin-style')){
+      const s=document.createElement('style');s.id='spin-style';
+      s.textContent='@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
       document.head.appendChild(s);
     }
 
-    const activeSports = [
-      'soccer_epl', 'soccer_spain_la_liga', 'soccer_germany_bundesliga',
-      'soccer_italy_serie_a', 'soccer_france_ligue_one',
-      'basketball_nba', 'americanfootball_nfl', 'icehockey_nhl',
-      'baseball_mlb', 'tennis_atp',
-    ];
-
     let allPicks = [];
-    for(const sport of activeSports) {
+    for(const cfg of SPORTS_CONFIG) {
       try {
-        const games = await this.loadForSport(sport);
-        if(games?.length) {
-          games.forEach(game => {
-            allPicks.push(...this.gameToPicks(game, sport));
-          });
-        }
-      } catch(e) { /* ignore per-sport errors */ }
+        const games = await this.loadForSport(cfg);
+        if(games?.length) games.forEach(g => allPicks.push(...this.gameToPicks(g, cfg)));
+      } catch(e) { console.warn('Sport error:', cfg.key, e); }
     }
 
     this._loading = false;
 
-    if(allPicks.length > 0) {
-      // Final deduplication: keep only best-odds pick per (game + market + team)
-      const seen = new Set();
-      const deduped = allPicks.filter(p => {
-        const key = `${p.home}|${p.away}|${p.mktKey}|${p.pick}`;
-        if(seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-      // Sort by EV descending
-      deduped.sort((a,b) => parseFloat(b.ev_pct||0) - parseFloat(a.ev_pct||0));
-      PM.render(deduped.slice(0, 80));
-      toast(`✅ ${deduped.length} picks reais (${allPicks.length} encontrados)`, 's');
-    } else {
-      // No games right now — show waiting state (no demo)
-      const grid = document.getElementById('picks-grid');
-      if(grid) grid.innerHTML = `
-        <div class="empty-wrap" style="padding:80px 24px">
-          <span class="empty-ico">🕐</span>
-          <div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Sem jogos disponíveis neste momento</div>
-          <div style="font-size:.84rem;color:var(--t3);max-width:360px;margin:0 auto;line-height:1.6">
-            A API está ligada mas não há jogos com +EV disponíveis agora. Voltar mais tarde ou actualizar.
-          </div>
-          <button onclick="RealData.loadAllSports()" style="margin-top:20px;padding:9px 22px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">
-            ↻ Actualizar
-          </button>
-        </div>`;
-      toast('Sem jogos com +EV agora. Tenta mais tarde.', 'i');
+    if(!allPicks.length) {
+      if(grid) grid.innerHTML = `<div class="empty-wrap"><span class="empty-ico">🕐</span><div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Sem jogos disponíveis agora</div><div style="font-size:.84rem;color:var(--t3);max-width:360px;margin:0 auto;line-height:1.6">API ligada mas sem jogos com +EV neste momento. Tenta mais tarde.</div><button onclick="RealData.loadAllSports()" style="margin-top:16px;padding:9px 22px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">↻ Actualizar</button></div>`;
+      toast('Sem picks +EV agora.','i');
+      return;
     }
+
+    /* Final dedup: best EV per (game + market + team/direction) */
+    const seen = {};
+    allPicks.forEach(p => {
+      const k = `${p.home}|${p.away}|${p.mktKey}|${p.pick}`;
+      if(!seen[k] || parseFloat(p.ev_pct) > parseFloat(seen[k].ev_pct)) seen[k] = p;
+    });
+    const deduped = Object.values(seen).sort((a,b) => parseFloat(b.ev_pct)-parseFloat(a.ev_pct));
+
+    PM.render(deduped.slice(0, 120));
+    const sports = [...new Set(deduped.map(p=>p.sport))].join(' · ');
+    toast(`✅ ${deduped.length} picks reais · ${sports}`, 's');
   },
 };
 
