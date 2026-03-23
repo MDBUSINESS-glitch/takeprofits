@@ -4808,6 +4808,7 @@ const RealData = {
     const { home_team: home, away_team: away, commence_time: gameTime, id: gameId } = game;
     const isSoccer = cfg.key.includes('soccer');
     const isNBA    = cfg.key.includes('basketball');
+    const isNFL    = cfg.key.includes('americanfootball');
     const isNHL    = cfg.key.includes('icehockey');
     const isMLB    = cfg.key.includes('baseball');
     const isTennis = cfg.key.includes('tennis');
@@ -5089,9 +5090,11 @@ const RealData = {
 
     // Step 1: load each sport (only if available on this key)
     for(const cfg of SPORTS_CONFIG) {
-      if(availableSports && !availableSports.has(cfg.key)) {
+      // Only skip if we have a valid sports list AND the sport is NOT in it
+      // If availableSports is null (failed to fetch), try all sports anyway
+      if(availableSports instanceof Set && !availableSports.has(cfg.key)) {
         statusLog.push(`${cfg.label}: não disponível neste plano`);
-        console.log('[MD] Skip (not in plan):', cfg.key);
+        console.log('[MD] Skip (not in plan):', cfg.key, '| available:', [...availableSports].join(','));
         continue;
       }
       try {
