@@ -4739,55 +4739,61 @@ const RealData = {
   _lowThreshold: false,   // set true to show picks with EV < 0% as well
 
   /* ── Fetch sport-level odds (team markets) ── */
-  async fetchSportOdds(cfg) {
-    const key = SETT.getKey(); if(!key) return null;
+  /* ── Get available sports for this API key (costs 1 request) ── */
+  async getAvailableSports(key) {
+    const cacheKey = 'available_sports';
+    const cached = this._cache[cacheKey];
+    if(cached && Date.now()-cached.ts < 60*60*1000) return cached.data; // 1hr cache
+    try {
+      const r = await fetch(`${ODDS_API_BASE}/sports/?apiKey=${key}`);
+      const used = r.headers.get('x-requests-used');
+      const rem  = r.headers.get('x-requests-remaining');
+      if(used) localStorage.setItem(API_USAGE_KEY, used);
+      if(rem)  localStorage.setItem('md_api_remaining', rem);
+      if(!r.ok) return null;
+      const sports = await r.json();
+      // Return set of active sport keys
+      const active = new Set(sports.filter(s => s.active).map(s => s.key));
+      this._cache[cacheKey] = { data: active, ts: Date.now() };
+      return active;
+    } catch(e) { return null; }
+  },
+
+  /* ── Fetch one sport's odds ── */
+  async fetchSportOdds(cfg, key) {
     const cacheKey = 'sport_' + cfg.key;
     const cached = this._cache[cacheKey];
-    if(cached && Date.now()-cached.ts < 30*60*1000) return cached.data; // 30min cache to save credits
-
+    if(cached && Date.now()-cached.ts < 30*60*1000) return cached.data; // 30min cache
     try {
-      // Only request eu+uk regions (saves bandwidth, more bookmakers for Europe)
       const regions = cfg.sport === 'Soccer' ? 'eu,uk' : 'eu,uk,us';
       const url = `${ODDS_API_BASE}/sports/${cfg.key}/odds/?apiKey=${key}&regions=${regions}&markets=${cfg.markets}&oddsFormat=decimal&dateFormat=iso`;
       const r = await fetch(url);
-
-      // Track API usage
-      const used     = r.headers.get('x-requests-used');
-      const remaining= r.headers.get('x-requests-remaining');
-      if(used)       localStorage.setItem(API_USAGE_KEY, used);
-      if(remaining)  localStorage.setItem('md_api_remaining', remaining);
-
-      if(r.status === 401) {
-        toast('❌ API key inválida ou créditos esgotados. Verifica em ⚙️ Configurações','e');
-        return { _error: 401 };
-      }
-      if(r.status === 422) return { _error: 422 }; // sport not available on this plan
-      if(r.status === 429) {
-        toast('❌ Rate limit — aguarda 1 minuto e tenta novamente','w');
-        return { _error: 429 };
-      }
-      if(!r.ok) return { _error: r.status };
-
+      const used = r.headers.get('x-requests-used');
+      const rem  = r.headers.get('x-requests-remaining');
+      if(used) localStorage.setItem(API_USAGE_KEY, used);
+      if(rem)  localStorage.setItem('md_api_remaining', rem);
+      if(r.status === 401) return { _error: 401 };
+      if(r.status === 422) return { _error: 422 }; // sport not on this plan
+      if(r.status === 429) return { _error: 429 }; // rate limited
+      if(!r.ok)            return { _error: r.status };
       const data = await r.json();
       this._cache[cacheKey] = { data, ts: Date.now() };
       return data;
-    } catch(e) {
-      console.error('[MD] fetch error for', cfg.key, e.message);
-      return { _error: 'network', _msg: e.message };
-    }
+    } catch(e) { return { _error: 'network', _msg: e.message }; }
   },
 
   /* ── Fetch player props for a specific event ── */
-  async fetchEventProps(sportKey, eventId, propMarkets) {
-    const key = SETT.getKey(); if(!key) return null;
+  async fetchEventProps(sportKey, eventId, propMarkets, key) {
     const cacheKey = `props_${eventId}`;
     const cached = this._cache[cacheKey];
-    if(cached && Date.now()-cached.ts < 10*60*1000) return cached.data;
+    if(cached && Date.now()-cached.ts < 30*60*1000) return cached.data;
     try {
       const url = `${ODDS_API_BASE}/sports/${sportKey}/events/${eventId}/odds?apiKey=${key}&regions=eu,uk,us&markets=${propMarkets}&oddsFormat=decimal&dateFormat=iso`;
       const r = await fetch(url);
       const used = r.headers.get('x-requests-used');
+      const rem  = r.headers.get('x-requests-remaining');
       if(used) localStorage.setItem(API_USAGE_KEY, used);
+      if(rem)  localStorage.setItem('md_api_remaining', rem);
       if(!r.ok) return null;
       const data = await r.json();
       this._cache[cacheKey] = { data, ts: Date.now() };
@@ -4795,7 +4801,7 @@ const RealData = {
     } catch(e) { return null; }
   },
 
-  /* ── Convert team-market game → picks ── */
+    /* ── Convert team-market game → picks ── */
   gameToTeamPicks(game, cfg) {
     const picks = [];
     if(!game.bookmakers?.length) return picks;
@@ -5057,29 +5063,49 @@ const RealData = {
     const grid = document.getElementById('picks-grid');
     if(grid) grid.innerHTML = '<div class="empty-wrap"><span class="empty-ico" style="display:inline-block;animation:spin 1s linear infinite">⚡</span><div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">A carregar picks reais...</div><div style="font-size:.72rem;color:var(--t3);margin-top:4px">Pinnacle · Bet365 · Unibet' + remDisp + '</div></div>';
     const statusLog = [];
+    let allPicks = [];
+    const gamesWithProps = [];
+    let propCount = 0;
 
-    // Helper: update loading text in grid
     const updateStatus = (msg) => {
       const g = document.getElementById('picks-grid');
-      if(g) g.innerHTML = `<div class="empty-wrap"><span class="empty-ico" style="display:inline-block;animation:spin 1s linear infinite">⚡</span><div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:12px">${msg}</div><div style="font-size:.72rem;color:var(--t3);margin-top:6px">${statusLog.slice(-3).join(' · ')}</div></div>`;
+      if(g) g.innerHTML = `<div class="empty-wrap"><span class="empty-ico" style="display:inline-block;animation:spin 1s linear infinite">⚡</span><div style="font-size:.88rem;font-weight:700;color:var(--t2);margin-top:10px">${msg}</div><div style="font-size:.72rem;color:var(--t3);margin-top:6px">${statusLog.slice(-3).join(' · ')}</div></div>`;
     };
 
-    // Step 1: Load team markets for each sport
+    // Step 0: get list of sports available on this API key (1 credit)
+    updateStatus('A verificar desportos disponíveis...');
+    const availableSports = await this.getAvailableSports(apiKey);
+    const remaining2 = parseInt(localStorage.getItem('md_api_remaining') || '500');
+
+    if(availableSports === null) {
+      // Could not reach API — show network error
+      const g = document.getElementById('picks-grid');
+      if(g) g.innerHTML = `<div class="empty-wrap"><span class="empty-ico">🌐</span><div style="font-size:1rem;font-weight:700;color:var(--t2);margin-bottom:8px">Erro de ligação à API</div><div style="font-size:.84rem;color:var(--t3);max-width:380px;margin:0 auto;line-height:1.65">Não foi possível ligar a the-odds-api.com. Verifica a tua ligação à internet e a chave API em <button onclick="openSettings()" style="background:none;border:none;color:var(--clime);cursor:pointer;font-weight:700;font-size:.84rem">⚙️ Configurações</button></div><button onclick="RealData._cache={};RealData.loadAllSports()" style="margin-top:16px;padding:9px 22px;border-radius:50px;background:rgba(198,255,0,.1);border:1px solid rgba(198,255,0,.3);color:var(--lime);font-family:'Inter',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer">↻ Tentar novamente</button></div>`;
+      toast('Erro de ligação à API. Verifica a tua chave em ⚙️','e');
+      this._loading = false; return;
+    }
+
+    console.log('[MD] Available sports on this key:', availableSports?.size || 0, 'Credits remaining:', remaining2);
+
+    // Step 1: load each sport (only if available on this key)
     for(const cfg of SPORTS_CONFIG) {
+      if(availableSports && !availableSports.has(cfg.key)) {
+        statusLog.push(`${cfg.label}: não disponível neste plano`);
+        console.log('[MD] Skip (not in plan):', cfg.key);
+        continue;
+      }
       try {
         updateStatus(`A carregar ${cfg.label}...`);
-        const games = await this.fetchSportOdds(cfg);
-        // Check for API errors
+        const games = await this.fetchSportOdds(cfg, apiKey);
+
         if(games?._error) {
-          const errMsg = games._error === 401 ? '⚠️ key inválida' :
-                         games._error === 422 ? '(plano não inclui)' :
-                         games._error === 429 ? '⚠️ rate limit' :
-                         games._error === 'network' ? '⚠️ rede' :
-                         `err ${games._error}`;
-          statusLog.push(`${cfg.label}: ${errMsg}`);
-          console.warn(`[MD] ${cfg.label}: error ${games._error}`);
-          // If 401 (key invalid), abort all remaining sports
-          if(games._error === 401) { this._loading = false; return; }
+          const msg = games._error === 401 ? '❌ chave inválida' :
+                      games._error === 422 ? '(plano não inclui)' :
+                      games._error === 429 ? '⚠️ rate limit' :
+                      `err ${games._error}${games._msg?' — '+games._msg:''}`;
+          statusLog.push(`${cfg.label}: ${msg}`);
+          console.warn('[MD]', cfg.label, msg);
+          if(games._error === 401) { toast('❌ Chave API inválida','e'); this._loading = false; return; }
           continue;
         }
 
@@ -5094,31 +5120,28 @@ const RealData = {
           });
         }
         statusLog.push(`${cfg.label}: ${count} jogos / ${teamPicks} picks`);
-        console.log(`[MD] ${cfg.label}: ${count} games → ${teamPicks} team picks`);
+        console.log('[MD]', cfg.label, '→', count, 'games,', teamPicks, 'picks');
       } catch(e) {
-        statusLog.push(`${cfg.label}: erro (${e.message})`);
-        console.warn('[MD] Sport error:', cfg.key, e);
+        statusLog.push(`${cfg.label}: erro — ${e.message}`);
+        console.error('[MD] Error', cfg.key, e);
       }
     }
 
-    // Step 2: Player props (max 5 events total to save credits)
-    const propsGames = gamesWithProps.slice(0, 5);
-    let propCount = 0;
+    // Step 2: player props (max 4 events to save credits)
+    const propsGames = gamesWithProps.slice(0, 4);
     for(const { game, cfg } of propsGames) {
       try {
-        updateStatus(`A carregar props: ${game.home_team} vs ${game.away_team}`);
-        const eventData = await this.fetchEventProps(cfg.key, game.id, cfg.propMarkets);
-        if(eventData) {
+        const eventData = await this.fetchEventProps(cfg.key, game.id, cfg.propMarkets, apiKey);
+        if(eventData && !eventData._error) {
           const p = this.eventToPropPicks(eventData, cfg);
           allPicks.push(...p);
           propCount += p.length;
-          console.log(`[MD] Props ${game.home_team} vs ${game.away_team}: ${p.length} picks`);
         }
-      } catch(e) { console.warn('[MD] Props error:', game.id, e); }
+      } catch(e) { console.warn('[MD] Props error:', e.message); }
     }
-    console.log(`[MD] TOTAL before dedup: ${allPicks.length} picks (${propCount} props)`);
+    console.log('[MD] TOTAL:', allPicks.length, 'picks (' + propCount + ' props)');
 
-    this._loading = false;
+        this._loading = false;
 
     if(!allPicks.length) {
       const logHtml = statusLog.length
