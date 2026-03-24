@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Edge Engine — CS2 Pro Analysis + Bet Tracker v3.0</title>
+<title>Edge Engine — CS2 Pro Analysis + Bet Tracker v3</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
---bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2332;--bg-modal:#0d1420;
+--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2332;--bg-card-hover:#1f2b3d;
+--bg-card-alt:#162030;--bg-modal:#0d1420;
 --accent-primary:#00d4ff;--accent-secondary:#7c3aed;--accent-green:#10b981;
---accent-red:#ef4444;--accent-orange:#f59e0b;--accent-blue:#3b82f6;--accent-cyan:#06b6d4;
+--accent-red:#ef4444;--accent-orange:#f59e0b;--accent-yellow:#eab308;
+--accent-blue:#3b82f6;--accent-pink:#ec4899;--accent-cyan:#06b6d4;
 --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#64748b;
 --border-color:#1e293b;--border-light:#334155;
 --gradient-primary:linear-gradient(135deg,#00d4ff,#7c3aed);
@@ -20,77 +22,94 @@
 --gradient-orange:linear-gradient(135deg,#f59e0b,#d97706);
 --gradient-card:linear-gradient(145deg,#1a2332,#162030);
 --shadow-glow:0 0 20px rgba(0,212,255,.15);
---header-height:60px;--betslip-width:300px;
+--header-height:64px;--betslip-width:310px;
 --transition:all .3s cubic-bezier(.4,0,.2,1);
 }
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden;font-size:14px}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
-a{color:var(--accent-primary);text-decoration:none}
 
-/* HEADER */
-.header{position:fixed;top:0;left:0;right:0;height:var(--header-height);background:rgba(17,24,39,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
-.hc{width:100%;max-width:1800px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:.4rem}
-.logo i{font-size:1.2rem;color:var(--accent-primary);filter:drop-shadow(0 0 6px rgba(0,212,255,.5))}
-.logo span{font-size:1.1rem;font-weight:900;letter-spacing:1px}
-.logo .la{color:var(--accent-primary)}
-.logo .badge{font-size:.5rem;font-weight:700;padding:1px 6px;border-radius:20px;background:var(--gradient-primary);color:#fff;letter-spacing:1px;margin-left:4px}
-.nav{display:flex;gap:2px}
-.nav-link{padding:.45rem .75rem;color:var(--text-secondary);font-size:.78rem;font-weight:600;border-radius:7px;transition:var(--transition);display:flex;align-items:center;gap:.35rem;cursor:pointer}
+.header{position:fixed;top:0;left:0;right:0;height:var(--header-height);background:rgba(17,24,39,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+.header-container{width:100%;max-width:1600px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:.5rem}
+.logo-icon{font-size:1.4rem;color:var(--accent-primary);filter:drop-shadow(0 0 8px rgba(0,212,255,.5))}
+.logo-text{font-size:1.2rem;font-weight:900;letter-spacing:1px}.logo-accent{color:var(--accent-primary)}
+.logo-badge{font-size:.55rem;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--gradient-primary);color:#fff;letter-spacing:1px}
+
+/* NAV - Two rows */
+.nav{display:flex;gap:.2rem}
+.nav-link{padding:.5rem .9rem;color:var(--text-secondary);text-decoration:none;font-size:.8rem;font-weight:600;border-radius:8px;transition:var(--transition);display:flex;align-items:center;gap:.4rem;cursor:pointer}
 .nav-link:hover{color:var(--text-primary);background:rgba(255,255,255,.05)}
 .nav-link.active{color:var(--accent-primary);background:rgba(0,212,255,.1)}
-.live-dot{width:6px;height:6px;background:var(--accent-green);border-radius:50%;animation:pd 2s infinite;display:inline-block;margin-right:3px}
-@keyframes pd{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}50%{box-shadow:0 0 0 4px rgba(16,185,129,0)}}
-.ha{display:flex;align-items:center;gap:.6rem;font-size:.7rem;font-weight:700;color:var(--accent-green)}
-.capital-display{background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:3px 10px;font-size:.75rem;font-weight:700;color:var(--accent-green);display:flex;align-items:center;gap:4px}
-.capital-display span{color:var(--text-muted);font-weight:500}
 
-/* MAIN */
-.main{margin-top:var(--header-height);margin-right:var(--betslip-width);padding:1rem;max-width:1300px}
+.header-actions{display:flex;align-items:center;gap:.8rem}
+.live-dot{width:7px;height:7px;background:var(--accent-green);border-radius:50%;animation:pulse-dot 2s infinite;display:inline-block;margin-right:4px}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}50%{box-shadow:0 0 0 5px rgba(16,185,129,0)}}
+.live-indicator{font-size:.7rem;font-weight:700;color:var(--accent-green);letter-spacing:1px}
+.capital-badge{background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:3px 10px;font-size:.72rem;font-weight:700;color:var(--accent-green);display:flex;align-items:center;gap:4px}
+.capital-badge span{color:var(--text-muted);font-weight:500;font-size:.65rem}
+.btn-settings{width:34px;height:34px;border:1px solid var(--border-color);background:0 0;color:var(--text-secondary);border-radius:8px;cursor:pointer}
+.btn-settings:hover{color:var(--accent-primary);border-color:var(--accent-primary)}
 
-/* PAGES */
-.page{display:none}.page.active{display:block}
+.main-content{margin-top:var(--header-height);margin-right:var(--betslip-width);padding:1.2rem;max-width:1200px}
 
 /* STATS BAR */
-.stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem;margin-bottom:1rem}
-.sc{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:.7rem .9rem;transition:var(--transition)}
-.sc:hover{border-color:var(--accent-primary);box-shadow:var(--shadow-glow)}
-.sc-label{font-size:.62rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:4px;margin-bottom:2px}
-.sc-label i{font-size:.65rem}
-.sc-value{font-size:1.15rem;font-weight:800;line-height:1.2}
-.sc-sub{font-size:.6rem;color:var(--text-muted);margin-top:1px}
-.sc-value.green{color:var(--accent-green)}.sc-value.red{color:var(--accent-red)}.sc-value.cyan{color:var(--accent-cyan)}.sc-value.orange{color:var(--accent-orange)}.sc-value.blue{color:var(--accent-blue)}.sc-value.yellow{color:var(--accent-orange)}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.2rem}
+.stats-bar-6{grid-template-columns:repeat(6,1fr)}
+.stat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:.8rem 1rem;display:flex;align-items:center;gap:.8rem;transition:var(--transition)}
+.stat-card:hover{border-color:var(--accent-primary);box-shadow:var(--shadow-glow)}
+.stat-card-v{flex-direction:column;align-items:flex-start;gap:.2rem}
+.stat-icon{width:38px;height:38px;border-radius:9px;background:rgba(0,212,255,.1);color:var(--accent-primary);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.stat-icon.green{background:rgba(16,185,129,.1);color:var(--accent-green)}
+.stat-icon.blue{background:rgba(59,130,246,.1);color:var(--accent-blue)}
+.stat-icon.orange{background:rgba(245,158,11,.1);color:var(--accent-orange)}
+.stat-value{font-size:1.3rem;font-weight:800;line-height:1.1}
+.stat-label{font-size:.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:4px}
+.stat-label i{font-size:.6rem}
+.stat-sub{font-size:.58rem;color:var(--text-muted)}
+.stat-info{display:flex;flex-direction:column}
+.sv-green{color:var(--accent-green)}.sv-red{color:var(--accent-red)}.sv-cyan{color:var(--accent-cyan)}.sv-orange{color:var(--accent-orange)}.sv-blue{color:var(--accent-blue)}.sv-yellow{color:var(--accent-orange)}
 
-/* SECTION */
-.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:.4rem}
-.sh h2{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.4rem}
-.sh h2 i{color:var(--accent-primary)}
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.section-header h2{font-size:1.05rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.section-header h2 i{color:var(--accent-primary)}
+.section-actions{display:flex;gap:.4rem;flex-wrap:wrap}
+.section-actions select{padding:.35rem .5rem;font-size:.75rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;color:var(--text-primary);font-family:'Inter',sans-serif;cursor:pointer}
 
 /* BUTTONS */
 .btn{padding:.4rem .9rem;font-size:.75rem;font-weight:700;border:none;border-radius:7px;cursor:pointer;font-family:'Inter',sans-serif;transition:var(--transition);display:inline-flex;align-items:center;gap:.3rem}
 .btn-primary{background:var(--gradient-primary);color:#fff}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(0,212,255,.3)}
 .btn-green{background:var(--accent-green);color:#fff}
+.btn-green:hover{background:#059669}
 .btn-red{background:rgba(239,68,68,.15);color:var(--accent-red);border:1px solid var(--accent-red)}
 .btn-outline{background:transparent;color:var(--text-secondary);border:1px solid var(--border-color)}
 .btn-outline:hover{border-color:var(--accent-primary);color:var(--accent-primary)}
 .btn-sm{padding:.3rem .6rem;font-size:.68rem}
-.btn-group{display:flex;gap:2px}
-.btn-group .btn{border-radius:0}.btn-group .btn:first-child{border-radius:6px 0 0 6px}.btn-group .btn:last-child{border-radius:0 6px 6px 0}
-.btn-group .btn.active{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary)}
 
 /* TABS */
-.tabs{display:flex;gap:3px;margin-bottom:1rem}
-.tab{padding:.5rem 1rem;font-size:.78rem;font-weight:700;border:1px solid var(--border-color);background:transparent;color:var(--text-secondary);border-radius:7px;cursor:pointer;font-family:'Inter',sans-serif;transition:var(--transition)}
-.tab:hover,.tab.active{border-color:var(--accent-primary);color:var(--accent-primary);background:rgba(0,212,255,.08)}
-.tab.green{border-color:var(--accent-green);color:var(--accent-green);background:rgba(16,185,129,.1)}
+.tab-bar{display:flex;gap:3px;margin-bottom:1rem}
+.tab-btn{padding:.5rem 1rem;font-size:.78rem;font-weight:700;border:1px solid var(--border-color);background:transparent;color:var(--text-secondary);border-radius:7px;cursor:pointer;font-family:'Inter',sans-serif;transition:var(--transition)}
+.tab-btn:hover,.tab-btn.active{border-color:var(--accent-primary);color:var(--accent-primary);background:rgba(0,212,255,.08)}
+.tab-btn.green-active{border-color:var(--accent-green);color:#fff;background:var(--accent-green)}
+.tab-content{display:none}.tab-content.active{display:block}
 
-/* CARDS & GRID */
-.card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+/* BT sub-tabs */
+.bt-tabs{display:flex;gap:3px;margin-bottom:1.2rem}
+.bt-tab{padding:.45rem .9rem;font-size:.75rem;font-weight:700;border:1px solid var(--border-color);background:transparent;color:var(--text-secondary);border-radius:7px;cursor:pointer;font-family:'Inter',sans-serif;transition:var(--transition)}
+.bt-tab:hover{border-color:var(--accent-primary);color:var(--text-primary)}
+.bt-tab.active{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary)}
+.bt-tab.green-active{background:var(--accent-green);color:#fff;border-color:var(--accent-green)}
+.bt-tab.orange-active{background:var(--accent-orange);color:#fff;border-color:var(--accent-orange)}
+.bt-page{display:none}.bt-page.active{display:block}
+
+/* CARD */
+.card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;overflow:hidden;margin-bottom:1rem}
 .card-header{padding:.7rem 1rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.15)}
 .card-body{padding:1rem}
+
+/* GRIDS */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
 
 /* TABLE */
@@ -98,7 +117,7 @@ a{color:var(--accent-primary);text-decoration:none}
 .dt thead th{padding:.5rem .6rem;text-align:left;font-weight:700;color:var(--text-muted);border-bottom:1px solid var(--border-color);font-size:.65rem;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
 .dt tbody td{padding:.45rem .6rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
 .dt tbody tr:hover{background:rgba(255,255,255,.02)}
-.vp{color:var(--accent-green);font-weight:700}.vn{color:var(--accent-red);font-weight:700}
+.vp{color:var(--accent-green);font-weight:700}.vn{color:var(--accent-red);font-weight:700}.vnu{color:var(--text-secondary)}
 
 /* PILLS & BADGES */
 .pill{display:inline-block;padding:.12rem .45rem;border-radius:20px;font-size:.62rem;font-weight:700}
@@ -106,274 +125,362 @@ a{color:var(--accent-primary);text-decoration:none}
 .pill.red{background:rgba(239,68,68,.15);color:var(--accent-red)}
 .pill.blue{background:rgba(0,212,255,.15);color:var(--accent-primary)}
 .pill.orange{background:rgba(245,158,11,.15);color:var(--accent-orange)}
-.pill.cyan{background:rgba(6,182,212,.15);color:var(--accent-cyan)}
-.pill.yellow{background:rgba(234,179,8,.15);color:#eab308}
 .pill.purple{background:rgba(124,58,237,.15);color:var(--accent-secondary)}
-.badge-bilhete{background:rgba(59,130,246,.2);color:var(--accent-blue);padding:1px 6px;border-radius:3px;font-size:.6rem;font-weight:700;margin-left:4px}
-.status-badge{padding:2px 8px;border-radius:4px;font-size:.62rem;font-weight:700;text-transform:uppercase;cursor:pointer}
-.status-pending{background:rgba(245,158,11,.15);color:var(--accent-orange)}
-.status-won{background:rgba(16,185,129,.15);color:var(--accent-green)}
-.status-lost{background:rgba(239,68,68,.15);color:var(--accent-red)}
-.status-void{background:rgba(100,116,139,.15);color:var(--text-muted)}
-.status-complete{background:rgba(16,185,129,.15);color:var(--accent-green)}
+.badge-ticket{background:rgba(59,130,246,.2);color:var(--accent-blue);padding:1px 6px;border-radius:3px;font-size:.58rem;font-weight:700;margin-left:4px}
+
+/* VALUE BADGES */
+.vb{display:inline-flex;align-items:center;gap:.2rem;padding:.15rem .45rem;border-radius:4px;font-size:.65rem;font-weight:700;white-space:nowrap}
+.vb.exc{background:rgba(16,185,129,.15);color:var(--accent-green)}
+.vb.good{background:rgba(0,212,255,.15);color:var(--accent-primary)}
+.vb.fair{background:rgba(245,158,11,.15);color:var(--accent-orange)}
+.vb.nv{background:rgba(239,68,68,.1);color:var(--accent-red)}
+.btn-add{padding:.25rem .55rem;font-size:.68rem;font-weight:700;border:1px solid var(--accent-green);background:rgba(16,185,129,.1);color:var(--accent-green);border-radius:4px;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-add:hover{background:var(--accent-green);color:#fff}
 
 /* FORM INPUTS */
-.form-row{display:flex;gap:.5rem;align-items:end;flex-wrap:wrap;margin-bottom:.8rem}
+.form-row{display:flex;gap:.5rem;align-items:end;flex-wrap:wrap}
 .form-group{display:flex;flex-direction:column;gap:3px}
-.form-group label{font-size:.62rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
-.form-group input,.form-group select{padding:.4rem .6rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:5px;color:var(--text-primary);font-family:'Inter',sans-serif;font-size:.78rem;min-width:100px}
+.form-group label{font-size:.6rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group select{padding:.4rem .6rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:5px;color:var(--text-primary);font-family:'Inter',sans-serif;font-size:.76rem}
 .form-group input:focus,.form-group select:focus{border-color:var(--accent-primary);outline:none}
-.form-group.wide{flex:1}
-.form-group.wide input,.form-group.wide select{width:100%}
+.form-group.wide{flex:1}.form-group.wide input{width:100%}
 
-/* CHART placeholder */
-.chart-area{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:1rem;min-height:180px;position:relative;overflow:hidden}
-.chart-title{font-size:.82rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.chart-title i{color:var(--accent-green)}
-.chart-canvas{width:100%;height:140px;position:relative}
-.chart-line{position:absolute;bottom:0;left:0;right:0;height:100%}
-.chart-svg{width:100%;height:100%}
-.chart-labels{display:flex;justify-content:space-between;font-size:.6rem;color:var(--text-muted);margin-top:4px}
+/* CHART */
+.chart-area{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:1rem;min-height:160px}
+.chart-title{font-size:.82rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between}
+.chart-title i{color:var(--accent-green);margin-right:4px}
+.chart-canvas{width:100%;height:120px}
+.chart-labels{display:flex;justify-content:space-between;font-size:.58rem;color:var(--text-muted);margin-top:4px}
+.period-btns{display:flex;gap:2px}
+.period-btn{padding:2px 8px;font-size:.65rem;font-weight:600;border:1px solid var(--border-color);background:transparent;color:var(--text-muted);border-radius:4px;cursor:pointer;font-family:'Inter',sans-serif}
+.period-btn:hover,.period-btn.active{border-color:var(--accent-primary);color:var(--accent-primary);background:rgba(0,212,255,.08)}
 
 /* CALENDAR */
 .calendar{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:.8rem}
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;font-size:.82rem;font-weight:700}
-.cal-nav{cursor:pointer;color:var(--text-secondary);padding:2px 6px;border-radius:4px}
-.cal-nav:hover{color:var(--accent-primary);background:rgba(0,212,255,.1)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:.68rem}
-.cal-day-header{color:var(--text-muted);font-weight:600;padding:4px 0}
-.cal-day{padding:5px 0;border-radius:4px;cursor:pointer;color:var(--text-secondary)}
-.cal-day:hover{background:rgba(0,212,255,.1);color:var(--accent-primary)}
-.cal-day.today{background:rgba(0,212,255,.2);color:var(--accent-primary);font-weight:700}
-.cal-day.has-bets{position:relative}.cal-day.has-bets::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--accent-green)}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;font-size:.82rem;font-weight:700}
+.cal-nav{cursor:pointer;color:var(--text-secondary);padding:2px 6px}
+.cal-nav:hover{color:var(--accent-primary)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:.65rem}
+.cal-dh{color:var(--text-muted);font-weight:600;padding:3px 0}
+.cal-d{padding:4px 0;border-radius:4px;cursor:pointer;color:var(--text-secondary)}
+.cal-d:hover{background:rgba(0,212,255,.1);color:var(--accent-primary)}
+.cal-d.today{background:rgba(0,212,255,.2);color:var(--accent-primary);font-weight:700}
+.cal-d.has-bet{position:relative}.cal-d.has-bet::after{content:'';position:absolute;bottom:1px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--accent-green)}
 
-/* SWEAT STATION */
+/* SWEAT */
 .sweat-tabs{display:flex;border-bottom:1px solid var(--border-color);margin-bottom:.8rem}
-.sweat-tab{padding:.5rem 1.2rem;font-size:.75rem;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:var(--transition)}
+.sweat-tab{padding:.45rem 1rem;font-size:.72rem;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:var(--transition)}
 .sweat-tab:hover{color:var(--text-primary)}
 .sweat-tab.active{color:var(--accent-primary);border-bottom-color:var(--accent-primary)}
-.bet-item{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;border-bottom:1px solid rgba(255,255,255,.03);transition:var(--transition)}
+.bet-item{display:flex;align-items:center;justify-content:space-between;padding:.5rem .7rem;border-bottom:1px solid rgba(255,255,255,.03)}
 .bet-item:hover{background:rgba(255,255,255,.02)}
-.bet-item-info{display:flex;flex-direction:column;gap:2px}
-.bet-item-name{font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:4px}
-.bet-item-type{font-size:.68rem;color:var(--text-muted)}
-.bet-item-odds{font-size:.95rem;font-weight:800;text-align:right}
-.bet-item-odds.pending{color:var(--accent-red)}
-.bet-item-odds small{display:block;font-size:.6rem;color:var(--text-muted);font-weight:500}
+.bet-item-name{font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:4px}
+.bet-item-sub{font-size:.65rem;color:var(--text-muted)}
+.bet-item-odds{font-size:.9rem;font-weight:800;color:var(--accent-red);text-align:right}
+.bet-item-odds small{display:block;font-size:.58rem;color:var(--text-muted);font-weight:500}
 
 /* MATCH CARDS */
-.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:.8rem}
-.mc{background:var(--gradient-card);border:1px solid var(--border-color);border-radius:11px;overflow:hidden;transition:var(--transition);cursor:pointer;position:relative}
-.mc:hover{border-color:var(--accent-primary);box-shadow:var(--shadow-glow);transform:translateY(-2px)}
-.mc-h{padding:.6rem .9rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,.2)}
-.mc-ev{font-size:.65rem;font-weight:600;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase}
-.mc-fmt{font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(0,212,255,.15);color:var(--accent-primary)}
-.mc-b{padding:1.1rem}
-.mc-teams{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
-.mc-team{display:flex;flex-direction:column;align-items:center;gap:.35rem;width:40%}
-.mc-logo{width:40px;height:40px;border-radius:10px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:2px solid var(--border-color)}
-.mc-name{font-size:.82rem;font-weight:700;text-align:center;line-height:1.2}
-.mc-tpi{font-size:.65rem;color:var(--text-muted);font-weight:600}
-.mc-vs{display:flex;flex-direction:column;align-items:center;gap:.2rem}
-.mc-vs-text{font-size:.75rem;font-weight:800;color:var(--text-muted)}
-.mc-time{font-size:.65rem;color:var(--accent-primary);font-weight:600}
-.mc-f{padding:.6rem .9rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.4rem;border-top:1px solid var(--border-color);background:rgba(0,0,0,.12)}
-.mc-stat{display:flex;flex-direction:column;align-items:center}
-.mc-sl{font-size:.58rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-.mc-sv{font-size:.82rem;font-weight:800}
-.conf-bar{width:100%;height:3px;background:var(--border-color);border-radius:2px;margin-top:.6rem;overflow:hidden}
-.conf-fill{height:100%;border-radius:2px;transition:width .8s ease}
-.conf-fill.h{background:var(--gradient-green)}.conf-fill.m{background:var(--gradient-orange)}.conf-fill.l{background:var(--gradient-red)}
-.mc-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--gradient-primary);color:#fff;border:none;padding:.55rem 1.1rem;border-radius:7px;font-weight:700;font-size:.78rem;cursor:pointer;transition:var(--transition);z-index:5;font-family:'Inter',sans-serif}
-.mc:hover .mc-btn{transform:translate(-50%,-50%) scale(1)}
-.mc:hover .mc-b,.mc:hover .mc-f{opacity:.2}
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem}
+.match-card{background:var(--gradient-card);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;transition:var(--transition);cursor:pointer;position:relative}
+.match-card:hover{border-color:var(--accent-primary);box-shadow:var(--shadow-glow);transform:translateY(-2px)}
+.match-card-header{padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,.2)}
+.match-event{font-size:.68rem;font-weight:600;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase}
+.match-format{font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(0,212,255,.15);color:var(--accent-primary)}
+.match-card-body{padding:1.2rem}
+.match-teams{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
+.match-team{display:flex;flex-direction:column;align-items:center;gap:.4rem;width:40%}
+.team-logo{width:44px;height:44px;border-radius:11px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-size:1.2rem;border:2px solid var(--border-color)}
+.team-name{font-size:.85rem;font-weight:700;text-align:center;line-height:1.2}
+.team-tpi{font-size:.68rem;color:var(--text-muted);font-weight:600}
+.match-vs{display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.vs-text{font-size:.8rem;font-weight:800;color:var(--text-muted)}
+.match-time{font-size:.68rem;color:var(--accent-primary);font-weight:600}
+.match-card-footer{padding:.7rem 1rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;border-top:1px solid var(--border-color);background:rgba(0,0,0,.15)}
+.match-stat{display:flex;flex-direction:column;align-items:center}
+.match-stat-label{font-size:.6rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.match-stat-value{font-size:.85rem;font-weight:800}
+.match-stat-value.green{color:var(--accent-green)}.match-stat-value.orange{color:var(--accent-orange)}.match-stat-value.blue{color:var(--accent-primary)}.match-stat-value.red{color:var(--accent-red)}
+.confidence-bar{width:100%;height:4px;background:var(--border-color);border-radius:2px;margin-top:.7rem;overflow:hidden}
+.confidence-fill{height:100%;border-radius:2px;transition:width .8s ease}
+.confidence-fill.high{background:var(--gradient-green)}.confidence-fill.medium{background:var(--gradient-orange)}.confidence-fill.low{background:var(--gradient-red)}
+.match-analyze-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--gradient-primary);color:#fff;border:none;padding:.65rem 1.3rem;border-radius:8px;font-weight:700;font-size:.82rem;cursor:pointer;transition:var(--transition);z-index:5;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.4rem}
+.match-card:hover .match-analyze-btn{transform:translate(-50%,-50%) scale(1)}
+.match-card:hover .match-card-body,.match-card:hover .match-card-footer{opacity:.25}
 
 /* COMBOS */
-.combos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.7rem}
-
-/* BETSLIP */
-.betslip{position:fixed;top:var(--header-height);right:0;width:var(--betslip-width);height:calc(100vh - var(--header-height));background:var(--bg-secondary);border-left:1px solid var(--border-color);display:flex;flex-direction:column;z-index:500}
-.bs-h{padding:.7rem .9rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between}
-.bs-h h3{font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:.3rem}
-.bs-cnt{background:var(--accent-primary);color:#fff;font-size:.62rem;font-weight:800;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.bs-items{flex:1;overflow-y:auto;padding:.5rem}
-.bs-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:150px;color:var(--text-muted);text-align:center;font-size:.75rem}
-.bs-empty i{font-size:1.5rem;margin-bottom:.5rem;opacity:.3}
-.bsi{background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:.55rem;margin-bottom:.35rem;position:relative}
-.bsi-match{font-size:.62rem;color:var(--text-muted);margin-bottom:.1rem}
-.bsi-sel{font-size:.75rem;font-weight:700;margin-bottom:.1rem;padding-right:1.2rem}
-.bsi-odds{font-size:.78rem;font-weight:800;color:var(--accent-primary)}
-.bsi-rm{position:absolute;top:.35rem;right:.35rem;width:16px;height:16px;border:none;background:rgba(239,68,68,.2);color:var(--accent-red);border-radius:3px;cursor:pointer;font-size:.6rem;display:flex;align-items:center;justify-content:center}
-.bs-foot{border-top:1px solid var(--border-color);padding:.7rem;background:rgba(0,0,0,.2)}
-.sr{display:flex;justify-content:space-between;padding:.2rem 0;font-size:.72rem;color:var(--text-secondary)}
-.sr.hl{color:var(--accent-green);font-weight:700;font-size:.82rem;padding-top:.3rem;margin-top:.2rem;border-top:1px solid var(--border-color)}
-.sv{font-weight:700;color:var(--text-primary)}
-.bs-actions{display:flex;gap:.3rem;margin-top:.5rem}
-
-/* TOAST */
-.toast-c{position:fixed;bottom:1rem;right:calc(var(--betslip-width) + 1rem);z-index:3000;display:flex;flex-direction:column;gap:.3rem}
-.toast{padding:.6rem .9rem;border-radius:6px;font-size:.75rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.4);animation:si .3s ease,fo .3s ease 2.7s forwards;display:flex;align-items:center;gap:.3rem}
-.toast.success{background:rgba(16,185,129,.92);color:#fff}
-.toast.info{background:rgba(0,212,255,.92);color:#fff}
-.toast.warning{background:rgba(245,158,11,.92);color:#fff}
-@keyframes si{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes fo{from{opacity:1}to{opacity:0}}
+.combos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.8rem}
+.combo-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:11px;overflow:hidden;transition:var(--transition)}
+.combo-card:hover{border-color:var(--accent-primary);box-shadow:var(--shadow-glow)}
+.combo-header{padding:.7rem .9rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between}
+.combo-strat{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.combo-strat.conservative{color:var(--accent-green)}.combo-strat.moderate{color:var(--accent-primary)}.combo-strat.aggressive{color:var(--accent-orange)}.combo-strat.longshot{color:var(--accent-red)}
+.combo-odds{font-size:.95rem;font-weight:800;color:var(--accent-primary)}
+.combo-body{padding:.8rem}
+.combo-leg{padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.03);display:flex;justify-content:space-between;align-items:center;font-size:.75rem}
+.combo-leg:last-child{border-bottom:none}
+.combo-leg-match{color:var(--text-muted);font-size:.67rem}
+.combo-leg-pick{font-weight:600}
+.combo-leg-odds{font-weight:700;color:var(--accent-primary)}
+.combo-footer{padding:.6rem .9rem;background:rgba(0,0,0,.2);border-top:1px solid var(--border-color);display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;text-align:center}
+.combo-sl{font-size:.6rem;color:var(--text-muted);font-weight:600;text-transform:uppercase}
+.combo-sv{font-size:.82rem;font-weight:800}
 
 /* MODAL */
 .modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000}
 .modal.active{display:flex;align-items:flex-start;justify-content:center;padding-top:1rem}
-.modal-ov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
-.modal-c{position:relative;width:96%;max-width:1050px;max-height:94vh;background:var(--bg-modal);border:1px solid var(--border-color);border-radius:12px;overflow-y:auto;z-index:2001}
-.modal-h{position:sticky;top:0;padding:.9rem 1.2rem;background:rgba(13,20,32,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;z-index:10}
-.modal-h h2{font-size:1rem;font-weight:700}
-.modal-x{width:30px;height:30px;border:1px solid var(--border-color);background:0 0;color:var(--text-secondary);border-radius:6px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center}
-.modal-x:hover{color:var(--accent-red);border-color:var(--accent-red)}
-.modal-b{padding:1.2rem}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
+.modal-content{position:relative;width:96%;max-width:1050px;max-height:94vh;background:var(--bg-modal);border:1px solid var(--border-color);border-radius:14px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.6);z-index:2001}
+.modal-header{position:sticky;top:0;padding:1rem 1.3rem;background:rgba(13,20,32,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;z-index:10}
+.modal-header h2{font-size:1.05rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.modal-close{width:34px;height:34px;border:1px solid var(--border-color);background:0 0;color:var(--text-secondary);border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:var(--accent-red);border-color:var(--accent-red)}
+.modal-body{padding:1.3rem}
 
-/* RESPONSIVE */
-@media(max-width:1200px){.main{margin-right:0}.betslip{display:none}.toast-c{right:1rem}}
-@media(max-width:900px){.stats-bar{grid-template-columns:repeat(3,1fr)}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.matches-grid{grid-template-columns:1fr}.nav{display:none}}
-@media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr)}.form-row{flex-direction:column}}
+/* Analysis tabs & sections */
+.analysis-tabs{display:flex;gap:.3rem;margin-bottom:1.2rem;flex-wrap:wrap;border-bottom:1px solid var(--border-color);padding-bottom:.6rem}
+.a-section{margin-bottom:1.4rem}
+.a-title{font-size:.9rem;font-weight:700;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;gap:.5rem}
+.a-title i{color:var(--accent-primary)}
+.a-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.projection-box{background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(124,58,237,.06));border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:1.5rem;margin-bottom:1.3rem;font-family:'Courier New',monospace;font-size:.78rem;line-height:1.6;color:var(--text-secondary);white-space:pre-line}
+.projection-box .proj-winner{font-size:1.3rem;font-weight:900;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Inter',sans-serif}
+.projection-box .proj-label{color:var(--accent-primary);font-weight:700}
+.projection-box .proj-star{color:var(--accent-orange)}
+.projection-box .proj-fire{color:var(--accent-red)}
+.pb-container{margin-bottom:.5rem}
+.pb-header{display:flex;justify-content:space-between;margin-bottom:.2rem}
+.pb-label{font-size:.78rem;font-weight:600}.pb-value{font-size:.78rem;font-weight:700;color:var(--accent-primary)}
+.pb{height:7px;background:var(--border-color);border-radius:3px;overflow:hidden}
+.pb-fill{height:100%;border-radius:3px;transition:width 1s ease;background:var(--gradient-primary)}
+.pb-fill.green{background:var(--gradient-green)}.pb-fill.red{background:var(--gradient-red)}.pb-fill.orange{background:var(--gradient-orange)}
+.map-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:.5rem}
+.map-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:7px;padding:.6rem;text-align:center}
+.map-name{font-size:.75rem;font-weight:700;margin-bottom:.3rem;text-transform:capitalize}
+.map-adv{font-size:.65rem;font-weight:700;padding:2px 5px;border-radius:4px;display:inline-block}
+.map-adv.ta{background:rgba(0,212,255,.15);color:var(--accent-primary)}
+.map-adv.tb{background:rgba(239,68,68,.15);color:var(--accent-red)}
+.map-adv.n{background:rgba(245,158,11,.15);color:var(--accent-orange)}
+.risk-meter{display:flex;align-items:center;gap:1rem;padding:.8rem;background:var(--bg-card);border-radius:10px;border:1px solid var(--border-color)}
+.risk-gauge{width:70px;height:70px;border-radius:50%;background:conic-gradient(var(--accent-green) 0deg,var(--accent-orange) 120deg,var(--accent-red) 240deg,var(--accent-red) 360deg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.risk-gauge-inner{width:52px;height:52px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:800}
+.risk-details{flex:1}.risk-level{font-size:.95rem;font-weight:800;margin-bottom:.2rem}
+.risk-level.low{color:var(--accent-green)}.risk-level.medium{color:var(--accent-orange)}.risk-level.high{color:var(--accent-red)}
+.scenario-box{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:1rem;margin-bottom:.8rem}
+.scenario-title{font-size:.82rem;font-weight:800;margin-bottom:.5rem}
+.scenario-item{font-size:.75rem;color:var(--text-secondary);line-height:1.7;padding-left:.3rem}
+.scenario-item::before{content:'✅ '}
+.sentiment-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.sentiment-item{background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:.6rem .8rem;display:flex;justify-content:space-between;align-items:center;font-size:.76rem}
+.checklist{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:1rem}
+.checklist-item{font-size:.76rem;color:var(--text-secondary);padding:.3rem 0;display:flex;align-items:center;gap:.4rem}
+.checklist-item i{color:var(--accent-orange);font-size:.7rem}
+
+/* BETSLIP */
+.betslip{position:fixed;top:var(--header-height);right:0;width:var(--betslip-width);height:calc(100vh - var(--header-height));background:var(--bg-secondary);border-left:1px solid var(--border-color);display:flex;flex-direction:column;z-index:500}
+.betslip-header{padding:.8rem 1rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between}
+.betslip-header h3{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:.4rem}
+.betslip-count{background:var(--accent-primary);color:#fff;font-size:.65rem;font-weight:800;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.betslip-items{flex:1;overflow-y:auto;padding:.6rem}
+.betslip-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:180px;color:var(--text-muted);text-align:center;font-size:.78rem}
+.betslip-empty i{font-size:1.8rem;margin-bottom:.6rem;opacity:.3}
+.bsi{background:var(--bg-card);border:1px solid var(--border-color);border-radius:7px;padding:.65rem;margin-bottom:.4rem;position:relative}
+.bsi-match{font-size:.67rem;color:var(--text-muted);margin-bottom:.15rem}
+.bsi-sel{font-size:.78rem;font-weight:700;margin-bottom:.15rem;padding-right:1.5rem}
+.bsi-odds{font-size:.82rem;font-weight:800;color:var(--accent-primary)}
+.bsi-rm{position:absolute;top:.4rem;right:.4rem;width:18px;height:18px;border:none;background:rgba(239,68,68,.2);color:var(--accent-red);border-radius:3px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center}
+.bs-footer{border-top:1px solid var(--border-color);padding:.8rem;background:rgba(0,0,0,.2)}
+.sr{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.75rem;color:var(--text-secondary)}
+.sr.hl{color:var(--accent-green);font-weight:700;font-size:.85rem;padding-top:.4rem;margin-top:.2rem;border-top:1px solid var(--border-color)}
+.sv{font-weight:700;color:var(--text-primary)}
+.bs-actions{display:flex;gap:.3rem;margin-top:.5rem}
+
+/* SETTINGS */
+.settings-panel{position:fixed;top:var(--header-height);right:var(--betslip-width);width:280px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:0 0 0 12px;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:1500;padding:1rem}
+.sg{margin-bottom:.8rem}
+.sg label{display:block;font-size:.72rem;font-weight:600;color:var(--text-secondary);margin-bottom:.25rem}
+.sg input,.sg select{width:100%;padding:.45rem .7rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;color:var(--text-primary);font-family:'Inter',sans-serif;font-size:.8rem}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:1rem;right:calc(var(--betslip-width) + 1rem);z-index:3000;display:flex;flex-direction:column;gap:.3rem}
+.toast{padding:.6rem .9rem;border-radius:6px;font-size:.75rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.4);animation:slideIn .3s ease,fadeO .3s ease 2.7s forwards;display:flex;align-items:center;gap:.3rem}
+.toast.success{background:rgba(16,185,129,.92);color:#fff}
+.toast.info{background:rgba(0,212,255,.92);color:#fff}
+.toast.warning{background:rgba(245,158,11,.92);color:#fff}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeO{from{opacity:1}to{opacity:0}}
+
+.page{display:none}.page.active{display:block}
+.value-bets-table{background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;overflow:hidden;overflow-x:auto}
+
+@media(max-width:1200px){.main-content{margin-right:0}.betslip{display:none}.toast-container{right:1rem}}
+@media(max-width:768px){.stats-bar,.stats-bar-6{grid-template-columns:repeat(2,1fr)}.matches-grid{grid-template-columns:1fr}.nav{display:none}.main-content{padding:.8rem}.modal-content{width:100%;max-height:100vh;border-radius:0}.a-grid,.grid-2,.grid-4,.sentiment-grid{grid-template-columns:1fr}.combos-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header"><div class="hc">
-<div class="logo"><i class="fas fa-bolt"></i><span>EDGE<span class="la">ENGINE</span></span><span class="badge">CS2 v3</span></div>
+<!-- ===== HEADER ===== -->
+<header class="header"><div class="header-container">
+<div class="logo"><i class="fas fa-bolt logo-icon"></i><span class="logo-text">EDGE<span class="logo-accent">ENGINE</span></span><span class="logo-badge">CS2 v3</span></div>
 <nav class="nav">
-<a class="nav-link active" data-page="dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
-<a class="nav-link" data-page="matches"><i class="fas fa-gamepad"></i> Jogos</a>
-<a class="nav-link" data-page="valuebets"><i class="fas fa-gem"></i> Value Bets</a>
+<a class="nav-link active" data-page="dashboard"><i class="fas fa-gamepad"></i> Jogos</a>
+<a class="nav-link" data-page="value-bets"><i class="fas fa-gem"></i> Value Bets</a>
 <a class="nav-link" data-page="combos"><i class="fas fa-layer-group"></i> Combos</a>
-<a class="nav-link" data-page="tracker"><i class="fas fa-chart-bar"></i> Bet Tracker</a>
-<a class="nav-link" data-page="sweat"><i class="fas fa-fire-alt"></i> Sweat Station</a>
-<a class="nav-link" data-page="deposits"><i class="fas fa-exchange-alt"></i> Depósitos</a>
+<a class="nav-link" data-page="bankroll"><i class="fas fa-chart-bar"></i> Bet Tracker</a>
 </nav>
-<div class="ha">
-<span><span class="live-dot"></span>LIVE</span>
-<div class="capital-display"><span>Capital:</span><span id="capital-display">MZN 0</span></div>
+<div class="header-actions">
+<div class="live-indicator"><span class="live-dot"></span>LIVE</div>
+<div class="capital-badge"><span>MZN</span> <strong id="hdr-capital">0</strong></div>
+<button class="btn-settings" onclick="toggleSettings()"><i class="fas fa-cog"></i></button>
 </div>
 </div></header>
 
-<!-- MAIN -->
-<main class="main">
+<!-- ===== MAIN ===== -->
+<main class="main-content">
 
-<!-- ===== PAGE: DASHBOARD (Bet Tracker Dashboard) ===== -->
-<section id="page-dashboard" class="page active">
-<div class="stats-bar" id="dash-stats"></div>
-<div class="chart-area" id="dash-chart"></div>
-<div style="margin-top:1rem">
-<div class="grid-4" id="dash-summary"></div>
-</div>
+<!-- STATS BAR (matches overview) -->
+<section class="stats-bar" id="top-stats">
+<div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-day"></i></div><div class="stat-info"><span class="stat-value" id="stat-matches">3</span><span class="stat-label">Jogos Hoje</span></div></div>
+<div class="stat-card"><div class="stat-icon green"><i class="fas fa-gem"></i></div><div class="stat-info"><span class="stat-value" id="stat-vb">0</span><span class="stat-label">Value Bets</span></div></div>
+<div class="stat-card"><div class="stat-icon blue"><i class="fas fa-chart-line"></i></div><div class="stat-info"><span class="stat-value" id="stat-roi">+0%</span><span class="stat-label">ROI Mês</span></div></div>
+<div class="stat-card"><div class="stat-icon orange"><i class="fas fa-bullseye"></i></div><div class="stat-info"><span class="stat-value" id="stat-wr">0%</span><span class="stat-label">Win Rate</span></div></div>
 </section>
 
-<!-- ===== PAGE: BET TRACKER ===== -->
-<section id="page-tracker" class="page">
-<div class="sh"><h2><i class="fas fa-chart-bar"></i> Bet Tracker</h2>
-<div class="btn-group"><button class="btn btn-outline btn-sm active" onclick="BT.setPeriod('daily')">Diário</button><button class="btn btn-outline btn-sm" onclick="BT.setPeriod('weekly')">Semanal</button><button class="btn btn-outline btn-sm" onclick="BT.setPeriod('monthly')">Mensal</button></div>
-</div>
-<div class="stats-bar" id="tracker-stats"></div>
+<!-- ===== PAGE: JOGOS (Dashboard) ===== -->
+<section id="page-dashboard" class="page active">
+<div class="section-header"><h2><i class="fas fa-gamepad"></i> Jogos — BLAST Open 2025</h2></div>
+<div class="matches-grid" id="matches-grid"></div>
+<div class="section-header" style="margin-top:1.5rem"><h2><i class="fas fa-layer-group"></i> Combos Sugeridos</h2><button class="btn btn-primary" onclick="genCombos()"><i class="fas fa-magic"></i> Gerar</button></div>
+<div id="combos-grid"></div>
+</section>
 
-<!-- ADD BET FORM -->
-<div class="card" style="margin-bottom:1rem">
+<!-- ===== PAGE: VALUE BETS ===== -->
+<section id="page-value-bets" class="page">
+<div class="section-header"><h2><i class="fas fa-gem"></i> Todos os Value Bets</h2>
+<div class="section-actions"><select id="edge-filter" onchange="App.renderVBPage()"><option value="2">Edge≥2%</option><option value="3" selected>Edge≥3%</option><option value="5">Edge≥5%</option></select></div>
+</div>
+<div class="value-bets-table" id="vb-table"></div>
+</section>
+
+<!-- ===== PAGE: COMBOS ===== -->
+<section id="page-combos" class="page">
+<div class="section-header"><h2><i class="fas fa-layer-group"></i> Construtor de Combos</h2><button class="btn btn-primary" onclick="genCombos()"><i class="fas fa-magic"></i> Gerar</button></div>
+<div id="combos-page-content"></div>
+</section>
+
+<!-- ===== PAGE: BET TRACKER (replaces Bankroll) ===== -->
+<section id="page-bankroll" class="page">
+
+<!-- BT Sub-navigation tabs -->
+<div class="bt-tabs">
+<button class="bt-tab active" onclick="BT.switchPage('bt-dashboard')"><i class="fas fa-th-large"></i> Dashboard</button>
+<button class="bt-tab" onclick="BT.switchPage('bt-tracker')"><i class="fas fa-chart-bar"></i> Bet Tracker</button>
+<button class="bt-tab" onclick="BT.switchPage('bt-sweat')"><i class="fas fa-fire-alt"></i> Sweat Station</button>
+<button class="bt-tab" onclick="BT.switchPage('bt-deposits')"><i class="fas fa-exchange-alt"></i> Deposits / Withdrawals</button>
+</div>
+
+<!-- BT Dashboard -->
+<div class="bt-page active" id="bt-dashboard">
+<div class="stats-bar stats-bar-6" id="bt-dash-stats"></div>
+<div class="chart-area" id="bt-dash-chart"></div>
+<div class="grid-4" style="margin-top:.8rem" id="bt-dash-summary"></div>
+</div>
+
+<!-- BT Bet Tracker -->
+<div class="bt-page" id="bt-tracker">
+<div class="section-header"><h2><i class="fas fa-chart-bar"></i> Bet Tracker</h2>
+<div class="period-btns"><button class="period-btn active" onclick="BT.setPeriod('daily',this)">Diário</button><button class="period-btn" onclick="BT.setPeriod('weekly',this)">Semanal</button><button class="period-btn" onclick="BT.setPeriod('monthly',this)">Mensal</button></div>
+</div>
+<div class="stats-bar stats-bar-6" id="bt-tracker-stats"></div>
+
+<!-- Add Bet Form -->
+<div class="card">
 <div class="card-header"><span style="font-size:.82rem;font-weight:700"><i class="fas fa-plus-circle" style="color:var(--accent-green)"></i> Adicionar Aposta</span></div>
 <div class="card-body">
 <div class="form-row">
 <div class="form-group wide"><label>Jogo / Evento</label><input type="text" id="bet-event" placeholder="ex: Falcons vs FURIA"></div>
-<div class="form-group wide"><label>Mercado / Tipo</label><input type="text" id="bet-market" placeholder="ex: Match Winner / Over 2.5"></div>
-<div class="form-group"><label>Odd (dec)</label><input type="number" id="bet-odd" step="0.01" min="1" value="1.90" style="width:80px"></div>
-<div class="form-group"><label>Fair Odd</label><input type="number" id="bet-fair" step="0.01" min="1" value="1.70" style="width:80px"></div>
-<div class="form-group"><label>Stake MZN</label><input type="number" id="bet-stake" min="0" value="200" style="width:90px"></div>
-<div class="form-group"><label>Score</label><input type="text" id="bet-score" placeholder="ex: 2-1" style="width:70px"></div>
-<div class="form-group"><label>Status</label>
-<select id="bet-status"><option value="pending">Pending</option><option value="won">Won</option><option value="lost">Lost</option><option value="void">Void</option></select></div>
+<div class="form-group wide"><label>Mercado / Tipo</label><input type="text" id="bet-market" placeholder="ex: SIMPLES 1-Fold"></div>
+<div class="form-group"><label>Odd (dec)</label><input type="number" id="bet-odd" step="0.01" min="1" value="1.90" style="width:75px"></div>
+<div class="form-group"><label>Fair odd</label><input type="number" id="bet-fair" step="0.01" min="1" value="" style="width:75px"></div>
+<div class="form-group"><label>Stake MZN</label><input type="number" id="bet-stake" min="0" value="200" style="width:85px"></div>
+<div class="form-group"><label>Score ex:2-1</label><input type="text" id="bet-score" placeholder="--" style="width:65px"></div>
+<div class="form-group"><label>Status</label><select id="bet-status"><option value="pending">Pending</option><option value="won">Won</option><option value="lost">Lost</option><option value="void">Void</option></select></div>
 <div class="form-group"><label>&nbsp;</label><button class="btn btn-green" onclick="BT.addBet()"><i class="fas fa-plus"></i> Adicionar</button></div>
 </div>
 </div>
 </div>
 
-<!-- BETS TABLE -->
+<!-- Bets History -->
 <div class="card">
 <div class="card-header"><span style="font-size:.82rem;font-weight:700">Histórico de Apostas</span>
 <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm" onclick="BT.autoScores()"><i class="fas fa-magic"></i> Auto Scores</button><button class="btn btn-outline btn-sm" onclick="BT.exportCSV()"><i class="fas fa-download"></i> CSV</button></div>
 </div>
-<div style="overflow-x:auto"><table class="dt" id="bets-table"><thead><tr><th>Data</th><th>Jogo</th><th>Mercado</th><th>Odd</th><th>Fair</th><th>CLV%</th><th>Stake</th><th>Score</th><th>Resultado</th><th>P/L</th><th>Ação</th></tr></thead><tbody id="bets-body"></tbody></table></div>
+<div style="overflow-x:auto"><table class="dt"><thead><tr><th>Data</th><th>Jogo</th><th>Mercado</th><th>Odd</th><th>Fair</th><th>CLV%</th><th>Stake</th><th>Score</th><th>Resultado</th><th>P/L</th><th>Ação</th></tr></thead><tbody id="bets-tbody"></tbody></table></div>
 </div>
-</section>
+</div>
 
-<!-- ===== PAGE: SWEAT STATION ===== -->
-<section id="page-sweat" class="page">
-<div class="sh"><h2><i class="fas fa-fire-alt" style="color:var(--accent-orange)"></i> Sweat Station <span style="font-size:.78rem;color:var(--accent-green);margin-left:8px" id="sweat-total"></span></h2>
+<!-- BT Sweat Station -->
+<div class="bt-page" id="bt-sweat">
+<div class="section-header"><h2><i class="fas fa-fire-alt" style="color:var(--accent-orange)"></i> Sweat Station <span style="font-size:.78rem;color:var(--accent-green);margin-left:8px" id="sweat-total"></span></h2>
 <button class="btn btn-outline btn-sm" onclick="BT.render()"><i class="fas fa-sync"></i> Refresh</button>
 </div>
 <div class="grid-2">
-<div class="calendar" id="sweat-calendar"></div>
+<div class="calendar" id="sw-calendar"></div>
 <div>
 <div class="sweat-tabs">
-<div class="sweat-tab active" onclick="BT.sweatFilter('live')">LIVE (<span id="sw-live-cnt">0</span>)</div>
-<div class="sweat-tab" onclick="BT.sweatFilter('settled')">SETTLED (<span id="sw-settled-cnt">0</span>)</div>
-<div class="sweat-tab" onclick="BT.sweatFilter('upcoming')">UPCOMING (<span id="sw-up-cnt">0</span>)</div>
-<div class="sweat-tab" onclick="BT.sweatFilter('parlays')">PARLAYS (<span id="sw-parlay-cnt">0</span>)</div>
+<div class="sweat-tab active" onclick="BT.sweatFilter('live',this)">LIVE (<span id="sw-live">0</span>)</div>
+<div class="sweat-tab" onclick="BT.sweatFilter('settled',this)">SETTLED (<span id="sw-settled">0</span>)</div>
+<div class="sweat-tab" onclick="BT.sweatFilter('upcoming',this)">UPCOMING (<span id="sw-upcoming">0</span>)</div>
+<div class="sweat-tab" onclick="BT.sweatFilter('parlays',this)">PARLAYS (<span id="sw-parlays">0</span>)</div>
 </div>
-<div id="sweat-list"></div>
+<div id="sw-list"></div>
 </div>
 </div>
 <div style="margin-top:1rem">
-<div class="chart-area" id="sweat-chart"></div>
-<div class="grid-4" style="margin-top:.8rem" id="sweat-stats"></div>
+<div class="chart-area" id="sw-chart"></div>
+<div class="grid-4" style="margin-top:.8rem" id="sw-stats"></div>
 </div>
-</section>
+</div>
 
-<!-- ===== PAGE: DEPOSITS ===== -->
-<section id="page-deposits" class="page">
-<div class="sh"><h2><i class="fas fa-exchange-alt" style="color:var(--accent-green)"></i> Depósitos / Levantamentos</h2></div>
-<div class="stats-bar" style="grid-template-columns:repeat(4,1fr)" id="dep-stats"></div>
-<div class="card" style="margin-bottom:1rem">
+<!-- BT Deposits -->
+<div class="bt-page" id="bt-deposits">
+<div class="stats-bar" id="dep-stats"></div>
+<div class="card">
 <div class="card-body">
 <div class="form-row">
 <div class="form-group"><label>Tipo</label><select id="dep-type"><option value="deposit">Depósito</option><option value="withdrawal">Levantamento</option></select></div>
-<div class="form-group"><label>Casa de Apostas</label><input type="text" id="dep-bookie" placeholder="ex: Bet365"></div>
-<div class="form-group"><label>Estado/Região</label><input type="text" id="dep-region" placeholder="ex: MZ" style="width:60px"></div>
+<div class="form-group"><label>Casa de Apostas</label><input type="text" id="dep-bookie" placeholder="ex: Bet365" style="width:120px"></div>
+<div class="form-group"><label>Estado/Região</label><input type="text" id="dep-region" placeholder="MZ" style="width:50px" value="MZ"></div>
 <div class="form-group"><label>Valor MZN</label><input type="number" id="dep-amount" min="0" value="0" style="width:100px"></div>
 <div class="form-group"><label>Data</label><input type="date" id="dep-date"></div>
 <div class="form-group"><label>Status</label><select id="dep-status"><option value="complete">Completo</option><option value="pending">Pendente</option></select></div>
 <div class="form-group"><label>&nbsp;</label><button class="btn btn-green" onclick="BT.addDeposit()"><i class="fas fa-plus"></i> Adicionar</button></div>
+<div class="form-group"><label>&nbsp;</label><button class="btn btn-outline btn-sm" onclick="BT.showDepTotals()"><i class="fas fa-calculator"></i> Totais</button></div>
 </div>
 </div>
 </div>
 <div class="card">
-<div class="card-header"><span style="font-size:.82rem;font-weight:700">Histórico</span>
-<button class="btn btn-outline btn-sm" onclick="BT.showDepTotals()"><i class="fas fa-calculator"></i> Totais</button></div>
-<div style="overflow-x:auto"><table class="dt"><thead><tr><th><input type="checkbox"></th><th>Data</th><th>Casa</th><th>Estado</th><th>Tipo</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead><tbody id="dep-body"></tbody></table></div>
+<div style="overflow-x:auto"><table class="dt"><thead><tr><th><input type="checkbox"></th><th>Data</th><th>Casa</th><th>Estado</th><th>Tipo</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead><tbody id="dep-tbody"></tbody></table></div>
 </div>
-</section>
+</div>
 
-<!-- ===== PAGE: MATCHES ===== -->
-<section id="page-matches" class="page">
-<div class="sh"><h2><i class="fas fa-gamepad"></i> Jogos — BLAST Open 2025</h2></div>
-<div class="matches-grid" id="matches-grid"></div>
-</section>
-
-<!-- ===== PAGE: VALUE BETS ===== -->
-<section id="page-valuebets" class="page">
-<div class="sh"><h2><i class="fas fa-gem"></i> Value Bets</h2></div>
-<div class="value-bets-table card" id="vb-table"></div>
-</section>
-
-<!-- ===== PAGE: COMBOS ===== -->
-<section id="page-combos" class="page">
-<div class="sh"><h2><i class="fas fa-layer-group"></i> Combos</h2><button class="btn btn-primary" onclick="genCombos()"><i class="fas fa-magic"></i> Gerar</button></div>
-<div id="combos-grid"></div>
 </section>
 
 </main>
 
-<!-- BETSLIP -->
+<!-- ===== ANALYSIS MODAL ===== -->
+<div id="analysis-modal" class="modal">
+<div class="modal-overlay" onclick="closeModal()"></div>
+<div class="modal-content">
+<div class="modal-header"><h2 id="modal-title">Análise</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
+<div class="modal-body" id="modal-body"></div>
+</div>
+</div>
+
+<!-- ===== BETSLIP ===== -->
 <aside class="betslip">
-<div class="bs-h"><h3><i class="fas fa-receipt"></i> Betslip</h3><span class="bs-cnt" id="bs-cnt">0</span></div>
-<div class="bs-items" id="bs-items"><div class="bs-empty"><i class="fas fa-plus-circle"></i><p>Clique + nos value bets</p></div></div>
-<div class="bs-foot" id="bs-foot" style="display:none">
+<div class="betslip-header"><h3><i class="fas fa-receipt"></i> Betslip</h3><span class="betslip-count" id="bs-count">0</span></div>
+<div class="betslip-items" id="bs-items"><div class="betslip-empty"><i class="fas fa-plus-circle"></i><p>Clique + nos value bets</p></div></div>
+<div class="bs-footer" id="bs-footer" style="display:none">
 <div class="sr"><span>Odds:</span><span class="sv" id="bs-odds">0</span></div>
 <div class="sr"><span>Prob:</span><span class="sv" id="bs-prob">0%</span></div>
 <div class="sr"><span>EV:</span><span class="sv" id="bs-ev">0%</span></div>
@@ -387,112 +494,70 @@ a{color:var(--accent-primary);text-decoration:none}
 </div>
 </aside>
 
-<!-- MODAL -->
-<div id="modal" class="modal"><div class="modal-ov" onclick="closeModal()"></div><div class="modal-c"><div class="modal-h"><h2 id="modal-t">Análise</h2><button class="modal-x" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div class="modal-b" id="modal-b"></div></div></div>
+<!-- SETTINGS -->
+<div id="settings-panel" class="settings-panel" style="display:none">
+<h3 style="font-size:.85rem;font-weight:700;margin-bottom:.8rem"><i class="fas fa-cog" style="color:var(--accent-primary)"></i> Configurações</h3>
+<div class="sg"><label>Bankroll (MZN)</label><input type="number" id="s-bank" value="1000" onchange="updSettings()"></div>
+<div class="sg"><label>Kelly Fraction</label><select id="s-kelly" onchange="updSettings()"><option value="0.125">1/8</option><option value="0.25" selected>1/4</option><option value="0.5">1/2</option></select></div>
+<div class="sg"><label>Min Edge (%)</label><input type="number" id="s-edge" value="3" step="0.5" onchange="updSettings()"></div>
+<button class="btn btn-primary" onclick="toggleSettings()" style="width:100%;justify-content:center;margin-top:.5rem"><i class="fas fa-check"></i> Fechar</button>
+</div>
 
-<div id="toast-c" class="toast-c"></div>
+<div id="toast-container" class="toast-container"></div>
 
 <script>
-// ============ STORAGE ============
+// ========== STORAGE ==========
 const Store={
-get(k,d){try{const v=localStorage.getItem('ee_'+k);return v?JSON.parse(v):d}catch(e){return d}},
-set(k,v){try{localStorage.setItem('ee_'+k,JSON.stringify(v))}catch(e){}}
+g(k,d){try{const v=localStorage.getItem('ee3_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+s(k,v){try{localStorage.setItem('ee3_'+k,JSON.stringify(v))}catch(e){}}
 };
 
-// ============ BET TRACKER DATA ============
+// ========== BET TRACKER ==========
 const BT={
-bets: Store.get('bets',[]),
-deposits: Store.get('deposits',[]),
+bets:Store.g('bets',[]),
+deposits:Store.g('deposits',[]),
 period:'daily',
-sweatFilter_:'live',
+swFilter:'live',
 
-save(){Store.set('bets',this.bets);Store.set('deposits',this.deposits);this.render()},
+save(){Store.s('bets',this.bets);Store.s('deposits',this.deposits);this.render()},
 
-getCapital(){
-const deps=this.deposits.filter(d=>d.type==='deposit').reduce((s,d)=>s+d.amount,0);
-const wds=this.deposits.filter(d=>d.type==='withdrawal').reduce((s,d)=>s+d.amount,0);
-return deps-wds+this.getNetProfit();
-},
-
-getNetProfit(){
-return this.bets.reduce((s,b)=>{
-if(b.status==='won')return s+(b.odd*b.stake-b.stake);
-if(b.status==='lost')return s-b.stake;
-return s;
-},0);
-},
-
-getROI(){
-const wagered=this.bets.filter(b=>b.status!=='void'&&b.status!=='pending').reduce((s,b)=>s+b.stake,0);
-if(!wagered)return 0;
-return(this.getNetProfit()/wagered*100);
-},
-
-getWinRate(){
-const settled=this.bets.filter(b=>b.status==='won'||b.status==='lost');
-if(!settled.length)return 0;
-return(settled.filter(b=>b.status==='won').length/settled.length*100);
-},
-
-getTotalWagered(){return this.bets.reduce((s,b)=>s+b.stake,0)},
-getAvgOdd(){const bs=this.bets;if(!bs.length)return 0;return bs.reduce((s,b)=>s+b.odd,0)/bs.length},
+getCapital(){const d=this.deposits.filter(d=>d.type==='deposit').reduce((s,d)=>s+d.amount,0);const w=this.deposits.filter(d=>d.type==='withdrawal').reduce((s,d)=>s+d.amount,0);return d-w+this.getProfit()},
+getProfit(){return this.bets.reduce((s,b)=>{if(b.status==='won')return s+(b.odd*b.stake-b.stake);if(b.status==='lost')return s-b.stake;return s},0)},
+getROI(){const w=this.bets.filter(b=>b.status!=='void'&&b.status!=='pending').reduce((s,b)=>s+b.stake,0);return w?(this.getProfit()/w*100):0},
+getWR(){const s=this.bets.filter(b=>b.status==='won'||b.status==='lost');return s.length?(s.filter(b=>b.status==='won').length/s.length*100):0},
+getWagered(){return this.bets.reduce((s,b)=>s+b.stake,0)},
+getAvgOdd(){return this.bets.length?this.bets.reduce((s,b)=>s+b.odd,0)/this.bets.length:0},
 getPending(){return this.bets.filter(b=>b.status==='pending')},
 getPendingStake(){return this.getPending().reduce((s,b)=>s+b.stake,0)},
+getPotPayout(){return this.getPending().reduce((s,b)=>s+b.odd*b.stake,0)},
+getCLV(b){return b.fair&&b.fair>0?((b.odd/b.fair-1)*100):null},
+getBestCLV(){const c=this.bets.map(b=>this.getCLV(b)).filter(c=>c!==null);return c.length?Math.max(...c):0},
 
-getPotPayout(){
-return this.bets.filter(b=>b.status==='pending').reduce((s,b)=>s+b.odd*b.stake,0);
+switchPage(id){
+document.querySelectorAll('.bt-page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.bt-tab').forEach(t=>t.classList.remove('active'));
+const el=document.getElementById(id);if(el)el.classList.add('active');
+event.target.classList.add('active');
+this.render();
 },
 
-getCLV(bet){
-if(!bet.fair||bet.fair<=0)return null;
-return((bet.odd/bet.fair-1)*100);
-},
+setPeriod(p,btn){this.period=p;document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active')},
 
-getBestCLV(){
-const clvs=this.bets.map(b=>this.getCLV(b)).filter(c=>c!==null);
-if(!clvs.length)return 0;
-return Math.max(...clvs);
-},
-
-// ADD BET
-addBet(eventName,market,odd,fair,stake,score,status){
-if(!eventName){
-eventName=document.getElementById('bet-event')?.value||'';
-market=document.getElementById('bet-market')?.value||'';
-odd=parseFloat(document.getElementById('bet-odd')?.value)||1.90;
-fair=parseFloat(document.getElementById('bet-fair')?.value)||0;
-stake=parseFloat(document.getElementById('bet-stake')?.value)||0;
-score=document.getElementById('bet-score')?.value||'';
-status=document.getElementById('bet-status')?.value||'pending';
-}
-if(!eventName||!stake){toast('Preencha Jogo e Stake','warning');return}
-this.bets.push({id:Date.now(),date:new Date().toISOString().slice(0,10),event:eventName,market,odd,fair,stake,score,status,created:Date.now()});
+addBet(ev,mkt,odd,fair,stake,score,status){
+if(!ev){ev=document.getElementById('bet-event')?.value||'';mkt=document.getElementById('bet-market')?.value||'';odd=parseFloat(document.getElementById('bet-odd')?.value)||1.9;fair=parseFloat(document.getElementById('bet-fair')?.value)||0;stake=parseFloat(document.getElementById('bet-stake')?.value)||0;score=document.getElementById('bet-score')?.value||'';status=document.getElementById('bet-status')?.value||'pending'}
+if(!ev||!stake){toast('Preencha Jogo e Stake','warning');return}
+this.bets.push({id:Date.now(),date:new Date().toISOString().slice(0,10),event:ev,market:mkt,odd,fair,stake,score,status,ts:Date.now()});
 this.save();toast('Aposta adicionada','success');
-// Clear form
 ['bet-event','bet-market','bet-score'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
 },
 
-// ADD BET FROM BETSLIP
 addFromBS(items){
-if(items.length===1){
-const b=items[0];
-this.addBet(b.mn,b.sel,b.odds,b.fair||0,b.stake||200,'','pending');
-}else if(items.length>1){
-const comboName=items.map(b=>b.sel).join(' + ');
-const comboOdds=items.reduce((a,b)=>a*b.odds,1);
-const comboStake=items[0].stake||200;
-this.addBet(items.map(b=>b.mn).join(' | '),'COMBO '+items.length+'-Fold: '+comboName,Math.round(comboOdds*100)/100,0,comboStake,'','pending');
-}
+if(items.length===1){const b=items[0];this.addBet(b.mn,b.sel,b.odds,b.fair||0,b.stake||200,'','pending')}
+else if(items.length>1){const nm=items.map(b=>b.sel).join(' + ');const co=items.reduce((a,b)=>a*b.odds,1);this.addBet(items.map(b=>b.mn).join(' | '),'COMBO '+items.length+'-Fold: '+nm,Math.round(co*100)/100,0,items[0].stake||200,'','pending')}
 },
 
-removeBet(id){this.bets=this.bets.filter(b=>b.id!==id);this.save();toast('Removido','info')},
-
-updateStatus(id,status){
-const bet=this.bets.find(b=>b.id===id);
-if(bet){bet.status=status;this.save();toast('Status → '+status,'success')}
-},
-
-// ADD DEPOSIT
+removeBet(id){this.bets=this.bets.filter(b=>b.id!==id);this.save()},
+updateStatus(id,st){const b=this.bets.find(b=>b.id===id);if(b){b.status=st;this.save();toast('→ '+st,'success')}},
 addDeposit(){
 const type=document.getElementById('dep-type')?.value||'deposit';
 const bookie=document.getElementById('dep-bookie')?.value||'';
@@ -504,279 +569,183 @@ if(!amount){toast('Valor inválido','warning');return}
 this.deposits.push({id:Date.now(),type,bookie,region,amount,date,status});
 this.save();toast((type==='deposit'?'Depósito':'Levantamento')+' adicionado','success');
 },
-
 removeDeposit(id){this.deposits=this.deposits.filter(d=>d.id!==id);this.save()},
+autoScores(){toast('Auto Scores: conectar API','info')},
+showDepTotals(){const d=this.deposits.filter(d=>d.type==='deposit').reduce((s,d)=>s+d.amount,0);const w=this.deposits.filter(d=>d.type==='withdrawal').reduce((s,d)=>s+d.amount,0);toast(`Dep: MZN ${d} | Lev: MZN ${w} | Saldo: MZN ${d-w}`,'info')},
+exportCSV(){let c='Data,Jogo,Mercado,Odd,Fair,Stake,Score,Status,PL\n';this.bets.forEach(b=>{const pl=b.status==='won'?Math.round(b.odd*b.stake-b.stake):b.status==='lost'?-b.stake:'';c+=`${b.date},"${b.event}","${b.market}",${b.odd},${b.fair||''},${b.stake},${b.score||''},${b.status},${pl}\n`});const bl=new Blob([c],{type:'text/csv'});const u=URL.createObjectURL(bl);const a=document.createElement('a');a.href=u;a.download='bets.csv';a.click();toast('CSV exportado','success')},
+sweatFilter(f,el){this.swFilter=f;document.querySelectorAll('.sweat-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');this.renderSweatList()},
 
-setPeriod(p){this.period=p;document.querySelectorAll('.btn-group .btn').forEach(b=>{b.classList.toggle('active',b.textContent.toLowerCase().includes(p.slice(0,3)))});this.render()},
-
-autoScores(){toast('Auto Scores: conectar API em produção','info')},
-
-exportCSV(){
-let csv='Data,Jogo,Mercado,Odd,Fair,Stake,Score,Status,P/L\n';
-this.bets.forEach(b=>{
-const pl=b.status==='won'?Math.round((b.odd*b.stake-b.stake)*100)/100:b.status==='lost'?-b.stake:'--';
-csv+=`${b.date},"${b.event}","${b.market}",${b.odd},${b.fair||''},${b.stake},${b.score||''},${b.status},${pl}\n`;
-});
-const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);
-const a=document.createElement('a');a.href=url;a.download='bet-tracker.csv';a.click();toast('CSV exportado','success');
-},
-
-sweatFilter(f){
-this.sweatFilter_=f;
-document.querySelectorAll('.sweat-tab').forEach(t=>t.classList.remove('active'));
-event.target.classList.add('active');
-this.renderSweatList();
-},
-
-showDepTotals(){
-const deps=this.deposits.filter(d=>d.type==='deposit').reduce((s,d)=>s+d.amount,0);
-const wds=this.deposits.filter(d=>d.type==='withdrawal').reduce((s,d)=>s+d.amount,0);
-toast(`Depósitos: MZN ${deps} | Levantamentos: MZN ${wds} | Saldo: MZN ${deps-wds}`,'info');
-},
-
-// ============ RENDER ALL ============
+// ===== RENDER =====
 render(){
-this.renderCapital();
-this.renderDashboard();
-this.renderTrackerStats();
-this.renderBetsTable();
-this.renderDeposits();
-this.renderSweat();
+this.renderCapital();this.renderDashStats();this.renderTrackerStats();this.renderBetsTable();this.renderDeposits();this.renderSweat();
+// Update top stats
+const roi=this.getROI();const wr=this.getWR();
+document.getElementById('stat-roi').textContent=(roi>=0?'+':'')+roi.toFixed(1)+'%';
+document.getElementById('stat-wr').textContent=wr.toFixed(0)+'%';
 },
 
-renderCapital(){
-const cap=Math.round(this.getCapital());
-document.getElementById('capital-display').textContent='MZN '+cap.toLocaleString();
-},
+renderCapital(){const c=Math.round(this.getCapital());document.getElementById('hdr-capital').textContent=c.toLocaleString()},
 
-renderDashboard(){
-const profit=Math.round(this.getNetProfit());
-const roi=this.getROI().toFixed(1);
-const totalBets=this.bets.length;
-const wr=this.getWinRate().toFixed(0);
-const wagered=Math.round(this.getTotalWagered());
-const avgOdd=this.getAvgOdd().toFixed(2);
-const pending=this.getPending().length;
-const settled=this.bets.filter(b=>b.status==='won'||b.status==='lost');
-const wl=settled.filter(b=>b.status==='won').length+'W-'+settled.filter(b=>b.status==='lost').length+'L';
-
-document.getElementById('dash-stats').innerHTML=`
-<div class="sc"><div class="sc-label"><i class="fas fa-chart-line"></i> Net Profit</div><div class="sc-value ${profit>=0?'green':'red'}">MZN ${profit>=0?'+':''}${profit.toLocaleString()}</div><div class="sc-sub">+MZN 0 Hoje</div></div>
-<div class="sc"><div class="sc-label"><i class="fas fa-percentage"></i> ROI</div><div class="sc-value cyan">${roi}%</div><div class="sc-sub">CLV Best: ${this.getBestCLV().toFixed(0)}%</div></div>
-<div class="sc"><div class="sc-label"><i class="fas fa-th-list"></i> Apostas</div><div class="sc-value">${totalBets}</div><div class="sc-sub">${pending} pendentes</div></div>
-<div class="sc"><div class="sc-label"><i class="fas fa-trophy"></i> Win Rate</div><div class="sc-value yellow">${wr}%</div><div class="sc-sub">${wl}</div></div>
-<div class="sc"><div class="sc-label"><i class="fas fa-coins"></i> Apostado</div><div class="sc-value orange">MZN ${wagered.toLocaleString()}</div><div class="sc-sub">MZN ${this.getPendingStake().toLocaleString()} em risco</div></div>
-<div class="sc"><div class="sc-label"><i class="fas fa-star"></i> Odd Média</div><div class="sc-value blue">${avgOdd}</div><div class="sc-sub">Max Profit: MZN ${Math.round(this.getPotPayout()).toLocaleString()}</div></div>`;
+renderDashStats(){
+const p=Math.round(this.getProfit()),roi=this.getROI().toFixed(1),tb=this.bets.length,wr=this.getWR().toFixed(0),wg=Math.round(this.getWagered()),ao=this.getAvgOdd().toFixed(2);
+const pend=this.getPending().length;const settled=this.bets.filter(b=>b.status==='won'||b.status==='lost');const wl=settled.filter(b=>b.status==='won').length+'W-'+settled.filter(b=>b.status==='lost').length+'L';
+const html=`
+<div class="stat-card stat-card-v"><div class="stat-label"><i class="fas fa-chart-line"></i> Net Profit</div><div class="stat-value ${p>=0?'sv-green':'sv-red'}">MZN ${p>=0?'+':''}${p.toLocaleString()}</div><div class="stat-sub">+MZN 0 Hoje</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label"><i class="fas fa-percentage"></i> ROI</div><div class="stat-value sv-cyan">${roi}%</div><div class="stat-sub">CLV Best: ${this.getBestCLV().toFixed(0)}%</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label"><i class="fas fa-th-list"></i> Apostas</div><div class="stat-value">${tb}</div><div class="stat-sub">${pend} pendentes</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label"><i class="fas fa-trophy"></i> Win Rate</div><div class="stat-value sv-yellow">${wr}%</div><div class="stat-sub">${wl}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label"><i class="fas fa-coins"></i> Apostado</div><div class="stat-value sv-orange">MZN ${wg.toLocaleString()}</div><div class="stat-sub">MZN ${this.getPendingStake().toLocaleString()} em risco</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label"><i class="fas fa-star"></i> Odd Média</div><div class="stat-value sv-blue">${ao}</div><div class="stat-sub">Max: MZN ${Math.round(this.getPotPayout()).toLocaleString()}</div></div>`;
+['bt-dash-stats','bt-tracker-stats'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=html});
 
 // Chart
-this.renderChart('dash-chart','Profit Over Time','Evolução do Capital');
-
-// Summary cards
-document.getElementById('dash-summary').innerHTML=`
-<div class="sc"><div class="sc-label">Total Profit</div><div class="sc-value ${profit>=0?'green':'red'}">MZN ${profit>=0?'+':''}${profit.toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Total Wagered</div><div class="sc-value">MZN ${wagered.toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Pendentes</div><div class="sc-value orange">MZN ${this.getPendingStake().toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Pot. Payout</div><div class="sc-value cyan">MZN ${Math.round(this.getPotPayout()).toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Profit Margin</div><div class="sc-value ${profit>=0?'green':'red'}">${wagered?((profit/wagered*100).toFixed(1)):'0'}%</div></div>
-<div class="sc"><div class="sc-label">Best CLV</div><div class="sc-value green">${this.getBestCLV().toFixed(0)}%</div></div>
-<div class="sc"><div class="sc-label">Total Bets</div><div class="sc-value">${totalBets}</div></div>
-<div class="sc"><div class="sc-label">% Bets Won</div><div class="sc-value yellow">${wr}%</div></div>`;
+this.renderChart('bt-dash-chart');
+// Summary
+const el=document.getElementById('bt-dash-summary');
+if(el)el.innerHTML=`
+<div class="stat-card stat-card-v"><div class="stat-label">Total Profit</div><div class="stat-value ${p>=0?'sv-green':'sv-red'}">MZN ${p>=0?'+':''}${p.toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Total Wagered</div><div class="stat-value">MZN ${wg.toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Pendentes</div><div class="stat-value sv-orange">MZN ${this.getPendingStake().toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Pot. Payout</div><div class="stat-value sv-cyan">MZN ${Math.round(this.getPotPayout()).toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Profit Margin</div><div class="stat-value ${p>=0?'sv-green':'sv-red'}">${wg?((p/wg*100).toFixed(1)):'0'}%</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Best CLV</div><div class="stat-value sv-green">${this.getBestCLV().toFixed(0)}%</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Total Bets</div><div class="stat-value">${tb}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">% Bets Won</div><div class="stat-value sv-yellow">${wr}%</div></div>`;
 },
 
-renderChart(containerId,title,subtitle){
-const c=document.getElementById(containerId);if(!c)return;
-// Build simple SVG chart from bet history
-const settled=this.bets.filter(b=>b.status==='won'||b.status==='lost').sort((a,b)=>a.created-b.created);
-let cumProfit=0;const points=[{x:0,y:0}];
-settled.forEach((b,i)=>{
-cumProfit+=b.status==='won'?(b.odd*b.stake-b.stake):-b.stake;
-points.push({x:i+1,y:cumProfit});
-});
-const maxY=Math.max(1,...points.map(p=>Math.abs(p.y)));
-const w=100;const h=100;
-let path='M 0,'+((1-points[0].y/maxY/2-.5)*h);
-points.forEach((p,i)=>{
-const px=(p.x/Math.max(1,points.length-1))*w;
-const py=(1-(p.y/maxY/2+.5))*h;
-path+=' L '+px.toFixed(1)+','+py.toFixed(1);
-});
-const color=cumProfit>=0?'var(--accent-green)':'var(--accent-red)';
+renderTrackerStats(){/* same as dash stats, already done above */},
 
-c.innerHTML=`
-<div class="chart-title"><i class="fas fa-chart-area"></i> ${title} <span style="font-size:.75rem;color:${color};margin-left:8px">Total: ${cumProfit>=0?'+':''}MZN ${Math.round(cumProfit).toLocaleString()}</span>
-<span style="margin-left:auto"><span class="btn-group"><button class="btn btn-outline btn-sm" onclick="BT.setPeriod('daily')">Diário</button><button class="btn btn-outline btn-sm active" onclick="BT.setPeriod('weekly')">Semanal</button><button class="btn btn-outline btn-sm" onclick="BT.setPeriod('monthly')">Mensal</button></span></span>
-</div>
-<div class="chart-canvas"><svg class="chart-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+renderChart(id){
+const c=document.getElementById(id);if(!c)return;
+const settled=this.bets.filter(b=>b.status==='won'||b.status==='lost').sort((a,b)=>a.ts-b.ts);
+let cum=0;const pts=[{x:0,y:0}];
+settled.forEach((b,i)=>{cum+=b.status==='won'?(b.odd*b.stake-b.stake):-b.stake;pts.push({x:i+1,y:cum})});
+const maxY=Math.max(1,...pts.map(p=>Math.abs(p.y)));
+const w=100,h=80;let path=`M 0,${(1-pts[0].y/maxY/2-.5)*h}`;
+pts.forEach(p=>{const px=(p.x/Math.max(1,pts.length-1))*w;const py=(1-(p.y/maxY/2+.5))*h;path+=` L ${px.toFixed(1)},${py.toFixed(1)}`});
+const color=cum>=0?'var(--accent-green)':'var(--accent-red)';
+c.innerHTML=`<div class="chart-title"><span><i class="fas fa-chart-area"></i> Evolução do Capital <span style="color:${color};margin-left:6px">Total: ${cum>=0?'+':''}MZN ${Math.round(cum).toLocaleString()}</span></span>
+<div class="period-btns"><button class="period-btn" onclick="BT.setPeriod('daily',this)">Diário</button><button class="period-btn active" onclick="BT.setPeriod('weekly',this)">Semanal</button><button class="period-btn" onclick="BT.setPeriod('monthly',this)">Mensal</button></div></div>
+<div class="chart-canvas"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" style="width:100%;height:120px">
 <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="var(--border-color)" stroke-width="0.3"/>
-<path d="${path}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/>
-${points.map((p,i)=>{const px=(p.x/Math.max(1,points.length-1))*w;const py=(1-(p.y/maxY/2+.5))*h;return`<circle cx="${px}" cy="${py}" r="1.5" fill="${color}" stroke="var(--bg-card)" stroke-width="0.5"/>`}).join('')}
+<path d="${path}" fill="none" stroke="${color}" stroke-width="1.2" stroke-linejoin="round"/>
+${pts.map(p=>{const px=(p.x/Math.max(1,pts.length-1))*w;const py=(1-(p.y/maxY/2+.5))*h;return`<circle cx="${px}" cy="${py}" r="1.2" fill="${color}"/>`}).join('')}
 </svg></div>
-<div class="chart-labels">${settled.length?settled.filter((_,i)=>i%Math.max(1,Math.floor(settled.length/6))===0).map(b=>`<span>${b.date.slice(5)}</span>`).join(''):'<span>Sem dados</span>'}</div>`;
-},
-
-renderTrackerStats(){
-const el=document.getElementById('tracker-stats');if(!el)return;
-el.innerHTML=document.getElementById('dash-stats')?.innerHTML||'';
+<div class="chart-labels">${settled.length?settled.filter((_,i)=>i%Math.max(1,Math.floor(settled.length/6))===0).map(b=>`<span>${b.date?.slice(5)||''}</span>`).join(''):'<span>Sem dados</span>'}</div>
+<div style="margin-top:.5rem;font-size:.62rem;color:var(--text-muted)">Melhor: -- | Pior: -- | Sequência: -- | Período: ${this.period==='daily'?'7d':this.period==='weekly'?'4w':'3m'}</div>`;
 },
 
 renderBetsTable(){
-const tbody=document.getElementById('bets-body');if(!tbody)return;
-const sorted=[...this.bets].sort((a,b)=>b.created-a.created);
+const tbody=document.getElementById('bets-tbody');if(!tbody)return;
+const sorted=[...this.bets].sort((a,b)=>b.ts-a.ts);
 tbody.innerHTML=sorted.map(b=>{
 const clv=this.getCLV(b);const clvStr=clv!==null?clv.toFixed(0)+'%':'--';
 const pl=b.status==='won'?Math.round(b.odd*b.stake-b.stake):b.status==='lost'?-b.stake:null;
-const plStr=pl!==null?(pl>=0?'+':'')+pl.toLocaleString():'--';
+const plStr=pl!==null?'MZN '+(pl>=0?'+':'')+pl.toLocaleString():'--';
 const isCombo=b.market&&b.market.includes('COMBO');
 return`<tr>
 <td>${b.date}</td>
-<td style="max-width:180px"><span style="font-weight:600">${b.event}</span>${isCombo?'<span class="badge-bilhete">BILHETE</span>':''}</td>
-<td style="font-size:.7rem;color:var(--text-muted)">${b.market||'--'}</td>
+<td style="max-width:170px"><span style="font-weight:600">${b.event}</span>${isCombo?'<span class="badge-ticket">BILHETE</span>':''}</td>
+<td style="font-size:.68rem;color:var(--text-muted)">${b.market||'--'}</td>
 <td><strong style="color:var(--accent-primary)">${b.odd}</strong></td>
 <td>${b.fair||'--'}</td>
 <td>${clvStr}</td>
 <td>MZN ${b.stake}</td>
 <td>${b.score||'--'}</td>
-<td><select class="status-badge status-${b.status}" onchange="BT.updateStatus(${b.id},this.value)" style="border:none;cursor:pointer;font-family:Inter;background:transparent">
+<td><select onchange="BT.updateStatus(${b.id},this.value)" style="background:transparent;border:none;color:${b.status==='won'?'var(--accent-green)':b.status==='lost'?'var(--accent-red)':'var(--accent-orange)'};font-weight:700;font-size:.68rem;font-family:Inter;cursor:pointer">
 <option value="pending" ${b.status==='pending'?'selected':''}>PENDING</option>
 <option value="won" ${b.status==='won'?'selected':''}>WON</option>
 <option value="lost" ${b.status==='lost'?'selected':''}>LOST</option>
 <option value="void" ${b.status==='void'?'selected':''}>VOID</option>
 </select></td>
 <td class="${pl!==null?(pl>=0?'vp':'vn'):''}">${plStr}</td>
-<td><button onclick="BT.removeBet(${b.id})" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.8rem">×</button></td>
-</tr>`}).join('');
-},
+<td><button onclick="BT.removeBet(${b.id})" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.85rem">×</button></td>
+</tr>`}).join('')},
 
 renderDeposits(){
-const tbody=document.getElementById('dep-body');if(!tbody)return;
+const tbody=document.getElementById('dep-tbody');if(!tbody)return;
 const stats=document.getElementById('dep-stats');
 const deps=this.deposits.filter(d=>d.type==='deposit').reduce((s,d)=>s+d.amount,0);
 const wds=this.deposits.filter(d=>d.type==='withdrawal').reduce((s,d)=>s+d.amount,0);
-const saldo=deps-wds+this.getNetProfit();
-const roi=deps?(((saldo-deps)/deps)*100).toFixed(1):0;
+const saldo=deps-wds+this.getProfit();const roi=deps?(((saldo-deps)/deps)*100).toFixed(1):0;
 if(stats)stats.innerHTML=`
-<div class="sc"><div class="sc-label">Total Depositado</div><div class="sc-value green">MZN ${deps.toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Total Levantado</div><div class="sc-value">MZN ${wds.toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Saldo Actual (Dep + Apostas)</div><div class="sc-value cyan">+MZN ${saldo.toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">ROI sobre Depósitos</div><div class="sc-value ${parseFloat(roi)>=0?'green':'red'}">${roi}% ROI</div></div>`;
-
+<div class="stat-card stat-card-v"><div class="stat-label">Total Depositado</div><div class="stat-value sv-green">MZN ${deps.toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Total Levantado</div><div class="stat-value">MZN ${wds.toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Saldo Actual (Dep. + Apostas)</div><div class="stat-value sv-cyan">+MZN ${saldo.toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">ROI sobre Depósitos</div><div class="stat-value ${parseFloat(roi)>=0?'sv-green':'sv-red'}">${roi}% ROI</div></div>`;
 const sorted=[...this.deposits].sort((a,b)=>new Date(b.date)-new Date(a.date));
 tbody.innerHTML=sorted.map(d=>`<tr>
-<td><input type="checkbox"></td>
-<td>${d.date}</td>
-<td><strong>${d.bookie||'--'}</strong></td>
-<td>${d.region||'MZ'}</td>
+<td><input type="checkbox"></td><td>${d.date}</td><td><strong>${d.bookie||'--'}</strong></td><td>${d.region||'MZ'}</td>
 <td class="${d.type==='deposit'?'vp':'vn'}">${d.type==='deposit'?'Depósito':'Levantamento'}</td>
 <td><strong class="${d.type==='deposit'?'vp':'vn'}">MZN ${d.amount.toLocaleString()}</strong></td>
 <td><span class="pill ${d.status==='complete'?'green':'orange'}">${d.status}</span></td>
 <td><button onclick="BT.removeDeposit(${d.id})" style="background:none;border:none;color:var(--text-muted);cursor:pointer">×</button></td>
-</tr>`).join('');
-},
+</tr>`).join('')},
 
 renderSweat(){
-// Calendar
-const cal=document.getElementById('sweat-calendar');if(!cal)return;
-const now=new Date();const month=now.getMonth();const year=now.getFullYear();
-const firstDay=new Date(year,month,1).getDay();const daysInMonth=new Date(year,month+1,0).getDate();
-const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const cal=document.getElementById('sw-calendar');if(!cal)return;
+const now=new Date();const mo=now.getMonth();const yr=now.getFullYear();
+const fd=new Date(yr,mo,1).getDay();const dim=new Date(yr,mo+1,0).getDate();
+const mn=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const betDates=new Set(this.bets.map(b=>b.date));
+let ch=`<div class="cal-header"><span class="cal-nav"><</span><strong>${String(mo+1).padStart(2,'0')}/${yr}</strong><span class="cal-nav">></span></div><div class="cal-grid">`;
+['D','S','T','Q','Q','S','S'].forEach(d=>{ch+=`<div class="cal-dh">${d}</div>`});
+for(let i=0;i<fd;i++)ch+=`<div class="cal-d"></div>`;
+for(let d=1;d<=dim;d++){const ds=`${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;ch+=`<div class="cal-d ${d===now.getDate()?'today':''} ${betDates.has(ds)?'has-bet':''}">${d}</div>`}
+ch+=`</div>`;cal.innerHTML=ch;
 
-let calHTML=`<div class="cal-header"><span class="cal-nav" onclick=""><</span><strong>${monthNames[month].slice(0,2)}/${year}</strong><span class="cal-nav" onclick="">></span></div>`;
-calHTML+=`<div class="cal-grid">`;
-['D','S','T','Q','Q','S','S'].forEach(d=>{calHTML+=`<div class="cal-day-header">${d}</div>`});
-for(let i=0;i<firstDay;i++)calHTML+=`<div class="cal-day"></div>`;
-for(let d=1;d<=daysInMonth;d++){
-const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-const isToday=d===now.getDate();
-const hasBets=betDates.has(dateStr);
-calHTML+=`<div class="cal-day ${isToday?'today':''} ${hasBets?'has-bets':''}">${d}</div>`;
-}
-calHTML+=`</div>`;
-cal.innerHTML=calHTML;
-
-// Sweat totals
-const tot=document.getElementById('sweat-total');
-if(tot)tot.textContent='Total: '+(this.getNetProfit()>=0?'+':'')+'MZN '+Math.round(this.getNetProfit()).toLocaleString();
-
-// Counts
-const pending=this.bets.filter(b=>b.status==='pending');
-const settled=this.bets.filter(b=>b.status==='won'||b.status==='lost');
-const combos=this.bets.filter(b=>b.market&&b.market.includes('COMBO'));
-document.getElementById('sw-live-cnt').textContent=pending.length;
-document.getElementById('sw-settled-cnt').textContent=settled.length;
-document.getElementById('sw-up-cnt').textContent=pending.length;
-document.getElementById('sw-parlay-cnt').textContent=combos.length;
-
+const tot=document.getElementById('sweat-total');if(tot)tot.textContent='Total: '+(this.getProfit()>=0?'+':'')+'MZN '+Math.round(this.getProfit()).toLocaleString();
+const pending=this.getPending();const settled=this.bets.filter(b=>b.status==='won'||b.status==='lost');const combos=this.bets.filter(b=>b.market&&b.market.includes('COMBO'));
+document.getElementById('sw-live').textContent=pending.length;
+document.getElementById('sw-settled').textContent=settled.length;
+document.getElementById('sw-upcoming').textContent=pending.length;
+document.getElementById('sw-parlays').textContent=combos.length;
 this.renderSweatList();
-
-// Sweat chart & stats
-this.renderChart('sweat-chart','Profit Over Time','');
-const ssEl=document.getElementById('sweat-stats');
-if(ssEl){
-const profit=Math.round(this.getNetProfit());
-const stk=Math.round(this.getTotalWagered());
-ssEl.innerHTML=`
-<div class="sc"><div class="sc-label">Total Profit</div><div class="sc-value ${profit>=0?'green':'red'}">${profit>=0?'+':''}MZN ${profit.toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Total Stake</div><div class="sc-value">MZN ${stk.toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Pending</div><div class="sc-value orange">MZN ${this.getPendingStake().toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Pot. Payout</div><div class="sc-value cyan">MZN ${Math.round(this.getPotPayout()).toLocaleString()}</div></div>
-<div class="sc"><div class="sc-label">Profit Margin</div><div class="sc-value ${profit>=0?'green':'red'}">${stk?((profit/stk*100).toFixed(1)):'0'}%</div></div>
-<div class="sc"><div class="sc-label">Best CLV</div><div class="sc-value green">${this.getBestCLV().toFixed(0)}%</div></div>
-<div class="sc"><div class="sc-label">Total Bets</div><div class="sc-value">${this.bets.length}</div></div>
-<div class="sc"><div class="sc-label">% Won</div><div class="sc-value yellow">${this.getWinRate().toFixed(0)}%</div></div>`;
-}
+this.renderChart('sw-chart');
+const ss=document.getElementById('sw-stats');
+if(ss){const p=Math.round(this.getProfit()),w=Math.round(this.getWagered());
+ss.innerHTML=`
+<div class="stat-card stat-card-v"><div class="stat-label">Total Profit</div><div class="stat-value ${p>=0?'sv-green':'sv-red'}">${p>=0?'+':''}MZN ${p.toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Total Stake</div><div class="stat-value">MZN ${w.toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Pending</div><div class="stat-value sv-orange">MZN ${this.getPendingStake().toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Pot. Payout</div><div class="stat-value sv-cyan">MZN ${Math.round(this.getPotPayout()).toLocaleString()}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Profit Margin</div><div class="stat-value ${p>=0?'sv-green':'sv-red'}">${w?((p/w*100).toFixed(1)):'0'}%</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Best CLV</div><div class="stat-value sv-green">${this.getBestCLV().toFixed(0)}%</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">Total Bets</div><div class="stat-value">${this.bets.length}</div></div>
+<div class="stat-card stat-card-v"><div class="stat-label">% Won</div><div class="stat-value sv-yellow">${this.getWR().toFixed(0)}%</div></div>`}
 },
 
 renderSweatList(){
-const list=document.getElementById('sweat-list');if(!list)return;
+const list=document.getElementById('sw-list');if(!list)return;
 let bets;
-switch(this.sweatFilter_){
-case 'live':case 'upcoming':bets=this.bets.filter(b=>b.status==='pending');break;
-case 'settled':bets=this.bets.filter(b=>b.status==='won'||b.status==='lost');break;
-case 'parlays':bets=this.bets.filter(b=>b.market&&b.market.includes('COMBO'));break;
-default:bets=this.bets.filter(b=>b.status==='pending');
-}
-bets=[...bets].sort((a,b)=>b.created-a.created);
-if(!bets.length){list.innerHTML='<div style="padding:1.5rem;text-align:center;color:var(--text-muted);font-size:.78rem">Sem apostas nesta categoria</div>';return}
-list.innerHTML=bets.map(b=>{
-const isCombo=b.market&&b.market.includes('COMBO');
-return`<div class="bet-item">
-<div class="bet-item-info">
-<div class="bet-item-name">${b.event} ${isCombo?'<span class="badge-bilhete">BILHETE</span>':''} <span class="pill ${b.status==='pending'?'blue':b.status==='won'?'green':'red'}">${b.status}</span></div>
-<div class="bet-item-type">${b.market||'SIMPLES 1-Fold'} ${b.date}</div>
-</div>
-<div class="bet-item-odds ${b.status==='pending'?'pending':''}"><span style="color:${b.status==='won'?'var(--accent-green)':b.status==='lost'?'var(--accent-red)':'var(--accent-red)'}">${b.odd}</span><small>${b.status==='pending'?'P':'S'}</small></div>
-</div>`}).join('');
-}
+switch(this.swFilter){case'live':case'upcoming':bets=this.getPending();break;case'settled':bets=this.bets.filter(b=>b.status==='won'||b.status==='lost');break;case'parlays':bets=this.bets.filter(b=>b.market&&b.market.includes('COMBO'));break;default:bets=this.getPending()}
+bets=[...bets].sort((a,b)=>b.ts-a.ts);
+if(!bets.length){list.innerHTML='<div style="padding:1.5rem;text-align:center;color:var(--text-muted);font-size:.78rem">Sem dados</div>';return}
+list.innerHTML=bets.map(b=>{const isC=b.market&&b.market.includes('COMBO');
+return`<div class="bet-item"><div><div class="bet-item-name">${b.event} ${isC?'<span class="badge-ticket">BILHETE</span>':''} <span class="pill ${b.status==='pending'?'blue':b.status==='won'?'green':'red'}">${b.status}</span></div><div class="bet-item-sub">${b.market||'SIMPLES 1-Fold'} ${b.date}</div></div><div class="bet-item-odds"><span style="color:${b.status==='won'?'var(--accent-green)':b.status==='lost'?'var(--accent-red)':'var(--accent-red)'}">${b.odd}</span><small>${b.status==='pending'?'P':'S'}</small></div></div>`}).join('')}
 };
 
-// ============ MATCHES ENGINE (simplified for space) ============
-const DB_teams={
-vitality:{id:'vitality',name:'Team Vitality',short:'Vitality',logo:'🐝',rank:3,tier:'S'},
-spirit:{id:'spirit',name:'Team Spirit',short:'Spirit',logo:'🔥',rank:2,tier:'S'},
-falcons:{id:'falcons',name:'Team Falcons',short:'Falcons',logo:'🦅',rank:12,tier:'A'},
-furia:{id:'furia',name:'FURIA',short:'FURIA',logo:'🐆',rank:15,tier:'A'},
-mongolz:{id:'mongolz',name:'The MongolZ',short:'MongolZ',logo:'🇲🇳',rank:8,tier:'A'},
-parivision:{id:'parivision',name:'PARIVISION',short:'PARIVISION',logo:'🟣',rank:42,tier:'C'}
+// ========== MATCHES DATABASE (from original) ==========
+const DB={
+teams:{vitality:{id:'vitality',name:'Team Vitality',short:'Vitality',logo:'🐝',rank:3,tier:'S'},spirit:{id:'spirit',name:'Team Spirit',short:'Spirit',logo:'🔥',rank:2,tier:'S'},falcons:{id:'falcons',name:'Team Falcons',short:'Falcons',logo:'🦅',rank:12,tier:'A'},furia:{id:'furia',name:'FURIA',short:'FURIA',logo:'🐆',rank:15,tier:'A'},mongolz:{id:'mongolz',name:'The MongolZ',short:'MongolZ',logo:'🇲🇳',rank:8,tier:'A'},parivision:{id:'parivision',name:'PARIVISION',short:'PARIVISION',logo:'🟣',rank:42,tier:'C'}},
+matches:[
+{id:'m1',event:'BLAST Open 2025',tA:'falcons',tB:'furia',fmt:'bo3',date:'2025-01-20T15:00:00Z',probA:58,vbs:8,risk:'MEDIUM',score:'2-1',odds:{a:1.65,b:2.25}},
+{id:'m2',event:'BLAST Open 2025',tA:'mongolz',tB:'spirit',fmt:'bo3',date:'2025-01-20T18:00:00Z',probA:42,vbs:10,risk:'MEDIUM',score:'2-1',odds:{a:2.55,b:1.52}},
+{id:'m3',event:'BLAST Open 2025',tA:'vitality',tB:'parivision',fmt:'bo3',date:'2025-01-20T21:00:00Z',probA:82,vbs:6,risk:'LOW',score:'2-0',odds:{a:1.12,b:5.80}}
+],
+settings:{bankroll:1000,kelly:.25,minEdge:3,cur:'MZN'}
 };
-const DB_matches=[
-{id:'m1',event:'BLAST Open 2025',tA:'falcons',tB:'furia',fmt:'bo3',date:'2025-01-20T15:00:00Z',probA:58,vbCount:8,risk:'MEDIUM',score:'2-1'},
-{id:'m2',event:'BLAST Open 2025',tA:'mongolz',tB:'spirit',fmt:'bo3',date:'2025-01-20T18:00:00Z',probA:42,vbCount:10,risk:'MEDIUM',score:'2-1'},
-{id:'m3',event:'BLAST Open 2025',tA:'vitality',tB:'parivision',fmt:'bo3',date:'2025-01-20T21:00:00Z',probA:82,vbCount:6,risk:'LOW',score:'2-0'}
-];
 
-// ============ APP ============
+// ========== APP ==========
 const App={
 bs:[],
-
 init(){
-// Navigation
 document.querySelectorAll('.nav-link').forEach(l=>l.addEventListener('click',e=>{e.preventDefault();this.nav(l.dataset.page)}));
-this.renderMatches();
-BT.render();
-// Set today's date in deposit form
-const dp=document.getElementById('dep-date');if(dp)dp.value=new Date().toISOString().slice(0,10);
-toast('Edge Engine v3.0 + Bet Tracker','success');
+this.renderMatches();BT.render();
+document.getElementById('dep-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('stat-matches').textContent=DB.matches.length;
+let tvb=0;DB.matches.forEach(m=>tvb+=m.vbs);document.getElementById('stat-vb').textContent=tvb;
+toast('Edge Engine v3 + Bet Tracker','success');
 },
 
 nav(pg){
@@ -784,79 +753,85 @@ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
 const el=document.getElementById('page-'+pg);if(el)el.classList.add('active');
 const nl=document.querySelector('.nav-link[data-page="'+pg+'"]');if(nl)nl.classList.add('active');
-if(pg==='tracker'||pg==='dashboard'||pg==='sweat'||pg==='deposits')BT.render();
+if(pg==='bankroll')BT.render();
 },
 
 renderMatches(){
 const g=document.getElementById('matches-grid');if(!g)return;
-g.innerHTML=DB_matches.map(m=>{
-const tA=DB_teams[m.tA],tB=DB_teams[m.tB];
+g.innerHTML=DB.matches.map(m=>{
+const tA=DB.teams[m.tA],tB=DB.teams[m.tB];
 const d=new Date(m.date);const ts=d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'});
-const cc=m.probA>70?'h':m.probA>55?'m':'l';
-return`<div class="mc" onclick="App.openAnalysis('${m.id}')">
-<div class="mc-h"><span class="mc-ev">${m.event}</span><span class="mc-fmt">${m.fmt.toUpperCase()}</span></div>
-<div class="mc-b"><div class="mc-teams">
-<div class="mc-team"><div class="mc-logo">${tA.logo}</div><div class="mc-name">${tA.short}</div><div class="mc-tpi">${m.probA}%</div></div>
-<div class="mc-vs"><span class="mc-vs-text">VS</span><span class="mc-time">${ts}</span></div>
-<div class="mc-team"><div class="mc-logo">${tB.logo}</div><div class="mc-name">${tB.short}</div><div class="mc-tpi">${100-m.probA}%</div></div>
-</div><div class="conf-bar"><div class="conf-fill ${cc}" style="width:${Math.max(m.probA,100-m.probA)}%"></div></div></div>
-<div class="mc-f">
-<div class="mc-stat"><span class="mc-sl">Projeção</span><span class="mc-sv blue">${m.score}</span></div>
-<div class="mc-stat"><span class="mc-sl">Value Bets</span><span class="mc-sv green">${m.vbCount}</span></div>
-<div class="mc-stat"><span class="mc-sl">Risco</span><span class="mc-sv ${m.risk==='LOW'?'green':'orange'}">${m.risk}</span></div>
+const cc=m.probA>70?'high':m.probA>55?'medium':'low';const confW=Math.max(m.probA,100-m.probA);
+return`<div class="match-card" onclick="App.openA('${m.id}')">
+<div class="match-card-header"><span class="match-event">${m.event}</span><span class="match-format">${m.fmt.toUpperCase()}</span></div>
+<div class="match-card-body"><div class="match-teams">
+<div class="match-team"><div class="team-logo">${tA.logo}</div><div class="team-name">${tA.short}</div><div class="team-tpi">${m.probA}%</div></div>
+<div class="match-vs"><span class="vs-text">VS</span><span class="match-time">${ts}</span></div>
+<div class="match-team"><div class="team-logo">${tB.logo}</div><div class="team-name">${tB.short}</div><div class="team-tpi">${100-m.probA}%</div></div>
+</div><div class="confidence-bar"><div class="confidence-fill ${cc}" style="width:${confW}%"></div></div></div>
+<div class="match-card-footer">
+<div class="match-stat"><span class="match-stat-label">Projeção</span><span class="match-stat-value blue">${m.score}</span></div>
+<div class="match-stat"><span class="match-stat-label">Value Bets</span><span class="match-stat-value green">${m.vbs}</span></div>
+<div class="match-stat"><span class="match-stat-label">Risco</span><span class="match-stat-value ${m.risk==='LOW'?'green':'orange'}">${m.risk}</span></div>
 </div>
-<button class="mc-btn" onclick="event.stopPropagation();App.openAnalysis('${m.id}')"><i class="fas fa-chart-bar"></i> ANALISAR</button>
+<button class="match-analyze-btn" onclick="event.stopPropagation();App.openA('${m.id}')"><i class="fas fa-chart-bar"></i> ANALISAR</button>
 </div>`}).join('')},
 
-openAnalysis(mid){
-const m=DB_matches.find(x=>x.id===mid);if(!m)return;
-const tA=DB_teams[m.tA],tB=DB_teams[m.tB];
-document.getElementById('modal-t').textContent=tA.short+' vs '+tB.short;
-document.getElementById('modal-b').innerHTML=`
-<div style="background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(124,58,237,.06));border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:1.5rem;text-align:center;margin-bottom:1rem">
-<div style="font-size:1.3rem;font-weight:900;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${m.probA>=50?tA.name:tB.name}</div>
-<div style="color:var(--text-secondary);margin:.3rem 0">Projeção: ${m.score}</div>
-<div style="font-size:.82rem">Confiança: ${'★'.repeat(Math.round(Math.max(m.probA,100-m.probA)/20))}${'☆'.repeat(5-Math.round(Math.max(m.probA,100-m.probA)/20))}</div>
+openA(mid){
+const m=DB.matches.find(x=>x.id===mid);if(!m)return;
+const tA=DB.teams[m.tA],tB=DB.teams[m.tB];
+const winner=m.probA>=50?tA:tB;const winProb=Math.max(m.probA,100-m.probA);
+document.getElementById('modal-title').innerHTML=`<i class="fas fa-chart-bar"></i> ${tA.short} vs ${tB.short}`;
+document.getElementById('modal-body').innerHTML=`
+<div class="projection-box">
+<span class="proj-label">╔══════════════════════════════════════════════════╗</span>
+<span class="proj-label">║  🏆 PROJEÇÃO: </span><span class="proj-winner">${winner.name} ${m.score}</span>
+<span class="proj-label">║  📊 Confiança: ${winProb>=75?'ALTA':winProb>=55?'MÉDIA':'BAIXA'} (${Math.round(winProb/10)}/10)</span>
+<span class="proj-label">║  💰 Prob: ${tA.short} ${m.probA}% | ${tB.short} ${100-m.probA}%</span>
+<span class="proj-label">╚══════════════════════════════════════════════════╝</span>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem">
-<div><div style="display:flex;justify-content:space-between;font-size:.8rem;font-weight:600;margin-bottom:.2rem"><span>${tA.short}</span><span>${m.probA}%</span></div><div style="height:7px;background:var(--border-color);border-radius:3px;overflow:hidden"><div style="height:100%;width:${m.probA}%;background:var(--gradient-primary);border-radius:3px"></div></div></div>
-<div><div style="display:flex;justify-content:space-between;font-size:.8rem;font-weight:600;margin-bottom:.2rem"><span>${tB.short}</span><span>${100-m.probA}%</span></div><div style="height:7px;background:var(--border-color);border-radius:3px;overflow:hidden"><div style="height:100%;width:${100-m.probA}%;background:var(--gradient-red);border-radius:3px"></div></div></div>
+<div class="a-grid" style="margin-bottom:1rem">
+<div><div class="pb-container"><div class="pb-header"><span class="pb-label">${tA.short}</span><span class="pb-value">${m.probA}%</span></div><div class="pb"><div class="pb-fill" style="width:${m.probA}%"></div></div></div></div>
+<div><div class="pb-container"><div class="pb-header"><span class="pb-label">${tB.short}</span><span class="pb-value">${100-m.probA}%</span></div><div class="pb"><div class="pb-fill red" style="width:${100-m.probA}%"></div></div></div></div>
 </div>
-<div style="text-align:center;margin:1rem 0"><button class="btn btn-green" onclick="BT.addBet('${tA.short} vs ${tB.short}','Match Winner - ${m.probA>=50?tA.short:tB.short}',${m.probA>=50?1.72:2.25},${m.probA>=50?1.60:2.00},200,'','pending');closeModal()"><i class="fas fa-paper-plane"></i> Adicionar ao Bet Tracker</button></div>`;
-document.getElementById('modal').classList.add('active');
-},
+<div style="text-align:center;margin:1.5rem 0;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
+<button class="btn btn-green" onclick="BT.addBet('${tA.short} vs ${tB.short}','ML ${winner.short}',${m.probA>=50?m.odds.a:m.odds.b},${(100/winProb).toFixed(2)},200,'','pending');closeModal()"><i class="fas fa-plus"></i> Aposta Simples → Tracker</button>
+<button class="btn btn-primary" onclick="App.addBS('${m.id}','ML ${winner.short}',${m.probA>=50?m.odds.a:m.odds.b},${winProb},'${tA.short} vs ${tB.short}');closeModal()"><i class="fas fa-receipt"></i> → Betslip</button>
+</div>`;
+document.getElementById('analysis-modal').classList.add('active')},
 
 // BETSLIP
 addBS(mid,sel,odds,prob,mn){
 if(this.bs.find(b=>b.mid===mid&&b.sel===sel)){toast('Já no betslip','warning');return}
-const stake=Math.round(BT.getCapital()*.02);
+const stake=Math.max(100,Math.round(BT.getCapital()*.02));
 this.bs.push({mid,sel,odds,prob,mn,fair:prob>0?(100/prob).toFixed(2):0,stake});
 this.renderBS();toast(sel+' @ '+odds,'success')},
 removeBS(i){this.bs.splice(i,1);this.renderBS()},
 clearBS(){this.bs=[];this.renderBS()},
 
 renderBS(){
-const items=document.getElementById('bs-items'),foot=document.getElementById('bs-foot'),cnt=document.getElementById('bs-cnt');
+const items=document.getElementById('bs-items'),foot=document.getElementById('bs-footer'),cnt=document.getElementById('bs-count');
 cnt.textContent=this.bs.length;
-if(!this.bs.length){items.innerHTML='<div class="bs-empty"><i class="fas fa-plus-circle"></i><p>Clique + nos value bets</p></div>';foot.style.display='none';return}
+if(!this.bs.length){items.innerHTML='<div class="betslip-empty"><i class="fas fa-plus-circle"></i><p>Clique + nos value bets</p></div>';foot.style.display='none';return}
 items.innerHTML=this.bs.map((b,i)=>`<div class="bsi"><button class="bsi-rm" onclick="App.removeBS(${i})"><i class="fas fa-times"></i></button><div class="bsi-match">${b.mn}</div><div class="bsi-sel">${b.sel}</div><div class="bsi-odds">@ ${b.odds}</div></div>`).join('');
 let cO=1,cP=1;this.bs.forEach(b=>{cO*=b.odds;cP*=b.prob/100});
-const ev=(cP*cO-1)*100;const stake=this.bs.length===1?this.bs[0].stake:Math.round(BT.getCapital()*.02);
+const ev=(cP*cO-1)*100;const stake=this.bs.length===1?this.bs[0].stake:Math.max(100,Math.round(BT.getCapital()*.02));
 document.getElementById('bs-odds').textContent=cO.toFixed(2);
 document.getElementById('bs-prob').textContent=(cP*100).toFixed(1)+'%';
 document.getElementById('bs-ev').textContent=(ev>0?'+':'')+ev.toFixed(1)+'%';
 document.getElementById('bs-stake').textContent='MZN '+stake;
 document.getElementById('bs-ret').textContent='MZN '+Math.round(stake*cO);
-foot.style.display='block';
-},
+foot.style.display='block'},
 
-// SEND BETSLIP TO TRACKER
 sendToBT(){
 if(!this.bs.length){toast('Betslip vazio','warning');return}
+// Set stake from display
+const stake=parseInt(document.getElementById('bs-stake')?.textContent?.replace(/\D/g,''))||200;
+this.bs.forEach(b=>b.stake=stake);
 BT.addFromBS(this.bs);
 this.bs=[];this.renderBS();
-toast('Enviado para o Bet Tracker!','success');
-this.nav('tracker');
+toast('Enviado para Bet Tracker!','success');
+App.nav('bankroll');
 },
 
 exportBS(){
@@ -864,13 +839,19 @@ if(!this.bs.length)return;
 let t='🎯 EDGE ENGINE BETSLIP\n'+'═'.repeat(30)+'\n';
 this.bs.forEach((b,i)=>{t+=`${i+1}. ${b.mn}\n   ${b.sel} @ ${b.odds}\n`});
 t+='═'.repeat(30)+'\nOdds: '+this.bs.reduce((a,b)=>a*b.odds,1).toFixed(2);
-navigator.clipboard.writeText(t).then(()=>toast('Copiado!','success')).catch(()=>toast('Erro','warning'));}
+navigator.clipboard.writeText(t).then(()=>toast('Copiado!','success')).catch(()=>toast('Erro','warning'))},
+
+renderVBPage(){
+const c=document.getElementById('vb-table');if(!c)return;
+c.innerHTML='<div style="padding:1.5rem;text-align:center;color:var(--text-muted)">Selecione um jogo para ver value bets detalhados</div>'}
 };
 
 // GLOBALS
-function closeModal(){document.getElementById('modal').classList.remove('active')}
-function toast(msg,type='info'){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast '+type;t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':type==='warning'?'exclamation-triangle':'info-circle'}"></i> ${msg}`;c.appendChild(t);setTimeout(()=>{if(t.parentNode)t.remove()},3000)}
-function genCombos(){const g=document.getElementById('combos-grid');if(g)g.innerHTML='<div style="padding:2rem;text-align:center;color:var(--text-muted)">Gere combos a partir da página de Value Bets</div>'}
+function closeModal(){document.getElementById('analysis-modal').classList.remove('active')}
+function toggleSettings(){const p=document.getElementById('settings-panel');p.style.display=p.style.display==='none'?'block':'none'}
+function updSettings(){DB.settings.bankroll=parseFloat(document.getElementById('s-bank').value)||1000;DB.settings.kelly=parseFloat(document.getElementById('s-kelly').value)||.25;DB.settings.minEdge=parseFloat(document.getElementById('s-edge').value)||3;toast('Atualizado','success')}
+function genCombos(){const g=document.getElementById('combos-grid')||document.getElementById('combos-page-content');if(g)g.innerHTML='<div class="combos-grid"><div style="padding:1.5rem;text-align:center;color:var(--text-muted);grid-column:1/-1">Clique ANALISAR num jogo e adicione ao Betslip para criar combos</div></div>'}
+function toast(msg,type='info'){const c=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+type;t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':type==='warning'?'exclamation-triangle':'info-circle'}"></i> ${msg}`;c.appendChild(t);setTimeout(()=>{if(t.parentNode)t.remove()},3000)}
 
 document.addEventListener('DOMContentLoaded',()=>App.init());
 </script>
