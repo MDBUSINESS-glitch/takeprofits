@@ -24,13 +24,9 @@
 }
 html,body{height:100%;overflow:hidden}
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;display:flex;flex-direction:column}
-
-/* SCROLLBAR */
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-
-/* HEADER */
 .hdr{height:var(--h);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1rem;gap:1rem;flex-shrink:0;z-index:100}
 .logo{display:flex;align-items:center;gap:.5rem;cursor:pointer;text-decoration:none}
 .logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--cyan),var(--cyan2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#fff}
@@ -48,13 +44,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 .btn-reset:hover{background:rgba(255,71,87,.2)}
 .live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}50%{box-shadow:0 0 0 6px rgba(0,230,118,0)}}
-
-/* MAIN */
 .main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .page{display:none;flex:1;overflow-y:auto;padding:1.2rem}
 .page.active{display:flex;flex-direction:column;gap:1rem}
-
-/* ===== COMMON COMPONENTS ===== */
 .section-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
 .sh-title{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.4rem}
 .sh-title i{color:var(--cyan)}
@@ -90,14 +82,10 @@ input,select{background:var(--bg3);border:1px solid var(--border2);color:var(--t
 input:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,204,.1)}
 input::placeholder{color:var(--text3)}
 .divider{height:1px;background:var(--border);margin:.2rem 0}
-
-/* TABS */
 .tab-bar{display:flex;gap:3px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px;width:fit-content}
 .tb{padding:.35rem .75rem;font-size:.73rem;font-weight:600;border:none;background:none;color:var(--text2);border-radius:6px;cursor:pointer;font-family:var(--font);transition:var(--tr);white-space:nowrap}
 .tb.active{background:var(--card3);color:var(--text);border:1px solid var(--border2)}
 .tb-pane{display:none}.tb-pane.active{display:block}
-
-/* ===== JOGOS ===== */
 .leagues-wrap{display:flex;flex-direction:column;gap:.8rem}
 .league-section{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .league-hdr{display:flex;align-items:center;gap:.6rem;padding:.65rem 1rem;background:var(--card2);border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
@@ -123,8 +111,6 @@ input::placeholder{color:var(--text3)}
 .odd-btn.selected{background:rgba(0,229,204,.15);border-color:var(--cyan);color:var(--cyan)}
 .odd-label{font-size:.57rem;color:var(--text2);display:block;text-align:center;margin-bottom:1px}
 .mr-analyze{flex-shrink:0}
-
-/* ===== VALUE BETS PAGE ===== */
 .vb-filters{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .vb-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;overflow-x:auto}
 table.dt{width:100%;border-collapse:collapse;min-width:700px}
@@ -133,8 +119,6 @@ table.dt tbody td{padding:.55rem .75rem;border-bottom:1px solid rgba(255,255,255
 table.dt tbody tr:hover td{background:rgba(255,255,255,.02)}
 table.dt tbody tr:last-child td{border-bottom:none}
 .vp{color:var(--green);font-weight:700}.vn{color:var(--red);font-weight:700}
-
-/* ===== COMBOS ===== */
 .combos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.8rem}
 .combo-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:var(--tr)}
 .combo-card:hover{border-color:var(--cyan3);transform:translateY(-2px)}
@@ -151,8 +135,6 @@ table.dt tbody tr:last-child td{border-bottom:none}
 .cc-footer{padding:.55rem 1rem;background:rgba(0,0,0,.2);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;text-align:center}
 .cc-sl{font-size:.58rem;color:var(--text2);font-weight:600;text-transform:uppercase;margin-bottom:2px}
 .cc-sv{font-size:.82rem;font-weight:800;font-family:var(--mono)}
-
-/* ===== BET TRACKER SUB-HEADER ===== */
 .trk-subhdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:.6rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;flex-shrink:0}
 .trk-subnav{display:flex;gap:2px}
 .tsn{padding:.35rem .75rem;font-size:.75rem;font-weight:600;color:var(--text2);background:none;border:1px solid transparent;border-radius:7px;cursor:pointer;font-family:var(--font);transition:var(--tr);display:flex;align-items:center;gap:.3rem}
@@ -162,12 +144,8 @@ table.dt tbody tr:last-child td{border-bottom:none}
 .per-tabs{display:flex;gap:2px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px}
 .pt{padding:.2rem .55rem;font-size:.68rem;font-weight:700;border:none;background:none;color:var(--text2);border-radius:4px;cursor:pointer;font-family:var(--font);transition:var(--tr)}
 .pt.active{background:var(--card3);color:var(--text);border:1px solid var(--border2)}
-
-/* ===== TRACKER PAGE INNER ===== */
 .trk-page{display:none;flex:1;overflow-y:auto;padding:1.2rem;flex-direction:column;gap:1rem}
 .trk-page.active{display:flex}
-
-/* Sweat Station */
 .sw-layout{display:grid;grid-template-columns:220px 1fr;gap:1rem}
 .sw-cal{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:.8rem;flex-shrink:0}
 .cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
@@ -194,29 +172,19 @@ table.dt tbody tr:last-child td{border-bottom:none}
 .sw-bet-status{font-size:.65rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;flex-shrink:0}
 .sw-bet-status.p{background:rgba(255,167,38,.15);color:var(--orange)}
 .sw-bet-status.live{background:rgba(255,71,87,.15);color:var(--red);animation:blink 1.5s infinite}
-
-/* Add bet form */
 .add-form{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem}
 .af-title{font-size:.82rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem}
 .form-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:flex-end}
 .form-row input,.form-row select{flex:1;min-width:100px}
 .form-row .wide{min-width:180px}
-
-/* Bet history table */
 .bh-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;overflow-x:auto}
 .bh-top{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;border-bottom:1px solid var(--border);gap:.5rem}
 .res-sel{background:rgba(0,0,0,.3);border:1px solid var(--border2);color:var(--text);padding:.2rem .4rem;border-radius:5px;font-size:.72rem;font-weight:700;font-family:var(--mono);cursor:pointer;outline:none}
-
-/* Deposits/Withdrawals */
 .dep-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .dep-form{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem}
 .dep-form-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr auto;gap:.5rem;align-items:flex-end;margin-top:.75rem}
-
-/* CHART */
 .chart-wrap{position:relative;height:160px}
 canvas{width:100%!important;height:100%!important}
-
-/* ANALYSIS MODAL */
 .modal{display:none;position:fixed;inset:0;z-index:1000;align-items:flex-start;justify-content:center;padding:1rem}
 .modal.open{display:flex}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px)}
@@ -226,8 +194,6 @@ canvas{width:100%!important;height:100%!important}
 .modal-close{width:30px;height:30px;border:1px solid var(--border2);background:none;color:var(--text2);border-radius:6px;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center}
 .modal-close:hover{color:var(--red);border-color:var(--red)}
 .modal-body{overflow-y:auto;padding:1.2rem;flex:1}
-
-/* Prob bars */
 .pb-row{margin-bottom:.5rem}
 .pb-hdr{display:flex;justify-content:space-between;margin-bottom:.2rem;font-size:.75rem}
 .pb-hdr .label{font-weight:600}.pb-hdr .val{font-weight:700;color:var(--cyan)}
@@ -249,21 +215,15 @@ canvas{width:100%!important;height:100%!important}
 .bet-opt-edge{font-size:.7rem;font-weight:700;color:var(--green)}
 .bet-opt-odds{font-size:.88rem;font-weight:800;color:var(--cyan);font-family:var(--mono)}
 .bet-opt-add{padding:.2rem .5rem;background:rgba(0,229,204,.12);border:1px solid rgba(0,229,204,.25);color:var(--cyan);border-radius:5px;font-size:.65rem;font-weight:700;cursor:pointer;font-family:var(--font)}
-
-/* ADD BET MODAL */
 .add-modal-box{width:96%;max-width:500px}
 .stake-preview{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:.8rem;margin-top:.8rem;font-size:.78rem}
 .sp-row{display:flex;justify-content:space-between;padding:.2rem 0;font-size:.75rem}
 .sp-row .val{font-weight:700;color:var(--cyan);font-family:var(--mono)}
 .sp-row.highlight .val{color:var(--green);font-size:.85rem}
-
-/* LOADING */
 .loading-overlay{position:absolute;inset:0;background:rgba(7,17,30,.8);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;z-index:10;border-radius:var(--r)}
 .spinner{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-size:.75rem;color:var(--text2)}
-
-/* TOAST */
 .toasts{position:fixed;bottom:1rem;right:1rem;z-index:2000;display:flex;flex-direction:column;gap:.4rem}
 .toast{padding:.65rem 1rem;border-radius:8px;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.4rem;animation:slideIn .3s ease;box-shadow:0 4px 20px rgba(0,0,0,.5)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -271,12 +231,8 @@ canvas{width:100%!important;height:100%!important}
 .toast.e{background:rgba(255,71,87,.9);color:#fff}
 .toast.i{background:rgba(0,229,204,.9);color:#051a14}
 .toast.w{background:rgba(255,167,38,.9);color:#1a0e00}
-
-/* EMPTY STATE */
 .empty{padding:2rem;text-align:center;color:var(--text2);font-size:.8rem}
 .empty i{font-size:2rem;opacity:.2;display:block;margin-bottom:.5rem}
-
-/* RESPONSIVE */
 @media(max-width:900px){
 .sw-layout{grid-template-columns:1fr}
 .sw-cal{display:none}
@@ -293,7 +249,6 @@ canvas{width:100%!important;height:100%!important}
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="hdr">
   <a class="logo">
     <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
@@ -323,7 +278,6 @@ canvas{width:100%!important;height:100%!important}
   </div>
 </header>
 
-<!-- TRACKER SUB-HEADER (only shown on tracker page) -->
 <div class="trk-subhdr" id="trk-subhdr" style="display:none">
   <div class="trk-subnav">
     <button class="tsn active" id="tsn-dash" onclick="App.trackerTab('dash')"><i class="fas fa-th-large"></i> Dashboard</button>
@@ -342,13 +296,12 @@ canvas{width:100%!important;height:100%!important}
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="main">
 
   <!-- JOGOS PAGE -->
   <div class="page active" id="page-jogos">
     <div class="section-hdr">
-      <div class="sh-title"><i class="fas fa-gamepad"></i> Jogos Esports — Ao Vivo & Próximos</div>
+      <div class="sh-title"><i class="fas fa-gamepad"></i> Jogos Esports — Ao Vivo &amp; Próximos</div>
       <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
         <select id="filter-game" onchange="App.renderJogos()" style="font-size:.75rem;padding:.3rem .5rem">
           <option value="all">Todos os Jogos</option>
@@ -462,7 +415,6 @@ canvas{width:100%!important;height:100%!important}
           <div id="bt-wr" style="font-size:1.3rem;font-weight:800;color:var(--orange);font-family:var(--mono)">0%</div>
         </div>
       </div>
-      <!-- Capital evolution chart -->
       <div class="card" style="padding:1rem">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem">
           <span style="font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:.4rem"><i class="fas fa-chart-area" style="color:var(--cyan)"></i> Evolução do Capital</span>
@@ -479,7 +431,6 @@ canvas{width:100%!important;height:100%!important}
           <span style="font-size:.68rem;color:var(--text2)">Sequência: <strong id="bt-streak">--</strong></span>
         </div>
       </div>
-      <!-- Add Bet -->
       <div class="add-form">
         <div class="af-title"><i class="fas fa-plus-circle"></i> Adicionar Aposta</div>
         <div class="form-row">
@@ -501,7 +452,6 @@ canvas{width:100%!important;height:100%!important}
         </div>
         <div id="kelly-preview" style="margin-top:.6rem;display:none;font-size:.73rem;color:var(--text2)"></div>
       </div>
-      <!-- Bet History -->
       <div class="bh-wrap">
         <div class="bh-top">
           <span style="font-size:.8rem;font-weight:700">Histórico de Apostas</span>
@@ -540,7 +490,6 @@ canvas{width:100%!important;height:100%!important}
             <button class="tb" id="sw-parlays-btn" onclick="App.swTab('parlays')">🎰 Parlays (<span id="sw-parlays-cnt">0</span>)</button>
           </div>
           <div id="sw-bet-list" class="sw-bet-list"></div>
-          <!-- Profit chart -->
           <div class="card" style="padding:1rem">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;flex-wrap:wrap;gap:.4rem">
               <span style="font-size:.8rem;font-weight:700">Profit Over Time</span>
@@ -567,7 +516,7 @@ canvas{width:100%!important;height:100%!important}
       <div class="dep-kpi" style="grid-template-columns:repeat(4,1fr)">
         <div class="kpi"><div class="kpi-lbl"><i class="fas fa-arrow-down" style="color:var(--green)"></i> Total Depositado</div><div class="kpi-val" id="dep-total-dep">MZN 0</div></div>
         <div class="kpi"><div class="kpi-lbl"><i class="fas fa-arrow-up" style="color:var(--red)"></i> Total Levantado</div><div class="kpi-val" id="dep-total-wth">MZN 0</div></div>
-        <div class="kpi"><div class="kpi-lbl"><i class="fas fa-wallet" style="color:var(--cyan)"></i> Saldo Actual (Dep. + Apostas)</div><div class="kpi-val" id="dep-saldo" style="color:var(--cyan)">MZN 0</div></div>
+        <div class="kpi"><div class="kpi-lbl"><i class="fas fa-wallet" style="color:var(--cyan)"></i> Saldo Actual</div><div class="kpi-val" id="dep-saldo" style="color:var(--cyan)">MZN 0</div></div>
         <div class="kpi"><div class="kpi-lbl"><i class="fas fa-chart-pie" style="color:var(--orange)"></i> ROI sobre Depositos</div><div class="kpi-val" id="dep-roi">0%</div></div>
       </div>
       <div class="dep-form card" style="padding:1rem">
@@ -599,8 +548,8 @@ canvas{width:100%!important;height:100%!important}
       </div>
     </div>
 
-  </div><!-- end tracker page -->
-</div><!-- end main -->
+  </div>
+</div>
 
 <!-- ANALYSIS MODAL -->
 <div class="modal" id="analysis-modal">
@@ -614,7 +563,7 @@ canvas{width:100%!important;height:100%!important}
   </div>
 </div>
 
-<!-- ADD BET CONFIRMATION MODAL -->
+<!-- ADD BET MODAL -->
 <div class="modal" id="addbet-modal">
   <div class="modal-overlay" onclick="App.closeAddModal()"></div>
   <div class="modal-box add-modal-box">
@@ -626,13 +575,9 @@ canvas{width:100%!important;height:100%!important}
   </div>
 </div>
 
-<!-- TOASTS -->
 <div class="toasts" id="toasts"></div>
 
 <script>
-/* ============================
-   STATE & STORAGE
-   ============================ */
 const S = {
   bankroll: parseFloat(localStorage.getItem('bt_bankroll') || '27825'),
   kelly: parseFloat(localStorage.getItem('bt_kelly') || '0.25'),
@@ -657,32 +602,23 @@ function save() {
   localStorage.setItem('bt_bankroll', S.bankroll);
 }
 
-/* ============================
-   ESPORTS DATA (Claude API + Fallback)
-   ============================ */
 const FALLBACK_MATCHES = [
-  // CS2
   {id:'m1',game:'cs2',gameLabel:'CS2',icon:'🎯',league:'ESL Pro League S21',event:'ESL Pro League Season 21',tA:'Natus Vincere',tB:'G2 Esports',status:'live',score:'13:11',fmt:'bo3',time:'LIVE',odds:{a:2.10,b:1.75},fairA:46,region:'EU'},
   {id:'m2',game:'cs2',gameLabel:'CS2',icon:'🎯',league:'ESL Pro League S21',event:'ESL Pro League Season 21',tA:'Team Spirit',tB:'MOUZ',status:'upcoming',fmt:'bo3',time:'17:30',odds:{a:1.62,b:2.28},fairA:62,region:'EU'},
   {id:'m3',game:'cs2',gameLabel:'CS2',icon:'🎯',league:'BLAST Open Austin 2025',event:'BLAST Open Austin 2025',tA:'FaZe Clan',tB:'Team Vitality',status:'upcoming',fmt:'bo3',time:'20:00',odds:{a:2.40,b:1.58},fairA:42,region:'EU'},
   {id:'m4',game:'cs2',gameLabel:'CS2',icon:'🎯',league:'BLAST Open Austin 2025',event:'BLAST Open Austin 2025',tA:'Astralis',tB:'Team Liquid',status:'upcoming',fmt:'bo3',time:'22:30',odds:{a:1.85,b:1.95},fairA:54,region:'NA'},
   {id:'m5',game:'cs2',gameLabel:'CS2',icon:'🎯',league:'PGL Major 2025',event:'PGL Major Bucharest 2025',tA:'Heroic',tB:'Complexity',status:'finished',score:'2:0',fmt:'bo3',time:'FIN',odds:{a:1.50,b:2.55},fairA:66,region:'EU'},
-  // Valorant
   {id:'m6',game:'valorant',gameLabel:'Valorant',icon:'⚡',league:'VCT EMEA 2025',event:'VCT EMEA 2025 — Split 1',tA:'Team Heretics',tB:'Fnatic',status:'live',score:'1:0',fmt:'bo3',time:'LIVE',odds:{a:1.72,b:2.15},fairA:58,region:'EU'},
   {id:'m7',game:'valorant',gameLabel:'Valorant',icon:'⚡',league:'VCT EMEA 2025',event:'VCT EMEA 2025 — Split 1',tA:'Team Liquid',tB:'BIG',status:'upcoming',fmt:'bo3',time:'19:00',odds:{a:1.45,b:2.75},fairA:68,region:'EU'},
   {id:'m8',game:'valorant',gameLabel:'Valorant',icon:'⚡',league:'VCT Americas 2025',event:'VCT Americas 2025',tA:'Sentinels',tB:'NRG',status:'upcoming',fmt:'bo3',time:'21:00',odds:{a:1.90,b:1.90},fairA:52,region:'NA'},
   {id:'m9',game:'valorant',gameLabel:'Valorant',icon:'⚡',league:'VCT Pacific 2025',event:'VCT Pacific 2025',tA:'Paper Rex',tB:'ZETA DIVISION',status:'upcoming',fmt:'bo3',time:'13:00',odds:{a:1.55,b:2.45},fairA:64,region:'ASIA'},
-  // Dota 2
   {id:'m10',game:'dota2',gameLabel:'Dota 2',icon:'🌌',league:'ESL One Bangkok 2025',event:'ESL One Bangkok 2025',tA:'Team Liquid',tB:'BetBoom',status:'live',score:'1:1',fmt:'bo3',time:'LIVE',odds:{a:1.88,b:1.93},fairA:53,region:'EU'},
   {id:'m11',game:'dota2',gameLabel:'Dota 2',icon:'🌌',league:'ESL One Bangkok 2025',event:'ESL One Bangkok 2025',tA:'Gaimin Gladiators',tB:'Tundra Esports',status:'upcoming',fmt:'bo3',time:'16:00',odds:{a:2.20,b:1.70},fairA:45,region:'EU'},
   {id:'m12',game:'dota2',gameLabel:'Dota 2',icon:'🌌',league:'DreamLeague S25',event:'DreamLeague Season 25',tA:'Team Spirit',tB:'Cloud9',status:'upcoming',fmt:'bo5',time:'18:30',odds:{a:1.35,b:3.10},fairA:73,region:'INT'},
-  // League of Legends
   {id:'m13',game:'lol',gameLabel:'League of Legends',icon:'⚔️',league:'LEC Spring 2025',event:'LEC Spring 2025 — Playoffs',tA:'G2 Esports',tB:'Fnatic',status:'live',score:'1:0',fmt:'bo5',time:'LIVE',odds:{a:1.40,b:2.90},fairA:70,region:'EU'},
   {id:'m14',game:'lol',gameLabel:'League of Legends',icon:'⚔️',league:'LCK Spring 2025',event:'LCK Spring 2025 — Finals',tA:'T1',tB:'Gen.G',status:'upcoming',fmt:'bo5',time:'12:00',odds:{a:1.60,b:2.35},fairA:62,region:'KR'},
   {id:'m15',game:'lol',gameLabel:'League of Legends',icon:'⚔️',league:'LPL Spring 2025',event:'LPL Spring 2025',tA:'JDG Intelligence',tB:'BLG',status:'upcoming',fmt:'bo5',time:'10:00',odds:{a:1.75,b:2.10},fairA:57,region:'CN'},
-  // PUBG
   {id:'m16',game:'pubg',gameLabel:'PUBG',icon:'🔫',league:'PGI 2025',event:'PUBG Global Invitational 2025',tA:'GNL Esports',tB:'DRX',status:'upcoming',fmt:'bo1',time:'15:00',odds:{a:2.80,b:2.50},fairA:36,region:'INT'},
-  // Rocket League
   {id:'m17',game:'rl',gameLabel:'Rocket League',icon:'🚀',league:'RLCS 2025',event:'RLCS 2025 — Major 1',tA:'Karmine Corp',tB:'Team BDS',status:'upcoming',fmt:'bo7',time:'17:00',odds:{a:1.65,b:2.20},fairA:60,region:'EU'},
   {id:'m18',game:'rl',gameLabel:'Rocket League',icon:'🚀',league:'RLCS 2025',event:'RLCS 2025 — Major 1',tA:'G2 Esports',tB:'NRG',status:'live',score:'3:2',fmt:'bo7',time:'LIVE',odds:{a:1.80,b:2.00},fairA:55,region:'NA'},
 ];
@@ -711,13 +647,9 @@ async function fetchMatchesFromAPI() {
   return null;
 }
 
-/* ============================
-   ENGINE — Calculations
-   ============================ */
 const E = {
   fairOdds(p) { return p > 0 ? Math.round(100/p*100)/100 : 0; },
   kelly(p, b) {
-    // p = decimal probability (0-1), b = decimal odds
     if (b <= 1) return 0;
     const q = 1 - p;
     const f = (p * (b - 1) - q) / (b - 1);
@@ -734,9 +666,9 @@ const E = {
     const {tA, tB, odds, fairA, id, game, gameLabel} = match;
     const pA = fairA / 100;
     const pB = 1 - pA;
-    const name = `${tA} vs ${tB}`;
+    const name = tA + ' vs ' + tB;
 
-    const chk = (market, sel, prob, bo, label) => {
+    const chk = (market, sel, prob, bo) => {
       if (!bo || bo <= 1 || prob <= 0 || prob >= 1) return;
       const ip = 1 / bo;
       const edge = (prob - ip) * 100;
@@ -744,31 +676,29 @@ const E = {
       if (edge > 1.5) {
         const stake = E.suggestedStake(prob, bo, S.bankroll);
         const stars = edge >= 8 ? 5 : edge >= 5 ? 4 : edge >= 3.5 ? 3 : edge >= 2.5 ? 2 : 1;
-        vbs.push({mid:id, game, gameLabel, match:name, market, sel, prob:Math.round(prob*1000)/10, bo, ip:Math.round(ip*1000)/10, edge:Math.round(edge*10)/10, ev:Math.round(ev*10)/1, stake, stars, label});
+        vbs.push({mid:id, game, gameLabel, match:name, market, sel, prob:Math.round(prob*1000)/10, bo, ip:Math.round(ip*1000)/10, edge:Math.round(edge*10)/10, ev:Math.round(ev*10)/1, stake, stars});
       }
     };
 
-    chk('Match Winner', tA+' Vence', pA, odds.a, name);
-    chk('Match Winner', tB+' Vence', pB, odds.b, name);
+    chk('Match Winner', tA + ' Vence', pA, odds.a);
+    chk('Match Winner', tB + ' Vence', pB, odds.b);
 
-    // Handicap bets
     if (match.fmt === 'bo3') {
       const p2_0 = pA * pA;
       const p2_1 = 2 * pA * pA * pB;
-      chk('Handicap Mapas', tA+' -1.5', p2_0, odds.a * 1.8, name);
-      chk('Handicap Mapas', tB+' +1.5', 1-p2_0, odds.b * 0.55, name);
-      chk('Total Mapas', 'Over 2.5 Mapas', p2_1 + (2*pB*pB*pA), odds.a * 1.1, name);
+      chk('Handicap Mapas', tA + ' -1.5', p2_0, odds.a * 1.8);
+      chk('Handicap Mapas', tB + ' +1.5', 1-p2_0, odds.b * 0.55);
+      chk('Total Mapas', 'Over 2.5 Mapas', p2_1 + (2*pB*pB*pA), odds.a * 1.1);
     } else if (match.fmt === 'bo5') {
       const p3_0 = pA**3;
-      chk('Handicap Mapas', tA+' -2.5', p3_0, odds.a * 2.5, name);
-      chk('Total Mapas', 'Over 4.5 Mapas', 0.45 + (pA > 0.5 ? 0 : 0.05), 2.1, name);
+      chk('Handicap Mapas', tA + ' -2.5', p3_0, odds.a * 2.5);
+      chk('Total Mapas', 'Over 4.5 Mapas', 0.45 + (pA > 0.5 ? 0 : 0.05), 2.1);
     }
 
-    // Total rounds (CS2 specific)
     if (game === 'cs2') {
       const closeMatch = Math.abs(pA - 0.5) < 0.15;
-      chk('Total Rounds', 'Over 25.5 Rds/Mapa', closeMatch ? 0.60 : 0.45, 1.85, name);
-      chk('Total Rounds', 'Under 26.5 Rds/Mapa', closeMatch ? 0.42 : 0.58, 2.10, name);
+      chk('Total Rounds', 'Over 25.5 Rds/Mapa', closeMatch ? 0.60 : 0.45, 1.85);
+      chk('Total Rounds', 'Under 26.5 Rds/Mapa', closeMatch ? 0.42 : 0.58, 2.10);
     }
 
     return vbs.sort((a,b) => b.ev - a.ev);
@@ -801,9 +731,6 @@ const E = {
   }
 };
 
-/* ============================
-   CHART HELPERS
-   ============================ */
 const Charts = {};
 
 function buildChartData(bets, period) {
@@ -868,11 +795,8 @@ function renderChart(id, labels, data, color) {
   });
 }
 
-/* ============================
-   FORMAT HELPERS
-   ============================ */
 const fmt = {
-  mzn: v => 'MZN ' + (v >= 0 ? '' : '') + Math.round(v).toLocaleString('pt-PT'),
+  mzn: v => 'MZN ' + Math.round(v).toLocaleString('pt-PT'),
   mznS: v => (v >= 0 ? '+' : '') + 'MZN ' + Math.abs(Math.round(v)).toLocaleString('pt-PT'),
   pct: v => (v >= 0 ? '+' : '') + v.toFixed(1) + '%',
   date: () => new Date().toLocaleDateString('pt-PT'),
@@ -880,8 +804,6 @@ const fmt = {
 
 function getBalance() {
   const profit = S.bets.reduce((s,b) => s + E.calcPL(b), 0);
-  const totalDep = S.deposits.filter(d=>d.type==='dep').reduce((s,d)=>s+parseFloat(d.valor||0),0);
-  const totalWth = S.deposits.filter(d=>d.type==='wth').reduce((s,d)=>s+parseFloat(d.valor||0),0);
   return S.bankroll + profit;
 }
 
@@ -893,53 +815,40 @@ function syncBalance() {
   if (cv) cv.textContent = 'MZN ' + Math.round(bal).toLocaleString('pt-PT');
 }
 
-/* ============================
-   TOAST
-   ============================ */
 function toast(msg, type='i') {
   const icons = {s:'check-circle',e:'times-circle',i:'info-circle',w:'exclamation-triangle'};
   const c = document.getElementById('toasts');
   const t = document.createElement('div');
   t.className = 'toast ' + type;
-  t.innerHTML = `<i class="fas fa-${icons[type]||'info-circle'}"></i> ${msg}`;
+  t.innerHTML = '<i class="fas fa-' + (icons[type]||'info-circle') + '"></i> ' + msg;
   c.appendChild(t);
   setTimeout(() => { t.style.animation='fadeOut .3s ease forwards'; setTimeout(()=>t.remove(),300); }, 3000);
 }
 
-/* ============================
-   APP
-   ============================ */
 const App = {
 
   async init() {
-    // Set today date in dep-data
     const dd = document.getElementById('dep-data');
     if (dd) dd.value = new Date().toISOString().split('T')[0];
-
     syncBalance();
     this.renderCal();
     this.renderDash();
     this.renderDeposits();
     this.renderBetsTab();
     this.renderSweat();
-
-    // Load matches
     await this.loadMatches();
     toast('Edge Engine Esports v2.0 carregado', 's');
   },
 
   async loadMatches() {
-    document.getElementById('jogos-loading')?.style && (document.getElementById('jogos-loading').style.display='flex');
+    const loadEl = document.getElementById('jogos-loading');
+    if (loadEl) loadEl.style.display = 'flex';
     const apiData = await fetchMatchesFromAPI();
     S.matches = apiData || FALLBACK_MATCHES;
-
-    // Compute VBs
     S.vbs = [];
     S.matches.forEach(m => { S.vbs = S.vbs.concat(E.findVBs(m)); });
     S.vbs.sort((a,b) => b.ev - a.ev);
-
-    const loading = document.getElementById('jogos-loading');
-    if (loading) loading.style.display = 'none';
+    if (loadEl) loadEl.style.display = 'none';
     this.renderJogos();
     if (S.curPage === 'valuebets') this.renderVB();
     if (S.curPage === 'combos') this.renderCombos();
@@ -947,11 +856,7 @@ const App = {
 
   async refreshMatches() {
     S.matches = [];
-    document.getElementById('leagues-container').innerHTML = `
-      <div class="loading-overlay" id="jogos-loading" style="position:relative;height:200px">
-        <div class="spinner"></div>
-        <div class="loading-text">A actualizar dados...</div>
-      </div>`;
+    document.getElementById('leagues-container').innerHTML = '<div class="loading-overlay" id="jogos-loading" style="position:relative;height:200px"><div class="spinner"></div><div class="loading-text">A actualizar dados...</div></div>';
     await this.loadMatches();
     toast('Jogos actualizados', 's');
   },
@@ -967,7 +872,7 @@ const App = {
     S.curPage = page;
     if (page === 'valuebets') this.renderVB();
     if (page === 'combos') this.renderCombos();
-    if (page === 'tracker') { this.trackerTab(S.trkTab); }
+    if (page === 'tracker') this.trackerTab(S.trkTab);
   },
 
   trackerTab(tab) {
@@ -984,89 +889,66 @@ const App = {
     if (tab === 'dep') this.renderDeposits();
   },
 
-  // ---- JOGOS ----
   renderJogos() {
     const gameFilter = document.getElementById('filter-game')?.value || 'all';
     const statusFilter = document.getElementById('filter-status')?.value || 'all';
     const container = document.getElementById('leagues-container');
     if (!container) return;
-
     let matches = S.matches;
     if (gameFilter !== 'all') matches = matches.filter(m => m.game === gameFilter);
     if (statusFilter !== 'all') matches = matches.filter(m => m.status === statusFilter);
-
-    // Group by league
     const leagues = {};
     matches.forEach(m => {
       const key = m.game + '||' + m.league;
       if (!leagues[key]) leagues[key] = { game:m.game, icon:m.icon, gameLabel:m.gameLabel, league:m.league, matches:[] };
       leagues[key].matches.push(m);
     });
-
     const gameColors = { cs2:'#f59e0b', valorant:'#e11d48', dota2:'#7c3aed', lol:'#3b82f6', pubg:'#10b981', rl:'#ec4899' };
     const sortOrder = { live:0, upcoming:1, finished:2 };
-
     if (!Object.keys(leagues).length) {
       container.innerHTML = '<div class="empty"><i class="fas fa-search"></i>Nenhum jogo encontrado</div>';
       return;
     }
-
     container.innerHTML = Object.values(leagues).map((lg, li) => {
       const liveCount = lg.matches.filter(m => m.status === 'live').length;
       const sorted = [...lg.matches].sort((a,b) => (sortOrder[a.status]||0)-(sortOrder[b.status]||0));
       const col = gameColors[lg.game] || '#00e5cc';
-      return `
-      <div class="league-section">
-        <div class="league-hdr" onclick="App.toggleLeague(${li})">
-          <div class="league-icon" style="background:${col}22;color:${col}">${lg.icon}</div>
-          <div>
-            <div class="league-name">${lg.league}</div>
-            <div style="font-size:.62rem;color:var(--text2)">${lg.gameLabel}</div>
-          </div>
-          ${liveCount ? `<span class="badge badge-live"><span style="width:5px;height:5px;background:var(--red);border-radius:50%;display:inline-block"></span> ${liveCount} LIVE</span>` : ''}
-          <span class="league-count">${lg.matches.length} jogos</span>
-          <i class="fas fa-chevron-down league-toggle" id="lt-${li}"></i>
-        </div>
-        <div class="league-body open" id="lb-${li}">
-          ${sorted.map(m => this.renderMatchRow(m)).join('')}
-        </div>
-      </div>`;
+      return '<div class="league-section"><div class="league-hdr" onclick="App.toggleLeague(' + li + ')">' +
+        '<div class="league-icon" style="background:' + col + '22;color:' + col + '">' + lg.icon + '</div>' +
+        '<div><div class="league-name">' + lg.league + '</div><div style="font-size:.62rem;color:var(--text2)">' + lg.gameLabel + '</div></div>' +
+        (liveCount ? '<span class="badge badge-live"><span style="width:5px;height:5px;background:var(--red);border-radius:50%;display:inline-block"></span> ' + liveCount + ' LIVE</span>' : '') +
+        '<span class="league-count">' + lg.matches.length + ' jogos</span>' +
+        '<i class="fas fa-chevron-down league-toggle" id="lt-' + li + '"></i></div>' +
+        '<div class="league-body open" id="lb-' + li + '">' + sorted.map(m => this.renderMatchRow(m)).join('') + '</div></div>';
     }).join('');
   },
 
   renderMatchRow(m) {
     const statusBadge = m.status === 'live'
-      ? `<span class="badge badge-live">🔴 LIVE</span>`
+      ? '<span class="badge badge-live">🔴 LIVE</span>'
       : m.status === 'finished'
-      ? `<span class="badge badge-done">✅ FIM</span>`
-      : `<span class="badge badge-up">📅 ${m.time}</span>`;
+      ? '<span class="badge badge-done">✅ FIM</span>'
+      : '<span class="badge badge-up">📅 ' + m.time + '</span>';
     const scoreEl = (m.status === 'live' || m.status === 'finished') && m.score
-      ? `<div class="mr-score">${m.score}</div>` : '';
+      ? '<div class="mr-score">' + m.score + '</div>' : '';
     const vbCount = S.vbs.filter(v => v.mid === m.id).length;
-    return `
-    <div class="match-row" onclick="App.openAnalysis('${m.id}')">
-      <div class="mr-status">${statusBadge}</div>
-      <div class="mr-teams">
-        <div class="mr-event">${m.event}</div>
-        <div class="mr-matchup">${m.tA} vs ${m.tB}</div>
-        ${scoreEl}
-        <div class="mr-fmt">${m.fmt.toUpperCase()} ${vbCount > 0 ? `· <span style="color:var(--green)">${vbCount} VB</span>` : ''}</div>
-      </div>
-      <div class="mr-time">${m.time}</div>
-      <div class="mr-odds">
-        <div>
-          <div class="odd-label">${m.tA.split(' ').pop()}</div>
-          <button class="odd-btn" onclick="event.stopPropagation();App.quickBet('${m.id}','${m.tA} Vence',${m.odds.a},${m.fairA/100})">${m.odds.a.toFixed(2)}</button>
-        </div>
-        <div>
-          <div class="odd-label">${m.tB.split(' ').pop()}</div>
-          <button class="odd-btn" onclick="event.stopPropagation();App.quickBet('${m.id}','${m.tB} Vence',${m.odds.b},${(100-m.fairA)/100})">${m.odds.b.toFixed(2)}</button>
-        </div>
-      </div>
-      <div class="mr-analyze">
-        <button class="btn btn-ghost" style="font-size:.68rem;padding:.3rem .6rem" onclick="event.stopPropagation();App.openAnalysis('${m.id}')"><i class="fas fa-chart-bar"></i> Analisar</button>
-      </div>
-    </div>`;
+    return '<div class="match-row" onclick="App.openAnalysis(\'' + m.id + '\')">' +
+      '<div class="mr-status">' + statusBadge + '</div>' +
+      '<div class="mr-teams">' +
+        '<div class="mr-event">' + m.event + '</div>' +
+        '<div class="mr-matchup">' + m.tA + ' vs ' + m.tB + '</div>' +
+        scoreEl +
+        '<div class="mr-fmt">' + m.fmt.toUpperCase() + (vbCount > 0 ? ' · <span style="color:var(--green)">' + vbCount + ' VB</span>' : '') + '</div>' +
+      '</div>' +
+      '<div class="mr-time">' + m.time + '</div>' +
+      '<div class="mr-odds">' +
+        '<div><div class="odd-label">' + m.tA.split(' ').pop() + '</div>' +
+        '<button class="odd-btn" onclick="event.stopPropagation();App.quickBet(\'' + m.id + '\',\'' + m.tA + ' Vence\',' + m.odds.a + ',' + (m.fairA/100) + ')">' + m.odds.a.toFixed(2) + '</button></div>' +
+        '<div><div class="odd-label">' + m.tB.split(' ').pop() + '</div>' +
+        '<button class="odd-btn" onclick="event.stopPropagation();App.quickBet(\'' + m.id + '\',\'' + m.tB + ' Vence\',' + m.odds.b + ',' + ((100-m.fairA)/100) + ')">' + m.odds.b.toFixed(2) + '</button></div>' +
+      '</div>' +
+      '<div class="mr-analyze"><button class="btn btn-ghost" style="font-size:.68rem;padding:.3rem .6rem" onclick="event.stopPropagation();App.openAnalysis(\'' + m.id + '\')"><i class="fas fa-chart-bar"></i> Analisar</button></div>' +
+    '</div>';
   },
 
   toggleLeague(i) {
@@ -1074,11 +956,10 @@ const App = {
     const icon = document.getElementById('lt-'+i);
     if (!body) return;
     const open = body.classList.toggle('open');
-    if (icon) { icon.style.transform = open ? '' : 'rotate(-90deg)'; }
+    if (icon) icon.style.transform = open ? '' : 'rotate(-90deg)';
     body.style.display = open ? 'flex' : 'none';
   },
 
-  // ---- ANALYSIS MODAL ----
   openAnalysis(mid) {
     const m = S.matches.find(x => x.id === mid);
     if (!m) return;
@@ -1089,133 +970,88 @@ const App = {
     const edgeB = ((pB - 1/m.odds.b)*100).toFixed(1);
     const winner = pA >= 0.5 ? m.tA : m.tB;
     const winProb = pA >= 0.5 ? (pA*100).toFixed(0) : (pB*100).toFixed(0);
-
     const modal = document.getElementById('analysis-modal');
-    document.getElementById('modal-title').innerHTML = `<i class="fas fa-chart-bar" style="color:var(--cyan)"></i> ${m.tA} vs ${m.tB}`;
-
+    document.getElementById('modal-title').innerHTML = '<i class="fas fa-chart-bar" style="color:var(--cyan)"></i> ' + m.tA + ' vs ' + m.tB;
     const bestBets = vbs.slice(0,5);
-    document.getElementById('modal-body').innerHTML = `
-    <div class="proj-box">
-      <span style="font-size:.7rem;color:var(--text2);font-family:var(--font)">PROJECÇÃO CALCULADA</span>
-      <span class="proj-winner">🏆 ${winner} — ${winProb}% probabilidade</span>
-      <div style="display:flex;gap:1.5rem;margin-top:.4rem;font-family:var(--font);font-size:.75rem;flex-wrap:wrap">
-        <span><span style="color:var(--text2)">Formato:</span> <strong>${m.fmt.toUpperCase()}</strong></span>
-        <span><span style="color:var(--text2)">Torneio:</span> <strong>${m.event}</strong></span>
-        ${m.status==='live' ? `<span class="badge badge-live">🔴 EM JOGO: ${m.score||''}</span>` : `<span><span style="color:var(--text2)">Hora:</span> <strong>${m.time}</strong></span>`}
-      </div>
-    </div>
-
-    <div class="ana-grid" style="margin-bottom:1rem">
-      <div>
-        <div style="font-size:.78rem;font-weight:700;margin-bottom:.6rem;color:var(--text2)">PROBABILIDADES IMPLÍCITAS</div>
-        <div class="pb-row">
-          <div class="pb-hdr"><span class="label">${m.tA}</span><span class="val">${(pA*100).toFixed(0)}% · Fair: @${fairA}</span></div>
-          <div class="pb-track"><div class="pb-fill a" style="width:${pA*100}%"></div></div>
-        </div>
-        <div class="pb-row" style="margin-top:.5rem">
-          <div class="pb-hdr"><span class="label">${m.tB}</span><span class="val">${(pB*100).toFixed(0)}% · Fair: @${fairB}</span></div>
-          <div class="pb-track"><div class="pb-fill b" style="width:${pB*100}%"></div></div>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:.78rem;font-weight:700;margin-bottom:.6rem;color:var(--text2)">MERCADO VS MODELO</div>
-        <div style="display:flex;flex-direction:column;gap:.4rem;font-size:.76rem">
-          <div style="display:flex;justify-content:space-between;padding:.4rem .6rem;background:var(--bg3);border-radius:6px;border:1px solid var(--border2)">
-            <span>${m.tA}</span>
-            <span>Book: @${m.odds.a} · <span class="${parseFloat(edgeA)>0?'vp':'vn'}">${parseFloat(edgeA)>0?'+':''}${edgeA}% edge</span></span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:.4rem .6rem;background:var(--bg3);border-radius:6px;border:1px solid var(--border2)">
-            <span>${m.tB}</span>
-            <span>Book: @${m.odds.b} · <span class="${parseFloat(edgeB)>0?'vp':'vn'}">${parseFloat(edgeB)>0?'+':''}${edgeB}% edge</span></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="font-size:.82rem;font-weight:700;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem">
-      <i class="fas fa-gem" style="color:var(--cyan)"></i> Value Bets Encontrados (${vbs.length})
-    </div>
-    ${vbs.length === 0 ? '<div class="empty" style="padding:1rem"><i class="fas fa-search"></i>Nenhum value bet com edge suficiente</div>' :
-      `<div class="bet-opts">${bestBets.map(v => `
-      <div class="bet-opt" onclick="App.openAddBet('${mid}','${v.sel.replace(/'/g,"\\'")}',${v.bo},${v.prob/100},'${m.tA.replace(/'/g,"\\'")} vs ${m.tB.replace(/'/g,"\\'")}','${v.market.replace(/'/g,"\\'")}')">
-        <div class="bet-opt-left">
-          <div class="bet-opt-mkt">${v.market}</div>
-          <div class="bet-opt-sel">${v.sel}</div>
-        </div>
-        <div class="bet-opt-right">
-          <div>
-            <div class="bet-opt-edge">+${v.edge}% edge</div>
-            <div style="font-size:.62rem;color:var(--text2)">EV: ${v.ev > 0?'+':''}${v.ev}%</div>
-          </div>
-          <div class="bet-opt-odds">@${v.bo}</div>
-          <button class="bet-opt-add" onclick="event.stopPropagation();App.openAddBet('${mid}','${v.sel.replace(/'/g,"\\'")}',${v.bo},${v.prob/100},'${m.tA.replace(/'/g,"\\'")} vs ${m.tB.replace(/'/g,"\\'")}','${v.market.replace(/'/g,"\\'")}')">
-            + Apostar
-          </button>
-        </div>
-      </div>`).join('')}
-      ${vbs.length > 5 ? `<div style="font-size:.72rem;color:var(--text2);text-align:center;padding:.3rem">+${vbs.length-5} mais...</div>` : ''}
-    </div>`}`;
+    document.getElementById('modal-body').innerHTML =
+      '<div class="proj-box">' +
+        '<span style="font-size:.7rem;color:var(--text2);font-family:var(--font)">PROJECÇÃO CALCULADA</span>' +
+        '<span class="proj-winner">🏆 ' + winner + ' — ' + winProb + '% probabilidade</span>' +
+        '<div style="display:flex;gap:1.5rem;margin-top:.4rem;font-family:var(--font);font-size:.75rem;flex-wrap:wrap">' +
+          '<span><span style="color:var(--text2)">Formato:</span> <strong>' + m.fmt.toUpperCase() + '</strong></span>' +
+          '<span><span style="color:var(--text2)">Torneio:</span> <strong>' + m.event + '</strong></span>' +
+          (m.status==='live' ? '<span class="badge badge-live">🔴 EM JOGO: ' + (m.score||'') + '</span>' : '<span><span style="color:var(--text2)">Hora:</span> <strong>' + m.time + '</strong></span>') +
+        '</div></div>' +
+      '<div class="ana-grid" style="margin-bottom:1rem">' +
+        '<div><div style="font-size:.78rem;font-weight:700;margin-bottom:.6rem;color:var(--text2)">PROBABILIDADES IMPLÍCITAS</div>' +
+          '<div class="pb-row"><div class="pb-hdr"><span class="label">' + m.tA + '</span><span class="val">' + (pA*100).toFixed(0) + '% · Fair: @' + fairA + '</span></div><div class="pb-track"><div class="pb-fill a" style="width:' + (pA*100) + '%"></div></div></div>' +
+          '<div class="pb-row" style="margin-top:.5rem"><div class="pb-hdr"><span class="label">' + m.tB + '</span><span class="val">' + (pB*100).toFixed(0) + '% · Fair: @' + fairB + '</span></div><div class="pb-track"><div class="pb-fill b" style="width:' + (pB*100) + '%"></div></div></div>' +
+        '</div>' +
+        '<div><div style="font-size:.78rem;font-weight:700;margin-bottom:.6rem;color:var(--text2)">MERCADO VS MODELO</div>' +
+          '<div style="display:flex;flex-direction:column;gap:.4rem;font-size:.76rem">' +
+            '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;background:var(--bg3);border-radius:6px;border:1px solid var(--border2)"><span>' + m.tA + '</span><span>Book: @' + m.odds.a + ' · <span class="' + (parseFloat(edgeA)>0?'vp':'vn') + '">' + (parseFloat(edgeA)>0?'+':'') + edgeA + '% edge</span></span></div>' +
+            '<div style="display:flex;justify-content:space-between;padding:.4rem .6rem;background:var(--bg3);border-radius:6px;border:1px solid var(--border2)"><span>' + m.tB + '</span><span>Book: @' + m.odds.b + ' · <span class="' + (parseFloat(edgeB)>0?'vp':'vn') + '">' + (parseFloat(edgeB)>0?'+':'') + edgeB + '% edge</span></span></div>' +
+          '</div></div>' +
+      '</div>' +
+      '<div style="font-size:.82rem;font-weight:700;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem"><i class="fas fa-gem" style="color:var(--cyan)"></i> Value Bets Encontrados (' + vbs.length + ')</div>' +
+      (vbs.length === 0 ? '<div class="empty" style="padding:1rem"><i class="fas fa-search"></i>Nenhum value bet com edge suficiente</div>' :
+        '<div class="bet-opts">' + bestBets.map(v =>
+          '<div class="bet-opt" onclick="App.openAddBet(\'' + mid + '\',\'' + v.sel.replace(/'/g,"\\'") + '\',' + v.bo + ',' + (v.prob/100) + ',\'' + m.tA.replace(/'/g,"\\'") + ' vs ' + m.tB.replace(/'/g,"\\'") + '\',\'' + v.market.replace(/'/g,"\\'") + '\')">' +
+            '<div class="bet-opt-left"><div class="bet-opt-mkt">' + v.market + '</div><div class="bet-opt-sel">' + v.sel + '</div></div>' +
+            '<div class="bet-opt-right">' +
+              '<div><div class="bet-opt-edge">+' + v.edge + '% edge</div><div style="font-size:.62rem;color:var(--text2)">EV: ' + (v.ev > 0?'+':'') + v.ev + '%</div></div>' +
+              '<div class="bet-opt-odds">@' + v.bo + '</div>' +
+              '<button class="bet-opt-add" onclick="event.stopPropagation();App.openAddBet(\'' + mid + '\',\'' + v.sel.replace(/'/g,"\\'") + '\',' + v.bo + ',' + (v.prob/100) + ',\'' + m.tA.replace(/'/g,"\\'") + ' vs ' + m.tB.replace(/'/g,"\\'") + '\',\'' + v.market.replace(/'/g,"\\'") + '\')">+ Apostar</button>' +
+            '</div></div>'
+        ).join('') +
+        (vbs.length > 5 ? '<div style="font-size:.72rem;color:var(--text2);text-align:center;padding:.3rem">+' + (vbs.length-5) + ' mais...</div>' : '') +
+        '</div>');
     modal.classList.add('open');
   },
 
   closeModal() { document.getElementById('analysis-modal').classList.remove('open'); },
 
-  // ---- QUICK BET (from odds button) ----
   quickBet(mid, sel, odds, prob) {
     this.openAddBet(mid, sel, odds, prob, '', '');
   },
 
-  // ---- ADD BET MODAL ----
   openAddBet(mid, sel, odds, prob, match, market) {
     this.closeModal();
     const m = S.matches.find(x => x.id === mid);
-    const gameMatch = m ? `${m.tA} vs ${m.tB}` : match;
+    const gameMatch = m ? (m.tA + ' vs ' + m.tB) : match;
     const stake = E.suggestedStake(prob, odds, getBalance());
     const ev = E.ev(prob, odds);
     const kelly = E.kelly(prob, odds);
     const fairOdd = E.fairOdds(prob);
     S.pendingBet = { mid, sel, odds, prob, match: gameMatch, market, stake };
-
-    document.getElementById('addbet-body').innerHTML = `
-    <div style="margin-bottom:1rem">
-      <div style="font-size:.72rem;color:var(--text2);margin-bottom:.3rem">${m ? m.event : 'Evento'}</div>
-      <div style="font-size:1.1rem;font-weight:800">${gameMatch}</div>
-      <div style="font-size:.82rem;color:var(--text2);margin-top:.2rem">${market || 'Match Winner'}</div>
-    </div>
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:.9rem;margin-bottom:1rem">
-      <div style="font-size:1rem;font-weight:700;margin-bottom:.6rem">📊 Selecção: <span style="color:var(--cyan)">${sel}</span></div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem">
-        <div style="text-align:center">
-          <div style="font-size:.6rem;color:var(--text2);text-transform:uppercase;margin-bottom:3px">Odd Book</div>
-          <div style="font-size:1.2rem;font-weight:800;color:var(--cyan);font-family:var(--mono)">@${odds}</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:.6rem;color:var(--text2);text-transform:uppercase;margin-bottom:3px">Fair Odd</div>
-          <div style="font-size:1.2rem;font-weight:800;font-family:var(--mono)">@${fairOdd}</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:.6rem;color:var(--text2);text-transform:uppercase;margin-bottom:3px">Edge</div>
-          <div style="font-size:1.2rem;font-weight:800;color:var(--green);font-family:var(--mono)">${ev>0?'+':''}${ev.toFixed(1)}%</div>
-        </div>
-      </div>
-    </div>
-    <div style="margin-bottom:.8rem">
-      <div style="font-size:.72rem;color:var(--text2);margin-bottom:.3rem">STAKE (MZN) — Kelly Sugerido: <strong style="color:var(--cyan)">MZN ${stake.toLocaleString('pt-PT')}</strong></div>
-      <input type="number" id="ab-stake" value="${stake}" step="50" style="width:100%;font-size:1rem;font-weight:700;font-family:var(--mono)" oninput="App.updateBetPreview()" />
-    </div>
-    <div class="stake-preview" id="bet-preview">
-      <div class="sp-row"><span>Banca Actual:</span><span class="val">MZN ${Math.round(getBalance()).toLocaleString('pt-PT')}</span></div>
-      <div class="sp-row"><span>Kelly Puro:</span><span class="val">${(kelly*100).toFixed(2)}%</span></div>
-      <div class="sp-row"><span>Kelly 1/4:</span><span class="val">MZN ${stake.toLocaleString('pt-PT')}</span></div>
-      <div class="sp-row"><span>Probabilidade:</span><span class="val">${(prob*100).toFixed(0)}%</span></div>
-      <div class="sp-row highlight"><span>Retorno Potencial:</span><span class="val">MZN ${Math.round(stake*odds).toLocaleString('pt-PT')}</span></div>
-    </div>
-    <div style="display:flex;gap:.5rem;margin-top:1rem">
-      <button class="btn btn-primary" style="flex:1;justify-content:center;font-size:.85rem" onclick="App.confirmAddBet()">
-        <i class="fas fa-plus-circle"></i> Adicionar ao Bet Tracker
-      </button>
-      <button class="btn btn-ghost" onclick="App.closeAddModal()"><i class="fas fa-times"></i></button>
-    </div>`;
+    document.getElementById('addbet-body').innerHTML =
+      '<div style="margin-bottom:1rem">' +
+        '<div style="font-size:.72rem;color:var(--text2);margin-bottom:.3rem">' + (m ? m.event : 'Evento') + '</div>' +
+        '<div style="font-size:1.1rem;font-weight:800">' + gameMatch + '</div>' +
+        '<div style="font-size:.82rem;color:var(--text2);margin-top:.2rem">' + (market || 'Match Winner') + '</div>' +
+      '</div>' +
+      '<div style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:.9rem;margin-bottom:1rem">' +
+        '<div style="font-size:1rem;font-weight:700;margin-bottom:.6rem">📊 Selecção: <span style="color:var(--cyan)">' + sel + '</span></div>' +
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem">' +
+          '<div style="text-align:center"><div style="font-size:.6rem;color:var(--text2);text-transform:uppercase;margin-bottom:3px">Odd Book</div><div style="font-size:1.2rem;font-weight:800;color:var(--cyan);font-family:var(--mono)">@' + odds + '</div></div>' +
+          '<div style="text-align:center"><div style="font-size:.6rem;color:var(--text2);text-transform:uppercase;margin-bottom:3px">Fair Odd</div><div style="font-size:1.2rem;font-weight:800;font-family:var(--mono)">@' + fairOdd + '</div></div>' +
+          '<div style="text-align:center"><div style="font-size:.6rem;color:var(--text2);text-transform:uppercase;margin-bottom:3px">Edge</div><div style="font-size:1.2rem;font-weight:800;color:var(--green);font-family:var(--mono)">' + (ev>0?'+':'') + ev.toFixed(1) + '%</div></div>' +
+        '</div></div>' +
+      '<div style="margin-bottom:.8rem">' +
+        '<div style="font-size:.72rem;color:var(--text2);margin-bottom:.3rem">STAKE (MZN) — Kelly Sugerido: <strong style="color:var(--cyan)">MZN ' + stake.toLocaleString('pt-PT') + '</strong></div>' +
+        '<input type="number" id="ab-stake" value="' + stake + '" step="50" style="width:100%;font-size:1rem;font-weight:700;font-family:var(--mono)" oninput="App.updateBetPreview()" />' +
+      '</div>' +
+      '<div class="stake-preview" id="bet-preview">' +
+        '<div class="sp-row"><span>Banca Actual:</span><span class="val">MZN ' + Math.round(getBalance()).toLocaleString('pt-PT') + '</span></div>' +
+        '<div class="sp-row"><span>Kelly Puro:</span><span class="val">' + (kelly*100).toFixed(2) + '%</span></div>' +
+        '<div class="sp-row"><span>Kelly 1/4:</span><span class="val">MZN ' + stake.toLocaleString('pt-PT') + '</span></div>' +
+        '<div class="sp-row"><span>Probabilidade:</span><span class="val">' + (prob*100).toFixed(0) + '%</span></div>' +
+        '<div class="sp-row highlight"><span>Retorno Potencial:</span><span class="val">MZN ' + Math.round(stake*odds).toLocaleString('pt-PT') + '</span></div>' +
+      '</div>' +
+      '<div style="display:flex;gap:.5rem;margin-top:1rem">' +
+        '<button class="btn btn-primary" style="flex:1;justify-content:center;font-size:.85rem" onclick="App.confirmAddBet()"><i class="fas fa-plus-circle"></i> Adicionar ao Bet Tracker</button>' +
+        '<button class="btn btn-ghost" onclick="App.closeAddModal()"><i class="fas fa-times"></i></button>' +
+      '</div>';
     document.getElementById('addbet-modal').classList.add('open');
   },
 
@@ -1223,7 +1059,7 @@ const App = {
     if (!S.pendingBet) return;
     const stakeEl = document.getElementById('ab-stake');
     const stake = parseFloat(stakeEl?.value || 0);
-    const {odds, prob} = S.pendingBet;
+    const {odds} = S.pendingBet;
     const preview = document.getElementById('bet-preview');
     if (!preview) return;
     const retEl = preview.querySelector('.sp-row.highlight .val');
@@ -1239,30 +1075,17 @@ const App = {
     const {sel, odds, prob, match, market} = S.pendingBet;
     const fair = E.fairOdds(prob);
     const clv = fair && odds ? ((odds-fair)/fair*100) : null;
-    S.bets.unshift({
-      id: Date.now(),
-      date: fmt.date(),
-      game: match,
-      mkt: market || 'Match Winner',
-      odd: odds,
-      fair: fair,
-      clv: clv,
-      stake: stake,
-      score: '',
-      res: 'p'
-    });
+    S.bets.unshift({ id:Date.now(), date:fmt.date(), game:match, mkt:market||'Match Winner', odd:odds, fair:fair, clv:clv, stake:stake, score:'', res:'p' });
     save();
     this.closeAddModal();
     this.renderBetsTab();
     this.renderDash();
     syncBalance();
-    toast(`${sel} @ ${odds} adicionado!`, 's');
-    // Auto-navigate to bet tracker
+    toast(sel + ' @ ' + odds + ' adicionado!', 's');
     this.nav('tracker', document.querySelector('.hn[data-page="tracker"]'));
     this.trackerTab('bets');
   },
 
-  // ---- VALUE BETS ----
   renderVB() {
     const minEdge = parseFloat(document.getElementById('vb-edge')?.value || 3);
     const gameF = document.getElementById('vb-game-filter')?.value || 'all';
@@ -1275,50 +1098,45 @@ const App = {
       return;
     }
     const stars = n => '⭐'.repeat(Math.min(n,5));
-    el.innerHTML = `<table class="dt">
-    <thead><tr><th>#</th><th>Jogo / Evento</th><th>Desporto</th><th>Mercado</th><th>Selecção</th><th>Prob</th><th>Fair</th><th>Odds</th><th>Edge</th><th>EV</th><th>Stake</th><th>Rating</th><th></th></tr></thead>
-    <tbody>${vbs.slice(0,50).map((v,i) => `
-    <tr>
-      <td style="color:var(--text2)">${i+1}</td>
-      <td><div style="font-size:.78rem;font-weight:600">${v.match}</div><div style="font-size:.62rem;color:var(--text2)">${v.gameLabel||v.game}</div></td>
-      <td><span class="badge badge-cat">${v.gameLabel||v.game}</span></td>
-      <td style="font-size:.72rem;color:var(--text2)">${v.market}</td>
-      <td><strong>${v.sel}</strong></td>
-      <td>${v.prob}%</td>
-      <td style="color:var(--text2);font-family:var(--mono)">@${E.fairOdds(v.prob/100)}</td>
-      <td><strong style="color:var(--cyan);font-family:var(--mono)">@${v.bo}</strong></td>
-      <td class="vp">+${v.edge}%</td>
-      <td class="vp">+${v.ev}%</td>
-      <td style="font-family:var(--mono)">MZN ${(v.stake||0).toLocaleString('pt-PT')}</td>
-      <td>${stars(v.stars)}</td>
-      <td><button class="btn btn-green" style="font-size:.65rem;padding:.2rem .45rem" onclick="App.openAddBet('${v.mid}','${v.sel.replace(/'/g,"\\'")}',${v.bo},${v.prob/100},'${v.match.replace(/'/g,"\\'")}','${v.market.replace(/'/g,"\\'")}')"><i class="fas fa-plus"></i> Apostar</button></td>
-    </tr>`).join('')}
-    </tbody></table>`;
+    let rows = vbs.slice(0,50).map((v,i) =>
+      '<tr>' +
+        '<td style="color:var(--text2)">' + (i+1) + '</td>' +
+        '<td><div style="font-size:.78rem;font-weight:600">' + v.match + '</div><div style="font-size:.62rem;color:var(--text2)">' + (v.gameLabel||v.game) + '</div></td>' +
+        '<td><span class="badge badge-cat">' + (v.gameLabel||v.game) + '</span></td>' +
+        '<td style="font-size:.72rem;color:var(--text2)">' + v.market + '</td>' +
+        '<td><strong>' + v.sel + '</strong></td>' +
+        '<td>' + v.prob + '%</td>' +
+        '<td style="color:var(--text2);font-family:var(--mono)">@' + E.fairOdds(v.prob/100) + '</td>' +
+        '<td><strong style="color:var(--cyan);font-family:var(--mono)">@' + v.bo + '</strong></td>' +
+        '<td class="vp">+' + v.edge + '%</td>' +
+        '<td class="vp">+' + v.ev + '%</td>' +
+        '<td style="font-family:var(--mono)">MZN ' + (v.stake||0).toLocaleString('pt-PT') + '</td>' +
+        '<td>' + stars(v.stars) + '</td>' +
+        '<td><button class="btn btn-green" style="font-size:.65rem;padding:.2rem .45rem" onclick="App.openAddBet(\'' + v.mid + '\',\'' + v.sel.replace(/'/g,"\\'") + '\',' + v.bo + ',' + (v.prob/100) + ',\'' + v.match.replace(/'/g,"\\'") + '\',\'' + v.market.replace(/'/g,"\\'") + '\')"><i class="fas fa-plus"></i> Apostar</button></td>' +
+      '</tr>'
+    ).join('');
+    el.innerHTML = '<table class="dt"><thead><tr><th>#</th><th>Jogo / Evento</th><th>Desporto</th><th>Mercado</th><th>Selecção</th><th>Prob</th><th>Fair</th><th>Odds</th><th>Edge</th><th>EV</th><th>Stake</th><th>Rating</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>';
   },
 
-  // ---- COMBOS ----
   renderCombos() {
     const vbs = S.vbs;
     if (!vbs.length) {
       document.getElementById('combos-container').innerHTML = '<div class="empty"><i class="fas fa-layer-group"></i>Sem value bets suficientes para combos</div>';
       return;
     }
-
     const strategies = [
       {key:'conservative',label:'🛡️ Conservador',color:'var(--green)',minProb:58,minEdge:3,maxOdd:2.2,maxLegs:2},
       {key:'moderate',label:'⚖️ Moderado',color:'var(--cyan)',minProb:45,minEdge:2,maxOdd:3.5,maxLegs:3},
       {key:'aggressive',label:'🔥 Agressivo',color:'var(--orange)',minProb:30,minEdge:1.5,maxOdd:6,maxLegs:4},
       {key:'longshot',label:'🎲 Longshot',color:'var(--red)',minProb:10,minEdge:1,maxOdd:25,maxLegs:5},
     ];
-
     const combos = strategies.map(st => {
       const eligible = vbs.filter(v => v.prob >= st.minProb && v.edge >= st.minEdge && v.bo <= st.maxOdd);
-      if (!eligible.length) return { ...st, legs:[], combo:null };
+      if (!eligible.length) return {...st, legs:[], combo:null};
       const legs = [];
       const usedMatches = new Set();
       for (const v of eligible) {
         if (legs.length >= st.maxLegs) break;
-        if (st.key === 'conservative' && usedMatches.has(v.mid)) continue;
         let ok = true;
         for (const e of legs) if (v.mid===e.mid && v.market===e.market) { ok=false; break; }
         if (ok) { legs.push(v); usedMatches.add(v.mid); }
@@ -1330,69 +1148,44 @@ const App = {
       const k = co>1 ? Math.max(0,(cp*co-1)/(co-1)) * S.kelly : 0;
       return {...st, legs, combo:{co:Math.round(co*100)/100, cp:Math.round(cp*10000)/100, ev:Math.round(ev*10)/10, stk:Math.round(getBalance()*k*100)/100}};
     });
-
-    document.getElementById('combos-container').innerHTML = `<div class="combos-grid">${combos.map(c => {
-      if (!c.combo) return `<div class="combo-card" style="opacity:.4"><div class="cc-hdr"><span class="cc-strat" style="color:${c.color}">${c.label.toUpperCase()}</span><span>—</span></div><div class="cc-body"><div class="empty" style="padding:.8rem">Sem apostas elegíveis</div></div></div>`;
-      return `<div class="combo-card">
-        <div class="cc-hdr" style="background:${c.color}0a;border-bottom-color:${c.color}22">
-          <span class="cc-strat" style="color:${c.color}">${c.label}</span>
-          <span class="cc-odds">@${c.combo.co}</span>
-        </div>
-        <div class="cc-body">
-          ${c.legs.map(l => `<div class="cc-leg">
-            <div class="cc-leg-left">
-              <div class="cc-leg-match">${l.match}</div>
-              <div class="cc-leg-sel">${l.sel}</div>
-            </div>
-            <span class="cc-leg-odd">@${l.bo}</span>
-          </div>`).join('')}
-        </div>
-        <div class="cc-footer">
-          <div><div class="cc-sl">Prob</div><div class="cc-sv">${c.combo.cp}%</div></div>
-          <div><div class="cc-sl">EV</div><div class="cc-sv" style="color:${c.combo.ev>0?'var(--green)':'var(--red)'}">${c.combo.ev>0?'+':''}${c.combo.ev}%</div></div>
-          <div><div class="cc-sl">Stake</div><div class="cc-sv" style="font-family:var(--mono)">MZN ${c.combo.stk.toLocaleString('pt-PT')}</div></div>
-        </div>
-        <div style="padding:.5rem .8rem;border-top:1px solid var(--border)">
-          <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:.72rem" onclick="App.addComboToBetTracker(${JSON.stringify(c.legs).replace(/"/g,"'")})">
-            <i class="fas fa-plus"></i> Adicionar Combo ao Tracker
-          </button>
-        </div>
-      </div>`;
-    }).join('')}</div>`;
+    document.getElementById('combos-container').innerHTML = '<div class="combos-grid">' + combos.map(c => {
+      if (!c.combo) return '<div class="combo-card" style="opacity:.4"><div class="cc-hdr"><span class="cc-strat" style="color:' + c.color + '">' + c.label + '</span><span>—</span></div><div class="cc-body"><div class="empty" style="padding:.8rem">Sem apostas elegíveis</div></div></div>';
+      return '<div class="combo-card">' +
+        '<div class="cc-hdr" style="background:' + c.color + '0a;border-bottom-color:' + c.color + '22">' +
+          '<span class="cc-strat" style="color:' + c.color + '">' + c.label + '</span>' +
+          '<span class="cc-odds">@' + c.combo.co + '</span>' +
+        '</div>' +
+        '<div class="cc-body">' + c.legs.map(l =>
+          '<div class="cc-leg"><div class="cc-leg-left"><div class="cc-leg-match">' + l.match + '</div><div class="cc-leg-sel">' + l.sel + '</div></div><span class="cc-leg-odd">@' + l.bo + '</span></div>'
+        ).join('') + '</div>' +
+        '<div class="cc-footer">' +
+          '<div><div class="cc-sl">Prob</div><div class="cc-sv">' + c.combo.cp + '%</div></div>' +
+          '<div><div class="cc-sl">EV</div><div class="cc-sv" style="color:' + (c.combo.ev>0?'var(--green)':'var(--red)') + '">' + (c.combo.ev>0?'+':'') + c.combo.ev + '%</div></div>' +
+          '<div><div class="cc-sl">Stake</div><div class="cc-sv" style="font-family:var(--mono)">MZN ' + c.combo.stk.toLocaleString('pt-PT') + '</div></div>' +
+        '</div>' +
+        '<div style="padding:.5rem .8rem;border-top:1px solid var(--border)">' +
+          '<button class="btn btn-primary" style="width:100%;justify-content:center;font-size:.72rem" onclick="App.addComboToBetTracker(' + JSON.stringify(c.legs) + ')"><i class="fas fa-plus"></i> Adicionar Combo ao Tracker</button>' +
+        '</div></div>';
+    }).join('') + '</div>';
   },
 
   addComboToBetTracker(legs) {
-    // Simplified — add as parlay note
     if (!legs || !legs.length) return;
     let co = 1; legs.forEach(l => co *= l.bo);
     const stake = Math.round(getBalance() * 0.01);
-    S.bets.unshift({
-      id: Date.now(),
-      date: fmt.date(),
-      game: legs.map(l => l.match.split(' vs ')[0]).join(' + '),
-      mkt: `PARLAY ${legs.length} PERNAS`,
-      odd: Math.round(co*100)/100,
-      fair: null,
-      clv: null,
-      stake,
-      score: '',
-      res: 'p'
-    });
-    save();
-    syncBalance();
-    toast(`Combo ${legs.length} pernas @${Math.round(co*100)/100} adicionado!`, 's');
+    S.bets.unshift({ id:Date.now(), date:fmt.date(), game:legs.map(l=>l.match.split(' vs ')[0]).join(' + '), mkt:'PARLAY ' + legs.length + ' PERNAS', odd:Math.round(co*100)/100, fair:null, clv:null, stake, score:'', res:'p' });
+    save(); syncBalance();
+    toast('Combo ' + legs.length + ' pernas @' + Math.round(co*100)/100 + ' adicionado!', 's');
     this.nav('tracker', document.querySelector('.hn[data-page="tracker"]'));
     this.trackerTab('bets');
   },
 
-  // ---- DASHBOARD ----
   renderDash() {
     const st = E.getStats(S.bets);
     const today = fmt.date();
     const todayPL = S.bets.filter(b => b.date===today).reduce((s,b) => s+E.calcPL(b),0);
     const s = (id,v) => { const el=document.getElementById(id); if(el)el.textContent=v; };
     const col = (id,v) => { const el=document.getElementById(id); if(el){ el.style.color = v>=0?'var(--green)':'var(--red)'; } };
-
     s('d-profit', 'MZN '+st.profit.toFixed(0)); col('d-profit',st.profit);
     s('d-today', (todayPL>=0?'+':'')+'MZN '+todayPL.toFixed(0)+' Hoje');
     const dtoday = document.getElementById('d-today');
@@ -1413,7 +1206,6 @@ const App = {
     s('dash-pp', 'MZN '+st.pendingStake.toFixed(0));
     s('dash-po', 'MZN '+st.potPayout.toFixed(0));
     syncBalance();
-
     const {labels, cum} = buildChartData(S.bets, S.dashPeriod);
     renderChart('dash-chart', labels, cum);
   },
@@ -1426,7 +1218,6 @@ const App = {
     renderChart('dash-chart', labels, cum);
   },
 
-  // ---- BETS TAB ----
   renderBetsTab() {
     const st = E.getStats(S.bets);
     const s = (id,v) => { const el=document.getElementById(id); if(el)el.textContent=v; };
@@ -1434,52 +1225,54 @@ const App = {
     const pp = document.getElementById('bt-profit'); if(pp) pp.style.color = st.profit>=0?'var(--green)':'var(--red)';
     s('bt-roi', (st.roi>=0?'+':'')+st.roi.toFixed(1)+'%');
     s('bt-tot', st.total); s('bt-wr', st.wr.toFixed(0)+'%');
-
-    // Chart
     const {labels, data, cum} = buildChartData(S.bets, S.btChartPeriod);
     renderChart('bt-chart', labels, cum);
     const nonZ = data.filter(v=>v!==0);
     const best = nonZ.length?Math.max(...nonZ):0, worst=nonZ.length?Math.min(...nonZ):0;
-    s('bt-best', best?'+'+'MZN '+best.toFixed(0):'--');
+    s('bt-best', best?'+MZN '+best.toFixed(0):'--');
     const bw = document.getElementById('bt-best'); if(bw&&best) bw.style.color='var(--green)';
     s('bt-worst', worst?'MZN '+worst.toFixed(0):'--');
     const bww = document.getElementById('bt-worst'); if(bww&&worst) bww.style.color='var(--red)';
-
-    // Streak
     let cur=0, sMax=0, sMin=0;
     S.bets.slice(0,10).forEach(b => {
       if(b.res==='w'){cur=cur>0?cur+1:1;}else if(b.res==='l'){cur=cur<0?cur-1:-1;}else cur=0;
       if(cur>sMax)sMax=cur; if(cur<sMin)sMin=cur;
     });
     s('bt-streak', sMax>0?sMax+'W 🔥':sMin<0?Math.abs(sMin)+'L ❌':'--');
-
-    // Table
     const tbody = document.getElementById('bh-body');
     if (!tbody) return;
     if (!S.bets.length) {
       tbody.innerHTML = '<tr><td colspan="11" class="empty" style="padding:2rem">Sem apostas registadas</td></tr>';
       return;
     }
-    const resStyle = {w:'background:rgba(0,230,118,.15);border-color:rgba(0,230,118,.3);color:var(--green)', l:'background:rgba(255,71,87,.1);border-color:rgba(255,71,87,.3);color:var(--red)', p:'background:rgba(255,167,38,.12);border-color:rgba(255,167,38,.3);color:var(--orange)', v:'background:var(--bg3);border-color:var(--border2);color:var(--text2)', hw:'background:rgba(0,229,204,.1);border-color:rgba(0,229,204,.3);color:var(--cyan)', hl:'background:rgba(255,167,38,.1);border-color:rgba(255,167,38,.3);color:var(--orange)'};
+    const resStyle = {
+      w:'background:rgba(0,230,118,.15);border-color:rgba(0,230,118,.3);color:var(--green)',
+      l:'background:rgba(255,71,87,.1);border-color:rgba(255,71,87,.3);color:var(--red)',
+      p:'background:rgba(255,167,38,.12);border-color:rgba(255,167,38,.3);color:var(--orange)',
+      v:'background:var(--bg3);border-color:var(--border2);color:var(--text2)',
+      hw:'background:rgba(0,229,204,.1);border-color:rgba(0,229,204,.3);color:var(--cyan)',
+      hl:'background:rgba(255,167,38,.1);border-color:rgba(255,167,38,.3);color:var(--orange)'
+    };
     tbody.innerHTML = S.bets.map(b => {
       const pl = E.calcPL(b);
-      const clvDisp = b.clv!=null ? `<span style="color:${b.clv>=0?'var(--green)':'var(--red)'}">${b.clv>=0?'+':''}${parseFloat(b.clv).toFixed(1)}%</span>` : '--';
+      const clvDisp = b.clv!=null ? '<span style="color:' + (b.clv>=0?'var(--green)':'var(--red)') + '">' + (b.clv>=0?'+':'') + parseFloat(b.clv).toFixed(1) + '%</span>' : '--';
       const rs = resStyle[b.res]||resStyle.p;
-      const opts = ['p','w','l','v','hw','hl'].map(r=>`<option value="${r}"${b.res===r?' selected':''}>${r.toUpperCase()}</option>`).join('');
-      const badge = b.mkt && b.mkt.includes('PARLAY') ? `<span class="badge badge-cat" style="margin-left:4px;font-size:.55rem">PARLAY</span>` : '';
-      return `<tr>
-        <td style="color:var(--text2);font-size:.68rem">${b.date}</td>
-        <td><div style="font-size:.78rem;font-weight:600">${b.game}${badge}</div></td>
-        <td style="font-size:.72rem;color:var(--text2)">${b.mkt}</td>
-        <td style="font-family:var(--mono);font-weight:700">${parseFloat(b.odd).toFixed(2)}</td>
-        <td style="color:var(--text2);font-family:var(--mono);font-size:.72rem">${b.fair?parseFloat(b.fair).toFixed(2):'--'}</td>
-        <td>${clvDisp}</td>
-        <td style="font-family:var(--mono)">MZN ${parseFloat(b.stake).toFixed(0)}</td>
-        <td style="font-size:.72rem;color:var(--text2)">${b.score||'--'}</td>
-        <td><select class="res-sel" style="${rs}" onchange="App.updateRes(${b.id},this.value)">${opts}</select></td>
-        <td style="font-weight:700;font-family:var(--mono);color:${pl>0?'var(--green)':pl<0?'var(--red)':'var(--text2)'}">${pl!==0?(pl>0?'+':'')+'MZN '+pl.toFixed(0):'--'}</td>
-        <td><button onclick="App.deleteBet(${b.id})" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:.78rem;padding:.2rem"><i class="fas fa-times"></i></button></td>
-      </tr>`;
+      const opts = ['p','w','l','v','hw','hl'].map(r=>'<option value="'+r+'"'+(b.res===r?' selected':'')+'>'+r.toUpperCase()+'</option>').join('');
+      const badge = b.mkt && b.mkt.includes('PARLAY') ? '<span class="badge badge-cat" style="margin-left:4px;font-size:.55rem">PARLAY</span>' : '';
+      return '<tr>' +
+        '<td style="color:var(--text2);font-size:.68rem">'+b.date+'</td>' +
+        '<td><div style="font-size:.78rem;font-weight:600">'+b.game+badge+'</div></td>' +
+        '<td style="font-size:.72rem;color:var(--text2)">'+b.mkt+'</td>' +
+        '<td style="font-family:var(--mono);font-weight:700">'+parseFloat(b.odd).toFixed(2)+'</td>' +
+        '<td style="color:var(--text2);font-family:var(--mono);font-size:.72rem">'+(b.fair?parseFloat(b.fair).toFixed(2):'--')+'</td>' +
+        '<td>'+clvDisp+'</td>' +
+        '<td style="font-family:var(--mono)">MZN '+parseFloat(b.stake).toFixed(0)+'</td>' +
+        '<td style="font-size:.72rem;color:var(--text2)">'+(b.score||'--')+'</td>' +
+        '<td><select class="res-sel" style="'+rs+'" onchange="App.updateRes('+b.id+',this.value)">'+opts+'</select></td>' +
+        '<td style="font-weight:700;font-family:var(--mono);color:'+(pl>0?'var(--green)':pl<0?'var(--red)':'var(--text2)')+'">'+
+          (pl!==0?(pl>0?'+':'')+'MZN '+pl.toFixed(0):'--')+'</td>' +
+        '<td><button onclick="App.deleteBet('+b.id+')" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:.78rem;padding:.2rem"><i class="fas fa-times"></i></button></td>' +
+      '</tr>';
     }).join('');
   },
 
@@ -1520,7 +1313,7 @@ const App = {
     const ev = E.ev(prob, odd);
     const edge = ((prob - 1/odd)*100).toFixed(1);
     el.style.display = 'block';
-    el.innerHTML = `💡 Kelly sugere: <strong style="color:var(--cyan)">MZN ${stake.toLocaleString('pt-PT')}</strong> · Edge: <span style="${parseFloat(edge)>0?'color:var(--green)':'color:var(--red)'}">${edge}%</span> · EV: <span style="${ev>0?'color:var(--green)':'color:var(--red)'}">${ev>0?'+':''}${ev.toFixed(1)}%</span>`;
+    el.innerHTML = '💡 Kelly sugere: <strong style="color:var(--cyan)">MZN ' + stake.toLocaleString('pt-PT') + '</strong> · Edge: <span style="' + (parseFloat(edge)>0?'color:var(--green)':'color:var(--red)') + '">' + edge + '%</span> · EV: <span style="' + (ev>0?'color:var(--green)':'color:var(--red)') + '">' + (ev>0?'+':'') + ev.toFixed(1) + '%</span>';
   },
 
   updateRes(id, res) {
@@ -1537,24 +1330,20 @@ const App = {
     toast('Removida', 'i');
   },
 
-  // AUTO SCORES via Claude API
   async autoScores() {
     const pending = S.bets.filter(b => b.res === 'p');
     if (!pending.length) { toast('Nenhuma aposta pendente', 'w'); return; }
     const btn = document.getElementById('auto-scores-btn');
     if (btn) { btn.innerHTML = '<div class="spinner" style="width:14px;height:14px;border-width:2px"></div> A buscar...'; btn.disabled = true; }
     try {
-      const betList = pending.slice(0,10).map(b => `${b.game} | ${b.mkt} | Odd: ${b.odd} | Data: ${b.date}`).join('\n');
+      const betList = pending.slice(0,10).map(b => b.game + ' | ' + b.mkt + ' | Odd: ' + b.odd + ' | Data: ' + b.date).join('\n');
       const r = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 600,
-          messages: [{
-            role: 'user',
-            content: `For these esports bets placed on ${fmt.date()}, simulate realistic outcomes (some won, some lost, some still pending if today). Return ONLY a JSON array with objects {id_index: number (0-based position), res: "w"|"l"|"p", score: string}. Here are the bets:\n${betList}\n\nReturn ONLY the JSON array, no other text.`
-          }]
+          messages: [{ role:'user', content:'For these esports bets placed on ' + fmt.date() + ', simulate realistic outcomes (some won, some lost, some still pending if today). Return ONLY a JSON array with objects {id_index: number (0-based position), res: "w"|"l"|"p", score: string}. Here are the bets:\n' + betList + '\n\nReturn ONLY the JSON array, no other text.' }]
         })
       });
       if (r.ok) {
@@ -1575,19 +1364,17 @@ const App = {
           });
           save(); syncBalance(); this.renderBetsTab(); this.renderDash(); this.renderSweat();
           const updated = results.filter(r => r.res !== 'p').length;
-          toast(`${updated} aposta(s) actualizada(s)!`, 's');
+          toast(updated + ' aposta(s) actualizada(s)!', 's');
         }
       }
-    } catch(e) {
-      toast('Erro ao buscar scores', 'e');
-    }
+    } catch(e) { toast('Erro ao buscar scores', 'e'); }
     if (btn) { btn.innerHTML = '<i class="fas fa-magic"></i> Auto Scores'; btn.disabled = false; }
   },
 
   exportCSV() {
     if (!S.bets.length) { toast('Sem apostas', 'w'); return; }
     const rows = [['Data','Jogo','Mercado','Odd','Fair','CLV%','Stake MZN','Score','Resultado','P/L MZN']];
-    S.bets.forEach(b => rows.push([b.date, `"${b.game}"`, b.mkt, b.odd, b.fair||'', b.clv?parseFloat(b.clv).toFixed(2):'', b.stake, b.score||'', b.res, E.calcPL(b).toFixed(0)]));
+    S.bets.forEach(b => rows.push([b.date, '"'+b.game+'"', b.mkt, b.odd, b.fair||'', b.clv?parseFloat(b.clv).toFixed(2):'', b.stake, b.score||'', b.res, E.calcPL(b).toFixed(0)]));
     const csv = rows.map(r=>r.join(',')).join('\n');
     const a = document.createElement('a');
     a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
@@ -1596,7 +1383,6 @@ const App = {
     toast('CSV exportado!', 's');
   },
 
-  // ---- SWEAT STATION ----
   renderSweat() {
     this.renderCal();
     const bets = S.bets;
@@ -1605,13 +1391,11 @@ const App = {
     const upcoming = bets.filter(b => b.res==='p' && !live.includes(b));
     const settled = bets.filter(b => ['w','l','hw','hl','v'].includes(b.res));
     const parlays = bets.filter(b => b.mkt && b.mkt.includes('PARLAY'));
-
     const s = (id,v) => { const el=document.getElementById(id); if(el)el.textContent=v; };
     s('sw-live-cnt', live.length);
     s('sw-settled-cnt', settled.length);
     s('sw-upcoming-cnt', upcoming.length);
     s('sw-parlays-cnt', parlays.length);
-
     const st = E.getStats(bets);
     const total = document.getElementById('sw-total');
     if(total){total.textContent=(st.profit>=0?'+':'')+'MZN '+st.profit.toFixed(0);total.className=st.profit>=0?'pos':'neg';}
@@ -1619,7 +1403,6 @@ const App = {
     s('sw-ts', 'MZN '+st.wagered.toFixed(0));
     s('sw-pe', 'MZN '+st.pendingStake.toFixed(0));
     s('sw-py', 'MZN '+st.potPayout.toFixed(0));
-
     const lists = {live, settled, upcoming, parlays};
     const show = lists[tab] || [];
     const el = document.getElementById('sw-bet-list');
@@ -1630,22 +1413,17 @@ const App = {
       el.innerHTML = show.slice(0,15).map(b => {
         const pl = E.calcPL(b);
         const isLive = live.includes(b);
-        return `<div class="sw-bet">
-          <div class="sw-bet-main">
-            <div class="sw-bet-game">${b.game} <span class="badge badge-cat" style="font-size:.55rem;margin-left:4px">${b.mkt}</span></div>
-            <div class="sw-bet-detail">
-              <span>${b.date}</span>
-              ${b.score ? `<span>· ${b.score}</span>` : ''}
-              <span>· MZN ${parseFloat(b.stake).toFixed(0)}</span>
-            </div>
-          </div>
-          <div class="sw-bet-odd">@${parseFloat(b.odd).toFixed(2)}</div>
-          ${pl!==0 ? `<div style="font-size:.75rem;font-weight:700;font-family:var(--mono);color:${pl>0?'var(--green)':'var(--red)'};min-width:70px;text-align:right">${pl>0?'+':''}MZN ${pl.toFixed(0)}</div>` : ''}
-          <div class="sw-bet-status ${isLive?'live':'p'}">${isLive?'🔴 LIVE':'⏳ Pending'}</div>
-        </div>`;
+        return '<div class="sw-bet">' +
+          '<div class="sw-bet-main">' +
+            '<div class="sw-bet-game">'+b.game+' <span class="badge badge-cat" style="font-size:.55rem;margin-left:4px">'+b.mkt+'</span></div>' +
+            '<div class="sw-bet-detail"><span>'+b.date+'</span>'+(b.score?'<span>· '+b.score+'</span>':'')+'<span>· MZN '+parseFloat(b.stake).toFixed(0)+'</span></div>' +
+          '</div>' +
+          '<div class="sw-bet-odd">@'+parseFloat(b.odd).toFixed(2)+'</div>' +
+          (pl!==0?'<div style="font-size:.75rem;font-weight:700;font-family:var(--mono);color:'+(pl>0?'var(--green)':'var(--red)')+';min-width:70px;text-align:right">'+(pl>0?'+':'')+'MZN '+pl.toFixed(0)+'</div>':'') +
+          '<div class="sw-bet-status '+(isLive?'live':'p')+'">'+(isLive?'🔴 LIVE':'⏳ Pending')+'</div>' +
+        '</div>';
       }).join('');
     }
-
     const {labels, cum} = buildChartData(bets, S.swPeriod);
     renderChart('sw-chart', labels, cum);
   },
@@ -1653,7 +1431,7 @@ const App = {
   swTab(tab) {
     S.swTab = tab;
     ['live','settled','upcoming','parlays'].forEach(t => {
-      const b = document.getElementById(`sw-${t}-btn`);
+      const b = document.getElementById('sw-'+t+'-btn');
       if(b) b.classList.toggle('active', t===tab);
     });
     this.renderSweat();
@@ -1668,7 +1446,6 @@ const App = {
 
   refreshSweat() { this.renderSweat(); toast('Actualizado', 'i'); },
 
-  // ---- CALENDAR ----
   renderCal() {
     const cal = document.getElementById('sw-cal');
     if (!cal) return;
@@ -1680,26 +1457,18 @@ const App = {
     const betDates = new Set(S.bets.map(b=>b.date));
     const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
     const dayLabels = ['D','S','T','Q','Q','S','S'];
-    let html = `
-      <div class="cal-hdr">
-        <div class="cal-title">${monthNames[month]}/${year}</div>
-        <div class="cal-nav">
-          <button onclick="App.calNav(-1)"><i class="fas fa-chevron-left"></i></button>
-          <button onclick="App.calNav(1)"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
-      <div class="cal-grid">
-        ${dayLabels.map(l=>`<div class="cal-day-lbl">${l}</div>`).join('')}
-        ${Array.from({length:startDay},()=>`<div></div>`).join('')}
-        ${Array.from({length:days},(_,i)=>{
-          const day = i+1;
-          const dt = new Date(year,month,day);
-          const key = dt.toLocaleDateString('pt-PT');
-          const isToday = dt.getDate()===today.getDate()&&dt.getMonth()===today.getMonth()&&dt.getFullYear()===today.getFullYear();
-          const hasBets = betDates.has(key);
-          return `<div class="cal-day ${isToday?'today':''} ${hasBets?'has-bets':''}" title="${hasBets?'Tem apostas':''}">${day}</div>`;
-        }).join('')}
-      </div>`;
+    let html = '<div class="cal-hdr"><div class="cal-title">'+monthNames[month]+'/'+year+'</div>' +
+      '<div class="cal-nav"><button onclick="App.calNav(-1)"><i class="fas fa-chevron-left"></i></button><button onclick="App.calNav(1)"><i class="fas fa-chevron-right"></i></button></div></div>' +
+      '<div class="cal-grid">' + dayLabels.map(l=>'<div class="cal-day-lbl">'+l+'</div>').join('') +
+      Array.from({length:startDay},()=>'<div></div>').join('') +
+      Array.from({length:days},(_,i)=>{
+        const day = i+1;
+        const dt = new Date(year,month,day);
+        const key = dt.toLocaleDateString('pt-PT');
+        const isToday = dt.getDate()===today.getDate()&&dt.getMonth()===today.getMonth()&&dt.getFullYear()===today.getFullYear();
+        const hasBets = betDates.has(key);
+        return '<div class="cal-day '+(isToday?'today ':'')+(hasBets?'has-bets':'')+'" title="'+(hasBets?'Tem apostas':'')+'">'+day+'</div>';
+      }).join('') + '</div>';
     cal.innerHTML = html;
   },
 
@@ -1710,7 +1479,6 @@ const App = {
     this.renderCal();
   },
 
-  // ---- DEPOSITS ----
   addDeposit() {
     const type = document.getElementById('dep-type')?.value || 'dep';
     const casa = document.getElementById('dep-casa')?.value?.trim() || '';
@@ -1724,7 +1492,7 @@ const App = {
     if (type === 'dep' && status === 'complete') S.bankroll += valor;
     if (type === 'wth' && status === 'complete') S.bankroll -= valor;
     save(); this.renderDeposits(); syncBalance();
-    toast(`${type==='dep'?'Depósito':'Levantamento'} de MZN ${valor.toLocaleString('pt-PT')} registado!`, 's');
+    toast((type==='dep'?'Depósito':'Levantamento')+' de MZN '+valor.toLocaleString('pt-PT')+' registado!', 's');
     document.getElementById('dep-valor').value = '';
   },
 
@@ -1739,7 +1507,8 @@ const App = {
     const s = (id,v) => { const el=document.getElementById(id); if(el)el.textContent=v; };
     s('dep-total-dep', 'MZN '+Math.round(totalDep).toLocaleString('pt-PT'));
     s('dep-total-wth', 'MZN '+Math.round(totalWth).toLocaleString('pt-PT'));
-    s('dep-saldo', (saldo>=0?'+'||'')+'MZN '+Math.round(saldo).toLocaleString('pt-PT'));
+    // ✅ FIX: was (saldo>=0?'+'||'') which caused "missing : in conditional expression"
+    s('dep-saldo', (saldo>=0?'+':'')+'MZN '+Math.round(saldo).toLocaleString('pt-PT'));
     s('dep-roi', (roi>=0?'+':'')+roi.toFixed(1)+'% ROI');
     s('dep-count', deps.length+' registos');
     const tbody = document.getElementById('dep-body');
@@ -1750,16 +1519,16 @@ const App = {
     }
     tbody.innerHTML = deps.map(d => {
       const isGreen = d.type === 'dep';
-      return `<tr>
-        <td><input type="checkbox"></td>
-        <td style="color:var(--text2);font-size:.72rem">${d.data}</td>
-        <td style="font-weight:600">${d.casa}</td>
-        <td style="color:var(--text2)">${d.estado}</td>
-        <td><span style="color:${isGreen?'var(--green)':'var(--red)'};font-weight:700">${isGreen?'Deposito':'Levantamento'}</span></td>
-        <td style="font-weight:700;color:${isGreen?'var(--green)':'var(--red)'};font-family:var(--mono)">MZN ${Math.round(parseFloat(d.valor)).toLocaleString('pt-PT')}</td>
-        <td><span style="background:${d.status==='complete'?'rgba(0,230,118,.12)':'rgba(255,167,38,.12)'};color:${d.status==='complete'?'var(--green)':'var(--orange)'};padding:.12rem .4rem;border-radius:4px;font-size:.65rem;font-weight:700">${d.status}</span></td>
-        <td><button onclick="App.deleteDeposit(${d.id})" style="background:none;border:none;color:var(--text2);cursor:pointer"><i class="fas fa-times"></i></button></td>
-      </tr>`;
+      return '<tr>' +
+        '<td><input type="checkbox"></td>' +
+        '<td style="color:var(--text2);font-size:.72rem">'+d.data+'</td>' +
+        '<td style="font-weight:600">'+d.casa+'</td>' +
+        '<td style="color:var(--text2)">'+d.estado+'</td>' +
+        '<td><span style="color:'+(isGreen?'var(--green)':'var(--red)')+';font-weight:700">'+(isGreen?'Deposito':'Levantamento')+'</span></td>' +
+        '<td style="font-weight:700;color:'+(isGreen?'var(--green)':'var(--red)')+';font-family:var(--mono)">MZN '+Math.round(parseFloat(d.valor)).toLocaleString('pt-PT')+'</td>' +
+        '<td><span style="background:'+(d.status==='complete'?'rgba(0,230,118,.12)':'rgba(255,167,38,.12)')+';color:'+(d.status==='complete'?'var(--green)':'var(--orange)')+';padding:.12rem .4rem;border-radius:4px;font-size:.65rem;font-weight:700">'+d.status+'</span></td>' +
+        '<td><button onclick="App.deleteDeposit('+d.id+')" style="background:none;border:none;color:var(--text2);cursor:pointer"><i class="fas fa-times"></i></button></td>' +
+      '</tr>';
     }).join('');
   },
 
@@ -1789,10 +1558,6 @@ const App = {
   }
 };
 
-/* ============================
-   BOOT
-   ============================ */
-// Load deposits if first time
 if (!localStorage.getItem('bt_deposits') && !localStorage.getItem('bt_bankroll')) {
   S.deposits = [
     { id:1, type:'dep', casa:'1xbet', estado:'MZ', valor:14560, data:'2026-03-21', status:'complete' },
@@ -1802,7 +1567,6 @@ if (!localStorage.getItem('bt_deposits') && !localStorage.getItem('bt_bankroll')
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Restore deposits bankroll
   const totalDep = S.deposits.filter(d=>d.type==='dep'&&d.status==='complete').reduce((s,d)=>s+parseFloat(d.valor||0),0);
   const totalWth = S.deposits.filter(d=>d.type==='wth'&&d.status==='complete').reduce((s,d)=>s+parseFloat(d.valor||0),0);
   if (!localStorage.getItem('bt_bankroll') && totalDep > 0) {
