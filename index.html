@@ -20,6 +20,7 @@
   --red:#ff3c3c;--red-dim:rgba(255,60,60,.12);
   --cyan:#00d4ff;--cyan-dim:rgba(0,212,255,.10);
   --purple:#b06cff;--purple-dim:rgba(176,108,255,.10);
+  --ai:#7c3aed;--ai-dim:rgba(124,58,237,.12);--ai-brd:rgba(124,58,237,.3);
   --t1:#d8f0da;--t2:#6a9e6e;--t3:#2a4a2e;
   --font:'Barlow',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;--cond:'Barlow Condensed',sans-serif;
   --h:56px;--r:12px;--r2:8px;--tr:all .18s cubic-bezier(.4,0,.2,1);
@@ -73,7 +74,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .stat-c::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--brd3),transparent)}
 .stat-c:hover{border-color:var(--brd2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
 .stat-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
-.stat-ico.g{background:var(--green-dim);color:var(--green)}.stat-ico.a{background:var(--amber-dim);color:var(--amber)}.stat-ico.r{background:var(--red-dim);color:var(--red)}.stat-ico.c{background:var(--cyan-dim);color:var(--cyan)}.stat-ico.p{background:var(--purple-dim);color:var(--purple)}
+.stat-ico.g{background:var(--green-dim);color:var(--green)}.stat-ico.a{background:var(--amber-dim);color:var(--amber)}.stat-ico.r{background:var(--red-dim);color:var(--red)}.stat-ico.c{background:var(--cyan-dim);color:var(--cyan)}.stat-ico.p{background:var(--purple-dim);color:var(--purple)}.stat-ico.ai{background:var(--ai-dim);color:#a78bfa}
 .stat-val{font-size:1.18rem;font-weight:800;line-height:1;font-family:var(--mono);letter-spacing:-.5px}
 .stat-lbl{font-size:.58rem;color:var(--t2);font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 
@@ -97,10 +98,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,232,85,.35)}
 .btn-ghost{padding:.34rem .72rem;font-size:.66rem;font-weight:600;border:1px solid var(--brd2);background:var(--glass);color:var(--t2);border-radius:7px;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:.26rem;transition:var(--tr);}
 .btn-ghost:hover{color:var(--t1);border-color:var(--brd3);background:var(--green-dim)}
+.btn-ai{padding:.34rem .72rem;font-size:.66rem;font-weight:700;border:1px solid var(--ai-brd);background:var(--ai-dim);color:#a78bfa;border-radius:7px;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:.26rem;transition:var(--tr);}
+.btn-ai:hover{color:#c4b5fd;border-color:rgba(124,58,237,.5);background:rgba(124,58,237,.2);transform:translateY(-1px)}
 .btn-add{padding:.12rem .38rem;font-size:.56rem;font-weight:700;border:1px solid rgba(0,232,85,.3);background:rgba(0,232,85,.06);color:var(--green);border-radius:4px;cursor:pointer;font-family:var(--font);transition:var(--tr)}
 .btn-add:hover{background:var(--green);color:#000}
 
-/* MATCH CARDS - CORNERS */
+/* MATCH CARDS */
 .matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.8rem}
 .mc{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;transition:var(--tr);position:relative;}
 .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--brd2),transparent);z-index:1;}
@@ -114,7 +117,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .team-side{width:42%;display:flex;flex-direction:column;gap:.16rem}
 .team-side.away{align-items:flex-end}
 .team-name{font-size:.82rem;font-weight:700;line-height:1.2;color:var(--t1)}
-.team-away .team-name{text-align:right}
 .team-avg{font-size:.6rem;color:var(--t2);font-family:var(--mono)}
 .team-form{display:flex;gap:2px}
 .team-form .fd{width:13px;height:13px;border-radius:3px;font-size:.48rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
@@ -172,9 +174,31 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 /* BADGES */
 .badge{display:inline-flex;align-items:center;gap:.12rem;padding:.06rem .32rem;border-radius:4px;font-size:.56rem;font-weight:700;white-space:nowrap}
-.badge-over{background:rgba(0,232,85,.12);color:var(--green)}.badge-live{background:rgba(245,166,35,.12);color:var(--amber)}.badge-under{background:rgba(0,212,255,.1);color:var(--cyan)}.badge-team{background:rgba(176,108,255,.1);color:var(--purple)}.badge-red{background:var(--red-dim);color:var(--red)}.badge-grey{background:rgba(107,138,107,.1);color:var(--t2)}.badge-green{background:var(--green-dim);color:var(--green)}.badge-amber{background:var(--amber-dim);color:var(--amber)}
+.badge-over{background:rgba(0,232,85,.12);color:var(--green)}.badge-live{background:rgba(245,166,35,.12);color:var(--amber)}.badge-under{background:rgba(0,212,255,.1);color:var(--cyan)}.badge-team{background:rgba(176,108,255,.1);color:var(--purple)}.badge-red{background:var(--red-dim);color:var(--red)}.badge-grey{background:rgba(107,138,107,.1);color:var(--t2)}.badge-green{background:var(--green-dim);color:var(--green)}.badge-amber{background:var(--amber-dim);color:var(--amber)}.badge-ai{background:var(--ai-dim);color:#a78bfa;border:1px solid var(--ai-brd)}
 
-/* ANALYSIS MODAL */
+/* AI ANALYSIS BOX */
+.ai-box{background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(0,212,255,.04));border:1px solid var(--ai-brd);border-radius:11px;padding:.85rem;position:relative;overflow:hidden;}
+.ai-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,#7c3aed,#00d4ff);opacity:.5}
+.ai-box-title{font-size:.72rem;font-weight:700;color:#a78bfa;display:flex;align-items:center;gap:.32rem;margin-bottom:.52rem}
+.ai-thinking{display:flex;align-items:center;gap:.5rem;padding:.65rem;background:rgba(124,58,237,.06);border-radius:8px;font-size:.68rem;color:#a78bfa}
+.ai-thinking-dots{display:flex;gap:3px;align-items:center}
+.ai-thinking-dots span{width:5px;height:5px;border-radius:50%;background:#a78bfa;animation:aidt 1.2s infinite}
+.ai-thinking-dots span:nth-child(2){animation-delay:.2s}
+.ai-thinking-dots span:nth-child(3){animation-delay:.4s}
+@keyframes aidt{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.ai-response{font-size:.68rem;color:var(--t2);line-height:1.8;white-space:pre-wrap}
+.ai-response strong{color:var(--t1)}
+.ai-section{margin-bottom:.65rem}
+.ai-section-title{font-size:.64rem;font-weight:700;color:#c4b5fd;margin-bottom:.28rem;display:flex;align-items:center;gap:.22rem;text-transform:uppercase;letter-spacing:.4px}
+.ai-bullet{font-size:.66rem;color:var(--t2);display:flex;gap:.28rem;margin-bottom:.18rem;line-height:1.6}
+.ai-bullet::before{content:'▸';color:#7c3aed;flex-shrink:0;margin-top:.04rem}
+.ai-verdict{padding:.6rem .8rem;border-radius:9px;font-size:.72rem;font-weight:700;display:flex;align-items:center;gap:.4rem;margin-top:.5rem}
+.ai-verdict.bullish{background:rgba(0,232,85,.1);border:1px solid rgba(0,232,85,.25);color:var(--green)}
+.ai-verdict.bearish{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:var(--cyan)}
+.ai-verdict.neutral{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);color:var(--amber)}
+.ai-card-hint{padding:.3rem .5rem;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:6px;font-size:.58rem;color:#a78bfa;display:flex;align-items:center;gap:.22rem;margin-bottom:.45rem}
+
+/* MODAL */
 .modal{display:none;position:fixed;inset:0;z-index:2000;align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto}
 .modal.open{display:flex}
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px)}
@@ -190,6 +214,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .atab{padding:.28rem .58rem;font-size:.62rem;font-weight:600;border:1px solid transparent;background:none;color:var(--t2);border-radius:6px;cursor:pointer;font-family:var(--font);transition:var(--tr);white-space:nowrap}
 .atab:hover{color:var(--t1);background:var(--glass2)}
 .atab.active{border-color:rgba(0,232,85,.22);color:var(--green);background:var(--green-dim)}
+.atab.ai-tab{color:#a78bfa}
+.atab.ai-tab.active{border-color:var(--ai-brd);color:#c4b5fd;background:var(--ai-dim)}
 .atab-content{display:none}.atab-content.active{display:block}
 .a-sect{margin-bottom:.95rem}
 .a-title{font-size:.78rem;font-weight:700;margin-bottom:.45rem;padding-bottom:.24rem;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:.34rem;color:var(--t1)}
@@ -239,7 +265,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .scenario-item{font-size:.65rem;color:var(--t2);line-height:1.8;display:flex;align-items:flex-start;gap:.28rem}
 .scenario-item::before{content:'›';color:var(--green);font-weight:700;flex-shrink:0}
 
-/* LIVE BOT SECTION */
+/* LIVE BOT */
 .bot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem}
 .bot-signal{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;transition:var(--tr);}
 .bot-signal:hover{border-color:var(--brd2);transform:translateY(-1px)}
@@ -366,6 +392,7 @@ canvas{display:block;width:100%!important}
 
 .mc-analyze{display:flex;gap:.28rem;padding:.44rem .85rem;border-top:1px solid var(--brd)}
 .mc-analyze .btn-ghost{flex:1;justify-content:center;font-size:.62rem}
+.mc-analyze .btn-ai{flex:1;justify-content:center;font-size:.62rem}
 
 .live-indicator{display:inline-flex;align-items:center;gap:.2rem;font-size:.54rem;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(255,60,60,.14);color:var(--red);border:1px solid rgba(255,60,60,.24);animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
@@ -378,6 +405,14 @@ canvas{display:block;width:100%!important}
 .psr-item:last-child{border-right:none}
 .psr-lbl{font-size:.52rem;color:var(--t2);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
 .psr-val{font-size:.86rem;font-weight:700;font-family:var(--mono)}
+
+/* AI INSIGHTS PAGE */
+.ai-insights-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:.8rem;margin-bottom:1rem}
+.ai-insight-card{background:var(--card);border:1px solid var(--ai-brd);border-radius:var(--r);overflow:hidden;transition:var(--tr);position:relative}
+.ai-insight-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,#7c3aed,#00d4ff);opacity:.4}
+.ai-insight-card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,58,237,.15)}
+.ai-insight-hdr{padding:.48rem .85rem;border-bottom:1px solid var(--ai-brd);background:rgba(124,58,237,.05);display:flex;align-items:center;justify-content:space-between}
+.ai-insight-body{padding:.75rem .85rem}
 
 @media(max-width:900px){.stats-bar{grid-template-columns:repeat(3,1fr)}.kpi-grid-trk{grid-template-columns:repeat(3,1fr)}.a-grid{grid-template-columns:1fr}}
 @media(max-width:768px){.stats-bar{grid-template-columns:repeat(2,1fr)}.matches-grid{grid-template-columns:1fr}.nav .nav-a span{display:none}.kpi-grid-trk{grid-template-columns:repeat(2,1fr)}}
@@ -398,6 +433,7 @@ canvas{display:block;width:100%!important}
     <button class="nav-a" data-pg="vbets" onclick="App.nav('vbets',this)"><i class="fas fa-gem"></i><span> Value Bets</span></button>
     <button class="nav-a" data-pg="combos" onclick="App.nav('combos',this)"><i class="fas fa-layer-group"></i><span> Combos</span></button>
     <button class="nav-a" data-pg="leagues" onclick="App.nav('leagues',this)"><i class="fas fa-flag"></i><span> Ligas</span></button>
+    <button class="nav-a" data-pg="aipage" onclick="App.nav('aipage',this)"><i class="fas fa-brain"></i><span> IA Pro</span></button>
     <button class="nav-a" data-pg="tracker" onclick="App.nav('tracker',this)"><i class="fas fa-chart-bar"></i><span> Tracker</span></button>
   </nav>
   <div class="hdr-right">
@@ -478,14 +514,14 @@ canvas{display:block;width:100%!important}
       <div class="kpi-row">
         <div class="kpi-c"><div class="kpi-v" style="color:var(--green)" id="bot-over-cnt">0</div><div class="kpi-l">🟢 Over</div></div>
         <div class="kpi-c"><div class="kpi-v" style="color:var(--amber)" id="bot-live-cnt">0</div><div class="kpi-l">🟡 Live</div></div>
-        <div class="kpi-c"><div class="kpi-v" style="color:var(--purple)" id="bot-team-cnt">0</div><div class="kki-l">🟣 Team</div></div>
+        <div class="kpi-c"><div class="kpi-v" style="color:var(--purple)" id="bot-team-cnt">0</div><div class="kpi-l">🟣 Team</div></div>
         <div class="kpi-c"><div class="kpi-v" style="color:var(--cyan)" id="bot-under-cnt">0</div><div class="kpi-l">🔵 Under</div></div>
       </div>
       <div style="font-size:.64rem;color:var(--t2);line-height:1.8;margin-top:.5rem">
-        <div style="display:flex;gap:.32rem;margin-bottom:.2rem"><span style="color:var(--green)">●</span> <span><strong>Estratégia 1:</strong> Over pré-jogo se média_cantos > 8.5 + favorito + liga ofensiva</span></div>
-        <div style="display:flex;gap:.32rem;margin-bottom:.2rem"><span style="color:var(--amber)">●</span> <span><strong>Estratégia 2:</strong> Entrada live ao minuto 10-20 se ≥2 cantos e jogo aberto</span></div>
-        <div style="display:flex;gap:.32rem;margin-bottom:.2rem"><span style="color:var(--purple)">●</span> <span><strong>Estratégia 3:</strong> Favorito +4.5 cantos em duelos assimétricos</span></div>
-        <div style="display:flex;gap:.32rem"><span style="color:var(--cyan)">●</span> <span><strong>Estratégia 4:</strong> Under 10.5 em ligas lentas ou jogos táticos</span></div>
+        <div style="display:flex;gap:.32rem;margin-bottom:.2rem"><span style="color:var(--green)">●</span><span><strong>Estratégia 1:</strong> Over pré-jogo se média_cantos > 8.5 + favorito + liga ofensiva</span></div>
+        <div style="display:flex;gap:.32rem;margin-bottom:.2rem"><span style="color:var(--amber)">●</span><span><strong>Estratégia 2:</strong> Entrada live ao minuto 10-20 se ≥2 cantos e jogo aberto</span></div>
+        <div style="display:flex;gap:.32rem;margin-bottom:.2rem"><span style="color:var(--purple)">●</span><span><strong>Estratégia 3:</strong> Favorito +4.5 cantos em duelos assimétricos</span></div>
+        <div style="display:flex;gap:.32rem"><span style="color:var(--cyan)">●</span><span><strong>Estratégia 4:</strong> Under 10.5 em ligas lentas ou jogos táticos</span></div>
       </div>
     </div>
     <div class="mini-card" style="padding:.85rem">
@@ -528,6 +564,23 @@ canvas{display:block;width:100%!important}
   <div class="league-grid" id="league-grid"></div>
 </div>
 
+<!-- AI PRO PAGE -->
+<div id="page-aipage" class="page">
+  <div class="section-hdr">
+    <h2><i class="fas fa-brain" style="color:#a78bfa"></i> IA Pro — Análise Inteligente de Cantos</h2>
+    <div style="display:flex;gap:.35rem;align-items:center">
+      <span class="badge badge-ai">✨ Claude AI</span>
+      <button class="btn-ai" onclick="renderAIPage()"><i class="fas fa-sync-alt"></i> Analisar Todos</button>
+    </div>
+  </div>
+  <div style="padding:.75rem;background:rgba(124,58,237,.06);border:1px solid var(--ai-brd);border-radius:11px;margin-bottom:1rem;font-size:.68rem;color:var(--t2);line-height:1.8">
+    <strong style="color:#c4b5fd">Como funciona:</strong> A IA analisa cada jogo com base nas estatísticas de cantos, odds de mercado, tendências de liga, valor esperado e critérios técnicos — e gera uma recomendação detalhada em português para apostas de cantos.
+  </div>
+  <div id="ai-insights-container">
+    <div class="empty"><i class="fas fa-brain"></i>Clica em "Analisar Todos" para gerar análises IA de todos os jogos</div>
+  </div>
+</div>
+
 <!-- TRACKER -->
 <div id="page-tracker" class="page">
   <div class="trk-subhdr">
@@ -541,7 +594,6 @@ canvas{display:block;width:100%!important}
       <span style="color:var(--green);font-weight:700;font-family:var(--mono)" id="trk-cap-val">MZN 0</span>
     </div>
   </div>
-
   <div class="trk-pane active" id="trkp-dash">
     <div class="kpi-grid-trk">
       <div class="kpi-trk"><div class="kpi-trk-lbl"><i class="fas fa-chart-line"></i> NET PROFIT</div><div class="kpi-trk-val" id="d-profit" style="color:var(--green)">MZN 0</div><div class="kpi-trk-sub pos" id="d-today">+MZN 0 Hoje</div></div>
@@ -563,13 +615,11 @@ canvas{display:block;width:100%!important}
         <div class="psr-item"><div class="psr-lbl">Pot. Payout</div><div class="psr-val" id="psr-pay">MZN 0</div></div>
       </div>
     </div>
-    <!-- Strategy breakdown -->
     <div class="trk-chart-card">
       <div style="font-size:.78rem;font-weight:700;margin-bottom:.65rem;display:flex;align-items:center;gap:.34rem"><i class="fas fa-robot" style="color:var(--amber)"></i> ROI por Estratégia</div>
       <div style="position:relative;height:120px"><canvas id="strat-chart" style="height:120px"></canvas></div>
     </div>
   </div>
-
   <div class="trk-pane" id="trkp-bets">
     <div class="add-form-trk">
       <div class="add-form-title"><i class="fas fa-plus-circle"></i> Adicionar Aposta Manual</div>
@@ -604,7 +654,6 @@ canvas{display:block;width:100%!important}
       </div>
     </div>
   </div>
-
   <div class="trk-pane" id="trkp-dep">
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--brd);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;margin-bottom:.72rem">
       <div class="kpi-trk"><div class="kpi-trk-lbl"><i class="fas fa-arrow-down" style="color:var(--green)"></i> Total Depositado</div><div class="kpi-trk-val" id="dep-total-dep">MZN 0</div></div>
@@ -631,7 +680,6 @@ canvas{display:block;width:100%!important}
     </div>
   </div>
 </div>
-
 </main>
 
 <!-- MODALS -->
@@ -701,7 +749,7 @@ const LEAGUES={
 };
 
 /* ===============================================
-   DATABASE — JOGOS (com stats de cantos)
+   DATABASE — JOGOS
    =============================================== */
 const DB={
   settings:{bankroll:24560,kelly:.25,minEdge:3,minAvg:8.5},
@@ -743,10 +791,8 @@ const DB={
    CORNER ANALYTICS ENGINE (CAE)
    =============================================== */
 const CAE={
-  /* Calcula expected corners baseado em stats */
   expectedCorners(game){
-    const s=game.stats;
-    const lg=LEAGUES[game.league]||{avgTotal:9.5};
+    const s=game.stats;const lg=LEAGUES[game.league]||{avgTotal:9.5};
     const baseExp=(s.homeAvgFor+s.awayAvgFor+s.homeAvgAgainst+s.awayAvgAgainst)/2;
     let exp=baseExp*.7+lg.avgTotal*.3;
     if(s.homeCrossStyle)exp+=.4;if(s.awayCrossStyle)exp+=.4;
@@ -755,18 +801,15 @@ const CAE={
     if(s.pressure>85)exp+=.6;
     return Math.round(exp*10)/10;
   },
-  /* Probabilidade over X.5 */
   probOver(exp,line){
     const sigma=2.2;const z=(line+.5-exp)/sigma;
     return Math.round((1-0.5*(1+this.erf(z/Math.sqrt(2))))*1000)/10;
   },
   erf(x){const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;const s=x>=0?1:-1;x=Math.abs(x);const t=1/(1+p*x);const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);return s*y;},
-  /* Estratégia principal */
   analyzeStrategy(game){
     const lg=LEAGUES[game.league]||{tendency:'neutral',avgTotal:9.5,threshold:8.5};
     const s=game.stats;const exp=this.expectedCorners(game);
     const strategies=[];
-    // ESTRATÉGIA 1: Over pré-jogo
     if(exp>=S.settings.minAvg&&lg.tendency!=='under'){
       const line=exp>=11?10.5:exp>=9.5?9.5:8.5;
       const prob=this.probOver(exp,line);
@@ -777,12 +820,10 @@ const CAE={
       if(lg.tendency==='over')criteria.push('liga_over');
       if(criteria.length>=3){strategies.push({type:'over',label:'Over Pré-Jogo',market:`Over ${line} Cantos`,line,prob,confidence:criteria.length,criteria,description:`Entrada pré-jogo. ${criteria.length}/4 critérios cumpridos.`});}
     }
-    // ESTRATÉGIA 2: Live Signal
     if(exp>=9.0&&s.pressure>=70){
       const liveEntry=exp>=11?9.5:8.5;
       strategies.push({type:'live',label:'Sinal Live',market:`Over ${liveEntry} ao Min.${S.settings.botMin}`,line:liveEntry,prob:this.probOver(exp,liveEntry)+5,confidence:Math.min(5,Math.round(s.pressure/20)),criteria:[`Entrada min. ${S.settings.botMin}-20`,`≥${S.settings.botCnr} cantos já`,`Pressão ${s.pressure}%`,'Jogo aberto'],description:`Aguarda ${S.settings.botMin} minutos. Entra se ≥${S.settings.botCnr} cantos e jogo aberto.`});
     }
-    // ESTRATÉGIA 3: Team Corners favorito
     if(s.homeIsFav&&s.homeOddFav<=1.85&&s.homeAvgFor>=5.5){
       const hProb=this.probOver(s.homeAvgFor,4.5);
       if(hProb>=55){strategies.push({type:'team',label:'Team Corners',market:`${game.home} +4.5 Cantos`,line:4.5,prob:hProb,confidence:4,criteria:['Favorito em casa','Alta média ofensiva','Estilo cruzamento'],description:`Favorito claro com ${s.homeAvgFor} cantos/jogo em casa.`});}
@@ -791,14 +832,12 @@ const CAE={
       const aProb=this.probOver(s.awayAvgFor,4.5);
       if(aProb>=55){strategies.push({type:'team',label:'Team Corners',market:`${game.away} +4.5 Cantos`,line:4.5,prob:aProb,confidence:3,criteria:['Favorito visitante','Alta média ofensiva'],description:`Favorito fora com ${s.awayAvgFor} cantos/jogo.`});}
     }
-    // ESTRATÉGIA 4: Under
     if(lg.tendency==='under'||(!s.homeCrossStyle&&!s.awayCrossStyle&&exp<8.5)){
       const line=10.5;const prob=100-this.probOver(exp,line-1);
       if(prob>=55){strategies.push({type:'under',label:'Under Cantos',market:`Under ${line} Cantos`,line,prob,confidence:3,criteria:['Liga lenta/tática','Jogo equilibrado','Poucas finalizações'],description:`Liga ${lg.tendency} com média ${exp} cantos. Under seguro.`});}
     }
     return{exp,strategies};
   },
-  /* Encontrar value bets */
   findVB(game){
     const{exp,strategies}=this.analyzeStrategy(game);
     const vbs=[];
@@ -819,6 +858,195 @@ const CAE={
   },
   getAllVBs(){let all=[];DB.games.forEach(g=>{all=all.concat(this.findVB(g));});return all.sort((a,b)=>b.ev-a.ev);}
 };
+
+/* ===============================================
+   AI ENGINE — ANTHROPIC API
+   =============================================== */
+const AIEngine={
+  async analyzeGame(game){
+    const lg=LEAGUES[game.league]||{avgTotal:9.5,tendency:'neutral',overRate:55,notes:''};
+    const{exp,strategies}=CAE.analyzeStrategy(game);
+    const vbs=CAE.findVB(game);
+    const s=game.stats;
+    const prompt=`És um especialista em apostas de cantos de futebol (corner betting). Analisa este jogo e fornece insights EXCLUSIVAMENTE sobre apostas de CANTOS (corners). NÃO menciones remates a baliza, golos, resultados ou outros mercados. Foca apenas em cantos.
+
+JOGO: ${game.home} vs ${game.away}
+Liga: ${game.league} | Hora: ${game.time}
+
+ESTATÍSTICAS DE CANTOS:
+- ${game.home} (casa): ${s.homeAvgFor} cantos pró/jogo, ${s.homeAvgAgainst} contra/jogo | Estilo: ${s.homeCrossStyle?'Cruzamentos':'Jogo central'}
+- ${game.away} (fora): ${s.awayAvgFor} cantos pró/jogo, ${s.awayAvgAgainst} contra/jogo | Estilo: ${s.awayCrossStyle?'Cruzamentos':'Jogo central'}
+- Média H2H cantos: ${s.h2hAvg} | Pressão ofensiva: ${s.pressure}%
+- Favorito: ${s.homeIsFav?game.home+' @'+s.homeOddFav:game.away} | Jogo equilibrado: ${s.isEquilibrated?'Sim':'Não'}
+
+PERFIL DA LIGA (${game.league}):
+- Média cantos: ${lg.avgTotal} total | Over Rate: ${lg.overRate}% | Tendência: ${lg.tendency.toUpperCase()}
+- Nota: ${lg.notes}
+
+ANÁLISE DO SISTEMA:
+- Cantos esperados: ${exp}
+- Prob Over 8.5: ${CAE.probOver(exp,8.5)}% | Prob Over 9.5: ${CAE.probOver(exp,9.5)}% | Prob Over 10.5: ${CAE.probOver(exp,10.5)}%
+- Estratégias detetadas: ${strategies.map(st=>st.label+' ('+st.market+', prob '+st.prob+'%)').join('; ')||'Nenhuma'}
+- Value bets encontrados: ${vbs.length} | Melhor edge: ${vbs[0]?'+'+vbs[0].edge+'% em '+vbs[0].market:'N/A'}
+
+ODDS DE MERCADO (cantos):
+- Over 8.5 @${game.odds.over85} | Over 9.5 @${game.odds.over95} | Over 10.5 @${game.odds.over105}
+- Under 8.5 @${game.odds.under85} | Under 9.5 @${game.odds.under95} | Under 10.5 @${game.odds.under105}
+- ${game.home} +4.5 cantos @${game.odds.homeCorners45} | ${game.away} +4.5 cantos @${game.odds.awayCorners45}
+
+Fornece uma análise DETALHADA em português com exatamente estas secções:
+
+**🎯 VEREDITO PRINCIPAL**
+[Uma frase clara: qual o melhor mercado de cantos para este jogo e porquê]
+
+**📊 ANÁLISE TÉCNICA DE CANTOS**
+[3-4 pontos sobre os fatores que influenciam os cantos neste jogo específico]
+
+**💰 MERCADOS RECOMENDADOS (CANTOS)**
+[Lista os 2-3 melhores mercados de cantos com justificação técnica]
+
+**⚠️ RISCOS**
+[2-3 fatores de risco específicos para apostas de cantos neste jogo]
+
+**🏆 CONFIANÇA**
+[Alta/Média/Baixa — com justificação em 1 linha]`;
+
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data=await response.json();
+    const text=data.content?.map(i=>i.text||'').join('')||'Erro na análise IA.';
+    return text;
+  },
+
+  parseAIResponse(text){
+    const sections=[];
+    const parts=text.split(/\*\*([^*]+)\*\*/g);
+    for(let i=1;i<parts.length;i+=2){
+      const title=parts[i].trim();
+      const content=(parts[i+1]||'').trim();
+      if(title&&content)sections.push({title,content});
+    }
+    return sections.length?sections:[{title:'Análise',content:text}];
+  },
+
+  renderParsed(sections,game){
+    const sectionIcons={'🎯 VEREDITO PRINCIPAL':'verdict','📊 ANÁLISE TÉCNICA DE CANTOS':'analysis','💰 MERCADOS RECOMENDADOS (CANTOS)':'markets','⚠️ RISCOS':'risks','🏆 CONFIANÇA':'confidence'};
+    let h='';
+    sections.forEach(sec=>{
+      const isVerdict=sec.title.includes('VEREDITO');
+      const isConf=sec.title.includes('CONFIANÇA');
+      const confLow=isConf&&sec.content.toLowerCase().includes('baixa');
+      const confMed=isConf&&sec.content.toLowerCase().includes('média');
+      const verdictClass=isVerdict?'bullish':'';
+      if(isVerdict){
+        h+=`<div class="ai-verdict ${verdictClass}" style="margin-bottom:.65rem"><span style="font-size:.85rem">${sec.title}</span><span style="font-size:.72rem;font-weight:600;opacity:.85">${sec.content}</span></div>`;
+      } else {
+        const lines=sec.content.split('\n').filter(l=>l.trim());
+        h+=`<div class="ai-section">
+          <div class="ai-section-title">${sec.title}</div>
+          ${lines.map(l=>{
+            const clean=l.replace(/^[-•*]\s*/,'').trim();
+            return clean?`<div class="ai-bullet">${clean}</div>`:'';
+          }).join('')}
+        </div>`;
+      }
+    });
+    return h;
+  }
+};
+
+/* ===============================================
+   RENDER AI TAB IN MODAL
+   =============================================== */
+async function renderAITab(gameId){
+  const container=document.getElementById(`ai-tab-${gameId}`);
+  if(!container)return;
+  const game=DB.games.find(g=>g.id===gameId);
+  if(!game)return;
+
+  container.innerHTML=`
+    <div class="ai-box">
+      <div class="ai-box-title"><i class="fas fa-brain"></i> IA a analisar ${game.home} vs ${game.away}...</div>
+      <div class="ai-thinking">
+        <div class="ai-thinking-dots"><span></span><span></span><span></span></div>
+        <span>Processando estatísticas de cantos, odds e perfil de liga...</span>
+      </div>
+    </div>`;
+
+  try{
+    const text=await AIEngine.analyzeGame(game);
+    const sections=AIEngine.parseAIResponse(text);
+    container.innerHTML=`
+      <div class="ai-box">
+        <div class="ai-box-title"><i class="fas fa-brain"></i> Análise IA — ${game.home} vs ${game.away} <span class="badge badge-ai" style="margin-left:auto">Claude AI</span></div>
+        ${AIEngine.renderParsed(sections,game)}
+        <div style="margin-top:.75rem;padding-top:.55rem;border-top:1px solid var(--ai-brd);font-size:.58rem;color:var(--t3)">
+          ⚠️ Análise gerada por IA. Apenas para cantos. Apostas envolvem risco — gere a sua banca.
+        </div>
+      </div>`;
+  }catch(err){
+    container.innerHTML=`<div class="ai-box"><div class="ai-box-title"><i class="fas fa-exclamation-triangle" style="color:var(--amber)"></i> Erro na análise IA</div><div style="font-size:.68rem;color:var(--t2)">${err.message||'Erro de conexão'}</div></div>`;
+  }
+}
+
+/* ===============================================
+   AI PRO PAGE — TODOS OS JOGOS
+   =============================================== */
+async function renderAIPage(){
+  const container=document.getElementById('ai-insights-container');
+  if(!container)return;
+  container.innerHTML=`<div class="ai-insights-grid">${DB.games.map(g=>`
+    <div class="ai-insight-card" id="ai-page-card-${g.id}">
+      <div class="ai-insight-hdr">
+        <span style="font-size:.72rem;font-weight:700">${g.home} vs ${g.away}</span>
+        <span class="badge badge-grey" style="font-size:.52rem">${g.league}</span>
+      </div>
+      <div class="ai-insight-body">
+        <div class="ai-thinking" style="border-radius:7px">
+          <div class="ai-thinking-dots"><span></span><span></span><span></span></div>
+          <span style="font-size:.65rem">A analisar cantos...</span>
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+  toast('🧠 IA a analisar ${DB.games.length} jogos...','i');
+  for(const game of DB.games){
+    const card=document.getElementById(`ai-page-card-${game.id}`);
+    if(!card)continue;
+    try{
+      const text=await AIEngine.analyzeGame(game);
+      const sections=AIEngine.parseAIResponse(text);
+      const{exp}=CAE.analyzeStrategy(game);
+      const vbs=CAE.findVB(game);
+      const lg=LEAGUES[game.league]||{tendency:'neutral'};
+      const bodyEl=card.querySelector('.ai-insight-body');
+      if(bodyEl){
+        bodyEl.innerHTML=`
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem;font-size:.6rem">
+            <span style="color:var(--t2)">⚽ Exp: <strong style="color:var(--green)">${exp}</strong></span>
+            <span style="color:var(--t2)">🎯 VBs: <strong style="color:var(--amber)">${vbs.length}</strong></span>
+            <span class="badge badge-${lg.tendency==='over'?'over':lg.tendency==='under'?'under':'amber'}">${lg.tendency.toUpperCase()}</span>
+          </div>
+          ${AIEngine.renderParsed(sections,game)}
+          <div style="display:flex;gap:.3rem;margin-top:.6rem">
+            <button class="btn-ai" style="flex:1;justify-content:center;font-size:.6rem" onclick="App.openAnalysis('${game.id}')"><i class="fas fa-chart-bar"></i> Análise Completa</button>
+            ${vbs[0]?`<button class="btn-ghost" style="font-size:.6rem" onclick="App.openQuickAdd('${game.id}','${vbs[0].market.replace(/'/g,"'")}',${vbs[0].bo},${vbs[0].prob/100},'${(game.home+' vs '+game.away).replace(/'/g,"'")}','${vbs[0].label.replace(/'/g,"'")}','${vbs[0].strat}')"><i class="fas fa-plus"></i></button>`:''}
+          </div>`;
+      }
+    }catch(err){
+      const bodyEl=card.querySelector('.ai-insight-body');
+      if(bodyEl)bodyEl.innerHTML=`<div style="font-size:.65rem;color:var(--red)">Erro: ${err.message||'API indisponível'}</div>`;
+    }
+  }
+  toast('✅ Análise IA concluída!','s');
+}
 
 /* ===============================================
    RENDER MATCH CARD
@@ -865,6 +1093,7 @@ function renderMatchCard(game){
       <div class="cs"><div class="cs-label">H2H Média</div><div class="cs-val" style="color:var(--amber)">${s.h2hAvg}</div></div>
       <div class="cs"><div class="cs-label">Liga Avg</div><div class="cs-val" style="color:var(--cyan)">${lg.avgTotal}</div></div>
     </div>
+    ${topStrat?`<div class="ai-card-hint"><i class="fas fa-brain"></i> IA disponível — clica em "IA" para análise inteligente</div>`:''}
     ${topStrat?`<div class="signal-bar ${topStrat.type}"><div class="signal-dot"></div><span>🤖 ${topStrat.description}</span></div>`:''}
     <div class="mc-odds-row">
       <div class="mc-odd-btn" onclick="App.openQuickAdd('${game.id}','Over 8.5 Cantos',${game.odds.over85},${CAE.probOver(exp,8.5)/100},'${game.home} vs ${game.away}','Over Cantos','over')">
@@ -889,6 +1118,7 @@ function renderMatchCard(game){
   </div>
   <div class="mc-analyze">
     <button class="btn-ghost" onclick="App.openAnalysis('${game.id}')"><i class="fas fa-chart-bar"></i> Análise</button>
+    <button class="btn-ai" onclick="App.openAnalysisAI('${game.id}')"><i class="fas fa-brain"></i> IA</button>
     <button class="btn-ghost" onclick="App.addToBetslip('${game.id}','Over ${topStrat?topStrat.line:8.5} Cantos',${topStrat?game.odds['over'+Math.round(topStrat.line)+'5']||game.odds.over85:game.odds.over85},${topStrat?topStrat.prob/100:.55},'${game.home} vs ${game.away}')"><i class="fas fa-receipt"></i></button>
   </div>`;
   return c;
@@ -897,14 +1127,16 @@ function renderMatchCard(game){
 /* ===============================================
    RENDER ANALYSIS
    =============================================== */
-function renderAnalysis(id){
+function renderAnalysis(id,startTab){
   const game=DB.games.find(g=>g.id===id);if(!game)return'';
   const lg=LEAGUES[game.league]||{avgTotal:9.5,tendency:'neutral',avgHome:5.0,avgAway:4.5,overRate:55};
   const{exp,strategies}=CAE.analyzeStrategy(game);const vbs=CAE.findVB(game);const s=game.stats;
-  const tabs=[['overview','📊 Visão Geral'],['markets','💰 Mercados'],['stats','📈 Estatísticas'],['league','🏆 Liga'],['risk','🛡️ Risco']];
-  let h=`<div class="atabs">${tabs.map((t,i)=>`<button class="atab${i===0?' active':''}" onclick="switchAtab('${t[0]}',this)">${t[1]}</button>`).join('')}</div>`;
+  const tabs=[['overview','📊 Visão Geral'],['markets','💰 Mercados'],['stats','📈 Estatísticas'],['league','🏆 Liga'],['risk','🛡️ Risco'],['ai','🤖 IA Análise']];
+  const firstActive=startTab||'overview';
+  let h=`<div class="atabs">${tabs.map((t,i)=>`<button class="atab${t[0]==='ai'?' ai-tab':''} ${t[0]===firstActive?' active':''}" onclick="switchAtab('${t[0]}',this)">${t[1]}</button>`).join('')}</div>`;
+
   // TAB 1 - OVERVIEW
-  h+=`<div class="atab-content active" id="atab-overview">
+  h+=`<div class="atab-content ${firstActive==='overview'?'active':''}" id="atab-overview">
   <div class="proj-box">
     <span style="font-size:.58rem;color:var(--t2)">⚽ CornerEdge Pro · Análise de Cantos</span>
     <span class="proj-main">🎯 ${exp} cantos esperados</span>
@@ -945,8 +1177,9 @@ function renderAnalysis(id){
       </div>`).join('')||'<div class="empty"><i class="fas fa-search"></i>Sem estratégias claras</div>'}
     </div>
   </div></div>`;
+
   // TAB 2 - MARKETS
-  h+=`<div class="atab-content" id="atab-markets">`;
+  h+=`<div class="atab-content ${firstActive==='markets'?'active':''}" id="atab-markets">`;
   if(!vbs.length)h+='<div class="empty"><i class="fas fa-gem"></i>Sem value bets — reduz min edge nas configurações</div>';
   const stratGroups=[...new Set(vbs.map(v=>v.strat))];
   const stratIcons={over:'🟢',live:'🟡',team:'🟣',under:'🔵'};
@@ -967,8 +1200,9 @@ function renderAnalysis(id){
     </tr>`).join('')}</tbody></table></div></div>`;
   });
   h+='</div>';
+
   // TAB 3 - STATS
-  h+=`<div class="atab-content" id="atab-stats">
+  h+=`<div class="atab-content ${firstActive==='stats'?'active':''}" id="atab-stats">
   <div class="a-sect"><div class="a-title"><i class="fas fa-chart-bar"></i> Estatísticas de Cantos por Equipa</div>
   <div class="a-grid">
     <div class="mini-card">
@@ -1008,9 +1242,10 @@ function renderAnalysis(id){
   <div style="background:rgba(0,0,0,.15);border:1px solid var(--brd);border-radius:9px;padding:.75rem">
     ${['✅ Verificar equipa fora sofreu penalizações/cartões acumulados','✅ Confirmar se jogo é importância decisiva (favorito mais agressivo)','✅ Verificar condições meteorológicas (chuva → mais cantos geralmente)','✅ Comparar odds em Pinnacle vs Bet365 vs Betfair','✅ Ver média de cantos ÚLTIMA h2h nesta competição (não geral)','✅ Verificar árbitro — árbitros liberais criam mais corners','✅ Monitorar movimento de linha nas últimas 4 horas'].map(c=>`<div style="font-size:.66rem;color:var(--t2);padding:.18rem 0;border-bottom:1px solid rgba(255,255,255,.03);display:flex;gap:.28rem"><span style="color:var(--green);flex-shrink:0">›</span>${c}</div>`).join('')}
   </div></div></div>`;
+
   // TAB 4 - LEAGUE
   const lgg=LEAGUES[game.league]||{avgTotal:9.5,avgHome:5.0,avgAway:4.5,overRate:55,tendency:'neutral',notes:''};
-  h+=`<div class="atab-content" id="atab-league">
+  h+=`<div class="atab-content ${firstActive==='league'?'active':''}" id="atab-league">
   <div class="a-sect"><div class="a-title"><i class="fas fa-flag"></i> Perfil da Liga — ${game.league}</div>
   <div class="proj-box"><span class="proj-main">${lgg.flag||'⚽'} ${game.league}</span>
   <div class="proj-meta"><span>Avg Total: <strong>${lgg.avgTotal}</strong></span><span>Avg Casa: <strong>${lgg.avgHome}</strong></span><span>Avg Fora: <strong>${lgg.avgAway}</strong></span><span>Over Rate: <strong>${lgg.overRate}%</strong></span></div>
@@ -1024,9 +1259,10 @@ function renderAnalysis(id){
       Avg corners necessário: <strong style="color:var(--green)">${lgg.threshold||8.5}</strong>
     </div>
   </div></div></div>`;
+
   // TAB 5 - RISK
   const riskScore=strategies.length*20+Math.min(40,vbs.length*15);const rl=riskScore>=70?'BAIXO':riskScore>=40?'MÉDIO':'ALTO';
-  h+=`<div class="atab-content" id="atab-risk">
+  h+=`<div class="atab-content ${firstActive==='risk'?'active':''}" id="atab-risk">
   <div class="a-sect"><div class="a-title"><i class="fas fa-shield-alt"></i> Avaliação de Risco</div>
   <div style="display:flex;align-items:center;gap:.75rem;padding:.7rem;background:rgba(0,0,0,.15);border-radius:9px;border:1px solid var(--brd);margin-bottom:.7rem">
     <div style="width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:${rl==='BAIXO'?'rgba(0,232,85,.15)':rl==='MÉDIO'?'rgba(245,166,35,.15)':'rgba(255,60,60,.15)'};border:2px solid ${rl==='BAIXO'?'var(--green)':rl==='MÉDIO'?'var(--amber)':'var(--red)'};font-size:1.1rem;font-weight:800;color:${rl==='BAIXO'?'var(--green)':rl==='MÉDIO'?'var(--amber)':'var(--red)'};font-family:var(--mono)">${riskScore}</div>
@@ -1043,6 +1279,22 @@ function renderAnalysis(id){
     <div style="font-size:.7rem;font-weight:700;margin-bottom:.38rem;color:var(--amber)">📐 Regras de Gestão</div>
     ${['Max 2% da banca por entrada','Stop-loss: 2 derrotas seguidas → parar o dia','Odds alvo: 1.60 – 1.90 (melhor valor/risco)','Máximo 5 apostas por dia','Nunca entrar em 2 mercados do mesmo jogo (correlação)','Registar todas as apostas no Tracker'].map(r=>`<div style="font-size:.65rem;color:var(--t2);padding:.16rem 0;border-bottom:1px solid rgba(255,255,255,.03);display:flex;gap:.28rem"><span style="color:var(--green)">›</span>${r}</div>`).join('')}
   </div></div></div>`;
+
+  // TAB 6 - AI
+  h+=`<div class="atab-content ${firstActive==='ai'?'active':''}" id="atab-ai">
+  <div id="ai-tab-${id}">
+    <div class="ai-box" style="text-align:center;padding:1.2rem">
+      <div class="ai-box-title" style="justify-content:center;margin-bottom:.75rem"><i class="fas fa-brain"></i> Análise IA de Cantos</div>
+      <div style="font-size:.68rem;color:var(--t2);margin-bottom:.85rem;line-height:1.8">
+        A IA vai analisar as estatísticas de cantos, odds, tendências de liga e padrões históricos para gerar uma análise especializada <strong style="color:#c4b5fd">exclusivamente sobre mercados de cantos</strong>.
+      </div>
+      <button class="btn-ai" onclick="renderAITab('${id}')" style="margin:0 auto;font-size:.72rem;padding:.5rem 1.2rem">
+        <i class="fas fa-brain"></i> Gerar Análise IA
+      </button>
+    </div>
+  </div>
+  </div>`;
+
   return h;
 }
 
@@ -1230,8 +1482,23 @@ const App={
   clearBetslip(){S.betslip=[];const badge=document.getElementById('bs-badge');if(badge)badge.style.display='none';closeModal('bs-modal');},
   confirmParlay(){if(!S.betslip.length)return;let cO=1;S.betslip.forEach(b=>cO*=b.odds);const k=cO>1?((S.betslip.reduce((p,b)=>p*b.prob,1)*cO-1)/(cO-1))*S.settings.kelly:0;const stake=Math.round(getBalance()*Math.max(0,k));Trk.addBet({strat:'combo',game:S.betslip.map(b=>b.mn.split(' vs ')[0]).join(' + '),mkt:'PARLAY '+S.betslip.length+'P',odd:Math.round(cO*100)/100,fair:null,clv:null,stake:stake||Math.round(getBalance()*.01),corners:null,res:'p'});this.clearBetslip();App.nav('tracker',document.querySelector('.nav-a[data-pg="tracker"]'));switchTrkTab('bets');toast('Parlay @'+cO.toFixed(2)+' adicionado!','s');},
   addComboByKey(st){const combo=S._combos[st];if(!combo){toast('Combo não disponível','w');return;}Trk.addBet({strat:'combo',game:combo.legs.map(l=>l.mn.split(' vs ')[0]).join(' + '),mkt:`PARLAY ${combo.n}P · ${combo.l.toUpperCase()} @${combo.co}`,odd:combo.co,fair:null,clv:null,stake:combo.stk||Math.round(getBalance()*.01),corners:null,res:'p'});App.nav('tracker',document.querySelector('.nav-a[data-pg="tracker"]'));switchTrkTab('bets');toast(`✅ ${combo.l} @${combo.co} adicionado!`,'s');},
-  openAnalysis(id){const game=DB.games.find(g=>g.id===id);if(!game)return;const titleEl=document.getElementById('modal-title');titleEl.innerHTML=`⚽ ${game.home} <span style="color:var(--t3)">vs</span> ${game.away} <span class="badge badge-grey">${game.league}</span>`;document.getElementById('modal-body').innerHTML=renderAnalysis(id);document.getElementById('analysis-modal').classList.add('open');},
-  renderDashboard(){const g=document.getElementById('dash-grid');if(!g)return;g.innerHTML='';const all=CAE.getAllVBs();const featured=DB.games.filter(game=>{const{strategies}=CAE.analyzeStrategy(game);return strategies.length>0;}).slice(0,4);const fg=document.createElement('div');fg.className='matches-grid';featured.forEach(game=>{const c=renderMatchCard(game);if(c)fg.appendChild(c);});g.appendChild(fg);},
+  openAnalysis(id){
+    const game=DB.games.find(g=>g.id===id);if(!game)return;
+    const titleEl=document.getElementById('modal-title');
+    titleEl.innerHTML=`⚽ ${game.home} <span style="color:var(--t3)">vs</span> ${game.away} <span class="badge badge-grey">${game.league}</span>`;
+    document.getElementById('modal-body').innerHTML=renderAnalysis(id,'overview');
+    document.getElementById('analysis-modal').classList.add('open');
+  },
+  openAnalysisAI(id){
+    const game=DB.games.find(g=>g.id===id);if(!game)return;
+    const titleEl=document.getElementById('modal-title');
+    titleEl.innerHTML=`🤖 IA · ${game.home} <span style="color:var(--t3)">vs</span> ${game.away} <span class="badge badge-ai">Claude AI</span>`;
+    document.getElementById('modal-body').innerHTML=renderAnalysis(id,'ai');
+    document.getElementById('analysis-modal').classList.add('open');
+    // Auto-trigger AI
+    setTimeout(()=>renderAITab(id),200);
+  },
+  renderDashboard(){const g=document.getElementById('dash-grid');if(!g)return;g.innerHTML='';const featured=DB.games.filter(game=>{const{strategies}=CAE.analyzeStrategy(game);return strategies.length>0;}).slice(0,4);const fg=document.createElement('div');fg.className='matches-grid';featured.forEach(game=>{const c=renderMatchCard(game);if(c)fg.appendChild(c);});g.appendChild(fg);},
   renderGames(){const g=document.getElementById('games-grid');if(!g)return;g.innerHTML='';const leagueF=document.getElementById('league-filter')?.value||'all';const minAvg=parseFloat(document.getElementById('min-avg-filter')?.value||0);const filtered=DB.games.filter(game=>{const{exp,strategies}=CAE.analyzeStrategy(game);if(leagueF!=='all'&&game.league!==leagueF)return false;if(exp<minAvg)return false;if(this._filter==='all')return true;return strategies.some(s=>s.type===this._filter);});if(!filtered.length){g.innerHTML='<div class="empty"><i class="fas fa-futbol"></i>Sem jogos com esses filtros</div>';return;}const byLeague={};filtered.forEach(game=>{if(!byLeague[game.league])byLeague[game.league]={};if(!byLeague[game.league][game.date])byLeague[game.league][game.date]=[];byLeague[game.league][game.date].push(game);});Object.entries(byLeague).forEach(([league,dateGroups])=>{const lg=LEAGUES[league]||{avgTotal:9.5,tendency:'neutral'};const div=document.createElement('div');div.className='event-group';div.innerHTML=`<div class="event-group-hdr"><span class="event-group-title">${lg.flag||'⚽'} ${league}</span><div class="event-group-meta"><span>Avg: ${lg.avgTotal}</span><span>Over Rate: ${lg.overRate||50}%</span><span class="badge badge-${lg.tendency==='over'?'over':lg.tendency==='under'?'under':'amber'}">${lg.tendency?.toUpperCase()||'NEUTRAL'}</span></div></div>`;const grid=document.createElement('div');grid.className='matches-grid';Object.values(dateGroups).flat().forEach(game=>{const c=renderMatchCard(game);if(c)grid.appendChild(c);});div.appendChild(grid);g.appendChild(div);});},
   renderVBPage(){const c=document.getElementById('vb-table');if(!c)return;const minE=parseFloat(document.getElementById('vb-edge-filter')?.value||3);const stratF=document.getElementById('vb-strat-filter')?.value||'all';let all=CAE.getAllVBs().filter(v=>v.edge>=minE&&(stratF==='all'||v.strat===stratF));if(!all.length){c.innerHTML='<div class="empty"><i class="fas fa-gem"></i>Nenhum value bet — ajusta filtros</div>';return;}const stratIcons={over:'🟢',live:'🟡',team:'🟣',under:'🔵'};let h='<table class="dt"><thead><tr><th>#</th><th>Liga</th><th>Jogo</th><th>Strat</th><th>Mercado</th><th>Prob</th><th>Odds</th><th>Edge</th><th>EV%</th><th>Kelly</th><th>Stake</th><th>Rating</th><th></th></tr></thead><tbody>';all.forEach((v,i)=>{h+=`<tr><td style="color:var(--t2)">${i+1}</td><td style="font-size:.6rem;color:var(--t2)">${v.league}</td><td style="font-size:.64rem;color:var(--t2)">${v.mn}</td><td><span style="font-size:.58rem;font-weight:700">${stratIcons[v.strat]||''} ${(v.strat||'').toUpperCase()}</span></td><td><strong>${v.market}</strong></td><td style="font-family:var(--mono)">${v.prob}%</td><td><strong style="color:var(--green);font-family:var(--mono)">@${v.bo}</strong></td><td class="vp">+${v.edge}%</td><td class="vp">+${v.ev}%</td><td style="font-family:var(--mono);font-size:.62rem">${v.kelly}%</td><td style="font-family:var(--mono)">${fmz(v.stake)}</td><td><span class="badge ${v.vr.c}">${'★'.repeat(v.vr.s)}</span></td><td><button class="btn-add" onclick="App.openQuickAdd('${v.matchId}','${v.market.replace(/'/g,"'")}',${v.bo},${v.prob/100},'${v.mn.replace(/'/g,"'")}','${v.label.replace(/'/g,"'")}','${v.strat}')"><i class="fas fa-plus"></i></button></td></tr>`;});h+='</tbody></table>';c.innerHTML=h;},
   renderLeagues(){const g=document.getElementById('league-grid');if(!g)return;g.innerHTML=Object.entries(LEAGUES).map(([name,lg])=>{return`<div class="league-c" onclick="document.getElementById('league-filter').value='${name}';App.nav('games',document.querySelector('.nav-a[data-pg=\\'games\\']'))">
@@ -1254,16 +1521,13 @@ const App={
   refreshAll(){this.renderDashboard();this.renderGames();this.updateStats();genCombos();renderBotSignals();toast('✅ Tudo atualizado','s');},
   nav(pg,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-a').forEach(n=>n.classList.remove('active'));const el=document.getElementById('page-'+pg);if(el)el.classList.add('active');if(btn)btn.classList.add('active');if(pg==='games')this.renderGames();else if(pg==='bot')renderBotSignals();else if(pg==='vbets')this.renderVBPage();else if(pg==='combos')genCombos(true);else if(pg==='leagues')this.renderLeagues();else if(pg==='tracker')Trk.renderAll();},
   init(){
-    // restore
     const savedBets=localStorage.getItem('ce_bets');if(savedBets)S.bets=JSON.parse(savedBets);
     const savedDeps=localStorage.getItem('ce_deposits');if(savedDeps)S.deposits=JSON.parse(savedDeps);
     const savedB=localStorage.getItem('ce_bankroll');if(savedB){S.bankroll=parseFloat(savedB);DB.settings.bankroll=S.bankroll;const sb=document.getElementById('s-bank');if(sb)sb.value=S.bankroll;}
-    // seed deposits
     if(!localStorage.getItem('ce_deposits')){S.deposits=[{id:1,type:'dep',casa:'1xbet',valor:14560,data:'2026-03-20'},{id:2,type:'dep',casa:'Bet365',valor:10000,data:'2026-03-21'}];S.bankroll=24560;save();}
     const dd=document.getElementById('dep-data');if(dd)dd.value=new Date().toISOString().split('T')[0];
     this.renderDashboard();this.updateStats();genCombos();renderBotSignals();Trk.renderAll();syncBalance();
-    toast('⚽ CornerEdge Pro · Sistema de Cantos Ativado','s');
-    // Auto-refresh bot every 5 min
+    toast('⚽ CornerEdge Pro + IA · Sistema Ativado','s');
     setInterval(()=>{renderBotSignals();this.updateStats();},5*60*1000);
   }
 };
