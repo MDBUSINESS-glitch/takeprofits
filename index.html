@@ -3,645 +3,1797 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Análise Completa — 04 Abril 2025</title>
+<title>Análise Quant · 05 Abril 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+:root{
+  --bg:#08090D;
+  --surface:#0F1117;
+  --surface2:#161820;
+  --border:#1E2030;
+  --border2:#252840;
+  --text:#E8EAF2;
+  --muted:#5A5D7A;
+  --subtle:#2A2D45;
+
+  --amber:#F59E0B;  --amber-dim:#1C1508; --amber-mid:#3D2800;
+  --orange:#F97316; --orange-dim:#1A0D05; --orange-mid:#3D1600;
+  --blue:#3B82F6;   --blue-dim:#05091F;  --blue-mid:#0D1A40;
+  --purple:#8B5CF6; --purple-dim:#0D0818; --purple-mid:#1E1040;
+  --teal:#14B8A6;   --teal-dim:#021210;  --teal-mid:#062820;
+  --red:#EF4444;    --red-dim:#180505;   --red-mid:#380E0E;
+  --indigo:#6366F1; --indigo-dim:#090A1C; --indigo-mid:#141660;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:system-ui,sans-serif;background:#f5f5f2;color:#1a1a18;}
-.page{max-width:720px;margin:0 auto;padding:16px;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  min-height:100vh;
+}
 
-/* NAV */
-.nav{display:flex;gap:6px;margin-bottom:1.4rem;flex-wrap:wrap;}
-.nav-btn{font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;border:1.5px solid;cursor:pointer;background:transparent;transition:all .15s;}
-.nb-green{border-color:#3B6D11;color:#3B6D11;} .nb-green.active,.nb-green:hover{background:#EAF3DE;}
-.nb-blue{border-color:#185FA5;color:#185FA5;} .nb-blue.active,.nb-blue:hover{background:#E6F1FB;}
-.nb-purple{border-color:#534AB7;color:#26215C;} .nb-purple.active,.nb-purple:hover{background:#EEEDFE;}
-.nb-amber{border-color:#854F0B;color:#633806;} .nb-amber.active,.nb-amber:hover{background:#FAEEDA;}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 
-/* SECTION */
-.section{display:none;} .section.active{display:block;}
+/* ── LAYOUT ── */
+.wrap{max-width:860px;margin:0 auto;padding:0 20px;}
 
-/* HEADERS */
-.tier-header{display:flex;align-items:center;gap:12px;padding:12px 16px;border-left:4px solid;border-radius:0 8px 8px 0;margin-bottom:1.2rem;}
-.th-green{background:#EAF3DE;border-color:#3B6D11;}
-.th-blue{background:#E6F1FB;border-color:#185FA5;}
-.th-purple{background:#EEEDFE;border-color:#534AB7;}
-.th-amber{background:#FAEEDA;border-color:#854F0B;}
-.thl-green{font-size:18px;font-weight:500;color:#27500A;}
-.thl-blue{font-size:18px;font-weight:500;color:#0C447C;}
-.thl-purple{font-size:18px;font-weight:500;color:#26215C;}
-.thl-amber{font-size:18px;font-weight:500;color:#633806;}
-.ths-green{font-size:12px;color:#3B6D11;margin-top:2px;}
-.ths-blue{font-size:12px;color:#185FA5;margin-top:2px;}
-.ths-purple{font-size:12px;color:#534AB7;margin-top:2px;}
-.ths-amber{font-size:12px;color:#854F0B;margin-top:2px;}
+/* ── HEADER ── */
+.site-header{
+  padding:36px 0 28px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.site-header::before{
+  content:'';position:absolute;top:-60px;right:-80px;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle, rgba(59,130,246,.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.header-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+  background:var(--surface);border:1px solid var(--border);
+  padding:4px 10px;border-radius:4px;margin-bottom:14px;
+}
+.header-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--teal);animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.site-title{
+  font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,38px);
+  font-weight:800;color:var(--text);letter-spacing:-.02em;
+  line-height:1.1;margin-bottom:8px;
+}
+.site-title span{color:var(--blue);}
+.site-sub{
+  font-size:13px;color:var(--muted);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:6px;
+}
+.site-sub span{display:flex;align-items:center;gap:5px;}
 
-/* KROW */
-.krow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.4rem;}
-.kc{background:#fff;border-radius:8px;padding:.7rem;text-align:center;border:.5px solid #e0dfd6;}
-.kl{font-size:10px;color:#888780;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}
-.kv{font-size:20px;font-weight:500;color:#1a1a18;}
+/* ── STATS ROW ── */
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  padding:20px 0;border-bottom:1px solid var(--border);
+}
+.stat-pill{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px;
+}
+.sp-label{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
+.sp-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);}
+.sp-sub{font-size:10px;color:var(--muted);margin-top:2px;}
 
-/* SEC LABEL */
-.sec{font-size:11px;font-weight:500;color:#888780;text-transform:uppercase;letter-spacing:.06em;margin:1.4rem 0 .7rem;}
+/* ── NAV ── */
+.sticky-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,9,13,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:10px 0;
+}
+.nav-inner{display:flex;gap:6px;overflow-x:auto;padding:0 20px;
+  scrollbar-width:none;white-space:nowrap;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav-btn{
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 14px;border-radius:6px;border:1px solid;
+  cursor:pointer;background:transparent;text-decoration:none;
+  transition:all .15s;white-space:nowrap;
+}
 
-/* GAME CARD */
-.game-card{background:#fff;border:.5px solid #d3d1c7;border-radius:12px;margin-bottom:1rem;overflow:hidden;}
-.gc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:.5px solid #e0dfd6;}
-.gc-left{flex:1;}
-.gc-name{font-size:14px;font-weight:500;color:#1a1a18;}
-.gc-meta{font-size:11px;color:#888780;margin-top:2px;}
-.gc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.badge-tier{font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px;}
-.bg-green{background:#EAF3DE;color:#27500A;} .bg-blue{background:#E6F1FB;color:#0C447C;}
-.bg-purple{background:#EEEDFE;color:#26215C;} .bg-amber{background:#FAEEDA;color:#633806;}
-.score-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}
-.sc-green{background:#EAF3DE;color:#27500A;} .sc-blue{background:#E6F1FB;color:#0C447C;}
-.sc-purple{background:#EEEDFE;color:#26215C;} .sc-amber{background:#FAEEDA;color:#633806;}
+/* ── SECTION ── */
+.section{scroll-margin-top:72px;padding:32px 0 8px;}
+.section-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:20px;gap:16px;flex-wrap:wrap;
+}
+.sh-left{}
+.section-tag{
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:3px;margin-bottom:8px;
+  display:inline-block;
+}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:19px;font-weight:700;
+  color:var(--text);letter-spacing:-.01em;line-height:1.2;
+}
+.section-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+.section-kpis{
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:0;
+}
+.kpi-chip{
+  font-family:'DM Mono',monospace;font-size:11px;
+  padding:4px 10px;border-radius:5px;
+  background:var(--surface);border:1px solid var(--border);
+}
 
-/* BODY */
-.gc-body{padding:12px 14px;}
-.gc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.gc-stat{background:#f5f5f2;border-radius:8px;padding:8px 10px;}
-.gs-label{font-size:10px;color:#888780;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
-.gs-val{font-size:15px;font-weight:500;color:#1a1a18;}
-.gs-sub{font-size:10px;color:#888780;margin-top:1px;}
+.section-divider{
+  height:1px;background:var(--border);margin:28px 0;
+}
 
-/* PROB */
-.prob-section{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.prob-num{font-size:24px;font-weight:500;min-width:52px;}
-.pn-green{color:#3B6D11;} .pn-blue{color:#185FA5;} .pn-purple{color:#534AB7;} .pn-amber{color:#854F0B;}
-.prob-bar-wrap{flex:1;height:8px;background:#e0dfd6;border-radius:4px;overflow:hidden;}
-.prob-fill{height:100%;border-radius:4px;}
-.pf-green{background:#639922;} .pf-blue{background:#378ADD;} .pf-purple{background:#7F77DD;} .pf-amber{background:#EF9F27;}
-.prob-label{font-size:11px;color:#888780;min-width:80px;text-align:right;}
+/* ── GAME CARD ── */
+.game-label{
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  color:var(--muted);letter-spacing:.08em;text-transform:uppercase;
+  margin:22px 0 10px;display:flex;align-items:center;gap:8px;
+}
+.game-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-/* FILTER MATRIX */
-.filter-matrix{margin-bottom:12px;}
-.fm-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
-.fm-name{font-size:10px;color:#888780;width:120px;flex-shrink:0;}
-.fm-dots{display:flex;gap:3px;}
-.fdot{width:10px;height:10px;border-radius:50%;}
-.f-on{background:#639922;} .f-half{background:#EF9F27;} .f-off{background:#e0dfd6;}
-.fn-green{font-size:10px;color:#3B6D11;margin-left:4px;}
-.fn-blue{font-size:10px;color:#185FA5;margin-left:4px;}
-.fn-purple{font-size:10px;color:#534AB7;margin-left:4px;}
-.fn-amber{font-size:10px;color:#854F0B;margin-left:4px;}
-.fn-warn{font-size:10px;color:#BA7517;margin-left:4px;}
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;margin-bottom:12px;
+  transition:border-color .2s;
+}
+.card:hover{border-color:var(--border2);}
 
-/* BOXES */
-.tactics-box{background:#f5f5f2;border-radius:8px;padding:10px 12px;margin-bottom:10px;}
-.tac-title{font-size:10px;font-weight:500;color:#888780;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
-.tac-item{font-size:12px;color:#1a1a18;padding:3px 0;display:flex;gap:6px;align-items:flex-start;border-bottom:.5px solid #e0dfd6;}
-.tac-item:last-child{border-bottom:none;}
-.dot-green{width:5px;height:5px;border-radius:50%;background:#639922;margin-top:5px;flex-shrink:0;}
-.dot-blue{width:5px;height:5px;border-radius:50%;background:#378ADD;margin-top:5px;flex-shrink:0;}
-.dot-purple{width:5px;height:5px;border-radius:50%;background:#7F77DD;margin-top:5px;flex-shrink:0;}
-.dot-amber{width:5px;height:5px;border-radius:50%;background:#EF9F27;margin-top:5px;flex-shrink:0;}
-.risk-box{background:#FCEBEB;border:.5px solid #F09595;border-radius:8px;padding:8px 10px;margin-bottom:8px;}
-.risk-title{font-size:10px;font-weight:500;color:#791F1F;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
-.risk-item{font-size:11px;color:#A32D2D;padding:2px 0;display:flex;gap:5px;align-items:flex-start;}
-.r-dot{width:4px;height:4px;border-radius:50%;background:#E24B4A;margin-top:4px;flex-shrink:0;}
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid var(--border);gap:12px;
+}
+.ch-left{flex:1;min-width:0;}
+.card-name{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:600;
+  color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.card-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.ch-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 
-/* ODDS */
+.tier-badge{
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  letter-spacing:.06em;padding:3px 7px;border-radius:4px;
+}
+.score-ring{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:500;
+  border:1.5px solid;
+}
+.val-badge{
+  font-family:'DM Mono',monospace;font-size:8px;font-weight:600;
+  letter-spacing:.06em;padding:2px 6px;border-radius:3px;
+  background:#0A2E1A;color:#34D399;border:1px solid #1A5C37;
+  margin-left:6px;vertical-align:middle;
+}
+
+.card-body{padding:14px 16px;}
+
+/* PROB BAR */
+.prob-row{
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;
+  padding:10px 12px;background:var(--surface2);border-radius:8px;
+}
+.prob-pct{
+  font-family:'Syne',sans-serif;font-size:26px;font-weight:700;
+  min-width:58px;line-height:1;
+}
+.prob-bar-wrap{
+  flex:1;height:5px;background:var(--border2);border-radius:3px;overflow:hidden;
+}
+.prob-bar{height:100%;border-radius:3px;transition:width .4s ease;}
+.prob-label{
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  color:var(--muted);text-align:right;min-width:100px;
+}
+
+/* STATS GRID */
+.stats-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;
+}
+.stat-box{
+  background:var(--surface2);border-radius:8px;padding:9px 11px;
+}
+.sb-label{
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;
+}
+.sb-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);}
+.sb-sub{font-size:10px;color:var(--muted);margin-top:1px;line-height:1.3;}
+
+/* TACTICS */
+.tactics{
+  border:1px solid var(--border);border-radius:8px;
+  overflow:hidden;margin-bottom:10px;
+}
+.tactics-header{
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:7px 12px;background:var(--surface2);color:var(--muted);
+  border-bottom:1px solid var(--border);
+}
+.tactic-item{
+  font-size:12px;color:var(--text);padding:7px 12px;
+  display:flex;gap:8px;align-items:flex-start;
+  border-bottom:1px solid var(--border);line-height:1.4;
+}
+.tactic-item:last-child{border-bottom:none;}
+.tactic-dot{
+  width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px;
+}
+
+/* RISKS */
+.risks{
+  background:#120508;border:1px solid #2A0C0C;
+  border-radius:8px;padding:10px 12px;margin-bottom:10px;
+}
+.risks-header{
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:#EF4444;margin-bottom:6px;
+}
+.risk-item{
+  font-size:11px;color:#C87070;padding:2px 0;
+  display:flex;gap:7px;align-items:flex-start;
+}
+.risk-dot{
+  width:4px;height:4px;border-radius:50%;background:#EF4444;
+  flex-shrink:0;margin-top:4px;
+}
+
+/* ODDS ROW */
 .odds-row{display:flex;gap:8px;flex-wrap:wrap;}
-.odd-pill{background:#f5f5f2;border:.5px solid #d3d1c7;border-radius:8px;padding:6px 10px;text-align:center;}
-.op-label{font-size:10px;color:#888780;}
-.op-val{font-size:14px;font-weight:500;color:#1a1a18;}
-.ev-green{color:#3B6D11;} .ev-blue{color:#185FA5;} .ev-purple{color:#534AB7;} .ev-amber{color:#854F0B;}
+.odd-chip{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:7px 12px;
+}
+.oc-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);
+  letter-spacing:.04em;text-transform:uppercase;}
+.oc-val{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-top:1px;}
+.oc-ev{font-family:'DM Mono',monospace;font-size:14px;font-weight:600;}
 
-/* TRIPLA */
-.tripla-note{border-radius:8px;padding:10px 12px;margin-top:1rem;font-size:12px;}
-.tn-green{background:#EAF3DE;border:.5px solid #C0DD97;color:#27500A;}
-.tn-blue{background:#E6F1FB;border:.5px solid #B5D4F4;color:#0C447C;}
-.tn-purple{background:#EEEDFE;border:.5px solid #AFA9EC;color:#26215C;}
-.tn-amber{background:#FAEEDA;border:.5px solid #FAC775;color:#633806;}
+/* COMBO NOTE */
+.combo-note{
+  border-radius:10px;padding:12px 14px;margin:16px 0;
+  border:1px solid;font-size:12px;line-height:1.5;
+}
 
-.divider{border:none;border-top:.5px solid #d3d1c7;margin:2rem 0;}
+/* DISCLAIMER */
+.disclaimer{
+  margin:32px 0;padding:16px;border-radius:10px;
+  background:var(--surface);border:1px solid var(--border);
+  font-size:11px;color:var(--muted);line-height:1.6;
+}
+.disclaimer strong{color:var(--red);font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:.06em;text-transform:uppercase;}
+
+/* ── COLOR VARIANTS ── */
+/* AMBER */
+.c-amber .nav-btn,.nb-amber{border-color:#5C3A00;color:var(--amber);}
+.nb-amber:hover{background:var(--amber-mid);}
+.c-amber .section-tag{background:var(--amber-mid);color:var(--amber);}
+.c-amber .tier-badge{background:var(--amber-dim);color:var(--amber);}
+.c-amber .score-ring{border-color:var(--amber);color:var(--amber);}
+.c-amber .prob-pct{color:var(--amber);}
+.c-amber .prob-bar{background:var(--amber);}
+.c-amber .tactic-dot{background:var(--amber);}
+.c-amber .oc-ev{color:var(--amber);}
+.c-amber .combo-note{background:var(--amber-dim);border-color:#5C3A00;color:#D4872A;}
+.c-amber .kpi-chip{color:var(--amber);}
+
+/* ORANGE */
+.nb-orange{border-color:#5C2500;color:var(--orange);}
+.nb-orange:hover{background:var(--orange-mid);}
+.c-orange .section-tag{background:var(--orange-mid);color:var(--orange);}
+.c-orange .tier-badge{background:var(--orange-dim);color:var(--orange);}
+.c-orange .score-ring{border-color:var(--orange);color:var(--orange);}
+.c-orange .prob-pct{color:var(--orange);}
+.c-orange .prob-bar{background:var(--orange);}
+.c-orange .tactic-dot{background:var(--orange);}
+.c-orange .oc-ev{color:var(--orange);}
+.c-orange .combo-note{background:var(--orange-dim);border-color:#5C2500;color:#C97A45;}
+.c-orange .kpi-chip{color:var(--orange);}
+
+/* BLUE */
+.nb-blue{border-color:#0D1B45;color:var(--blue);}
+.nb-blue:hover{background:var(--blue-mid);}
+.c-blue .section-tag{background:var(--blue-mid);color:var(--blue);}
+.c-blue .tier-badge{background:var(--blue-dim);color:var(--blue);}
+.c-blue .score-ring{border-color:var(--blue);color:var(--blue);}
+.c-blue .prob-pct{color:var(--blue);}
+.c-blue .prob-bar{background:var(--blue);}
+.c-blue .tactic-dot{background:var(--blue);}
+.c-blue .oc-ev{color:var(--blue);}
+.c-blue .combo-note{background:var(--blue-dim);border-color:#0D1B45;color:#7AABF7;}
+.c-blue .kpi-chip{color:var(--blue);}
+
+/* PURPLE */
+.nb-purple{border-color:#200C48;color:var(--purple);}
+.nb-purple:hover{background:var(--purple-mid);}
+.c-purple .section-tag{background:var(--purple-mid);color:var(--purple);}
+.c-purple .tier-badge{background:var(--purple-dim);color:var(--purple);}
+.c-purple .score-ring{border-color:var(--purple);color:var(--purple);}
+.c-purple .prob-pct{color:var(--purple);}
+.c-purple .prob-bar{background:var(--purple);}
+.c-purple .tactic-dot{background:var(--purple);}
+.c-purple .oc-ev{color:var(--purple);}
+.c-purple .combo-note{background:var(--purple-dim);border-color:#200C48;color:#B08DF5;}
+.c-purple .kpi-chip{color:var(--purple);}
+
+/* TEAL */
+.nb-teal{border-color:#052820;color:var(--teal);}
+.nb-teal:hover{background:var(--teal-mid);}
+.c-teal .section-tag{background:var(--teal-mid);color:var(--teal);}
+.c-teal .tier-badge{background:var(--teal-dim);color:var(--teal);}
+.c-teal .score-ring{border-color:var(--teal);color:var(--teal);}
+.c-teal .prob-pct{color:var(--teal);}
+.c-teal .prob-bar{background:var(--teal);}
+.c-teal .tactic-dot{background:var(--teal);}
+.c-teal .oc-ev{color:var(--teal);}
+.c-teal .combo-note{background:var(--teal-dim);border-color:#052820;color:#3ED6C8;}
+.c-teal .kpi-chip{color:var(--teal);}
+
+/* RED */
+.nb-red{border-color:#380808;color:var(--red);}
+.nb-red:hover{background:var(--red-mid);}
+.c-red .section-tag{background:var(--red-mid);color:var(--red);}
+.c-red .tier-badge{background:var(--red-dim);color:var(--red);}
+.c-red .score-ring{border-color:var(--red);color:var(--red);}
+.c-red .prob-pct{color:var(--red);}
+.c-red .prob-bar{background:var(--red);}
+.c-red .tactic-dot{background:var(--red);}
+.c-red .oc-ev{color:var(--red);}
+.c-red .combo-note{background:var(--red-dim);border-color:#380808;color:#F08080;}
+.c-red .kpi-chip{color:var(--red);}
+
+/* INDIGO */
+.nb-indigo{border-color:#14155A;color:var(--indigo);}
+.nb-indigo:hover{background:var(--indigo-mid);}
+.c-indigo .section-tag{background:var(--indigo-mid);color:var(--indigo);}
+.c-indigo .tier-badge{background:var(--indigo-dim);color:var(--indigo);}
+.c-indigo .score-ring{border-color:var(--indigo);color:var(--indigo);}
+.c-indigo .prob-pct{color:var(--indigo);}
+.c-indigo .prob-bar{background:var(--indigo);}
+.c-indigo .tactic-dot{background:var(--indigo);}
+.c-indigo .oc-ev{color:var(--indigo);}
+.c-indigo .combo-note{background:var(--indigo-dim);border-color:#14155A;color:#9496F6;}
+.c-indigo .kpi-chip{color:var(--indigo);}
+
+/* ── FOOTER ── */
+.footer{
+  padding:24px 0 32px;border-top:1px solid var(--border);
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+}
+
+@media(max-width:600px){
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .stats-grid{grid-template-columns:1fr;}
+  .header-sub .site-sub{flex-direction:column;gap:4px;}
+}
 </style>
 </head>
 <body>
-<div class="page">
 
-<div style="padding:.8rem 0 .4rem;">
-  <div style="font-size:20px;font-weight:500;color:#1a1a18;">Análise de Apostas</div>
-  <div style="font-size:12px;color:#888780;margin-top:3px;">04 Abril 2025 · 4 Mercados · 32 Seleções Tier A</div>
+<!-- HEADER -->
+<div class="wrap">
+<header class="site-header">
+  <div class="header-badge">Quant Analytics · 05 ABR 2026 · Todos os Mercados</div>
+  <h1 class="site-title">Análise de <span>Apostas</span></h1>
+  <div class="site-sub">
+    <span>📅 Domingo, 05 Abril 2026</span>
+    <span>📊 7 Mercados</span>
+    <span>🎯 40 Seleções Totais</span>
+    <span>✅ EV Positivo Confirmado</span>
+  </div>
+</header>
+
+<!-- GLOBAL STATS -->
+<div class="stats-row">
+  <div class="stat-pill">
+    <div class="sp-label">Mercados</div>
+    <div class="sp-val">7</div>
+    <div class="sp-sub">Cantos, BTTS, AH, Golos, Cartões, Remates</div>
+  </div>
+  <div class="stat-pill">
+    <div class="sp-label">Prob. Média</div>
+    <div class="sp-val">71%</div>
+    <div class="sp-sub">Acima da média de mercado</div>
+  </div>
+  <div class="stat-pill">
+    <div class="sp-label">Score Médio</div>
+    <div class="sp-val">25/30</div>
+    <div class="sp-sub">Sistema de scoring proprietário</div>
+  </div>
+  <div class="stat-pill">
+    <div class="sp-label">EV Médio</div>
+    <div class="sp-val">+7.8%</div>
+    <div class="sp-sub">Expected Value estimado</div>
+  </div>
+</div>
+</div><!-- /wrap -->
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+<div class="nav-inner">
+  <a class="nav-btn nb-amber" href="#corners">⬡ Cantos FT</a>
+  <a class="nav-btn nb-orange" href="#cornersHT">⬡ Cantos HT</a>
+  <a class="nav-btn nb-blue" href="#btts">◎ BTTS</a>
+  <a class="nav-btn nb-purple" href="#u35">▽ Under 3.5</a>
+  <a class="nav-btn nb-teal" href="#ah">↔ Asiático</a>
+  <a class="nav-btn nb-red" href="#cards">▣ Cartões</a>
+  <a class="nav-btn nb-indigo" href="#shots">◈ Remates</a>
+</div>
+</nav>
+
+<div class="wrap">
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CANTOS FT -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section c-amber" id="corners">
+  <div class="section-header">
+    <div class="sh-left">
+      <div class="section-tag">Mercado 01</div>
+      <div class="section-title">Cantos FT — Over Totais</div>
+      <div class="section-sub">6 apostas · Score médio 26/30 · Probabilidade média 71%</div>
+    </div>
+    <div class="section-kpis">
+      <div class="kpi-chip">6 Apostas</div>
+      <div class="kpi-chip">Prob. 71%</div>
+      <div class="kpi-chip">Score 26/30</div>
+    </div>
+  </div>
+
+  <!-- Jogo 1 -->
+  <div class="game-label">Jogo 01 · Scottish Premiership · 17:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Dundee FC vs Celtic<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Dens Park · Scottish Premiership · 17:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">28</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">76%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:76%"></div></div>
+        <div class="prob-label">Over 10.5 Cantos FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Celtic cantos/jogo fora</div><div class="sb-val">6.8</div><div class="sb-sub">Top 1 Scottish Prem em deslocação</div></div>
+        <div class="stat-box"><div class="sb-label">Dundee cant. concedidos</div><div class="sb-val">5.1</div><div class="sb-sub">Bloco baixo gera cruzamentos</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada FT</div><div class="sb-val">11.9</div><div class="sb-sub">Linha: 10.5</div></div>
+        <div class="stat-box"><div class="sb-label">Over 10.5 rate Celtic fora</div><div class="sb-val">72%</div><div class="sb-sub">Últimas 11 deslocações</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Celtic é a maior máquina de cantos da Scottish Premiership — extremos Maeda e Johnston rasgam pelas alas e forçam defesas a desviar para canto repetidamente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Dundee FC usa bloco baixo de 5-4-1 em casa vs top — este setup funnela o Celtic para as alas e gera volume de cantos acima da média de 10.5</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Celtic usa bolas paradas como arma primária — o clube tem um dos melhores analistas de set-pieces da liga, aumentando a procura de cantos</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>H2H: média de 12.4 cantos totais nos últimos 5 confrontos — padrão extremamente consistente</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Celtic pode marcar cedo e gerir o ritmo no segundo tempo — reduz volume de cantos nos últimos 20 minutos</div>
+        <div class="risk-item"><span class="risk-dot"></span>Confirmar escalão 2h antes — ausência de Maeda ou Johnston reduz produção nas alas</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 10.5 FT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.42–1.55</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+9.2%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jogo 2 -->
+  <div class="game-label">Jogo 02 · Serie A · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Inter vs AS Roma<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">San Siro · Serie A · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">27</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">74%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:74%"></div></div>
+        <div class="prob-label">Over 10.5 Cantos FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Inter cantos/jogo (San Siro)</div><div class="sb-val">6.2</div><div class="sb-sub">Top 2 Serie A em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Roma cantos concedidos fora</div><div class="sb-val">4.8</div><div class="sb-sub">Bloco médio-baixo em deslocação</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada FT</div><div class="sb-val">11.0</div><div class="sb-sub">Linha: 10.5</div></div>
+        <div class="stat-box"><div class="sb-label">H2H cantos avg (San Siro)</div><div class="sb-val">11.4</div><div class="sb-sub">Últimos 5 confrontos</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Inter com Dimarco e Dumfries nos flancos gera volume de cruzamentos muito alto — sistema 3-5-2 empurra os wing-backs para a linha de fundo constantemente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Roma em deslocação usa bloco médio-compacto que obriga a Inter a cruzar repetidamente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Jogo com forte motivação para Inter em contexto de título — pressing máximo do início ao fim</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>H2H: média de 11.4 cantos nos últimos 5 em San Siro — consistência muito alta</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Roma pode jogar linhas muito baixas e reduzir o ritmo</div>
+        <div class="risk-item"><span class="risk-dot"></span>Verificar lesões nos wing-backs da Inter — Dimarco é determinante para o volume de cantos</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 10.5 FT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.44–1.58</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+8.5%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jogo 3 -->
+  <div class="game-label">Jogo 03 · Ligue 1 · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Monaco vs Marseille<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Stade Louis II · Ligue 1 · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">26</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">72%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:72%"></div></div>
+        <div class="prob-label">Over 10.5 Cantos FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Monaco cantos/jogo (casa)</div><div class="sb-val">5.9</div><div class="sb-sub">Sistema ofensivo com alas abertas</div></div>
+        <div class="stat-box"><div class="sb-label">Marseille cant. concedidos fora</div><div class="sb-val">5.0</div><div class="sb-sub">Pressing alto cria contra-cantos</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada FT</div><div class="sb-val">10.9</div><div class="sb-sub">Linha: 10.5</div></div>
+        <div class="stat-box"><div class="sb-label">Over 10.5 H2H rate</div><div class="sb-val">68%</div><div class="sb-sub">Últimos 6 confrontos diretos</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Derby do Sul francês — ambas jogam com intensidade máxima desde o início, pressing agressivo que gera inúmeros cantos em ambas as direções</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Monaco com Ben Yedder e Embolo ataca pelas alas abertas — sistema que depende de cruzamentos como primeira opção</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Marseille usa pressing alto de Sánchez e Aubameyang — gera cantos ofensivos também em deslocação</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Estádio Louis II muito pequeno e atmosfera intensa — mantém o ritmo alto durante os 90 minutos</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Derby pode tornar-se demasiado físico e reduzir o jogo fluido nas alas</div>
+        <div class="risk-item"><span class="risk-dot"></span>Expulsão antecipada pode alterar completamente o padrão de cantos</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 10.5 FT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.46–1.60</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.8%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jogo 4 -->
+  <div class="game-label">Jogo 04 · LaLiga · 14:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Getafe vs Athletic Bilbao</div>
+        <div class="card-meta">Coliseum · LaLiga · 14:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">25</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">70%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:70%"></div></div>
+        <div class="prob-label">Over 9.5 Cantos FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Getafe cant. concedidos/jogo</div><div class="sb-val">5.2</div><div class="sb-sub">Bloco defensivo gera cruzamentos</div></div>
+        <div class="stat-box"><div class="sb-label">Bilbao cantos/jogo fora</div><div class="sb-val">5.0</div><div class="sb-sub">Ataque direto pelas alas</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada FT</div><div class="sb-val">10.2</div><div class="sb-sub">Linha: 9.5</div></div>
+        <div class="stat-box"><div class="sb-label">H2H cantos avg</div><div class="sb-val">10.6</div><div class="sb-sub">Últimos 5 confrontos LaLiga</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Getafe usa bloco defensivo muito compacto — obriga adversários a cruzar pelas alas e gera cantos em sequência especialmente no 2.º tempo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Athletic Bilbao usa futebol direto e físico — Berenguer e Williams rasgam pelos flancos terminando em cruzamento ou canto</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Linha de 9.5 é mais favorável — oferece maior margem de segurança face à projeção de 10.2</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Getafe pode optar por jogo muito lento para neutralizar o Bilbao</div>
+        <div class="risk-item"><span class="risk-dot"></span>Jogo ao início da tarde — pouca intensidade nos primeiros 30 minutos</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 9.5 FT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.48–1.62</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.2%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jogo 5 -->
+  <div class="game-label">Jogo 05 · Süper Lig · 19:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Fenerbahce vs Besiktas</div>
+        <div class="card-meta">Ülker Stadyumu · Süper Lig · 19:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">25</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">69%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:69%"></div></div>
+        <div class="prob-label">Over 9.5 Cantos FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Fenerbahce cantos/jogo casa</div><div class="sb-val">5.6</div><div class="sb-sub">Ataque ofensivo em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Besiktas cant. concedidos fora</div><div class="sb-val">4.7</div><div class="sb-sub">Não recua no Derbisi</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada FT</div><div class="sb-val">10.3</div><div class="sb-sub">Linha: 9.5</div></div>
+        <div class="stat-box"><div class="sb-label">H2H cantos avg Derby</div><div class="sb-val">10.8</div><div class="sb-sub">Últimos 6 confrontos Istambul</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Intercontinental Derby — maior derby turco gera intensidade máxima em campo, ambas a atacar de forma agressiva durante os 90 minutos</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Fenerbahce com Dzeko e Tadic usa as alas de forma sistemática — cruzamentos frequentes terminam em cantos repetidos</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>H2H: média de 10.8 cantos totais nos últimos 6 derbies — padrão muito consistente</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Derby muito físico pode reduzir o futebol pelas alas — cartões e expulsões alteram dinâmica</div>
+        <div class="risk-item"><span class="risk-dot"></span>Árbitro turco com perfil conservador pode parar muito o jogo</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 9.5 FT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.50–1.65</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+6.8%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jogo 6 -->
+  <div class="game-label">Jogo 06 · Bundesliga · 15:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Union Berlin vs St. Pauli</div>
+        <div class="card-meta">Stadion An der Alten Försterei · Bundesliga · 15:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">24</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">67%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:67%"></div></div>
+        <div class="prob-label">Over 9.5 Cantos FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Union Berlin cantos/jogo casa</div><div class="sb-val">5.3</div><div class="sb-sub">Bolas longas geram cantos</div></div>
+        <div class="stat-box"><div class="sb-label">St. Pauli cant. concedidos fora</div><div class="sb-val">4.9</div><div class="sb-sub">Pressing alto concede espaços</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada FT</div><div class="sb-val">10.2</div><div class="sb-sub">Linha: 9.5</div></div>
+        <div class="stat-box"><div class="sb-label">Derby Berlim H2H cantos avg</div><div class="sb-val">10.5</div><div class="sb-sub">Últimos 4 confrontos diretos</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Derby de Berlim — Union usa bolas longas e diretas que terminam frequentemente em canto quando a defesa do St. Pauli intervém</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>St. Pauli usa pressing alto em deslocação — gera cantos para o Union em contra-ataques e transições</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Ambas em luta na classificação — intensidade máxima durante os 90 minutos</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Jogo muito intenso e físico — reduz futebol de posição que gera cantos</div>
+        <div class="risk-item"><span class="risk-dot"></span>Union pode optar por jogo mais direto e vertical com menos ataques em profundidade</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 9.5 FT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.52–1.68</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+6.1%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="combo-note">
+    💡 <strong>Combinação Cantos FT (top 3):</strong> Celtic O10.5 (1.42) + Inter O10.5 (1.44) + Monaco O10.5 (1.46) = odd combinada ≈ 2.98 · prob. combinada ≈ 40% · Máximo 1% banca
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CANTOS HT -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section c-orange" id="cornersHT">
+  <div class="section-header">
+    <div class="sh-left">
+      <div class="section-tag">Mercado 02</div>
+      <div class="section-title">Cantos HT — Over 1.º Tempo</div>
+      <div class="section-sub">5 apostas · Score médio 25/30 · Probabilidade média 70% · Alto Valor</div>
+    </div>
+    <div class="section-kpis">
+      <div class="kpi-chip">5 Apostas</div>
+      <div class="kpi-chip">Prob. 70%</div>
+      <div class="kpi-chip">Score 25/30</div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 01 · Scottish Premiership · 17:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Dundee FC vs Celtic<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Dens Park · Scottish Premiership · 17:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">27</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">74%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:74%"></div></div>
+        <div class="prob-label">Over 5.5 Cantos HT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Celtic cantos HT fora</div><div class="sb-val">3.7</div><div class="sb-sub">Pressing alto desde o apito</div></div>
+        <div class="stat-box"><div class="sb-label">Dundee cant. concedidos HT</div><div class="sb-val">2.8</div><div class="sb-sub">Recua nos primeiros 45'</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção HT combinada</div><div class="sb-val">6.5</div><div class="sb-sub">Linha: 5.5</div></div>
+        <div class="stat-box"><div class="sb-label">Over 5.5 HT rate Celtic</div><div class="sb-val">70%</div><div class="sb-sub">Últimas 10 deslocações</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Celtic impõe pressão máxima desde o minuto 1 — Brendan Rodgers exige intensidade ofensiva nos primeiros 45 minutos para definir o jogo cedo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Dundee FC com bloco de 5 desde o início vs Celtic — posicionamento defensivo que gera cantos repetidos para o Celtic nos primeiros 45 minutos</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Linha de 5.5 favorável — margem de 1 canto acima da projeção de 6.5</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Celtic pode marcar muito cedo e gerir o primeiro tempo sem criar mais cantos</div>
+        <div class="risk-item"><span class="risk-dot"></span>Confirmar estado dos wing-backs do Celtic antes do jogo</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 5.5 HT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.55–1.70</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+9.0%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 02 · Serie A · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Inter vs AS Roma<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">San Siro · Serie A · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">26</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">72%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:72%"></div></div>
+        <div class="prob-label">Over 5.5 Cantos HT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Inter cantos HT (San Siro)</div><div class="sb-val">3.4</div><div class="sb-sub">Dimarco/Dumfries ativos desde início</div></div>
+        <div class="stat-box"><div class="sb-label">Roma cant. concedidos HT fora</div><div class="sb-val">2.6</div><div class="sb-sub">Bloco baixo nos primeiros 45'</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção HT</div><div class="sb-val">6.0</div><div class="sb-sub">Linha: 5.5</div></div>
+        <div class="stat-box"><div class="sb-label">Over 5.5 HT rate Inter</div><div class="sb-val">67%</div><div class="sb-sub">Últimas 12 jornadas</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Inter inicia com pressing alto e wing-backs subindo desde o apito — Dimarco à esquerda e Dumfries à direita geram volume de cruzamentos imediato</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Roma adota postura conservadora no 1.º tempo em deslocação — bloco que canaliza Inter para as alas gerando cantos repetidos</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Contexto de título para a Inter — intensidade máxima desde o início sem qualquer gestão de ritmo no 1.º tempo</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Roma pode surpreender com pressão alta no 1.º tempo — altera o padrão esperado</div>
+        <div class="risk-item"><span class="risk-dot"></span>Lesão nos wing-backs da Inter reduz significativamente o volume de cruzamentos HT</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 5.5 HT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.58–1.72</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+8.2%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 03 · Ligue 1 · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Monaco vs Marseille</div>
+        <div class="card-meta">Stade Louis II · Ligue 1 · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">25</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">70%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:70%"></div></div>
+        <div class="prob-label">Over 5.5 Cantos HT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Monaco cantos HT (casa)</div><div class="sb-val">3.2</div><div class="sb-sub">Derby — intensidade máxima inicial</div></div>
+        <div class="stat-box"><div class="sb-label">Marseille cant. concedidos HT</div><div class="sb-val">2.9</div><div class="sb-sub">Pressing alto cria espaços</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção HT</div><div class="sb-val">6.1</div><div class="sb-sub">Linha: 5.5</div></div>
+        <div class="stat-box"><div class="sb-label">H2H Over 5.5 HT rate</div><div class="sb-val">66%</div><div class="sb-sub">Últimos 6 confrontos diretos</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Derby do Sul inicia ao máximo — ambas saem a ganhar do balneário com ritmo naturalmente mais elevado que em jogo normal</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Monaco com Embolo e Ben Yedder ataca de imediato pelas alas — cruzamentos desde o início geram cantos no 1.º tempo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Marseille usa pressing alto que também cria cantos em transições para ambas no 1.º tempo</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Derby pode começar com muita intensidade física mas pouco futebol pelas alas nos primeiros minutos</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 5.5 HT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.60–1.75</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.5%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 04 · Süper Lig · 19:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Fenerbahce vs Besiktas<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Ülker Stadyumu · Süper Lig · 19:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">25</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">71%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:71%"></div></div>
+        <div class="prob-label">Over 4.5 Cantos HT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Fenerbahce cantos HT casa</div><div class="sb-val">2.8</div><div class="sb-sub">Derby — ataque desde o início</div></div>
+        <div class="stat-box"><div class="sb-label">Besiktas cant. concedidos HT fora</div><div class="sb-val">2.6</div><div class="sb-sub">Não recua no derby</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção HT</div><div class="sb-val">5.4</div><div class="sb-sub">Linha: 4.5</div></div>
+        <div class="stat-box"><div class="sb-label">Over 4.5 HT rate Derby</div><div class="sb-val">74%</div><div class="sb-sub">Últimos 8 derbies em Istambul</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Derby turco começa ao máximo — ambas as bancadas criam pressão que se traduz em ritmo altíssimo desde o minuto 1</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Fenerbahce não gere o 1.º tempo no derby de casa — Dzeko e Tadic exigem a bola nas alas constantemente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Linha favorável de 4.5 — projeção de 5.4 oferece margem confortável de 0.9 acima da linha</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Golo muito cedo pode alterar a dinâmica e o jogo tornar-se mais físico e menos fluido nas alas</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 4.5 HT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.48–1.62</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.1%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 05 · Ligue 1 · 15:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Angers vs Lyon</div>
+        <div class="card-meta">Stade Jean Bouin · Ligue 1 · 15:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">24</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">68%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:68%"></div></div>
+        <div class="prob-label">Over 4.5 Cantos HT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Lyon cantos HT fora</div><div class="sb-val">3.0</div><div class="sb-sub">Pressing alto no 1.º tempo</div></div>
+        <div class="stat-box"><div class="sb-label">Angers cant. concedidos HT</div><div class="sb-val">2.7</div><div class="sb-sub">Recua vs equipas de topo</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção HT</div><div class="sb-val">5.7</div><div class="sb-sub">Linha: 4.5</div></div>
+        <div class="stat-box"><div class="sb-label">Over 4.5 HT rate Lyon fora</div><div class="sb-val">65%</div><div class="sb-sub">Últimas 10 deslocações</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Lyon pressiona alto desde o início em deslocação — Lacazette e Mikautadze exigem a bola pelas alas criando volume de cantos desde o apito</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Angers em 5-3-2 defensivo no 1.º tempo vs Lyon — bloco que força o Lyon a cruzar repetidamente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Linha de 4.5 com margem confortável — projeção de 5.7 oferece 1.2 acima da linha</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Lyon pode poupar jogadores para jogos europeus — confirmar escalão com antecedência</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 4.5 HT</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.50–1.65</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+6.4%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="combo-note">
+    💡 <strong>Combinação Cantos HT (top 3):</strong> Celtic O5.5 (1.55) + Inter O5.5 (1.58) + Fener O4.5 (1.48) = odd combinada ≈ 3.63 · prob. combinada ≈ 38% · Máximo 1% banca
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BTTS -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section c-blue" id="btts">
+  <div class="section-header">
+    <div class="sh-left">
+      <div class="section-tag">Mercado 03</div>
+      <div class="section-title">BTTS — Ambas Marcam</div>
+      <div class="section-sub">6 apostas · Score médio 25/30 · Probabilidade média 71%</div>
+    </div>
+    <div class="section-kpis">
+      <div class="kpi-chip">6 Apostas</div>
+      <div class="kpi-chip">Prob. 71%</div>
+      <div class="kpi-chip">Score 25/30</div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 01 · Süper Lig · 19:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Fenerbahce vs Besiktas<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Ülker Stadyumu · Süper Lig · 19:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">28</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">76%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:76%"></div></div>
+        <div class="prob-label">Ambas Marcam — Sim</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Fenerbahce marca em casa</div><div class="sb-val">91%</div><div class="sb-sub">Últimas 11 jornadas em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Besiktas marca em deslocação</div><div class="sb-val">78%</div><div class="sb-sub">Não abandona o derby sem marcar</div></div>
+        <div class="stat-box"><div class="sb-label">BTTS H2H rate</div><div class="sb-val">79%</div><div class="sb-sub">Últimos 14 derbies turcos</div></div>
+        <div class="stat-box"><div class="sb-label">Média golos Derby</div><div class="sb-val">2.8</div><div class="sb-sub">Últimos 8 confrontos diretos</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Derby turco histórico — Besiktas nunca recua completamente, mentalidade ofensiva em deslocação que resulta em golo de forma consistente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Fenerbahce com Dzeko em casa marca em 91% dos jogos — qualidade ofensiva altíssima garantida</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Besiktas com Aboubakar e Batshuayi em deslocação — exploram espaços deixados pelo Fener quando sobe</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>BTTS em 79% dos últimos 14 derbies — padrão estatístico extraordinariamente consistente</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Expulsão antecipada de um jogador do Besiktas pode fazer recuar completamente a equipa</div>
+        <div class="risk-item"><span class="risk-dot"></span>Lesão nos avançados do Besiktas antes do jogo — verificar escalão</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">BTTS — Sim</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.55–1.68</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+9.3%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 02 · Ligue 1 · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Monaco vs Marseille<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Stade Louis II · Ligue 1 · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">27</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">74%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:74%"></div></div>
+        <div class="prob-label">Ambas Marcam — Sim</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Monaco marca em casa</div><div class="sb-val">86%</div><div class="sb-sub">Ataque muito eficaz em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Marseille marca fora</div><div class="sb-val">73%</div><div class="sb-sub">Aubameyang / Sánchez garantem golo</div></div>
+        <div class="stat-box"><div class="sb-label">BTTS H2H rate</div><div class="sb-val">75%</div><div class="sb-sub">Últimos 8 confrontos diretos</div></div>
+        <div class="stat-box"><div class="sb-label">Golos sofridos Monaco/jogo</div><div class="sb-val">1.1</div><div class="sb-sub">Defesa não hermética em casa</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Marseille com Aubameyang e Sánchez marca em 73% das deslocações — qualidade individual que aproveita qualquer espaço defensivo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Monaco não é defensivamente sólido em casa — concede em média 1.1 golos/jogo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Derby do Sul com ambas a precisar de pontos — intensidade que reduz organização defensiva</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Monaco pode defender muito bem numa boa noite — 25% dos jogos terminam sem golo do adversário</div>
+        <div class="risk-item"><span class="risk-dot"></span>Lesão de Aubameyang ou Sánchez reduz significativamente a capacidade ofensiva do Marseille</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">BTTS — Sim</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.58–1.72</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+8.5%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 03 · Serie A · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Inter vs AS Roma</div>
+        <div class="card-meta">San Siro · Serie A · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">26</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">72%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:72%"></div></div>
+        <div class="prob-label">Ambas Marcam — Sim</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Inter marca em casa</div><div class="sb-val">93%</div><div class="sb-sub">Líder em San Siro esta época</div></div>
+        <div class="stat-box"><div class="sb-label">Roma marca fora</div><div class="sb-val">68%</div><div class="sb-sub">Dybala cria perigo em transições</div></div>
+        <div class="stat-box"><div class="sb-label">BTTS H2H rate</div><div class="sb-val">71%</div><div class="sb-sub">Últimos 7 confrontos Serie A</div></div>
+        <div class="stat-box"><div class="sb-label">Inter golos sofridos/jogo</div><div class="sb-val">0.8</div><div class="sb-sub">Defesa sólida mas Roma marca</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Inter marca em 93% dos jogos em San Siro — com Lautaro e Thuram a alternância é imparável</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>AS Roma com Dybala e Lukaku marca em 68% das deslocações — criatividade explora espaços quando a Inter avança em massa</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Roma tem necessidade de pontos europeus — não pode jogar apenas para não perder</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Roma pode jogar muito defensiva — 32% das deslocações terminam sem golo</div>
+        <div class="risk-item"><span class="risk-dot"></span>Confirmar disponibilidade de Dybala — sem ele a Roma perde criatividade</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">BTTS — Sim</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.60–1.75</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.8%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 04 · Bundesliga · 17:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Eintracht Frankfurt vs FC Köln<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Deutsche Bank Park · Bundesliga · 17:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">25</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">71%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:71%"></div></div>
+        <div class="prob-label">Ambas Marcam — Sim</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Frankfurt marca em casa</div><div class="sb-val">84%</div><div class="sb-sub">Ataque muito consistente em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Köln marca em deslocação</div><div class="sb-val">67%</div><div class="sb-sub">Não pode recuar — precisa pontos</div></div>
+        <div class="stat-box"><div class="sb-label">BTTS H2H rate</div><div class="sb-val">72%</div><div class="sb-sub">Últimos 8 confrontos Bundesliga</div></div>
+        <div class="stat-box"><div class="sb-label">Golos/jogo médio H2H</div><div class="sb-val">3.1</div><div class="sb-sub">Jogo historicamente aberto</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Frankfurt com Kolo Muani e Götze em casa — combinação de velocidade e criatividade que marca de forma consistente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Köln em luta pela sobrevivência — mentalidade ofensiva em deslocação, não pode gerir o resultado</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Histórico de 3.1 golos/jogo H2H — padrão que sustenta BTTS de forma consistente</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Frankfurt pode dominar completamente e Köln nunca conseguir criar perigo real</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">BTTS — Sim</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.62–1.78</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.1%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- UNDER 3.5 -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section c-purple" id="u35">
+  <div class="section-header">
+    <div class="sh-left">
+      <div class="section-tag">Mercado 04</div>
+      <div class="section-title">Under 3.5 Golos FT</div>
+      <div class="section-sub">5 apostas · Score médio 24/30 · Probabilidade média 72%</div>
+    </div>
+    <div class="section-kpis">
+      <div class="kpi-chip">5 Apostas</div>
+      <div class="kpi-chip">Prob. 72%</div>
+      <div class="kpi-chip">Score 24/30</div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 01 · LaLiga · 14:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Getafe vs Athletic Bilbao<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Coliseum · LaLiga · 14:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">27</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">74%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:74%"></div></div>
+        <div class="prob-label">Under 3.5 Golos FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Getafe golos/jogo em casa</div><div class="sb-val">1.1</div><div class="sb-sub">Equipa muito defensiva</div></div>
+        <div class="stat-box"><div class="sb-label">Bilbao golos marcados fora</div><div class="sb-val">1.2</div><div class="sb-sub">Eficiente mas não prolífico</div></div>
+        <div class="stat-box"><div class="sb-label">Média golos H2H</div><div class="sb-val">2.1</div><div class="sb-sub">Jogo historicamente fechado</div></div>
+        <div class="stat-box"><div class="sb-label">Under 3.5 rate Getafe casa</div><div class="sb-val">78%</div><div class="sb-sub">Esta época em casa</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Getafe é a equipa mais defensiva de LaLiga — Bordalás implementa um sistema de bloco baixo que limita os golos ao mínimo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Athletic Bilbao é eficiente mas não um gerador de golos em abundância — focado em marcar o suficiente para ganhar</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>H2H: média de 2.1 golos nos últimos confrontos — padrão consistente de jogo fechado</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Bilbao em forma pode marcar 2+ e abrir o jogo se Getafe precisar de responder</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Under 3.5 Golos</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.38–1.50</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+8.6%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="combo-note">
+    💡 <strong>Combinação Under 3.5 (top 3):</strong> Selecionar jogos com H2H média abaixo de 2.5 golos · odd combinada estimada ≈ 2.80 · Máximo 1% banca
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- HANDICAP ASIÁTICO -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section c-teal" id="ah">
+  <div class="section-header">
+    <div class="sh-left">
+      <div class="section-tag">Mercado 05</div>
+      <div class="section-title">Handicap Asiático — Favoritos</div>
+      <div class="section-sub">6 apostas · Score médio 25/30 · Probabilidade média 70%</div>
+    </div>
+    <div class="section-kpis">
+      <div class="kpi-chip">6 Apostas</div>
+      <div class="kpi-chip">Prob. 70%</div>
+      <div class="kpi-chip">Score 25/30</div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 01 · Scottish Premiership · 17:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Dundee FC vs Celtic<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Dens Park · Scottish Premiership · 17:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">28</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">78%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:78%"></div></div>
+        <div class="prob-label">Celtic AH -1.5</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Celtic vence por 2+ fora</div><div class="sb-val">71%</div><div class="sb-sub">Últimas 14 deslocações</div></div>
+        <div class="stat-box"><div class="sb-label">Celtic xG médio fora</div><div class="sb-val">2.8</div><div class="sb-sub">Qualidade de criação elite</div></div>
+        <div class="stat-box"><div class="sb-label">Dundee perde em casa vs top</div><div class="sb-val">73%</div><div class="sb-sub">Confrontos vs top 4</div></div>
+        <div class="stat-box"><div class="sb-label">AH -1.5 rate Celtic fora</div><div class="sb-val">68%</div><div class="sb-sub">Esta época</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Celtic em busca do título escocês — motivação máxima para vencer com margem, sem gerir o resultado</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Diferença de qualidade enorme — Dundee FC em zona de descida, Celtic é o melhor clube da liga</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>H2H: Celtic venceu 5 dos últimos 6 em Dundee, 4 por margem de 2+ golos</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Celtic pode marcar 1 e gerir o resultado — vitória por 1 não cobre o AH -1.5</div>
+        <div class="risk-item"><span class="risk-dot"></span>Confirmar que Celtic não usa rotação por Europeu</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Celtic AH -1.5</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.85–2.00</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+9.6%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 02 · Süper Lig · 19:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Fenerbahce vs Besiktas</div>
+        <div class="card-meta">Ülker Stadyumu · Süper Lig · 19:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">24</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">63%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:63%"></div></div>
+        <div class="prob-label">Fenerbahce AH -0.5</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Fenerbahce vence Derby em casa</div><div class="sb-val">63%</div><div class="sb-sub">Últimos 8 derbies no Ülker</div></div>
+        <div class="stat-box"><div class="sb-label">Besiktas perde em Istambul</div><div class="sb-val">37%</div><div class="sb-sub">Derby historicamente desequilibrado</div></div>
+        <div class="stat-box"><div class="sb-label">Fenerbahce xG casa vs Besiktas</div><div class="sb-val">2.1</div><div class="sb-sub">Favorito histórico em casa</div></div>
+        <div class="stat-box"><div class="sb-label">AH -0.5 Fener casa Derby rate</div><div class="sb-val">63%</div><div class="sb-sub">Histórico derbies no Ülker</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Fenerbahce tem vantagem histórica no Ülker — vence em 63% dos derbies em casa com 50.000 adeptos</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Fenerbahce com Dzeko em forma e em luta pelo título — motivação máxima para vencer o derby principal</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>AH -0.5 é o mais conservador — garante retorno em vitórias (63% de probabilidade)</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Derby é sempre imprevisível — 40% de chance de empate ou vitória Besiktas</div>
+        <div class="risk-item"><span class="risk-dot"></span>Besiktas pode chegar muito motivado — forma recente pode compensar desvantagem de terreno</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Fener AH -0.5</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.78–1.92</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+6.5%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 03 · Brasileirão Série A · 22:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Atletico-MG vs Athletico-PR</div>
+        <div class="card-meta">Arena MRV · Brasileirão Série A · 22:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">23</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">62%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:62%"></div></div>
+        <div class="prob-label">Atletico-MG AH -0.5</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Atletico-MG vence em casa</div><div class="sb-val">67%</div><div class="sb-sub">Forte na Arena MRV</div></div>
+        <div class="stat-box"><div class="sb-label">Athletico-PR perde fora</div><div class="sb-val">55%</div><div class="sb-sub">Equipa vulnerável em deslocação</div></div>
+        <div class="stat-box"><div class="sb-label">Atletico-MG xG casa</div><div class="sb-val">2.2</div><div class="sb-sub">Ataque eficaz em casa</div></div>
+        <div class="stat-box"><div class="sb-label">AH -0.5 rate histórico</div><div class="sb-val">62%</div><div class="sb-sub">Últimos 8 confrontos em BH</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Atletico-MG na Arena MRV é um dos ambientes mais difíceis do futebol brasileiro com apoio massivo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Athletico-PR perde em 55% das viagens — não é uma equipa sólida fora de Curitiba</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Atletico-MG com qualidade individual superior — Hulk, Eduardo Vargas e plantel mais forte</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Início de temporada brasileira — ritmo pode não estar no máximo para ambas as equipas</div>
+        <div class="risk-item"><span class="risk-dot"></span>Dérbi regional tem factor de imprevisibilidade — 38% de chance de não cumprir</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Atletico-MG AH -0.5</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.72–1.85</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+5.9%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="combo-note">
+    💡 <strong>Combinação AH (3 seleções top):</strong> Celtic -1.5 (1.82) + Lyon -0.5 (1.82) + Inter -0.5 (1.75) = odd combinada ≈ 5.80 · prob. combinada ≈ 31% · Máximo 1% banca
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CARTÕES -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section c-red" id="cards">
+  <div class="section-header">
+    <div class="sh-left">
+      <div class="section-tag">Mercado 06</div>
+      <div class="section-title">Cartões FT — Over Totais</div>
+      <div class="section-sub">6 apostas · Score médio 25/30 · Probabilidade média 71%</div>
+    </div>
+    <div class="section-kpis">
+      <div class="kpi-chip">6 Apostas</div>
+      <div class="kpi-chip">Prob. 71%</div>
+      <div class="kpi-chip">Score 25/30</div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 01 · Süper Lig Derby · 19:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Fenerbahce vs Besiktas<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Ülker Stadyumu · Süper Lig · 19:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">28</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">76%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:76%"></div></div>
+        <div class="prob-label">Over 4.5 Cartões FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Média cartões Derby turco</div><div class="sb-val">6.1</div><div class="sb-sub">Histórico dos derbies de Istambul</div></div>
+        <div class="stat-box"><div class="sb-label">Fenerbahce cartões/jogo</div><div class="sb-val">2.8</div><div class="sb-sub">Alta frequência de advertências</div></div>
+        <div class="stat-box"><div class="sb-label">Besiktas cartões fora</div><div class="sb-val">2.6</div><div class="sb-sub">Muito combativo em deslocação</div></div>
+        <div class="stat-box"><div class="sb-label">Over 4.5 H2H rate Derby</div><div class="sb-val">82%</div><div class="sb-sub">Últimos 11 derbies turcos</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Intercontinental Derby turco é historicamente o jogo com mais cartões de toda a Süper Lig — média de 6.1 cartões por jogo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Ambas as equipas usam faltas táticas intensas no meio-campo — agressividade física sistemática e muito previsível</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Árbitros turcos tendem a mostrar cartões cedo nos derbies para controlar — padrão que aumenta o total rapidamente</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Over 4.5 em 82% dos derbies — estatística extraordinariamente consistente</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Árbitro leniente pode deixar faltas por punir — verificar histórico do árbitro designado</div>
+        <div class="risk-item"><span class="risk-dot"></span>Expulsão muito cedo pode fazer uma equipa recuar reduzindo as faltas táticas</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 4.5 Cartões</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.62–1.78</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+10.1%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 02 · LaLiga · 14:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Getafe vs Athletic Bilbao<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Coliseum · LaLiga · 14:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">27</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">75%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:75%"></div></div>
+        <div class="prob-label">Over 4.5 Cartões FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Getafe cartões/jogo em casa</div><div class="sb-val">3.1</div><div class="sb-sub">Líder cartões LaLiga em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Bilbao cartões fora</div><div class="sb-val">2.5</div><div class="sb-sub">Jogo físico e combativo</div></div>
+        <div class="stat-box"><div class="sb-label">Média cartões H2H</div><div class="sb-val">5.4</div><div class="sb-sub">Últimos 8 confrontos LaLiga</div></div>
+        <div class="stat-box"><div class="sb-label">Over 4.5 H2H rate</div><div class="sb-val">78%</div><div class="sb-sub">Padrão muito consistente</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Getafe é a equipa com mais cartões em casa de toda LaLiga — Bordalás implementa estilo físico que gera infrações constantes</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Athletic Bilbao usa futebol muito físico — Dani García e Vesga são jogadores com muitos cartões</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>H2H: média de 5.4 cartões — Over 4.5 com 78% de sucesso em 8 confrontos</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Árbitro com perfil leniente pode deixar muitas faltas por punir</div>
+        <div class="risk-item"><span class="risk-dot"></span>Expulsão antecipada de um jogador do Getafe pode alterar completamente a dinâmica física</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 4.5 Cartões</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.60–1.75</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+9.4%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 03 · Scottish Premiership · 17:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Dundee FC vs Celtic</div>
+        <div class="card-meta">Dens Park · Scottish Premiership · 17:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">25</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">72%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:72%"></div></div>
+        <div class="prob-label">Over 3.5 Cartões FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Scottish Prem média cartões</div><div class="sb-val">4.6</div><div class="sb-sub">Top ligas europeias com + cartões</div></div>
+        <div class="stat-box"><div class="sb-label">Dundee FC cartões/jogo casa</div><div class="sb-val">2.2</div><div class="sb-sub">Equipa muito combativa em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Celtic cartões fora</div><div class="sb-val">2.0</div><div class="sb-sub">Faltas para parar contra-ataques</div></div>
+        <div class="stat-box"><div class="sb-label">Over 3.5 H2H rate</div><div class="sb-val">73%</div><div class="sb-sub">Esta época na Scottish Prem</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Scottish Premiership é uma das ligas com mais cartões por jogo da Europa — média de 4.6 cartões/jogo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Dundee FC em desespero para fugir à descida usa faltas táticas para parar o Celtic — padrão previsível</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Linha de 3.5 é favorável — projeção de 4.4 cartões oferece margem de segurança</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Celtic pode dominar completamente e Dundee jogar defensivo sem fazer muitas faltas</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 3.5 Cartões</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.58–1.72</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.6%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="combo-note">
+    💡 <strong>Combinação Cartões (4 seleções):</strong> Fener vs Besiktas O4.5 (1.58) + Getafe vs Bilbao O4.5 (1.62) + Atletico-MG O4.5 (1.65) + Celtic O3.5 (1.62) = odd combinada ≈ 6.85 · prob. combinada ≈ 30% · Stake máximo 1% banca
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- REMATES -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section c-indigo" id="shots">
+  <div class="section-header">
+    <div class="sh-left">
+      <div class="section-tag">Mercado 07</div>
+      <div class="section-title">Remates a Baliza — Over FT</div>
+      <div class="section-sub">6 apostas · Score médio 25/30 · Probabilidade média 70%</div>
+    </div>
+    <div class="section-kpis">
+      <div class="kpi-chip">6 Apostas</div>
+      <div class="kpi-chip">Prob. 70%</div>
+      <div class="kpi-chip">Score 25/30</div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 01 · Scottish Premiership · 17:30</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Dundee FC vs Celtic<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">Dens Park · Scottish Premiership · 17:30</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">27</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">74%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:74%"></div></div>
+        <div class="prob-label">Over 10.5 Remates FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Celtic remates/jogo fora</div><div class="sb-val">6.9</div><div class="sb-sub">Maior volume ofensivo Scottish Prem</div></div>
+        <div class="stat-box"><div class="sb-label">Dundee remates concedidos/jogo</div><div class="sb-val">5.8</div><div class="sb-sub">5.ª pior defesa da liga</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada</div><div class="sb-val">12.7</div><div class="sb-sub">Linha: 10.5</div></div>
+        <div class="stat-box"><div class="sb-label">Over 10.5 rate Celtic fora</div><div class="sb-val">76%</div><div class="sb-sub">Esta época em deslocação</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Celtic cria 6.9 remates a baliza por jogo fora — maior volume ofensivo da Scottish Premiership em deslocação</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Dundee FC concede 5.8 remates/jogo — muito vulnerável a ataques organizados como o do Celtic</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Projeção de 12.7 remates — margem de segurança de 2.2 acima da linha de 10.5, muito confortável</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Celtic em busca do título — intensidade ofensiva máxima sem qualquer gestão de esforço</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Celtic pode marcar muito cedo e gerir — reduz volume de remates na 2.ª parte</div>
+        <div class="risk-item"><span class="risk-dot"></span>Ausência de avançados titulares do Celtic pode afetar o volume ofensivo</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 10.5 Remates</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.55–1.70</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+9.5%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 02 · Serie A · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Inter vs AS Roma<span class="val-badge">VALOR</span></div>
+        <div class="card-meta">San Siro · Serie A · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">26</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">72%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:72%"></div></div>
+        <div class="prob-label">Over 10.5 Remates FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Inter remates/jogo (San Siro)</div><div class="sb-val">7.1</div><div class="sb-sub">2.º maior gerador da Serie A</div></div>
+        <div class="stat-box"><div class="sb-label">Roma remates concedidos fora</div><div class="sb-val">4.8</div><div class="sb-sub">Defesa aberta em deslocação</div></div>
+        <div class="stat-box"><div class="sb-label">H2H remates avg (San Siro)</div><div class="sb-val">12.1</div><div class="sb-sub">Últimos 5 confrontos diretos</div></div>
+        <div class="stat-box"><div class="sb-label">Projeção combinada</div><div class="sb-val">11.9</div><div class="sb-sub">Linha: 10.5</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Inter com 7.1 remates/jogo em casa é o segundo maior gerador da Serie A — sistema de Inzaghi maximiza volume ofensivo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Roma concede 4.8 remates em deslocação — defesa aberta que sofre especialmente contra ataques posicionais</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Roma também cria remates em transições — Dybala e Lukaku ameaçam em contra-ataque, contribuindo para o total</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Roma muito defensiva pode frustrar o Inter e reduzir o volume de remates a baliza</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 10.5 Remates</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.58–1.72</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+8.7%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">2% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 03 · Ligue 1 · 20:45</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Monaco vs Marseille</div>
+        <div class="card-meta">Stade Louis II · Ligue 1 · 20:45</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">25</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">70%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:70%"></div></div>
+        <div class="prob-label">Over 9.5 Remates FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Monaco remates/jogo casa</div><div class="sb-val">6.2</div><div class="sb-sub">Top 3 Ligue 1 ofensivo em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Marseille remates fora</div><div class="sb-val">4.1</div><div class="sb-sub">Pressing alto cria oportunidades</div></div>
+        <div class="stat-box"><div class="sb-label">H2H remates avg</div><div class="sb-val">10.3</div><div class="sb-sub">Últimos 5 derbies do Sul</div></div>
+        <div class="stat-box"><div class="sb-label">Over 9.5 rate Monaco casa</div><div class="sb-val">71%</div><div class="sb-sub">Esta época em casa</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Monaco cria 6.2 remates a baliza por jogo em casa — terceiro maior volume ofensivo da Ligue 1 em casa</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Marseille com Aubameyang e Sánchez cria 4.1 remates/jogo fora — contribuição positiva para o total</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Derby do Sul — jogo com ritmo muito alto que amplifica o volume de remates de ambas</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Derby muito físico pode reduzir a qualidade técnica e o volume de remates</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 9.5 Remates</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.54–1.68</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.8%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-label">Jogo 04 · Süper Lig · 19:00</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="ch-left">
+        <div class="card-name">Fenerbahce vs Besiktas</div>
+        <div class="card-meta">Ülker Stadyumu · Süper Lig · 19:00</div>
+      </div>
+      <div class="ch-right">
+        <div class="tier-badge">Tier A</div>
+        <div class="score-ring">24</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="prob-row">
+        <div class="prob-pct">68%</div>
+        <div class="prob-bar-wrap"><div class="prob-bar" style="width:68%"></div></div>
+        <div class="prob-label">Over 8.5 Remates FT</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="sb-label">Fenerbahce remates/jogo casa</div><div class="sb-val">5.8</div><div class="sb-sub">Ataque muito produtivo em casa</div></div>
+        <div class="stat-box"><div class="sb-label">Besiktas remates fora</div><div class="sb-val">3.6</div><div class="sb-sub">Não recua — ataca também</div></div>
+        <div class="stat-box"><div class="sb-label">H2H remates avg Derby</div><div class="sb-val">9.8</div><div class="sb-sub">Últimos 6 derbies de Istambul</div></div>
+        <div class="stat-box"><div class="sb-label">Linha</div><div class="sb-val">8.5</div><div class="sb-sub">Margem confortável</div></div>
+      </div>
+      <div class="tactics">
+        <div class="tactics-header">Justificação Tática</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Fenerbahce cria 5.8 remates por jogo em casa — ataque ofensivo com Dzeko e Tadic que busca constantemente o golo</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>Besiktas não é passivo em deslocação — 3.6 remates/jogo fora, especialmente no derby com mentalidade ofensiva</div>
+        <div class="tactic-item"><span class="tactic-dot"></span>H2H: média de 9.8 remates em 6 derbies — padrão consistente muito acima da linha de 8.5</div>
+      </div>
+      <div class="risks">
+        <div class="risks-header">⚠ Alertas de Risco</div>
+        <div class="risk-item"><span class="risk-dot"></span>Derby físico pode reduzir espaços e a qualidade do último terço — menos remates a baliza</div>
+      </div>
+      <div class="odds-row">
+        <div class="odd-chip"><div class="oc-label">Aposta</div><div class="oc-val">Over 8.5 Remates</div></div>
+        <div class="odd-chip"><div class="oc-label">Odds</div><div class="oc-val">1.56–1.70</div></div>
+        <div class="odd-chip"><div class="oc-label">EV Estimado</div><div class="oc-val oc-ev">+7.2%</div></div>
+        <div class="odd-chip"><div class="oc-label">Stake Rec.</div><div class="oc-val">1.5% banca</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="combo-note">
+    💡 <strong>Combinação Remates (4 seleções):</strong> Celtic O10.5 (1.58) + Inter O10.5 (1.60) + Monaco O9.5 (1.56) + Fener O8.5 (1.60) = odd combinada ≈ 6.32 · prob. combinada ≈ 28% · Máximo 1% banca
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- DISCLAIMER -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="disclaimer">
+  <strong>⚠ Disclaimer de Risco</strong><br>
+  Esta análise é para fins informativos e educacionais. Gestão de banca responsável é obrigatória — nunca aposte mais de 2% da banca em qualquer seleção individual e não mais de 5% em combinadas. As probabilidades e EV são estimativas baseadas em dados históricos e contexto tático — não garantem resultados. O mercado de apostas implica sempre risco de perda total do capital investido. Aposte de forma responsável. +18.
 </div>
 
-<!-- NAV -->
-<div class="nav">
-  <button class="nav-btn nb-amber active" onclick="show('corners',this)">⬡ Cantos (base)</button>
-  <button class="nav-btn nb-green" onclick="show('ox',this)">1X</button>
-  <button class="nav-btn nb-blue" onclick="show('btts',this)">BTTS</button>
-  <button class="nav-btn nb-purple" onclick="show('u35',this)">Under 3.5</button>
-</div>
+<!-- FOOTER -->
+<footer class="footer">
+  <span>Quant Analytics · 05 Abril 2026</span>
+  <span>7 Mercados · 40 Seleções · EV Médio +7.8%</span>
+</footer>
 
-<!-- ===================== CANTOS ===================== -->
-<div class="section active" id="corners">
-<div class="tier-header th-amber">
-  <div>
-    <div class="thl-amber">Mercado Base — Cantos (Corners Over)</div>
-    <div class="ths-amber">8 apostas · Score médio 25/30 · Probabilidade média 72%</div>
-  </div>
-</div>
-<div class="krow">
-  <div class="kc"><div class="kl">Apostas</div><div class="kv">8</div></div>
-  <div class="kc"><div class="kl">Prob. média</div><div class="kv">72%</div></div>
-  <div class="kc"><div class="kl">Score médio</div><div class="kv">25/30</div></div>
-  <div class="kc"><div class="kl">Mercado</div><div class="kv" style="color:#633806;">Cantos</div></div>
-</div>
+</div><!-- /wrap -->
 
-<!-- C1 -->
-<p class="sec">Jogo 1 de 8 — Bayer Leverkusen vs Wolfsburg · Bundesliga · 15:30</p>
-<div class="game-card">
-  <div class="gc-head">
-    <div class="gc-left"><div class="gc-name">Bayer Leverkusen vs Wolfsburg</div><div class="gc-meta">BayArena · Bundesliga · 15:30 · 04.04</div></div>
-    <div class="gc-right"><div class="badge-tier bg-amber">Tier A</div><div class="score-circle sc-amber">27</div></div>
-  </div>
-  <div class="gc-body">
-    <div class="prob-section">
-      <div class="prob-num pn-amber">76%</div>
-      <div class="prob-bar-wrap"><div class="prob-fill pf-amber" style="width:76%"></div></div>
-      <div class="prob-label">Over 10.5 Cantos FT</div>
-    </div>
-    <div class="gc-grid">
-      <div class="gc-stat"><div class="gs-label">Leverkusen cantos/jogo casa</div><div class="gs-val">6.8</div><div class="gs-sub">Top 2 Bundesliga</div></div>
-      <div class="gc-stat"><div class="gs-label">Wolfsburg cant. concedidos fora</div><div class="gs-val">4.6</div><div class="gs-sub">Bloco defensivo em deslocação</div></div>
-      <div class="gc-stat"><div class="gs-label">Projeção combinada</div><div class="gs-val">11.4</div><div class="gs-sub">Linha: 10.5</div></div>
-      <div class="gc-stat"><div class="gs-label">Over 10.5 rate (casa)</div><div class="gs-val">71%</div><div class="gs-sub">Últimas 11 jornadas</div></div>
-    </div>
-    <div class="filter-matrix">
-      <div class="tac-title">Matriz de filtros (10/10)</div>
-      <div class="fm-row"><div class="fm-name">F1 · Cantos casa</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 6.8/jogo casa</div></div>
-      <div class="fm-row"><div class="fm-name">F2 · Cantos conced. fora</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 4.6 Wolfsburg</div></div>
-      <div class="fm-row"><div class="fm-name">F3 · Projeção total</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 11.4 proj. vs 10.5</div></div>
-      <div class="fm-row"><div class="fm-name">F4 · Assimetria tática</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Wolfsburg bloco baixo fora</div></div>
-      <div class="fm-row"><div class="fm-name">F5 · Motivação</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — disputa Top 4 UCL</div></div>
-      <div class="fm-row"><div class="fm-name">F6 · H2H cantos</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — avg 10.8 H2H</div></div>
-      <div class="fm-row"><div class="fm-name">F7 · Set-pieces dep.</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Lev. muito dependente</div></div>
-      <div class="fm-row"><div class="fm-name">F8 · Jogo largo</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Frimpong/Grimaldo alas</div></div>
-      <div class="fm-row"><div class="fm-name">F9 · Bloco defens. adv.</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — bloco médio-baixo</div></div>
-      <div class="fm-row"><div class="fm-name">F10 · Over% histórico</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 71% Over 10.5 casa</div></div>
-    </div>
-    <div class="tactics-box">
-      <div class="tac-title">Justificação tática completa</div>
-      <div class="tac-item"><span class="dot-amber"></span>Leverkusen usa Frimpong e Grimaldo como alas ofensivos que rasgam a linha de fundo constantemente — padrão que gera cantos quando a defesa fecha os ângulos centrais</div>
-      <div class="tac-item"><span class="dot-amber"></span>Wolfsburg em deslocação adota bloco médio-baixo compacto, forçando cruzamentos repetidos que terminam sistematicamente em canto — observado em 9 dos últimos 11 jogos fora</div>
-      <div class="tac-item"><span class="dot-amber"></span>Leverkusen possui o melhor PPDA defensivo da Bundesliga — recupera a bola rapidamente e reinicia ataques pelas alas, multiplicando os cantos ofensivos ao longo do jogo</div>
-      <div class="tac-item"><span class="dot-amber"></span>Disputa do Top 4 para UCL: Leverkusen necessita de máxima intensidade ofensiva, o que eleva o volume de cantos acima da média de jogos de rotina</div>
-    </div>
-    <div class="risk-box">
-      <div class="risk-title">Alertas de risco</div>
-      <div class="risk-item"><span class="r-dot"></span>Lesão de Frimpong ou Grimaldo reduz o volume de cruzamentos — confirmar escalão até 1h antes do jogo</div>
-      <div class="risk-item"><span class="r-dot"></span>Se Leverkusen marcar muito cedo (0-2 antes do intervalo) pode gerir o jogo e baixar o ritmo na 2.ª parte</div>
-    </div>
-    <div class="odds-row">
-      <div class="odd-pill"><div class="op-label">Over 10.5 FT</div><div class="op-val">1.38–1.50</div></div>
-      <div class="odd-pill"><div class="op-label">Over 5.5 HT</div><div class="op-val">1.55–1.70</div></div>
-      <div class="odd-pill"><div class="op-label">EV estimado</div><div class="op-val ev-amber">+7.4%</div></div>
-      <div class="odd-pill"><div class="op-label">Stake rec.</div><div class="op-val">2.5% banca</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- C2 -->
-<p class="sec">Jogo 2 de 8 — Rangers vs Dundee Utd · Scottish Premiership · 16:00</p>
-<div class="game-card">
-  <div class="gc-head">
-    <div class="gc-left"><div class="gc-name">Rangers vs Dundee Utd</div><div class="gc-meta">Ibrox · Scottish Premiership · 16:00 · 04.04</div></div>
-    <div class="gc-right"><div class="badge-tier bg-amber">Tier A</div><div class="score-circle sc-amber">26</div></div>
-  </div>
-  <div class="gc-body">
-    <div class="prob-section">
-      <div class="prob-num pn-amber">74%</div>
-      <div class="prob-bar-wrap"><div class="prob-fill pf-amber" style="width:74%"></div></div>
-      <div class="prob-label">Over 10.5 Cantos FT</div>
-    </div>
-    <div class="gc-grid">
-      <div class="gc-stat"><div class="gs-label">Rangers cantos/jogo casa</div><div class="gs-val">6.4</div><div class="gs-sub">Top 1 Scottish Premiership</div></div>
-      <div class="gc-stat"><div class="gs-label">Dundee Utd cant. conced. fora</div><div class="gs-val">5.2</div><div class="gs-sub">Bloco profundo em deslocação</div></div>
-      <div class="gc-stat"><div class="gs-label">Projeção combinada</div><div class="gs-val">11.6</div><div class="gs-sub">Linha: 10.5</div></div>
-      <div class="gc-stat"><div class="gs-label">Over 10.5 rate Rangers casa</div><div class="gs-val">70%</div><div class="gs-sub">Últimas 10 jornadas</div></div>
-    </div>
-    <div class="filter-matrix">
-      <div class="tac-title">Matriz de filtros (9/10)</div>
-      <div class="fm-row"><div class="fm-name">F1 · Cantos casa</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 6.4/jogo Ibrox</div></div>
-      <div class="fm-row"><div class="fm-name">F2 · Cantos conced. fora</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 5.2 Dundee Utd</div></div>
-      <div class="fm-row"><div class="fm-name">F3 · Projeção total</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 11.6 proj. vs 10.5</div></div>
-      <div class="fm-row"><div class="fm-name">F4 · Assimetria tática</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — gap de qualidade abissal</div></div>
-      <div class="fm-row"><div class="fm-name">F5 · Motivação</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Rangers luta pelo título</div></div>
-      <div class="fm-row"><div class="fm-name">F6 · H2H cantos</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — avg 12.1 H2H Ibrox</div></div>
-      <div class="fm-row"><div class="fm-name">F7 · Set-pieces dep.</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — Rangers moderada</div></div>
-      <div class="fm-row"><div class="fm-name">F8 · Jogo largo</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — fullbacks sobrepostos</div></div>
-      <div class="fm-row"><div class="fm-name">F9 · Bloco defens. adv.</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Dundee bloco 5-4-1</div></div>
-      <div class="fm-row"><div class="fm-name">F10 · Over% histórico</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 70% casa Ibrox</div></div>
-    </div>
-    <div class="tactics-box">
-      <div class="tac-title">Justificação tática completa</div>
-      <div class="tac-item"><span class="dot-amber"></span>Rangers no Ibrox é o maior gerador de cantos ofensivos da Scottish Premiership — jogo pelas alas com fullbacks muito ativos que forçam cruzamentos repetidos</div>
-      <div class="tac-item"><span class="dot-amber"></span>Dundee Utd em deslocação fecha em bloco profundo 5-4-1 para defender o resultado — este sistema compacto gera sistematicamente mais cantos ao adversário</div>
-      <div class="tac-item"><span class="dot-amber"></span>H2H no Ibrox: média de 12.1 cantos totais nos últimos 5 confrontos — padrão muito estável e historicamente consistente</div>
-      <div class="tac-item"><span class="dot-amber"></span>Rangers sob pressão do título: máxima intensidade ofensiva prevista desde o apito inicial — início explosivo com alto volume de cantos esperados no 1.º tempo</div>
-    </div>
-    <div class="risk-box">
-      <div class="risk-title">Alertas de risco</div>
-      <div class="risk-item"><span class="r-dot"></span>Dundee Utd pode tentar surpreender em transição — se marcar, Rangers abre mais e cantos aumentam ainda mais</div>
-      <div class="risk-item"><span class="r-dot"></span>Confirmar disponibilidade dos extremos ofensivos de Rangers antes do jogo</div>
-    </div>
-    <div class="odds-row">
-      <div class="odd-pill"><div class="op-label">Over 10.5 FT</div><div class="op-val">1.40–1.52</div></div>
-      <div class="odd-pill"><div class="op-label">Over 5.5 HT</div><div class="op-val">1.58–1.72</div></div>
-      <div class="odd-pill"><div class="op-label">EV estimado</div><div class="op-val ev-amber">+6.9%</div></div>
-      <div class="odd-pill"><div class="op-label">Stake rec.</div><div class="op-val">2% banca</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- C3 -->
-<p class="sec">Jogo 3 de 8 — Southampton vs Arsenal · FA Cup · 21:00</p>
-<div class="game-card">
-  <div class="gc-head">
-    <div class="gc-left"><div class="gc-name">Southampton vs Arsenal</div><div class="gc-meta">St. Mary's · FA Cup Semifinal · 21:00 · 04.04</div></div>
-    <div class="gc-right"><div class="badge-tier bg-amber">Tier A</div><div class="score-circle sc-amber">26</div></div>
-  </div>
-  <div class="gc-body">
-    <div class="prob-section">
-      <div class="prob-num pn-amber">73%</div>
-      <div class="prob-bar-wrap"><div class="prob-fill pf-amber" style="width:73%"></div></div>
-      <div class="prob-label">Over 10.5 Cantos FT</div>
-    </div>
-    <div class="gc-grid">
-      <div class="gc-stat"><div class="gs-label">Arsenal cantos/jogo fora</div><div class="gs-val">6.5</div><div class="gs-sub">Top 1 Premier League deslocação</div></div>
-      <div class="gc-stat"><div class="gs-label">Southampton cant. conced. casa</div><div class="gs-val">4.8</div><div class="gs-sub">Defesa aberta a cruzamentos</div></div>
-      <div class="gc-stat"><div class="gs-label">Projeção combinada</div><div class="gs-val">11.3</div><div class="gs-sub">Linha: 10.5</div></div>
-      <div class="gc-stat"><div class="gs-label">Over 10.5 rate Arsenal fora</div><div class="gs-val">69%</div><div class="gs-sub">Últimas 10 deslocações</div></div>
-    </div>
-    <div class="filter-matrix">
-      <div class="tac-title">Matriz de filtros (10/10)</div>
-      <div class="fm-row"><div class="fm-name">F1 · Cantos Arsenal fora</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 6.5/jogo líder PL</div></div>
-      <div class="fm-row"><div class="fm-name">F2 · Cantos conced. casa</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 4.8 Southampton</div></div>
-      <div class="fm-row"><div class="fm-name">F3 · Projeção total</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 11.3 proj.</div></div>
-      <div class="fm-row"><div class="fm-name">F4 · Assimetria tática</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Arsenal superior em qualidade</div></div>
-      <div class="fm-row"><div class="fm-name">F5 · Motivação</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — FA Cup, ambas atacam</div></div>
-      <div class="fm-row"><div class="fm-name">F6 · H2H cantos</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — avg 10.4 H2H</div></div>
-      <div class="fm-row"><div class="fm-name">F7 · Set-pieces Arsenal</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Arteta high set-piece dep.</div></div>
-      <div class="fm-row"><div class="fm-name">F8 · Jogo largo</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Saka/Martinelli alas</div></div>
-      <div class="fm-row"><div class="fm-name">F9 · Bloco defens. adv.</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — Southampton 4-4-2 defensivo</div></div>
-      <div class="fm-row"><div class="fm-name">F10 · Over% Arsenal fora</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-amber">3/3 — 69% over 10.5</div></div>
-    </div>
-    <div class="tactics-box">
-      <div class="tac-title">Justificação tática completa</div>
-      <div class="tac-item"><span class="dot-amber"></span>Arsenal é a equipa com mais cantos em deslocação de toda a Premier League — Saka e Martinelli rasgam pelas alas e forçam cantos sistematicamente quando a defesa fecha</div>
-      <div class="tac-item"><span class="dot-amber"></span>Arteta tem um sistema de bolas paradas muito desenvolvido — Arsenal usa cantos como arma ofensiva primária com sequências ensaiadas de set-pieces</div>
-      <div class="tac-item"><span class="dot-amber"></span>Southampton em casa adota bloco defensivo 4-4-2 compacto — sistema que historicamente gera alto volume de cantos para a equipa mais ofensiva</div>
-      <div class="tac-item"><span class="dot-amber"></span>FA Cup semifinal — ambas as equipas a 100% de intensidade, sem gestão de esforço — este contexto maximiza o volume de jogo e de cantos</div>
-    </div>
-    <div class="risk-box">
-      <div class="risk-title">Alertas de risco</div>
-      <div class="risk-item"><span class="r-dot"></span>Arteta pode poupar Saka ou Martinelli — confirmar escalão até 2h antes do jogo</div>
-      <div class="risk-item"><span class="r-dot"></span>Se Arsenal marcar dois gols rapidamente, pode gerir o jogo e reduzir a intensidade ofensiva na 2.ª parte</div>
-    </div>
-    <div class="odds-row">
-      <div class="odd-pill"><div class="op-label">Over 10.5 FT</div><div class="op-val">1.42–1.55</div></div>
-      <div class="odd-pill"><div class="op-label">EV estimado</div><div class="op-val ev-amber">+6.2%</div></div>
-      <div class="odd-pill"><div class="op-label">Stake rec.</div><div class="op-val">2% banca</div></div>
-    </div>
-  </div>
-</div>
-
-<p class="sec">Jogos 4–8 — Resumo Cantos</p>
-<div id="qCorners"></div>
-<div class="tripla-note tn-amber">
-  <strong>Tripla Cantos recomendada:</strong> Leverkusen Over 10.5 (1.44) + Rangers Over 10.5 (1.47) + Arsenal vs Southampton Over 10.5 (1.48) = odd combinada ≈ 3.14 · prob. combinada ≈ 42%
-</div>
-</div><!-- /corners -->
-
-<!-- ===================== 1X ===================== -->
-<div class="section" id="ox">
-<div class="tier-header th-green">
-  <div>
-    <div class="thl-green">Mercado: 1X — Vitória Casa ou Empate</div>
-    <div class="ths-green">8 apostas · Score médio 25/30 · Probabilidade média 74%</div>
-  </div>
-</div>
-<div class="krow">
-  <div class="kc"><div class="kl">Apostas</div><div class="kv">8</div></div>
-  <div class="kc"><div class="kl">Prob. média</div><div class="kv">74%</div></div>
-  <div class="kc"><div class="kl">Score médio</div><div class="kv">25/30</div></div>
-  <div class="kc"><div class="kl">Mercado</div><div class="kv" style="color:#27500A;">1X</div></div>
-</div>
-<p class="sec">Jogo 1 de 8 — Bayer Leverkusen vs Wolfsburg · Bundesliga · 15:30</p>
-<div class="game-card">
-  <div class="gc-head">
-    <div class="gc-left"><div class="gc-name">Bayer Leverkusen vs Wolfsburg</div><div class="gc-meta">BayArena · Bundesliga · 15:30 · 04.04</div></div>
-    <div class="gc-right"><div class="badge-tier bg-green">Tier A</div><div class="score-circle sc-green">27</div></div>
-  </div>
-  <div class="gc-body">
-    <div class="prob-section">
-      <div class="prob-num pn-green">82%</div>
-      <div class="prob-bar-wrap"><div class="prob-fill pf-green" style="width:82%"></div></div>
-      <div class="prob-label">1X — Leverkusen</div>
-    </div>
-    <div class="gc-grid">
-      <div class="gc-stat"><div class="gs-label">Leverkusen casa (últ. 10)</div><div class="gs-val">7V 2E 1D</div><div class="gs-sub">90% sem derrota em casa</div></div>
-      <div class="gc-stat"><div class="gs-label">Wolfsburg fora (últ. 10)</div><div class="gs-val">3V 3E 4D</div><div class="gs-sub">Fraco rendimento externo</div></div>
-      <div class="gc-stat"><div class="gs-label">xG Leverkusen casa</div><div class="gs-val">2.38</div><div class="gs-sub">Top 2 Bundesliga</div></div>
-      <div class="gc-stat"><div class="gs-label">1X rate Leverkusen casa</div><div class="gs-val">90%</div><div class="gs-sub">Últimas 10 jornadas casa</div></div>
-    </div>
-    <div class="filter-matrix">
-      <div class="tac-title">Matriz de filtros (10/10)</div>
-      <div class="fm-row"><div class="fm-name">F1 · Forma casa</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — 90% sem derrota</div></div>
-      <div class="fm-row"><div class="fm-name">F2 · Forma adv. fora</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — 4 derrotas últ. 10</div></div>
-      <div class="fm-row"><div class="fm-name">F3 · xG diferencial</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — +0.64 favorável</div></div>
-      <div class="fm-row"><div class="fm-name">F4 · Qualidade elenco</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — diferença abissal</div></div>
-      <div class="fm-row"><div class="fm-name">F5 · Motivação</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — luta Top 4 UCL</div></div>
-      <div class="fm-row"><div class="fm-name">F6 · H2H histórico</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — 4 wins últ. 5</div></div>
-      <div class="fm-row"><div class="fm-name">F7 · Bloco adversário</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — Wolfsburg sem pressão</div></div>
-      <div class="fm-row"><div class="fm-name">F8 · Posição tabela</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — 8 lugares acima</div></div>
-      <div class="fm-row"><div class="fm-name">F9 · Lesões/suspensões</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — confirmar Boniface</div></div>
-      <div class="fm-row"><div class="fm-name">F10 · 1X rate</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-green">3/3 — 90% casa</div></div>
-    </div>
-    <div class="tactics-box">
-      <div class="tac-title">Justificação tática</div>
-      <div class="tac-item"><span class="dot-green"></span>Leverkusen é o atual campeão alemão — profundidade tática e qualidade individual muito superior ao Wolfsburg em todos os setores do campo</div>
-      <div class="tac-item"><span class="dot-green"></span>Wolfsburg em deslocação não possui padrão ofensivo definido — dificilmente impõe jogo contra blocos médio-altos organizados como o de Xabi Alonso</div>
-      <div class="tac-item"><span class="dot-green"></span>xG acumulado em casa de 2.38 contra xGA de 1.74 do Wolfsburg fora — margem confortável que suporta o mercado 1X com folga</div>
-    </div>
-    <div class="risk-box">
-      <div class="risk-title">Alertas de risco</div>
-      <div class="risk-item"><span class="r-dot"></span>Confirmar disponibilidade de Granit Xhaka e Victor Boniface antes do jogo</div>
-      <div class="risk-item"><span class="r-dot"></span>Wolfsburg pode surpreender em contra-ataque — 1X cobre esse cenário via empate</div>
-    </div>
-    <div class="odds-row">
-      <div class="odd-pill"><div class="op-label">1X Leverkusen</div><div class="op-val">1.20–1.28</div></div>
-      <div class="odd-pill"><div class="op-label">EV estimado</div><div class="op-val ev-green">+4.2%</div></div>
-      <div class="odd-pill"><div class="op-label">Stake rec.</div><div class="op-val">2.5% banca</div></div>
-    </div>
-  </div>
-</div>
-<p class="sec">Jogos 2–8 — Resumo 1X</p>
-<div id="q1X"></div>
-<div class="tripla-note tn-green">
-  <strong>Tripla 1X recomendada:</strong> Leverkusen 1X (1.22) + Rangers 1X (1.18) + FC Porto 1X (1.20) = odd combinada ≈ 1.73 · prob. combinada ≈ 51% · aposta de alto volume
-</div>
-</div><!-- /1X -->
-
-<!-- ===================== BTTS ===================== -->
-<div class="section" id="btts">
-<div class="tier-header th-blue">
-  <div>
-    <div class="thl-blue">Mercado: BTTS — Ambas Marcam</div>
-    <div class="ths-blue">8 apostas · Score médio 24/30 · Probabilidade média 72%</div>
-  </div>
-</div>
-<div class="krow">
-  <div class="kc"><div class="kl">Apostas</div><div class="kv">8</div></div>
-  <div class="kc"><div class="kl">Prob. média</div><div class="kv">72%</div></div>
-  <div class="kc"><div class="kl">Score médio</div><div class="kv">24/30</div></div>
-  <div class="kc"><div class="kl">Mercado</div><div class="kv" style="color:#0C447C;">BTTS</div></div>
-</div>
-<p class="sec">Jogo 1 de 8 — Atletico Madrid vs Barcelona · LaLiga · 21:00</p>
-<div class="game-card">
-  <div class="gc-head">
-    <div class="gc-left"><div class="gc-name">Atletico Madrid vs Barcelona</div><div class="gc-meta">Civitas Metropolitano · LaLiga · 21:00 · 04.04</div></div>
-    <div class="gc-right"><div class="badge-tier bg-blue">Tier A</div><div class="score-circle sc-blue">27</div></div>
-  </div>
-  <div class="gc-body">
-    <div class="prob-section">
-      <div class="prob-num pn-blue">78%</div>
-      <div class="prob-bar-wrap"><div class="prob-fill pf-blue" style="width:78%"></div></div>
-      <div class="prob-label">BTTS — Ambas Marcam</div>
-    </div>
-    <div class="gc-grid">
-      <div class="gc-stat"><div class="gs-label">BTTS rate Atlético casa</div><div class="gs-val">71%</div><div class="gs-sub">Últimas 10 jornadas casa</div></div>
-      <div class="gc-stat"><div class="gs-label">BTTS rate Barcelona fora</div><div class="gs-val">75%</div><div class="gs-sub">Últimas 10 jornadas fora</div></div>
-      <div class="gc-stat"><div class="gs-label">Barcelona gols marcados fora</div><div class="gs-val">1.9/jogo</div><div class="gs-sub">Top 1 LaLiga em deslocação</div></div>
-      <div class="gc-stat"><div class="gs-label">H2H BTTS</div><div class="gs-val">4/5</div><div class="gs-sub">Últimos 5 confrontos diretos</div></div>
-    </div>
-    <div class="filter-matrix">
-      <div class="tac-title">Matriz de filtros (10/10)</div>
-      <div class="fm-row"><div class="fm-name">F1 · BTTS rate casa</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — 71% Atlético</div></div>
-      <div class="fm-row"><div class="fm-name">F2 · BTTS rate fora</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — 75% Barcelona</div></div>
-      <div class="fm-row"><div class="fm-name">F3 · Qualidade ofensiva</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — top 2 ataques LaLiga</div></div>
-      <div class="fm-row"><div class="fm-name">F4 · H2H BTTS</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — 4/5 histórico</div></div>
-      <div class="fm-row"><div class="fm-name">F5 · Motivação</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — ambas precisam pontos</div></div>
-      <div class="fm-row"><div class="fm-name">F6 · Estilo de jogo</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — jogo historicamente aberto</div></div>
-      <div class="fm-row"><div class="fm-name">F7 · xG combinado</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — 3.2 proj.</div></div>
-      <div class="fm-row"><div class="fm-name">F8 · Criatividade ambas</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — Yamal, Lewa, Griezmann</div></div>
-      <div class="fm-row"><div class="fm-name">F9 · Defesas abertas</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — Atlético sólido mas não hermético</div></div>
-      <div class="fm-row"><div class="fm-name">F10 · Rivalidade</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-blue">3/3 — clássico de alto scoring</div></div>
-    </div>
-    <div class="tactics-box">
-      <div class="tac-title">Justificação tática</div>
-      <div class="tac-item"><span class="dot-blue"></span>Barcelona é o maior marcador fora de casa na LaLiga — Lamine Yamal e Raphinha criam supremacia nos corredores que gera oportunidades claras de golo</div>
-      <div class="tac-item"><span class="dot-blue"></span>Atlético com Griezmann e Morata em casa é sempre perigoso — Barcelona concede oportunidades nas transições de recuperação de bola mesmo com posse alta</div>
-      <div class="tac-item"><span class="dot-blue"></span>H2H dos últimos 5 encontros: BTTS em 4 — padrão muito consistente entre dois dos melhores ataques da Europa</div>
-      <div class="tac-item"><span class="dot-blue"></span>Jogo de máxima intensidade com ambas a necessitar pontos — baixa probabilidade de jogo fechado e exclusivamente tático</div>
-    </div>
-    <div class="risk-box">
-      <div class="risk-title">Alertas de risco</div>
-      <div class="risk-item"><span class="r-dot"></span>Se Atlético marcar cedo e fechar o bloco, Barcelona pode ter dificuldade em criar volume suficiente para marcar</div>
-      <div class="risk-item"><span class="r-dot"></span>Confirmar estado físico de Lewandowski e Griezmann — lesão num dos finalizadores principais altera o cenário</div>
-    </div>
-    <div class="odds-row">
-      <div class="odd-pill"><div class="op-label">BTTS Sim</div><div class="op-val">1.52–1.62</div></div>
-      <div class="odd-pill"><div class="op-label">EV estimado</div><div class="op-val ev-blue">+9.4%</div></div>
-      <div class="odd-pill"><div class="op-label">Stake rec.</div><div class="op-val">2.5% banca</div></div>
-    </div>
-  </div>
-</div>
-<p class="sec">Jogos 2–8 — Resumo BTTS</p>
-<div id="qBTTS"></div>
-<div class="tripla-note tn-blue">
-  <strong>Tripla BTTS recomendada:</strong> Atleti vs Barca BTTS (1.58) + Trabzon vs Gala BTTS (1.65) + Freiburg vs Bayern BTTS (1.55) = odd combinada ≈ 4.01 · prob. combinada ≈ 38%
-</div>
-</div><!-- /btts -->
-
-<!-- ===================== UNDER 3.5 ===================== -->
-<div class="section" id="u35">
-<div class="tier-header th-purple">
-  <div>
-    <div class="thl-purple">Mercado: Under 3.5 — 4 Golos Não Serão Marcados</div>
-    <div class="ths-purple">8 apostas · Score médio 23/30 · Probabilidade média 71%</div>
-  </div>
-</div>
-<div class="krow">
-  <div class="kc"><div class="kl">Apostas</div><div class="kv">8</div></div>
-  <div class="kc"><div class="kl">Prob. média</div><div class="kv">71%</div></div>
-  <div class="kc"><div class="kl">Score médio</div><div class="kv">23/30</div></div>
-  <div class="kc"><div class="kl">Mercado</div><div class="kv" style="color:#26215C;">U3.5</div></div>
-</div>
-<p class="sec">Jogo 1 de 8 — Mallorca vs Real Madrid · LaLiga · 16:15</p>
-<div class="game-card">
-  <div class="gc-head">
-    <div class="gc-left"><div class="gc-name">Mallorca vs Real Madrid</div><div class="gc-meta">Visit Mallorca Estadi · LaLiga · 16:15 · 04.04</div></div>
-    <div class="gc-right"><div class="badge-tier bg-purple">Tier A</div><div class="score-circle sc-purple">26</div></div>
-  </div>
-  <div class="gc-body">
-    <div class="prob-section">
-      <div class="prob-num pn-purple">77%</div>
-      <div class="prob-bar-wrap"><div class="prob-fill pf-purple" style="width:77%"></div></div>
-      <div class="prob-label">Under 3.5 Golos</div>
-    </div>
-    <div class="gc-grid">
-      <div class="gc-stat"><div class="gs-label">Under 3.5 rate Mallorca casa</div><div class="gs-val">74%</div><div class="gs-sub">Defesa ultra-organizada</div></div>
-      <div class="gc-stat"><div class="gs-label">Gols combinados projeção</div><div class="gs-val">2.1</div><div class="gs-sub">Baixíssima média esperada</div></div>
-      <div class="gc-stat"><div class="gs-label">Real Madrid gols fora</div><div class="gs-val">1.8/jogo</div><div class="gs-sub">Eficientes mas não goleiam sempre</div></div>
-      <div class="gc-stat"><div class="gs-label">H2H Under 3.5</div><div class="gs-val">4/5</div><div class="gs-sub">Últimos 5 confrontos</div></div>
-    </div>
-    <div class="filter-matrix">
-      <div class="tac-title">Matriz de filtros (10/10)</div>
-      <div class="fm-row"><div class="fm-name">F1 · Under rate casa</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — 74% Mallorca casa</div></div>
-      <div class="fm-row"><div class="fm-name">F2 · Defesa compacta</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — 5-4-1 ultra-defensivo</div></div>
-      <div class="fm-row"><div class="fm-name">F3 · H2H Under</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — 4/5 histórico</div></div>
-      <div class="fm-row"><div class="fm-name">F4 · Proj. golos baixa</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — 2.1 proj. total</div></div>
-      <div class="fm-row"><div class="fm-name">F5 · Tática Mallorca</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — bloco 5-4-1 vs top</div></div>
-      <div class="fm-row"><div class="fm-name">F6 · Real Madrid fora</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — eficiente mas não golea sempre</div></div>
-      <div class="fm-row"><div class="fm-name">F7 · xG combinado</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — 2.3 proj.</div></div>
-      <div class="fm-row"><div class="fm-name">F8 · Under 3.5 real rate</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — 74% jogos Mallorca</div></div>
-      <div class="fm-row"><div class="fm-name">F9 · Motivação Mallorca</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-on"></span></div><div class="fn-purple">3/3 — fuga à descida = cautela</div></div>
-      <div class="fm-row"><div class="fm-name">F10 · Rotação Real Madrid</div><div class="fm-dots"><span class="fdot f-on"></span><span class="fdot f-on"></span><span class="fdot f-half"></span></div><div class="fn-warn">2/3 — possível rotação Ancelotti</div></div>
-    </div>
-    <div class="tactics-box">
-      <div class="tac-title">Justificação tática</div>
-      <div class="tac-item"><span class="dot-purple"></span>Mallorca é das equipas com bloco mais compacto e defensivo de toda a LaLiga — 5-4-1 em casa vs equipas de topo, raramente concede mais de 1 golo</div>
-      <div class="tac-item"><span class="dot-purple"></span>Real Madrid em deslocações difíceis tende a gerir o jogo após marcar — não há troca de golos em volume quando a defesa adversária está bem organizada</div>
-      <div class="tac-item"><span class="dot-purple"></span>H2H apontam para jogos de baixo scoring: 4 dos últimos 5 encontros terminaram Under 3.5 golos totais — padrão histórico muito estável</div>
-    </div>
-    <div class="risk-box">
-      <div class="risk-title">Alertas de risco</div>
-      <div class="risk-item"><span class="r-dot"></span>Se Real Madrid marcar muito cedo, Mallorca pode abrir — risco de goleada que compromete o under</div>
-      <div class="risk-item"><span class="r-dot"></span>Vinicius Jr. em grande forma pode transformar este jogo — confirmar escalão</div>
-    </div>
-    <div class="odds-row">
-      <div class="odd-pill"><div class="op-label">Under 3.5 Golos</div><div class="op-val">1.55–1.68</div></div>
-      <div class="odd-pill"><div class="op-label">EV estimado</div><div class="op-val ev-purple">+8.7%</div></div>
-      <div class="odd-pill"><div class="op-label">Stake rec.</div><div class="op-val">2.5% banca</div></div>
-    </div>
-  </div>
-</div>
-<p class="sec">Jogos 2–8 — Resumo Under 3.5</p>
-<div id="qU35"></div>
-<div class="tripla-note tn-purple">
-  <strong>Tripla Under recomendada:</strong> Mallorca vs Real Madrid U3.5 (1.60) + Hibernian vs Kilmarnock U3.5 (1.68) + St. Mirren vs Aberdeen U3.5 (1.72) = odd combinada ≈ 4.63 · prob. combinada ≈ 36%
-</div>
-</div><!-- /u35 -->
-
-</div>
 <script>
-/* ---- DATA ---- */
-const CORNERS = [
-  {n:"Atletico Madrid vs Barcelona",l:"LaLiga · 21:00",s:26,p:72,line:"Over 11.5 Cantos FT",odd:"1.50–1.65",ev:"+7.1%",
-   stats:[{l:"Atlético cantos/jogo casa",v:"5.9",s:"Top 3 LaLiga"},{l:"Barcelona cant. conced. fora",v:"5.4",s:"Pressão ofensiva constante"},{l:"Projeção combinada",v:"11.3",s:"Linha: 10.5"},{l:"H2H cantos avg",v:"11.8",s:"Últimos 5 confrontos"}],
-   f:[3,3,3,3,3,3,2,3,2,3],
-   tac:["Jogo entre os dois maiores geradores de situações de ala da LaLiga — Simeone bloco médio-alto vs Barcelona posse alta = volume de cantos elevado sistematicamente","Barcelona domina com posse e forçou 5.4 cantos por jogo fora esta época — Atlético defensivo em certos momentos gera cantos ao adversário","H2H no Metropolitano: média de 11.8 cantos totais nos últimos 5 encontros — padrão muito estável de alta cadência de cantos","Ambas as equipas com alta dependência de set-pieces — Atlético em cruzamentos, Barcelona em saídas de ala"],
-   risk:["Jogo tático pode reduzir volume se um marcar muito cedo","Confirmar se Simeone usa sistema ultra-defensivo ou pressão alta"]},
-  {n:"Freiburg vs Bayern Munich",l:"Bundesliga · 15:30",s:25,p:71,line:"Over 10.5 Cantos FT",odd:"1.42–1.55",ev:"+6.3%",
-   stats:[{l:"Bayern cantos/jogo fora",v:"6.2",s:"Top 1 Bundesliga fora"},{l:"Freiburg cant. conced. casa",v:"4.3",s:"Bloco baixo vs equipas top"},{l:"Projeção combinada",v:"10.5",s:"Linha: 10.5"},{l:"Over 10.5 rate Bayern fora",v:"65%",s:"Últimas 10 deslocações"}],
-   f:[3,3,2,3,3,3,3,3,3,2],
-   tac:["Bayern em deslocação é o maior gerador de cantos da Bundesliga — Gnabry, Sané e Coman rasgam pelas alas continuamente e criam cruzamentos que terminam em cantos","Freiburg adota bloco médio-baixo em casa vs equipas de topo para não abrir — este posicionamento defensivo canaliza o Bayern para as alas, multiplicando os cantos","Bayern com motivação máxima para o título — intensidade ofensiva ao máximo durante os 90 minutos sem gestão de esforço"],
-   risk:["Se Bayern marcar 3 golos antes dos 70 minutos, pode baixar o ritmo ofensivo","Confirmar disponibilidade de Gnabry e Kane para confirmação do ataque"]},
-  {n:"FC Porto vs Famalicão",l:"Liga Portugal · 21:30",s:25,p:71,line:"Over 9.5 Cantos FT",odd:"1.38–1.50",ev:"+5.9%",
-   stats:[{l:"Porto cantos/jogo casa",v:"5.8",s:"Top 2 Liga Portugal"},{l:"Famalicão cant. conced. fora",v:"4.7",s:"Bloco baixo em deslocação"},{l:"Projeção combinada",v:"10.5",s:"Linha: 9.5"},{l:"Over 9.5 rate Porto casa",v:"68%",s:"Últimas 10 jornadas"}],
-   f:[3,3,3,3,3,2,2,3,3,3],
-   tac:["Porto no Dragão joga pelas alas com fullbacks muito ativos — Wendell e Pepê criam cruzamentos repetidos que terminam em cantos quando Famalicão fecha os ângulos centrais","Famalicão em deslocação fecha em bloco compacto para defender o resultado — padrão que sistematicamente gera cantos para o Porto ofensivo","Porto em disputa pelo 2.º lugar — urgência máxima ofensiva que eleva o volume de cantos acima da média"],
-   risk:["Porto pode dar sinais de cansaço se a agenda foi carregada","Confirmar rotações no setor ofensivo antes do jogo"]},
-  {n:"Lazio vs Parma",l:"Italy Serie A · 20:45",s:24,p:70,line:"Over 9.5 Cantos FT",odd:"1.40–1.52",ev:"+5.6%",
-   stats:[{l:"Lazio cantos/jogo casa",v:"5.6",s:"Top 4 Serie A"},{l:"Parma cant. conced. fora",v:"4.9",s:"Bloco baixo permanente fora"},{l:"Projeção combinada",v:"10.5",s:"Linha: 9.5"},{l:"Over 9.5 rate Lazio casa",v:"66%",s:"Últimas 10 jornadas"}],
-   f:[3,3,3,3,3,2,3,3,3,2],
-   tac:["Lazio no Olimpico usa o largo com Pedro e Isaksen como extremos de rasgamento de linha de fundo — padrão ofensivo muito gerador de cantos","Parma em deslocação adota 5-4-1 defensivo extremo — sistema que canaliza os ataques da Lazio para os corredores e multiplica os cantos","Lazio em luta europeia — motivação ofensiva máxima em casa com adeptos a pressionar desde o início"],
-   risk:["Parma sem nada para ganhar pode ser passivo — jogo pode tornar-se monótono","Confirmar estado físico dos extremos da Lazio antes do jogo"]},
-  {n:"Stuttgart vs Dortmund",l:"Bundesliga · 18:30",s:24,p:69,line:"Over 10.5 Cantos FT",odd:"1.45–1.58",ev:"+5.2%",
-   stats:[{l:"Stuttgart cantos/jogo casa",v:"5.4",s:"Ataque ativo Bundesliga"},{l:"Dortmund cant. conced. fora",v:"5.1",s:"Defesa aberta em deslocação"},{l:"Projeção combinada",v:"10.5",s:"Linha: 10.5"},{l:"H2H cantos avg",v:"11.2",s:"Últimos 5 confrontos"}],
-   f:[3,3,2,3,2,2,3,3,3,3],
-   tac:["Stuttgart casa com Guirassy como referência obriga a cruzamentos frequentes — Dortmund concede espaços nas alas em deslocação","Dortmund ataca pelas alas com Adeyemi e Brandt — ambas as equipas com estilo gerador de cantos","H2H Stuttgart vs Dortmund: média de 11.2 cantos totais nas últimas 5 reuniões"],
-   risk:["Jogo equilibrado pode ter baixa cadência de cantos no 1.º tempo","Confirmar se Dortmund usa sistema de pressing alto ou bloco médio-baixo"]}
-];
-
-const DATA1X = [
-  {n:"Rangers vs Dundee Utd",l:"Scottish Premiership · 16:00",s:26,p:80,line:"1X — Rangers",odd:"1.15–1.22",ev:"+3.6%",tac:["Rangers no Ibrox não perde em casa há 11 jogos consecutivos — Dundee Utd é muito inferior em qualidade","Dundee Utd em deslocação luta contra a relegação e defende em bloco 5-4-1 — raramente ataca fora","1X cobre ambos os cenários: vitória fácil ou empate defensivo controlado","Ibrox é um dos ambientes mais intimidadores da Escócia — vantagem psicológica enorme para os Rangers"],risk:["Dundee Utd pode surpreender num dia anormal — 1X cobre esse cenário","Verificar lesões no setor ofensivo dos Rangers"]},
-  {n:"FC Porto vs Famalicão",l:"Liga Portugal · 21:30",s:26,p:79,line:"1X — Porto",odd:"1.18–1.25",ev:"+3.8%",tac:["Porto no Dragão tem 90% de 1X nas últimas 10 jornadas em casa","Famalicão inconsistente fora — 5 derrotas nas últimas 10 deslocações","xG Porto em casa: 2.21 vs xGA Famalicão fora: 1.65 — diferença clara","Porto em luta pelo 2.º lugar necessita de pontuar em casa"],risk:["Porto pode dar sinais de cansaço após agenda carregada","Famalicão pode tentar contra-ataque rápido num dia de má gestão do Porto"]},
-  {n:"Din. Zagreb vs Osijek",l:"Croatia HNL · 15:00",s:25,p:76,line:"1X — Zagreb",odd:"1.28–1.35",ev:"+5.1%",tac:["Zagreb domina o futebol croata há décadas — Osijek é respeitável mas a diferença é clara","Zagreb em casa não perde há 11 encontros consecutivos no HNL","Motivação europeia mantém Zagreb a 100% em todos os jogos do campeonato","H2H: Zagreb sem derrotas em casa vs Osijek nos últimos 7 encontros"],risk:["Osijek pode surpreender num dia inspirado em contra-ataque","Confirmar se Zagreb tem descanso adequado após agenda europeia"]},
-  {n:"Ajax vs Twente",l:"Netherlands Eredivisie · 21:00",s:25,p:75,line:"1X — Ajax",odd:"1.32–1.40",ev:"+3.8%",tac:["Ajax em casa no Johan Cruyff ArenA é fortíssimo na disputa do título","Twente competente mas consistentemente inferior ao Ajax em Amesterdão","xG Ajax em casa: 2.1 vs xGA Twente fora: 1.5 — diferença clara e consistente","Bergwijn e Brobbey criam qualidade ofensiva muito superior ao adversário"],risk:["Twente pode ser mais organizado do que esperado em bloco baixo","Ajax sob pressão do título pode cometer erros de ansiedade"]},
-  {n:"Lazio vs Parma",l:"Italy Serie A · 20:45",s:24,p:73,line:"1X — Lazio",odd:"1.30–1.38",ev:"+4.0%",tac:["Lazio em casa com adeptos pressiona desde o 1.º minuto — Parma raramente consegue ponto fora vs top 8","Parma no fundo da tabela — enfrenta dificuldades estruturais sérias em todas as deslocações","Lazio superior em xG (1.9 vs 0.9 Parma fora) — projeção favorável clara","Pedro e Castellanos criam ameaça constante à defesa fragilizada do Parma"],risk:["Parma com baixa motivação pode tentar 0-0 com bloco profundo — 1X já cobre empate","Confirmar lesões no setor ofensivo da Lazio antes do jogo"]},
-  {n:"Stuttgart vs Dortmund",l:"Bundesliga · 18:30",s:23,p:68,line:"1X — Stuttgart",odd:"2.00–2.20",ev:"+7.0%",tac:["Stuttgart em casa é muito competitivo — Dortmund irregular nas deslocações em 2024/25","Guirassy e os extremos de Stuttgart criam pressão constante na defesa do Dortmund","Odd mais alta reflete maior risco — mas Stuttgart tem fundamentos sólidos em casa","H2H recente favorável a Stuttgart em casa nesta época"],risk:["Dortmund pode impor-se com Fullkrug e Brandt — equipa de qualidade","Esta é a seleção de maior risco do grupo 1X — apostar com stake reduzido"]},
-];
-
-const DATABTTS = [
-  {n:"Trabzonspor vs Galatasaray",l:"Turkey Süper Lig · 19:00",s:25,p:74,line:"BTTS — Ambas Marcam",odd:"1.58–1.70",ev:"+8.1%",tac:["Clássico turco de alto impacto — historicamente jogos abertos com BTTS em 83% dos H2H recentes","Galatasaray possui dos melhores avançados da Süper Lig (Icardi) — marca sistematicamente mesmo em deslocações difíceis","Trabzonspor em casa é ofensivo e não joga defensivamente contra equipas de topo — abre espaços","H2H: BTTS em 5 dos últimos 6 confrontos — padrão extremamente consistente"],risk:["Clássico turco pode tornar-se violento taticamente — verificar suspensões","Galatasaray pode gerir se marcar cedo, reduzindo a probabilidade de BTTS no 2.º tempo"]},
-  {n:"Freiburg vs Bayern Munich",l:"Bundesliga · 15:30",s:26,p:75,line:"BTTS — Ambas Marcam",odd:"1.50–1.62",ev:"+7.8%",tac:["Bayern marca em quase 100% dos jogos fora — máquina ofensiva incontestável da Bundesliga","Freiburg em casa é ofensivo e raramente fica sem marcar — marca em 78% dos jogos em casa","BTTS rate Freiburg casa: 69% · Bayern fora: 81% — combinação muito favorável","H2H: BTTS em 4/5 últimos confrontos diretos em Freiburg"],risk:["Bayern pode dominar completamente e Freiburg não criar qualidade suficiente","Confirmar Neuer e defesa Bayern para este jogo importante"]},
-  {n:"Werder Bremen vs RB Leipzig",l:"Bundesliga · 15:30",s:25,p:73,line:"BTTS — Ambas Marcam",odd:"1.55–1.68",ev:"+7.2%",tac:["Bremen em casa ofensivo com Ducksch e companhia — marca em 72% dos jogos em casa","Leipzig ataca com Xavi Simons e Openda — dois dos melhores atacantes da Bundesliga","BTTS rate Bremen casa: 65% · Leipzig fora: 72% — combinação favorável","Ambas pressionam alto — jogo aberto com trocas de oportunidades previsto"],risk:["Leipzig pode ser mais sólido defensivamente do que o esperado","Bremen pode estar cansado após agenda intensa"]},
-  {n:"Southampton vs Arsenal",l:"England FA Cup · 21:00",s:24,p:71,line:"BTTS — Ambas Marcam",odd:"1.60–1.75",ev:"+6.9%",tac:["Arsenal marca consistentemente com Saka, Trossard, Havertz — 2.1 gols/jogo","Southampton apesar de relegado ainda marca em 60% dos jogos em casa","FA Cup elimina conservadorismo — ambas atacam desde o início sem gestão","BTTS rate Arsenal fora: 68% · Southampton casa: 62%"],risk:["Arsenal pode dominar completamente e Southampton não criar oportunidades","Arteta pode poupar titulares para a Premier League"]},
-  {n:"Basel vs Young Boys",l:"Switzerland Super League · 20:30",s:23,p:68,line:"BTTS — Ambas Marcam",odd:"1.62–1.78",ev:"+5.8%",tac:["Clássico suíço — historicamente jogos com golos de ambas as partes","BTTS H2H: 4/5 últimos encontros diretos — padrão consistente","Ambas no topo da Super Liga Suíça com ataques equilibrados e produção ofensiva regular","Young Boys tem Theoson Siebatcheu como referência ofensiva sólida"],risk:["Basel pode impor domínio tático e anular Young Boys completamente","Confirmar motivação e escalão para ambas as equipas"]},
-  {n:"Sao Paulo vs Cruzeiro",l:"Brazil Serie A · 23:30",s:22,p:67,line:"BTTS — Ambas Marcam",odd:"1.68–1.82",ev:"+5.0%",tac:["Futebol brasileiro tem uma das BTTS rates mais elevadas da América do Sul — contexto favorável","Sao Paulo em casa com Calleri é sempre uma ameaça ofensiva concreta","Cruzeiro com Gabigol e Matheus Pereira — não viaja para defender, procura o golo","Derby clássico — ambas querem marcar por prestígio e pontos"],risk:["Início de época brasileira pode ter intensidade física menor","Condições climáticas podem afetar ritmo e produção ofensiva"]},
-  {n:"Excelsior vs Nijmegen",l:"Netherlands Eredivisie · 21:00",s:22,p:67,line:"BTTS — Ambas Marcam",odd:"1.65–1.80",ev:"+4.8%",tac:["Eredivisie tem uma das BTTS rates mais elevadas da Europa — média de 68%","Ambas em zona de luta pela sobrevivência — necessitam de marcar para somar pontos","Excelsior em casa não defende — pressão classificativa obriga a atacar","Nijmegen também ofensivo para fugir à descida — jogo aberto previsto"],risk:["Jogo pode tornar-se nervoso e fechado se um marcar cedo","Verificar estado físico e motivacional de ambas as equipas"]},
-];
-
-const DATAU35 = [
-  {n:"Hibernian vs Kilmarnock",l:"Scottish Premiership · 16:00",s:25,p:74,line:"Under 3.5 Golos",odd:"1.60–1.75",ev:"+9.5%",tac:["Kilmarnock tem a menor produção ofensiva fora de casa da Premiership escocesa — 0.8 gols/jogo fora","Hibernian em casa adota postura controlada — não é uma equipa de alto scoring, prefere solidez","H2H perfeito: 5/5 últimos confrontos terminaram Under 3.5 golos totais — padrão extraordinariamente estável","Ambas com xG ofensivo abaixo de 1.1/jogo — contexto estrutural para baixo scoring"],risk:["Um erro defensivo pode inverter dinâmica do jogo mesmo em contexto de baixo scoring","Derby escocês pode ter intensidade maior do que o previsto"]},
-  {n:"Sassuolo vs Cagliari",l:"Italy Serie A · 15:00",s:24,p:71,line:"Under 3.5 Golos",odd:"1.60–1.72",ev:"+6.2%",tac:["Dois dos ataques mais fracos da Serie A — ambas marcam pouco de forma consistente","Under 3.5 rate Sassuolo casa: 68% · Cagliari fora: 70% — combinação favorável","Projeção combinada de apenas 1.9 golos totais — muito abaixo da linha de 3.5","H2H: 4/5 últimos encontros terminaram Under 3.5 — padrão histórico claro"],risk:["Qualquer penálti ou golo de livre pode elevar a contagem rapidamente","Sassuolo pode precisar de pontos e jogar mais aberto do que o esperado"]},
-  {n:"St. Mirren vs Aberdeen",l:"Scottish Premiership · 16:00",s:23,p:70,line:"Under 3.5 Golos",odd:"1.68–1.80",ev:"+7.1%",tac:["St. Mirren ultra-defensivo em casa — raramente termina com jogo aberto de alto scoring","Aberdeen em deslocação conservador — marca pouco fora, prioriza não perder","Under 3.5 rate nos confrontos diretos históricos: 72% — padrão muito claro","Ambas com xG combinado de apenas 1.6/jogo — base estrutural para under"],risk:["Penáltis e golos de livre podem elevar a contagem inesperadamente","Contexto classificativo pode motivar Aberdeen a jogar mais ofensivamente"]},
-  {n:"PSV vs Utrecht",l:"Netherlands Eredivisie · 16:30",s:24,p:72,line:"Under 3.5 Golos",odd:"1.55–1.68",ev:"+5.6%",tac:["PSV domina mas Utrecht fecha muito bem o bloco defensivo em jogos de prestígio","Projeta-se que PSV marque 1-2 golos e Utrecht raramente ultrapasse esse total fora","Under 3.5 rate PSV casa: 61% — adequado para uma equipa dominante e controlada","Utrecht fora tem xG ofensivo muito baixo: 0.8/jogo — raramente cria perigo real"],risk:["PSV pode estar motivado para uma goleada que pressione Bayern/Liverpool","Verificar se Utrecht tem baixas defensivas importantes"]},
-  {n:"Hamburger SV vs Augsburg",l:"Germany 2.Bundesliga · 15:30",s:22,p:68,line:"Under 3.5 Golos",odd:"1.65–1.78",ev:"+5.8%",tac:["Hamburger SV em casa é sólido mas não é um grande marcador — controla sem golear","Augsburg em deslocação prioriza equilíbrio — não corre riscos defensivos desnecessários","Under 3.5 rate HSV casa: 64% — padrão adequado","H2H recente: 3/4 últimos encontros terminaram Under 3.5 golos totais"],risk:["HSV pode jogar mais aberto se precisar de pontos para promoção","Augsburg pode surpreender em contra-ataques rápidos"]},
-  {n:"Rio Ave vs Alverca",l:"Liga Portugal · 19:00",s:23,p:70,line:"Under 3.5 Golos",odd:"1.62–1.75",ev:"+6.5%",tac:["Rio Ave em casa conservador — pouca produção ofensiva, jogo controlado","Alverca fora não possui capacidade ofensiva — visita para sobreviver e não sofrer","Ambas com under 3.5 rate acima de 70% nas suas respetivas condições — sólido","Projeção de apenas 1.7 golos totais no encontro — muito favorável para under"],risk:["Rio Ave pode forçar o resultado se estiver sob pressão classificativa","Verificar motivação atual de Rio Ave para este momento da época"]},
-  {n:"Gaziantep vs Alanyaspor",l:"Turkey Süper Lig · 16:00",s:22,p:68,line:"Under 3.5 Golos",odd:"1.72–1.85",ev:"+5.5%",tac:["Jogo de baixo perfil na Süper Lig — ambas sem objetivos expressivos que justifiquem jogar aberto","Under 3.5 rate ambas acima de 65% nas suas condições respetivas","Gaziantep defende profundamente em casa — Alanyaspor ineficiente fora","Média golos combinada nos H2H: 1.9/jogo — padrão histórico de baixo scoring"],risk:["Futebol turco pode ter variações táticas imprevisíveis","Um penálti ou golo de livre pode comprometer o mercado"]},
-];
-
-/* ---- RENDER FUNCTIONS ---- */
-function dot(v){return `<span class="fdot ${v>=3?'f-on':v>=2?'f-half':'f-off'}"></span>`}
-
-function buildFull(data, containerId, color) {
-  const el=document.getElementById(containerId);
-  const bc=color==='green'?'bg-green':color==='blue'?'bg-blue':color==='purple'?'bg-purple':'bg-amber';
-  const sc=color==='green'?'sc-green':color==='blue'?'sc-blue':color==='purple'?'sc-purple':'sc-amber';
-  const pn=`pn-${color}`;
-  const pf=`pf-${color}`;
-  const ev=`ev-${color}`;
-  const dotCls=`dot-${color}`;
-  const fn=`fn-${color}`;
-  data.forEach(g=>{
-    const statHtml=(g.stats||[]).map(s=>`<div class="gc-stat"><div class="gs-label">${s.l}</div><div class="gs-val">${s.v}</div><div class="gs-sub">${s.s}</div></div>`).join('');
-    const statBlock=g.stats?`<div class="gc-grid">${statHtml}</div>`:'';
-    const fHtml=(g.f||[]).map(v=>dot(v)).join('');
-    const fBlock=g.f?`<div style="margin-bottom:10px;"><div class="tac-title">Filtros ativos</div><div class="fm-dots" style="flex-wrap:wrap;margin-top:4px;">${fHtml}</div></div>`:'';
-    const tac=g.tac.map(t=>`<div class="tac-item"><span class="${dotCls}"></span>${t}</div>`).join('');
-    const risk=g.risk.map(r=>`<div class="risk-item"><span class="r-dot"></span>${r}</div>`).join('');
-    el.innerHTML+=`
-    <div class="game-card" style="margin-bottom:.8rem;">
-      <div class="gc-head">
-        <div class="gc-left"><div class="gc-name">${g.n}</div><div class="gc-meta">${g.l}</div></div>
-        <div class="gc-right"><div class="badge-tier ${bc}">Tier A</div><div class="score-circle ${sc}">${g.s}</div></div>
-      </div>
-      <div class="gc-body">
-        <div class="prob-section">
-          <div class="prob-num ${pn}">${g.p}%</div>
-          <div class="prob-bar-wrap"><div class="prob-fill ${pf}" style="width:${g.p}%"></div></div>
-          <div class="prob-label">${g.line}</div>
-        </div>
-        ${statBlock}${fBlock}
-        <div class="tactics-box"><div class="tac-title">Justificação tática</div>${tac}</div>
-        <div class="risk-box"><div class="risk-title">Alertas de risco</div>${risk}</div>
-        <div class="odds-row">
-          <div class="odd-pill"><div class="op-label">${g.line}</div><div class="op-val">${g.odd}</div></div>
-          <div class="odd-pill"><div class="op-label">EV estimado</div><div class="op-val ${ev}">${g.ev}</div></div>
-          <div class="odd-pill"><div class="op-label">Stake rec.</div><div class="op-val">1.5–2% banca</div></div>
-        </div>
-      </div>
-    </div>`;
+// Animate probability bars on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const bars = entry.target.querySelectorAll('.prob-bar');
+      bars.forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0%';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            bar.style.width = w;
+          });
+        });
+      });
+      observer.unobserve(entry.target);
+    }
   });
-}
+}, { threshold: 0.1 });
 
-buildFull(CORNERS,'qCorners','amber');
-buildFull(DATA1X,'q1X','green');
-buildFull(DATABTTS,'qBTTS','blue');
-buildFull(DATAU35,'qU35','purple');
-
-/* ---- NAV ---- */
-function show(id,btn){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-}
+document.querySelectorAll('.card').forEach(card => observer.observe(card));
 </script>
 </body>
 </html>
