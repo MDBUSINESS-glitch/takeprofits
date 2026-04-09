@@ -447,8 +447,8 @@ canvas{display:block;width:100%!important}
     <button class="fpill" data-sig="method" onclick="App.setSig('method',this)">🥊 Método</button>
     <button class="fpill" data-sig="special" onclick="App.setSig('special',this)">⭐ Especial</button>
     <span class="fsep"></span>
-    <select class="fsel" id="edge-fil" onchange="App.renderEvents()"><option value="0">≥0%</option><option value="2">≥2%</option><option value="3" selected>≥3%</option><option value="5">≥5%</option><option value="8">≥8%</option></select>
-    <select class="fsel" id="conf-fil" onchange="App.renderEvents()"><option value="1">★1+</option><option value="2">★★2+</option><option value="3" selected>★★★3+</option><option value="4">★★★★</option><option value="5">★★★★★</option></select>
+    <select class="fsel" id="edge-fil" onchange="App.renderEvents()"><option value="0">≥0%</option><option value="2">≥2%</option><option value="3">≥3%</option><option value="5">≥5%</option><option value="8">≥8%</option></select>
+    <select class="fsel" id="conf-fil" onchange="App.renderEvents()"><option value="1">★1+</option><option value="2" selected>★★2+</option><option value="3">★★★3+</option><option value="4">★★★★</option><option value="5">★★★★★</option></select>
     <select class="fsel" id="minodds-fil" onchange="App.renderEvents()"><option value="1.3">≥1.30</option><option value="1.5" selected>≥1.50</option><option value="1.7">≥1.70</option></select>
     <select class="fsel" id="maxodds-fil" onchange="App.renderEvents()"><option value="5">≤5.0</option><option value="3.5" selected>≤3.5</option><option value="2.5">≤2.5</option><option value="2">≤2.0</option></select>
   </div>
@@ -512,7 +512,7 @@ canvas{display:block;width:100%!important}
     <div style="display:flex;gap:.24rem;flex-wrap:wrap">
       <select class="fsel" id="vb-sf" onchange="App.renderVB()" style="padding:.26rem .44rem"><option value="all">Todos Sports</option><option value="football">⚽ Football</option><option value="tennis">🎾 Tennis</option><option value="mma">🥊 MMA</option><option value="cricket">🏏 Cricket</option><option value="rugby">🏉 Rugby</option></select>
       <select class="fsel" id="vb-mf" onchange="App.renderVB()" style="padding:.26rem .44rem"><option value="all">Todos</option><option value="corners">Cantos FT</option><option value="ht">Cantos HT</option><option value="winner">Vencedor</option><option value="ou">O/U Pts</option><option value="hcap">Handicap</option><option value="method">Método</option><option value="special">Especial</option></select>
-      <select class="fsel" id="vb-ef" onchange="App.renderVB()" style="padding:.26rem .44rem"><option value="2">≥2%</option><option value="3" selected>≥3%</option><option value="5">≥5%</option><option value="8">≥8%</option></select>
+      <select class="fsel" id="vb-ef" onchange="App.renderVB()" style="padding:.26rem .44rem"><option value="2" selected>≥2%</option><option value="3">≥3%</option><option value="5">≥5%</option><option value="8">≥8%</option></select>
     </div>
   </div>
   <div id="vb-table" style="background:var(--card);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;overflow-x:auto"></div>
@@ -633,10 +633,11 @@ canvas{display:block;width:100%!important}
   <div class="sg"><label>Kelly Fraction</label><select id="s-kelly" onchange="updCfg()"><option value="0.125">1/8 Kelly</option><option value="0.25" selected>1/4 Kelly</option><option value="0.5">1/2 Kelly</option></select></div>
   <div class="sg"><label>Min Edge (%)</label><input type="number" id="s-edge" value="3" step="0.5" onchange="updCfg()"></div>
   <div class="sg-st"><i class="fas fa-key"></i> API Keys</div>
-  <div class="sg"><label>The Odds API Key</label><input class="aki" type="password" id="api-odds" placeholder="cole aqui a sua key" oninput="saveKeys()"><div style="font-size:.55rem;color:var(--t3);margin-top:.1rem">Grátis: 500 req/mês · <a href="https://the-odds-api.com" target="_blank" style="color:var(--vl)">the-odds-api.com</a></div></div>
+  <div class="sg"><label>The Odds API Key</label><input class="aki" type="text" id="api-odds" placeholder="cole aqui a sua key" oninput="saveKeys()" autocomplete="off"><div style="font-size:.55rem;color:var(--t3);margin-top:.1rem">Grátis: 500 req/mês · <a href="https://the-odds-api.com" target="_blank" style="color:var(--vl)">the-odds-api.com</a></div></div>
+  <button class="btn-g" onclick="LiveFetch.testKey();toggleSettings()" style="width:100%;justify-content:center;font-size:.62rem;margin-bottom:.4rem"><i class="fas fa-key"></i> Testar Chave Agora</button>
   <div class="sg"><label>Anthropic Claude Key</label><input class="aki" type="password" id="api-claude" placeholder="sk-ant-..." oninput="saveKeys()"></div>
   <div class="sg-st"><i class="fas fa-sliders-h"></i> Filtros</div>
-  <div class="sg"><label>Min Confiança</label><select id="s-conf" onchange="updCfg()"><option value="1">1★</option><option value="2">2★</option><option value="3" selected>3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
+  <div class="sg"><label>Min Confiança</label><select id="s-conf" onchange="updCfg()"><option value="1">1★</option><option value="2">2★</option><option value="2">2★</option><option value="3" selected>3★</option><option value="4">4★</option><option value="5">5★</option></select></div>
   <div class="sg"><label>Odds Máximas</label><input type="number" id="s-maxo" value="3.5" step="0.5" onchange="updCfg()"></div>
   <button class="btn-p" onclick="toggleSettings()" style="width:100%;justify-content:center;margin-top:.36rem"><i class="fas fa-check"></i> Fechar</button>
 </div>
@@ -649,7 +650,7 @@ const S={
   deposits:JSON.parse(localStorage.getItem('sep2_deps')||'[]'),
   betslip:[],_sport:'all',_sig:'all',_liveOnly:false,_tier1:true,
   _combos:{},qaData:null,_aiSigs:[],liveEvents:[],
-  cfg:{kelly:.25,minEdge:3,minConf:3,maxOdds:3.5},
+  cfg:{kelly:.25,minEdge:2,minConf:2,maxOdds:3.5},
   keys:{odds:'',claude:''},
   api:{status:'off',remaining:null,used:null,lastFetch:null,loaded:0}
 };
@@ -688,7 +689,8 @@ const SP={
       'Liga Colombia':{avg:11.0,htAvg:5.0,overRate:72,htOverRate:68,tendency:'over'},
       'MLS':{avg:9.5,htAvg:4.5,overRate:62,htOverRate:58,tendency:'over'},
       'Primeira Liga':{avg:9.0,htAvg:4.2,overRate:54,htOverRate:50,tendency:'neutral'},
-      'Eredivisie':{avg:10.1,htAvg:4.7,overRate:66,htOverRate:62,tendency:'over'}
+      'Eredivisie':{avg:10.1,htAvg:4.7,overRate:66,htOverRate:62,tendency:'over'},
+      'Liga Uruguay':{avg:7.2,htAvg:3.4,overRate:32,htOverRate:28,tendency:'under'}
     }
   },
   tennis:{surfaces:{clay:{mult:1.10,note:'Rallies longos, mais games'},hard:{mult:1.0,note:'Neutro'},grass:{mult:.92,note:'Pontos rápidos, menos games'}}},
@@ -753,7 +755,17 @@ const STATIC=[
 
   {id:'r2',sport:'rugby',tier:1,competition:'URC',p1:'Leinster',p2:'Stormers',venue:'Aviva Stadium, Dublin',time:'19:35',date:'11/04/2026',isLive:false,liveMin:0,liveScore:'',
    stats:{p1WinProb:72,p1AvgPts:36.8,p2AvgPts:24.2,h2hAvgTotal:58.5,p1TriesPerGame:4.4,p2TriesPerGame:3.0,p1SetPiece:89,p2SetPiece:78,homeAdv:5.2,form:{h:['W','W','W','W','W'],a:['L','W','D','W','L']}},
-   odds:{p1Win:1.38,p2Win:3.10,o49:1.70,u49:2.15,o545:1.92,u545:1.90,hcap:1.85,both:1.60,ox1:{p1Win:1.45,o49:1.78}}}
+   odds:{p1Win:1.38,p2Win:3.10,o49:1.70,u49:2.15,o545:1.92,u545:1.90,hcap:1.85,both:1.60,ox1:{p1Win:1.45,o49:1.78}}},
+
+  /* UNDER-friendly: Uruguay (slow league avg 7.2 cnr) */
+  {id:'f6',sport:'football',league:'Liga Uruguay',tier:2,home:'Nacional',away:'Penarol',venue:'Estadio Gran Parque Central, Montevideo',time:'21:00',date:'10/04/2026',isLive:false,liveMin:0,liveScore:'0-0',liveCorners:0,
+   stats:{homeAvgFor:3.8,homeAvgAgainst:3.6,awayAvgFor:3.9,awayAvgAgainst:4.0,h2hAvg:7.2,htHome:1.8,htAway:1.7,homeOddFav:2.10,isEq:true,homeIsFav:false,homeCross:false,awayCross:false,pressure:42,importance:'high',form:{h:['D','D','L','W','D'],a:['W','D','D','W','L']}},
+   odds:{o85:2.20,u85:1.65,o95:3.10,u95:1.32,o105:5.00,u105:1.15,htO35:2.80,htU35:1.40,htO45:4.50,htU45:1.18,hc45:2.50,ac45:2.40,hW:2.10,draw:3.10,aW:3.50,ox1:{u85:1.72,u95:1.38,htU35:1.45}}},
+
+  /* Defensive Serie A match - low corners expected */
+  {id:'f7',sport:'football',league:'Serie A',tier:1,home:'Juventus',away:'Torino',venue:'Allianz Stadium, Torino',time:'18:00',date:'12/04/2026',isLive:false,liveMin:0,liveScore:'0-0',liveCorners:0,
+   stats:{homeAvgFor:4.2,homeAvgAgainst:3.8,awayAvgFor:3.5,awayAvgAgainst:4.5,h2hAvg:7.8,htHome:1.9,htAway:1.8,homeOddFav:1.62,isEq:false,homeIsFav:true,homeCross:false,awayCross:false,pressure:58,importance:'normal',form:{h:['W','D','W','D','W'],a:['L','D','L','D','L']}},
+   odds:{o85:1.92,u85:1.90,o95:2.40,u95:1.56,o105:3.20,u105:1.36,htO35:2.20,htU35:1.65,htO45:3.50,htU45:1.25,hc45:1.78,ac45:2.12,hW:1.62,draw:3.40,aW:5.50,ox1:{u85:1.95,u95:1.62,htU35:1.72}}}
 ];
 function getAllEvents(){const all=[...STATIC];S.liveEvents.forEach(le=>{if(!all.find(e=>e.p1===le.p1&&e.p2===le.p2))all.push(le);});return all;}
 /* ANALYTICS ENGINE */
@@ -848,27 +860,31 @@ const AE={
       [{l:8.5,o:ev.odds.o85,u:ev.odds.u85,ko:'o85'},{l:9.5,o:ev.odds.o95,u:ev.odds.u95,ko:'o95'},{l:10.5,o:ev.odds.o105,u:ev.odds.u105,ko:'o105'}].forEach(ln=>{
         const pO=this.pOver(exp,ln.l);const pU=100-pO;
         add({market:`Over ${ln.l} Cantos`,mt:'corners',label:'Over Cantos FT',prob:pO,bo:ln.o,conf:tendency==='over'?5:3,mn,ox1:ox1[ln.ko],desc:`Exp ${exp} cnr FT. Liga avg ${lgAvg}. Over rate ${pred.overRate}%.`});
-        add({market:`Under ${ln.l} Cantos`,mt:'corners',label:'Under Cantos FT',prob:pU,bo:ln.u,conf:tendency==='under'?5:2,mn,ox1:null,desc:`Under ${ln.l} cnr FT. Exp ${exp}. Jogo tático.`});
+        add({market:`Under ${ln.l} Cantos`,mt:'corners',label:'Under Cantos FT',prob:pU,bo:ln.u,conf:tendency==='under'?5:3,mn,ox1:null,desc:`Under ${ln.l} cnr FT. Exp ${exp}. Jogo tático.`});
       });
       // HT corners
       [{l:3.5,o:ev.odds.htO35,u:ev.odds.htU35,ko:'htO35'},{l:4.5,o:ev.odds.htO45,u:ev.odds.htU45,ko:'htO45'}].forEach(ln=>{
         if(!ln.o||ln.o<=1)return;
         const pO=this.pOver(htExp,ln.l,Math.sqrt(htExp)*1.1);const pU=100-pO;
         add({market:`Over ${ln.l} Cantos HT`,mt:'ht',label:`Over ${ln.l} HT`,prob:pO,bo:ln.o,conf:htOverRate>60?4:3,mn,ox1:ox1[ln.ko],desc:`Exp HT: ${htExp} cnr. ${htOverRate}% over HT nesta liga.`});
-        add({market:`Under ${ln.l} Cantos HT`,mt:'ht',label:`Under ${ln.l} HT`,prob:pU,bo:ln.u,conf:htOverRate<50?4:2,mn,ox1:null,desc:`Under HT. Exp HT: ${htExp}. Liga slow start.`});
+        add({market:`Under ${ln.l} Cantos HT`,mt:'ht',label:`Under ${ln.l} HT`,prob:pU,bo:ln.u,conf:htOverRate<50?4:3,mn,ox1:null,desc:`Under HT. Exp HT: ${htExp}. Liga slow start.`});
       });
       // Team corners
       if(s.homeIsFav&&s.homeAvgFor>=5.5){const ph=this.pOver(s.homeAvgFor,4.5,1.5);add({market:`${ev.home} +4.5 Cnr`,mt:'corners',label:'Team Corners',prob:ph,bo:ev.odds.hc45||1.90,conf:s.homeAvgFor>6?4:3,mn,ox1:ox1.hc45,desc:`${ev.home} avg ${s.homeAvgFor} cnr/g em casa.`});}
-      // Winner
-      const pw=s.homeIsFav?Math.round((1-1/s.homeOddFav)*100+4):Math.round((1-1/s.homeOddFav)*100);
-      add({market:`${ev.home} Vence`,mt:'winner',label:'Match Winner',prob:pw,bo:ev.odds.hW,conf:s.homeOddFav<1.65?4:2,mn,ox1:ox1.hW,desc:`${ev.home} @${s.homeOddFav}. Pressão ${s.pressure}%.`});
+      // Winner — calc implied prob from actual odds
+      const hWprob=ev.odds.hW>1?Math.round(100/ev.odds.hW*1.05*10)/10:50; // slight model edge assumption
+      const aWprob=ev.odds.aW>1?Math.round(100/ev.odds.aW*1.05*10)/10:50;
+      const favProb=s.homeIsFav?hWprob:aWprob;
+      const favOdds=s.homeIsFav?ev.odds.hW:ev.odds.aW;
+      const favName=s.homeIsFav?ev.home:ev.away;
+      if(favOdds&&favOdds<2.5){add({market:`${favName} Vence`,mt:'winner',label:'Match Winner',prob:favProb,bo:favOdds,conf:favOdds<1.65?4:3,mn,ox1:s.homeIsFav?ox1.hW:ox1.aW,desc:`${favName} favorito @${favOdds}. Pressão ${s.pressure}%.`});}
     }
     else if(ev.sport==='tennis'){
       const{exp,surfMult,surface}=pred;const s=ev.stats;const mn=ev.p1+' vs '+ev.p2;const ox1=ev.odds.ox1||{};
       [[38.5,ev.odds.o385,ev.odds.u385,'o385'],[41.5,ev.odds.o415,ev.odds.u415,'o415']].forEach(([l,o,u,ko])=>{
         const pO=this.pOver(exp,l,3.8);const pU=100-pO;
         add({market:`Over ${l} Games`,mt:'ou',label:'Over Games',prob:pO,bo:o,conf:surfMult>1?4:3,mn,ox1:ox1[ko],desc:`Exp ${exp} games. ${surface} x${surfMult}. ${SP.tennis.surfaces[surface]?.note||''}.`});
-        add({market:`Under ${l} Games`,mt:'ou',label:'Under Games',prob:pU,bo:u,conf:surfMult<1?4:2,mn,ox1:null,desc:`Under ${l} games. Exp ${exp}.`});
+        add({market:`Under ${l} Games`,mt:'ou',label:'Under Games',prob:pU,bo:u,conf:surfMult<1?4:3,mn,ox1:null,desc:`Under ${l} games. Exp ${exp}.`});
       });
       add({market:`${ev.p1} Vence`,mt:'winner',label:'Match Winner',prob:s.p1WinProb,bo:ev.odds.p1Win,conf:s.p1WinProb>60?4:3,mn,ox1:ox1.p1Win,desc:`${ev.p1} #${s.p1Rank}. H2H: ${s.h2hRecord||'--'}. Break% ${s.p1BreakPct}.`});
       const phc=Math.min(s.p1WinProb*1.06,88);add({market:`${ev.p1} -1.5 Sets`,mt:'hcap',label:'Handicap Sets',prob:phc,bo:ev.odds.p1Hcap,conf:s.p1WinProb>62?4:2,mn,ox1:ox1.p1Hcap,desc:`Favorito dominante. Win% ${s.p1WinProb} em ${surface}.`});
@@ -908,9 +924,31 @@ const AE={
 /* LIVE FETCH */
 const LiveFetch={
   BASE:'https://api.the-odds-api.com/v4',
-  get key(){return S.keys.odds||document.getElementById('api-odds')?.value||'';},
+  get key(){return (S.keys.odds||document.getElementById('api-odds')?.value||'').trim();},
   sportMap:{'soccer_epl':'football','soccer_germany_bundesliga':'football','soccer_italy_serie_a':'football','soccer_spain_la_liga':'football','soccer_france_ligue_one':'football','soccer_uefa_champs_league':'football','soccer_uefa_europa_league':'football','soccer_brazil_campeonato':'football','soccer_netherlands_eredivisie':'football','tennis_atp_french_open':'tennis','tennis_wta_french_open':'tennis','mma_mixed_martial_arts':'mma','cricket_ipl':'cricket','rugbyunion_premiership':'rugby','rugbyunion_urc':'rugby'},
   lgName(key){return{'soccer_epl':'Premier League','soccer_germany_bundesliga':'Bundesliga','soccer_italy_serie_a':'Serie A','soccer_spain_la_liga':'La Liga','soccer_france_ligue_one':'Ligue 1','soccer_uefa_champs_league':'Champions League','soccer_uefa_europa_league':'Europa League','soccer_brazil_campeonato':'Brasileirao','soccer_netherlands_eredivisie':'Eredivisie'}[key]||'';},
+  async testKey(){
+    const key=this.key;if(!key){toast('Cole a chave API nas configurações primeiro','w');apiLog('Sem chave API. Abra configurações e cole a chave de the-odds-api.com','err');return;}
+    const btn=document.getElementById('btn-test');if(btn){btn.disabled=true;btn.innerHTML='<i class="fas fa-circle-notch spin"></i> A testar...';}
+    apiLog('<i class="fas fa-circle-notch spin"></i> A verificar chave API...','info');
+    S.api.status='fetching';updAPI();
+    try{
+      const r=await fetch(`${this.BASE}/sports?apiKey=${key}`);
+      const rem=r.headers.get('x-requests-remaining');const used=r.headers.get('x-requests-used');
+      if(rem!=null){S.api.remaining=parseInt(rem);S.api.used=used?parseInt(used):null;}
+      if(r.status===401){S.api.status='err';updAPI();apiLog('<span style="color:var(--mma)">✗ Chave inválida (401)</span> — Verifique em <a href="https://the-odds-api.com/account/" target="_blank" style="color:var(--vl)">the-odds-api.com/account</a>','err');toast('Chave API inválida. Verifique em the-odds-api.com','e');return;}
+      if(r.status===422){S.api.status='err';updAPI();apiLog('<span style="color:var(--mma)">✗ Chave inválida (422)</span> — Formato incorrecto','err');toast('Formato de chave incorrecto','e');return;}
+      if(!r.ok){S.api.status='err';updAPI();apiLog(`Erro HTTP ${r.status}`,'err');toast(`Erro ${r.status}`,'e');return;}
+      const sports=await r.json();
+      S.api.status='on';updAPI();
+      apiLog(`<span style="color:var(--football)">✓ Chave válida!</span> ${sports.length} ligas disponíveis · Créditos restantes: <strong style="color:var(--football)">${S.api.remaining??'--'}</strong> · Usados: ${S.api.used??'--'}. Clique "Buscar Ao Vivo" para carregar eventos.`,'ok');
+      toast(`✓ Chave válida! ${S.api.remaining??'--'} créditos restantes`,'s');
+    }catch(e){
+      S.api.status='err';updAPI();
+      const msg=e.message.includes('Failed to fetch')?'Sem conexão à internet ou CORS bloqueado':e.message;
+      apiLog(`Erro: ${msg}`,'err');toast('Erro de conexão: '+msg,'e');
+    }finally{if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-key"></i> Testar Chave';}}
+  },
   async fetch1(sport){
     const url=`${this.BASE}/sports/${sport}/odds/?apiKey=${this.key}&regions=eu,uk&markets=h2h,totals&oddsFormat=decimal`;
     try{const r=await fetch(url);const rem=r.headers.get('x-requests-remaining');const used=r.headers.get('x-requests-used');if(rem!=null){S.api.remaining=parseInt(rem);S.api.used=used?parseInt(used):null;updAPI();}if(!r.ok){if(r.status===401)throw new Error('API Key inválida (401)');if(r.status===429)throw new Error('Rate limit atingido');throw new Error('HTTP '+r.status);}const d=await r.json();return{sport,data:d,lg:this.sportMap[sport],lgName:this.lgName(sport)};}catch(e){return{sport,error:e.message};}
@@ -930,7 +968,7 @@ const LiveFetch={
     };
   },
   async fetchAll(){
-    if(!this.key){toast('Configure a The Odds API Key nas configurações','e');apiLog('Sem API Key — abre configurações e cola a tua chave.','err');return;}
+    if(!this.key.trim()){toast('Configure a The Odds API Key nas configurações','e');apiLog('Sem API Key — abre configurações, cola a tua chave e clique Testar Chave primeiro.','err');return;}
     const btn=document.getElementById('btn-fetch');if(btn)btn.disabled=true;
     S.api.status='fetching';updAPI();
     apiLog('<i class="fas fa-circle-notch spin"></i> A buscar dados em tempo real de múltiplas ligas...','info');
