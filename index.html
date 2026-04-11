@@ -289,7 +289,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .oc-cells{display:flex;gap:3px;flex-wrap:wrap}
 .oc{display:flex;flex-direction:column;align-items:center;padding:5px 4px;
   background:rgba(0,0,0,.2);border:1px solid var(--brd);border-radius:5px;
-  cursor:pointer;transition:all .15s;flex:1;min-width:58px}
+  cursor:pointer;transition:all .15s;flex:1;min-width:52px}
 .oc:hover{border-color:rgba(99,102,241,.3);background:rgba(99,102,241,.06)}
 .oc.vb{border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.05)}
 .oc.vb:hover{border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.1)}
@@ -646,10 +646,12 @@ canvas{display:block;width:100%!important}
     <button class="mp" data-m="corners" onclick="F.mkt('corners',this)">⚽ Cantos FT</button>
     <button class="mp" data-m="ht" onclick="F.mkt('ht',this)">⏱ Cantos HT</button>
     <button class="mp" data-m="winner" onclick="F.mkt('winner',this)">🏆 Vencedor</button>
+    <button class="mp" data-m="goals" onclick="F.mkt('goals',this)">⚽ Golos</button>
+    <button class="mp" data-m="btts" onclick="F.mkt('btts',this)">🔄 BTTS</button>
     <button class="mp" data-m="ou" onclick="F.mkt('ou',this)">📊 O/U</button>
     <button class="mp" data-m="hcap" onclick="F.mkt('hcap',this)">🎯 Handicap</button>
     <button class="mp" data-m="method" onclick="F.mkt('method',this)">🥊 Método</button>
-    <button class="mp" data-m="special" onclick="F.mkt('special',this)">⭐ Especial</button>
+    <button class="mp" data-m="special" onclick="F.mkt('special',this)">🟨 Cartões</button>
     <span class="fsep"></span>
     <select class="fsel" id="f-edge" onchange="Render.all()"><option value="0">Edge ≥0%</option><option value="2" selected>Edge ≥2%</option><option value="3">Edge ≥3%</option><option value="5">Edge ≥5%</option><option value="8">Edge ≥8%</option></select>
     <select class="fsel" id="f-conf" onchange="Render.all()"><option value="1">Conf ≥1★</option><option value="2" selected>Conf ≥2★</option><option value="3">Conf ≥3★</option><option value="4">Conf ≥4★</option></select>
@@ -716,7 +718,7 @@ canvas{display:block;width:100%!important}
   <div class="ph"><h2><i class="fas fa-gem" style="color:#a5b4fc"></i> Todos os Value Bets</h2>
     <div style="display:flex;gap:5px;flex-wrap:wrap">
       <select class="fsel" id="vb-sport" onchange="Render.vbTable()"><option value="all">Todos Sports</option><option value="football">⚽ Football</option><option value="tennis">🎾 Tennis</option><option value="mma">🥊 MMA</option><option value="cricket">🏏 Cricket</option><option value="rugby">🏉 Rugby</option></select>
-      <select class="fsel" id="vb-mkt" onchange="Render.vbTable()"><option value="all">Todos Mercados</option><option value="corners">Cantos FT</option><option value="ht">Cantos HT</option><option value="winner">Vencedor</option><option value="ou">O/U</option><option value="hcap">Handicap</option><option value="method">Método</option><option value="special">Especial</option></select>
+      <select class="fsel" id="vb-mkt" onchange="Render.vbTable()"><option value="all">Todos</option><option value="corners">Cantos FT</option><option value="ht">Cantos HT</option><option value="goals">⚽ Golos</option><option value="btts">🔄 BTTS</option><option value="winner">🏆 Vencedor</option><option value="ou">O/U</option><option value="hcap">Handicap</option><option value="method">🥊 Método</option><option value="special">🟨 Cartões</option></select>
       <select class="fsel" id="vb-edge" onchange="Render.vbTable()"><option value="2" selected>Edge ≥2%</option><option value="3">Edge ≥3%</option><option value="5">Edge ≥5%</option></select>
     </div>
   </div>
@@ -918,93 +920,107 @@ const TIER1_LEAGUES=['Premier League','Bundesliga','Serie A','La Liga','Ligue 1'
 
 /* ===== EVENTS DB — April 2026 ===== */
 const DB=[
-  /* --- FOOTBALL --- */
+  /* ━━━━ FOOTBALL: MAJOR LEAGUES ━━━━ */
   {id:'f1',sport:'football',league:'Champions League',tier:1,home:'Arsenal',away:'Real Madrid',
-   venue:'Emirates Stadium, Londres',time:'20:00',date:'08/04/2026',isLive:false,liveMin:0,
-   stats:{hAvg:6.4,aAvg:5.8,hDef:4.2,aDef:3.9,h2h:11.5,htH:3.1,htA:2.8,hOdd:2.20,homeFav:false,hCross:true,aCross:false,press:82,imp:'high',form:{h:['W','W','W','D','W'],a:['W','W','W','W','D']}},
-   odds:{o85:1.72,u85:2.12,o95:1.95,u95:1.88,o105:2.45,u105:1.52,htO35:1.85,htU35:1.98,htO45:2.22,htU45:1.66,hcH:1.75,hcA:2.10,hW:2.20,draw:3.40,aW:1.68,_1x:{o85:1.82,o95:2.06,htO35:1.96,hW:2.35,aW:1.75}}},
+   venue:'Emirates Stadium, Londres',time:'20:00',date:'15/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:6.4,aAvg:5.8,hDef:4.2,aDef:3.9,h2h:11.5,htH:3.1,htA:2.8,hOdd:2.25,homeFav:false,hCross:true,aCross:false,press:82,imp:'high',goalsAvg:2.9,goalsConc:1.1,bttsRate:62,cards:4.2,yCards:3.8,form:{h:['W','W','W','D','W'],a:['W','W','W','W','D']}},
+   odds:{o85:1.74,u85:2.10,o95:1.97,u95:1.86,o105:2.48,u105:1.50,htO35:1.87,htU35:1.96,htO45:2.24,htU45:1.64,hcH:1.77,hcA:2.08,hW:2.25,draw:3.35,aW:1.66,oGoals25:1.65,uGoals25:2.25,oGoals35:2.30,uGoals35:1.58,btts:1.75,nobtts:2.05,ah0:2.10,ahH:2.20,ahA:1.72,cards45:2.20,uCards45:1.65,_1x:{hW:2.36,aW:1.72,o85:1.82,oGoals25:1.70,oGoals35:2.38,btts:1.82,ah0:2.18}}},
 
   {id:'f2',sport:'football',league:'Champions League',tier:1,home:'Barcelona',away:'Inter Milan',
-   venue:'Estadi Olímpic, Barcelona',time:'20:00',date:'09/04/2026',isLive:false,liveMin:0,
-   stats:{hAvg:6.1,aAvg:4.9,hDef:4.0,aDef:4.4,h2h:10.8,htH:2.9,htA:2.4,hOdd:1.72,homeFav:true,hCross:true,aCross:false,press:86,imp:'high',form:{h:['W','W','W','D','W'],a:['W','W','D','W','W']}},
-   odds:{o85:1.78,u85:2.02,o95:2.05,u95:1.80,o105:2.55,u105:1.48,htO35:1.90,htU35:1.92,htO45:2.26,htU45:1.63,hcH:1.72,hcA:2.16,hW:1.72,draw:3.80,aW:4.50,_1x:{o85:1.88,o95:2.18,htO35:2.00,hW:1.80}}},
+   venue:'Estadi Olímpic, Barcelona',time:'20:00',date:'16/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:6.1,aAvg:4.9,hDef:4.0,aDef:4.4,h2h:10.8,htH:2.9,htA:2.4,hOdd:1.75,homeFav:true,hCross:true,aCross:false,press:86,imp:'high',goalsAvg:3.1,goalsConc:0.9,bttsRate:58,cards:3.8,yCards:3.2,form:{h:['W','W','W','D','W'],a:['W','W','D','W','W']}},
+   odds:{o85:1.80,u85:2.00,o95:2.07,u95:1.78,o105:2.58,u105:1.46,htO35:1.92,htU35:1.90,htO45:2.28,htU45:1.61,hcH:1.74,hcA:2.14,hW:1.75,draw:3.75,aW:4.40,oGoals25:1.70,uGoals25:2.18,oGoals35:2.25,uGoals35:1.62,btts:1.85,nobtts:1.98,ah0:1.68,ahH:2.42,ahA:2.18,cards45:2.35,uCards45:1.58,_1x:{hW:1.82,o85:1.88,oGoals25:1.78,oGoals35:2.32,btts:1.90,ah0:1.74}}},
 
   {id:'f3',sport:'football',league:'Premier League',tier:1,home:'Chelsea',away:'Manchester City',
-   venue:'Stamford Bridge, Londres',time:'16:30',date:'12/04/2026',isLive:false,liveMin:0,
-   stats:{hAvg:5.9,aAvg:7.2,hDef:4.5,aDef:3.8,h2h:12.5,htH:2.8,htA:3.4,hOdd:3.80,homeFav:false,hCross:true,aCross:true,press:88,imp:'high',form:{h:['L','W','D','W','L'],a:['W','W','W','W','W']}},
-   odds:{o85:1.55,u85:2.40,o95:1.72,u95:2.12,o105:2.00,u105:1.82,htO35:1.72,htU35:2.10,htO45:2.06,htU45:1.77,hcH:1.60,hcA:2.36,hW:3.80,draw:3.60,aW:1.98,_1x:{o85:1.62,o95:1.80,htO35:1.82,hW:4.00,aW:2.08}}},
+   venue:'Stamford Bridge, Londres',time:'16:30',date:'19/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:5.9,aAvg:7.2,hDef:4.5,aDef:3.8,h2h:12.5,htH:2.8,htA:3.4,hOdd:3.80,homeFav:false,hCross:true,aCross:true,press:88,imp:'high',goalsAvg:3.3,goalsConc:1.4,bttsRate:72,cards:4.8,yCards:4.2,form:{h:['L','W','D','W','L'],a:['W','W','W','W','W']}},
+   odds:{o85:1.57,u85:2.38,o95:1.74,u95:2.10,o105:2.02,u105:1.80,htO35:1.74,htU35:2.08,htO45:2.08,htU45:1.75,hcH:1.62,hcA:2.34,hW:3.80,draw:3.55,aW:1.96,oGoals25:1.52,uGoals25:2.42,oGoals35:2.00,uGoals35:1.85,btts:1.68,nobtts:2.15,ah0:1.88,ahH:3.40,ahA:1.46,cards45:1.88,uCards45:1.95,_1x:{hW:3.95,aW:2.04,o85:1.64,oGoals25:1.58,oGoals35:2.08,btts:1.74,ahA:1.50}}},
 
   {id:'f4',sport:'football',league:'Bundesliga',tier:1,home:'Bayern Munich',away:'Bayer Leverkusen',
-   venue:'Allianz Arena, Munique',time:'18:30',date:'12/04/2026',isLive:false,liveMin:0,
-   stats:{hAvg:7.3,aAvg:6.6,hDef:3.8,aDef:4.3,h2h:13.5,htH:3.5,htA:3.2,hOdd:1.72,homeFav:true,hCross:true,aCross:true,press:92,imp:'high',form:{h:['W','W','W','W','W'],a:['W','W','W','D','W']}},
-   odds:{o85:1.50,u85:2.48,o95:1.68,u95:2.18,o105:1.92,u105:1.90,htO35:1.65,htU35:2.24,htO45:1.90,htU45:1.92,hcH:1.55,hcA:2.42,hW:1.72,draw:4.20,aW:4.50,_1x:{o85:1.58,o95:1.76,htO35:1.72,hW:1.80}}},
+   venue:'Allianz Arena, Munique',time:'18:30',date:'19/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:7.3,aAvg:6.6,hDef:3.8,aDef:4.3,h2h:13.5,htH:3.5,htA:3.2,hOdd:1.72,homeFav:true,hCross:true,aCross:true,press:92,imp:'high',goalsAvg:3.8,goalsConc:1.2,bttsRate:76,cards:3.5,yCards:3.0,form:{h:['W','W','W','W','W'],a:['W','W','W','D','W']}},
+   odds:{o85:1.52,u85:2.46,o95:1.70,u95:2.16,o105:1.94,u105:1.88,htO35:1.67,htU35:2.22,htO45:1.92,htU45:1.90,hcH:1.57,hcA:2.40,hW:1.72,draw:4.15,aW:4.45,oGoals25:1.48,uGoals25:2.55,oGoals35:1.92,uGoals35:1.92,btts:1.72,nobtts:2.10,ah0:1.62,ahH:2.20,ahA:2.55,cards45:2.48,uCards45:1.52,_1x:{hW:1.80,o85:1.60,oGoals25:1.54,oGoals35:2.00,btts:1.78,ah0:1.68}}},
 
-  {id:'f5',sport:'football',league:'Brasileirao',tier:2,home:'Flamengo',away:'Palmeiras',
-   venue:'Maracanã, Rio de Janeiro',time:'18:30',date:'08/04/2026',isLive:false,liveMin:0,
-   stats:{hAvg:7.0,aAvg:6.2,hDef:4.8,aDef:5.0,h2h:14.2,htH:3.4,htA:3.0,hOdd:1.95,homeFav:true,hCross:true,aCross:true,press:88,imp:'high',form:{h:['W','W','D','W','W'],a:['W','W','D','W','L']}},
-   odds:{o85:1.48,u85:2.55,o95:1.65,u95:2.25,o105:1.88,u105:1.94,htO35:1.62,htU35:2.28,htO45:1.90,htU45:1.92,hcH:1.65,hcA:2.24,hW:1.95,draw:3.20,aW:4.00,_1x:{o85:1.55,o95:1.72,htO35:1.70,hW:2.05}}},
+  /* ━━ SMALL LEAGUES — where real value hides ━━ */
+  {id:'f5',sport:'football',league:'Liga Uruguay',tier:2,home:'Nacional',away:'Penarol',
+   venue:'Gran Parque Central, Montevideo',time:'21:00',date:'17/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:3.8,aAvg:3.9,hDef:3.6,aDef:4.0,h2h:7.2,htH:1.8,htA:1.7,hOdd:2.10,homeFav:false,hCross:false,aCross:false,press:42,imp:'high',goalsAvg:2.1,goalsConc:0.9,bttsRate:44,cards:5.8,yCards:5.2,form:{h:['D','D','L','W','D'],a:['W','D','D','W','L']}},
+   odds:{o85:2.22,u85:1.63,o95:3.12,u95:1.30,o105:5.10,u105:1.13,htO35:2.82,htU35:1.38,htO45:4.55,htU45:1.17,hcH:2.52,hcA:2.38,hW:2.10,draw:3.08,aW:3.48,oGoals25:2.55,uGoals25:1.50,oGoals35:4.20,uGoals35:1.18,btts:2.80,nobtts:1.38,ah0:2.05,ahH:2.85,ahA:1.78,cards45:1.68,uCards45:2.22,_1x:{u85:1.68,u95:1.35,htU35:1.44,uGoals25:1.55,nobtts:1.42,cards45:1.72}}},
 
-  /* Under-friendly: Nacional vs Penarol */
-  {id:'f6',sport:'football',league:'Liga Uruguay',tier:2,home:'Nacional',away:'Penarol',
-   venue:'Gran Parque Central, Montevideo',time:'21:00',date:'10/04/2026',isLive:false,liveMin:0,
-   stats:{hAvg:3.8,aAvg:3.9,hDef:3.6,aDef:4.0,h2h:7.2,htH:1.8,htA:1.7,hOdd:2.10,homeFav:false,hCross:false,aCross:false,press:42,imp:'high',form:{h:['D','D','L','W','D'],a:['W','D','D','W','L']}},
-   odds:{o85:2.20,u85:1.65,o95:3.10,u95:1.32,o105:5.00,u105:1.14,htO35:2.80,htU35:1.40,htO45:4.50,htU45:1.18,hcH:2.50,hcA:2.40,hW:2.10,draw:3.10,aW:3.50,_1x:{u85:1.72,u95:1.38,htU35:1.45}}},
+  {id:'f6',sport:'football',league:'Serie A',tier:1,home:'Juventus',away:'Torino',
+   venue:'Allianz Stadium, Torino',time:'18:00',date:'19/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:4.2,aAvg:3.5,hDef:3.8,aDef:4.5,h2h:7.8,htH:1.9,htA:1.8,hOdd:1.62,homeFav:true,hCross:false,aCross:false,press:58,imp:'normal',goalsAvg:2.2,goalsConc:0.7,bttsRate:38,cards:4.9,yCards:4.4,form:{h:['W','D','W','D','W'],a:['L','D','L','D','L']}},
+   odds:{o85:1.94,u85:1.88,o95:2.42,u95:1.54,o105:3.22,u105:1.34,htO35:2.22,htU35:1.63,htO45:3.52,htU45:1.24,hcH:1.80,hcA:2.12,hW:1.62,draw:3.38,aW:5.45,oGoals25:2.42,uGoals25:1.54,oGoals35:4.80,uGoals35:1.16,btts:2.92,nobtts:1.34,ah0:1.58,ahH:2.18,ahA:3.15,cards45:1.62,uCards45:2.28,_1x:{hW:1.68,u85:1.92,uGoals25:1.58,nobtts:1.38,cards45:1.66}}},
 
-  /* Defensive derby: Juventus vs Torino */
-  {id:'f7',sport:'football',league:'Serie A',tier:1,home:'Juventus',away:'Torino',
-   venue:'Allianz Stadium, Torino',time:'18:00',date:'12/04/2026',isLive:false,liveMin:0,
-   stats:{hAvg:4.2,aAvg:3.5,hDef:3.8,aDef:4.5,h2h:7.8,htH:1.9,htA:1.8,hOdd:1.62,homeFav:true,hCross:false,aCross:false,press:58,imp:'normal',form:{h:['W','D','W','D','W'],a:['L','D','L','D','L']}},
-   odds:{o85:1.92,u85:1.90,o95:2.40,u95:1.56,o105:3.20,u105:1.36,htO35:2.20,htU35:1.65,htO45:3.50,htU45:1.25,hcH:1.78,hcA:2.14,hW:1.62,draw:3.40,aW:5.50,_1x:{u85:1.95,u95:1.62,htU35:1.72}}},
+  {id:'f7',sport:'football',league:'Liga Colombia',tier:2,home:'Atletico Nacional',away:'America Cali',
+   venue:'Estadio Atanasio Girardot, Medellin',time:'20:00',date:'18/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:7.2,aAvg:6.4,hDef:5.1,aDef:5.8,h2h:13.8,htH:3.5,htA:3.1,hOdd:1.68,homeFav:true,hCross:true,aCross:true,press:86,imp:'high',goalsAvg:2.8,goalsConc:1.0,bttsRate:60,cards:6.2,yCards:5.6,form:{h:['W','W','W','D','W'],a:['L','W','W','L','W']}},
+   odds:{o85:1.50,u85:2.50,o95:1.68,u95:2.20,o105:1.90,u105:1.92,htO35:1.65,htU35:2.28,htO45:1.92,htU45:1.90,hcH:1.68,hcA:2.22,hW:1.68,draw:3.62,aW:5.00,oGoals25:1.62,uGoals25:2.30,oGoals35:2.10,uGoals35:1.78,btts:1.78,nobtts:2.05,ah0:1.64,ahH:2.32,ahA:2.52,cards45:1.48,uCards45:2.58,_1x:{hW:1.74,o85:1.56,oGoals25:1.68,cards45:1.52,btts:1.82}}},
 
-  /* --- TENNIS --- */
+  {id:'f8',sport:'football',league:'Eredivisie',tier:1,home:'Ajax',away:'PSV',
+   venue:'Johan Cruyff Arena, Amesterdão',time:'14:30',date:'20/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:6.8,aAvg:7.1,hDef:4.4,aDef:4.8,h2h:12.2,htH:3.2,htA:3.4,hOdd:2.35,homeFav:false,hCross:true,aCross:true,press:84,imp:'high',goalsAvg:3.5,goalsConc:1.3,bttsRate:74,cards:3.8,yCards:3.2,form:{h:['D','W','W','L','W'],a:['W','W','W','W','D']}},
+   odds:{o85:1.58,u85:2.35,o95:1.78,u95:2.05,o105:2.10,u105:1.76,htO35:1.76,htU35:2.06,htO45:2.10,htU45:1.78,hcH:1.92,hcA:1.94,hW:2.35,draw:3.20,aW:2.85,oGoals25:1.50,uGoals25:2.48,oGoals35:1.95,uGoals35:1.88,btts:1.62,nobtts:2.28,ah0:2.00,ahH:2.55,ahA:1.72,cards45:2.42,uCards45:1.55,_1x:{o85:1.64,oGoals25:1.56,oGoals35:2.02,btts:1.68,ah0:2.06}}},
+
+  {id:'f9',sport:'football',league:'La Liga',tier:1,home:'Atletico Madrid',away:'Sevilla',
+   venue:'Metropolitano, Madrid',time:'21:00',date:'20/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:5.5,aAvg:4.8,hDef:3.2,aDef:5.1,h2h:9.8,htH:2.7,htA:2.4,hOdd:1.55,homeFav:true,hCross:false,aCross:false,press:76,imp:'normal',goalsAvg:2.4,goalsConc:0.8,bttsRate:42,cards:5.4,yCards:4.8,form:{h:['W','W','D','W','W'],a:['L','D','W','L','D']}},
+   odds:{o85:1.92,u85:1.90,o95:2.35,u95:1.58,o105:3.10,u105:1.38,htO35:2.15,htU35:1.68,htO45:3.40,htU45:1.28,hcH:1.78,hcA:2.10,hW:1.55,draw:3.70,aW:6.20,oGoals25:2.35,uGoals25:1.58,oGoals35:4.50,uGoals35:1.18,btts:2.75,nobtts:1.40,ah0:1.50,ahH:2.10,ahA:3.45,cards45:1.55,uCards45:2.42,_1x:{hW:1.60,u85:1.95,uGoals25:1.62,nobtts:1.44,cards45:1.58}}},
+
+  {id:'f10',sport:'football',league:'Brasileirao',tier:2,home:'Flamengo',away:'Palmeiras',
+   venue:'Maracanã, Rio de Janeiro',time:'18:30',date:'20/04/2026',isLive:false,liveMin:0,
+   stats:{hAvg:7.0,aAvg:6.2,hDef:4.8,aDef:5.0,h2h:14.2,htH:3.4,htA:3.0,hOdd:1.95,homeFav:true,hCross:true,aCross:true,press:88,imp:'high',goalsAvg:2.9,goalsConc:1.1,bttsRate:64,cards:5.0,yCards:4.5,form:{h:['W','W','D','W','W'],a:['W','W','D','W','L']}},
+   odds:{o85:1.50,u85:2.52,o95:1.67,u95:2.23,o105:1.90,u105:1.92,htO35:1.64,htU35:2.26,htO45:1.92,htU45:1.90,hcH:1.67,hcA:2.22,hW:1.95,draw:3.18,aW:3.98,oGoals25:1.60,uGoals25:2.32,oGoals35:2.08,uGoals35:1.78,btts:1.80,nobtts:2.03,ah0:1.88,ahH:2.38,ahA:2.15,cards45:1.82,uCards45:2.08,_1x:{hW:2.03,o85:1.57,oGoals25:1.66,btts:1.86,cards45:1.88}}},
+
+  /* ━━━━ TENNIS ━━━━ */
   {id:'t1',sport:'tennis',tier:1,tournament:'Monte Carlo Masters',surface:'clay',round:'QF',
-   p1:'Carlos Alcaraz',p2:'Jannik Sinner',venue:'Monte Carlo Country Club, Mónaco',time:'14:00',date:'09/04/2026',isLive:false,liveMin:0,
+   p1:'Carlos Alcaraz',p2:'Jannik Sinner',venue:'Monte Carlo Country Club, Mónaco',time:'14:00',date:'16/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:55,p1Rank:2,p2Rank:1,p1Avg:22.5,p2Avg:22.0,h2hAvg:43.8,p1Brk:44,p2Brk:41,p1Hold:76,p2Hold:79,surf:'clay',p1SurfAdv:1.12,h2hRec:'6-5',form:{h:['W','W','W','L','W'],a:['W','W','W','W','L']}},
-   odds:{p1W:1.88,p2W:1.95,o385:1.80,u385:2.02,o415:2.10,u415:1.72,p1H:1.92,p2H:1.88,_1x:{p1W:1.98,o385:1.90}}},
+   odds:{p1W:1.88,p2W:1.95,o385:1.80,u385:2.02,o415:2.10,u415:1.72,p1H:1.92,p2H:1.88,_1x:{p1W:1.96,o385:1.88}}},
 
   {id:'t2',sport:'tennis',tier:1,tournament:'Monte Carlo Masters',surface:'clay',round:'SF',
-   p1:'Novak Djokovic',p2:'Alexander Zverev',venue:'Monte Carlo Country Club, Mónaco',time:'11:00',date:'11/04/2026',isLive:false,liveMin:0,
+   p1:'Novak Djokovic',p2:'Alexander Zverev',venue:'Monte Carlo Country Club, Mónaco',time:'11:00',date:'18/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:58,p1Rank:5,p2Rank:3,p1Avg:21.8,p2Avg:22.8,h2hAvg:43.5,p1Brk:45,p2Brk:37,p1Hold:80,p2Hold:75,surf:'clay',p1SurfAdv:1.15,h2hRec:'22-10',form:{h:['W','W','L','W','W'],a:['W','L','W','W','W']}},
-   odds:{p1W:1.75,p2W:2.10,o385:1.82,u385:2.00,o415:2.12,u415:1.70,p1H:1.88,p2H:1.94,_1x:{p1W:1.85,o385:1.92}}},
+   odds:{p1W:1.75,p2W:2.10,o385:1.82,u385:2.00,o415:2.12,u415:1.70,p1H:1.88,p2H:1.94,_1x:{p1W:1.82,o385:1.90}}},
 
   {id:'t3',sport:'tennis',tier:1,tournament:'WTA Stuttgart',surface:'clay',round:'Final',
-   p1:'Iga Swiatek',p2:'Aryna Sabalenka',venue:'Porsche-Arena, Stuttgart',time:'14:00',date:'12/04/2026',isLive:false,liveMin:0,
+   p1:'Iga Swiatek',p2:'Aryna Sabalenka',venue:'Porsche-Arena, Stuttgart',time:'14:00',date:'19/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:62,p1Rank:1,p2Rank:2,p1Avg:20.5,p2Avg:21.2,h2hAvg:41.2,p1Brk:50,p2Brk:42,p1Hold:83,p2Hold:78,surf:'clay',p1SurfAdv:1.20,h2hRec:'12-9',form:{h:['W','W','W','W','W'],a:['W','W','D','W','L']}},
-   odds:{p1W:1.65,p2W:2.25,o385:1.88,u385:1.92,o415:2.20,u415:1.65,p1H:1.82,p2H:1.98,_1x:{p1W:1.72,o385:1.98}}},
+   odds:{p1W:1.65,p2W:2.25,o385:1.88,u385:1.92,o415:2.20,u415:1.65,p1H:1.82,p2H:1.98,_1x:{p1W:1.70,o385:1.96}}},
 
-  /* --- MMA --- */
-  {id:'m1',sport:'mma',tier:1,promotion:'UFC',event:'UFC 311',weight:'Heavyweight',isTitle:true,
-   p1:'Jon Jones',p2:'Tom Aspinall',venue:'T-Mobile Arena, Las Vegas',time:'03:00',date:'12/04/2026',isLive:false,liveMin:0,
+  /* ━━━━ MMA ━━━━ */
+  {id:'m1',sport:'mma',tier:1,promotion:'UFC',event:'UFC 312',weight:'Heavyweight',isTitle:true,
+   p1:'Jon Jones',p2:'Tom Aspinall',venue:'T-Mobile Arena, Las Vegas',time:'03:00',date:'19/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:52,p1Style:'wrestler',p2Style:'striker',p1Fin:55,p2Fin:92,p1KO:25,p2KO:70,p1Sub:30,p2Sub:15,p1Dec:45,p2Dec:8,p1Acc:55,p2Acc:60,p1Time:12.5,p2Time:7.2,p1Reach:215,p2Reach:213,form:{h:['W','W','W','W','W'],a:['W','W','W','W','W']}},
-   odds:{p1W:1.98,p2W:1.85,oR:2.45,uR:1.52,ko:2.80,sub:5.50,dec:3.40,r1:4.20,_1x:{p1W:2.10,uR:1.60,ko:2.95}}},
+   odds:{p1W:1.98,p2W:1.85,oR:2.45,uR:1.52,ko:2.80,sub:5.50,dec:3.40,r1:4.20,_1x:{p1W:2.08,uR:1.58,ko:2.92}}},
 
   {id:'m2',sport:'mma',tier:1,promotion:'UFC',event:'UFC FN 258',weight:'Welterweight',isTitle:false,
-   p1:'Shavkat Rakhmonov',p2:'Gilbert Burns',venue:'UFC Apex, Las Vegas',time:'22:00',date:'11/04/2026',isLive:false,liveMin:0,
+   p1:'Shavkat Rakhmonov',p2:'Gilbert Burns',venue:'UFC Apex, Las Vegas',time:'22:00',date:'18/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:68,p1Style:'finisher',p2Style:'bjj',p1Fin:90,p2Fin:62,p1KO:45,p2KO:30,p1Sub:45,p2Sub:32,p1Dec:10,p2Dec:38,p1Acc:58,p2Acc:48,p1Time:8.2,p2Time:12.8,p1Reach:191,p2Reach:185,form:{h:['W','W','W','W','W'],a:['W','W','L','W','W']}},
-   odds:{p1W:1.48,p2W:2.75,oR:2.80,uR:1.42,ko:3.50,sub:2.20,dec:3.80,r1:4.00,_1x:{p1W:1.55,uR:1.48,sub:2.35}}},
+   odds:{p1W:1.48,p2W:2.75,oR:2.80,uR:1.42,ko:3.50,sub:2.20,dec:3.80,r1:4.00,_1x:{p1W:1.54,uR:1.46,sub:2.30}}},
 
-  /* --- CRICKET --- */
+  /* ━━━━ CRICKET ━━━━ */
   {id:'c1',sport:'cricket',tier:1,comp:'IPL 2026',format:'T20',
-   p1:'Mumbai Indians',p2:'Chennai Super Kings',venue:'Wankhede Stadium, Mumbai',time:'15:30',date:'09/04/2026',isLive:false,liveMin:0,
+   p1:'Mumbai Indians',p2:'Chennai Super Kings',venue:'Wankhede Stadium, Mumbai',time:'15:30',date:'17/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:54,p1Avg:184,p2Avg:178,pitch:'batting',weather:0,toss:.62,form:{h:['W','W','L','W','W'],a:['L','W','W','W','L']}},
-   odds:{p1W:1.82,p2W:2.02,o315:1.85,u315:1.95,o165:1.88,u165:1.92,_1x:{p1W:1.92,o315:1.95}}},
+   odds:{p1W:1.82,p2W:2.02,o315:1.85,u315:1.95,o165:1.88,u165:1.92,_1x:{p1W:1.90,o315:1.92}}},
 
   {id:'c2',sport:'cricket',tier:1,comp:'IPL 2026',format:'T20',
-   p1:'Royal Challengers',p2:'Kolkata Knight Riders',venue:'Chinnaswamy Stadium, Bangalore',time:'19:30',date:'10/04/2026',isLive:false,liveMin:0,
+   p1:'Royal Challengers',p2:'Kolkata Knight Riders',venue:'Chinnaswamy Stadium, Bangalore',time:'19:30',date:'18/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:46,p1Avg:170,p2Avg:178,pitch:'batting',weather:0,toss:.58,form:{h:['L','W','W','L','W'],a:['W','W','W','L','W']}},
-   odds:{p1W:2.12,p2W:1.72,o315:1.80,u315:2.00,o165:1.85,u165:1.95,_1x:{p1W:2.22,o315:1.90}}},
+   odds:{p1W:2.12,p2W:1.72,o315:1.80,u315:2.00,o165:1.85,u165:1.95,_1x:{p1W:2.20,o315:1.88}}},
 
-  /* --- RUGBY --- */
+  /* ━━━━ RUGBY ━━━━ */
   {id:'r1',sport:'rugby',tier:1,comp:'Premiership',
-   p1:'Saracens',p2:'Leicester Tigers',venue:'StoneX Stadium, Londres',time:'15:00',date:'12/04/2026',isLive:false,liveMin:0,
+   p1:'Saracens',p2:'Leicester Tigers',venue:'StoneX Stadium, Londres',time:'15:00',date:'19/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:64,p1Pts:31.2,p2Pts:24.5,h2hTot:54.2,p1Tries:3.5,p2Tries:2.8,p1SP:85,p2SP:76,homeAdv:4.5,form:{h:['W','W','W','D','W'],a:['L','W','L','W','D']}},
-   odds:{p1W:1.60,p2W:2.35,o49:1.88,u49:1.92,o545:2.12,u545:1.70,hcap:1.88,both:1.70,_1x:{p1W:1.68,o49:1.98}}},
+   odds:{p1W:1.60,p2W:2.35,o49:1.88,u49:1.92,o545:2.12,u545:1.70,hcap:1.88,both:1.70,_1x:{p1W:1.66,o49:1.95}}},
 
   {id:'r2',sport:'rugby',tier:1,comp:'URC',
-   p1:'Leinster',p2:'Stormers',venue:'Aviva Stadium, Dublin',time:'19:35',date:'11/04/2026',isLive:false,liveMin:0,
+   p1:'Leinster',p2:'Stormers',venue:'Aviva Stadium, Dublin',time:'19:35',date:'18/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:72,p1Pts:36.8,p2Pts:24.2,h2hTot:58.5,p1Tries:4.4,p2Tries:3.0,p1SP:89,p2SP:78,homeAdv:5.2,form:{h:['W','W','W','W','W'],a:['L','W','D','W','L']}},
-   odds:{p1W:1.38,p2W:3.10,o49:1.70,u49:2.15,o545:1.92,u545:1.90,hcap:1.85,both:1.60,_1x:{p1W:1.45,o49:1.78}}}
-];
+   odds:{p1W:1.38,p2W:3.10,o49:1.70,u49:2.15,o545:1.92,u545:1.90,hcap:1.85,both:1.60,_1x:{p1W:1.43,o49:1.76}}}
+]];
 function allEvs(){const all=[...DB];S.liveEvs.forEach(le=>{if(!all.find(e=>e.home===le.home&&e.away===le.away))all.push(le);});return all;}
 /* ===== ANALYTICS ENGINE ===== */
 const AE={
@@ -1022,7 +1038,10 @@ const AE={
       if(s.press>85)exp+=.62;
       if(s.imp==='high')exp+=.32;
       const htExp=Math.max(2.0,Math.round(((s.htH||exp*.47)+(s.htA||exp*.44))/2*ld.htAvg/((ld.avg||9.5))*10)/10);
-      return{exp:Math.round(exp*10)/10,htExp,tend:ld.tend,lgAvg:ld.avg,htAvg:ld.htAvg,ovRate:ld.ovRate,htOvRate:ld.htOvRate};
+      const ga=s.goalsAvg||2.8;const gaAdj=ga*(s.press>80?1.08:1.0)*(s.imp==='high'?1.05:1.0);
+      const bttsRate=s.bttsRate||55;
+      const cardsExp=s.cards||4.2;
+      return{exp:Math.round(exp*10)/10,htExp,tend:ld.tend,lgAvg:ld.avg,htAvg:ld.htAvg,ovRate:ld.ovRate,htOvRate:ld.htOvRate,ga:Math.round(gaAdj*10)/10,bttsRate,cardsExp};
     }
     if(ev.sport==='tennis'){
       const s=ev.stats;const surf=SURFACES[s.surf||'hard'];
@@ -1115,26 +1134,71 @@ const AE={
 
     if(ev.sport==='football'){
       const{exp,htExp,tend,lgAvg,htOvRate}=pred;const s=ev.stats;const ox=ev.odds._1x||{};
-      // FT corners — Over AND Under
+      const ga=s.goalsAvg||2.8;const br=s.bttsRate||55;const cd=s.cards||4.2;
+
+      // ── CORNERS FT ──
       [{l:8.5,o:ev.odds.o85,u:ev.odds.u85,ko:'o85'},{l:9.5,o:ev.odds.o95,u:ev.odds.u95},{l:10.5,o:ev.odds.o105,u:ev.odds.u105}].forEach(ln=>{
         const pO=this.pOv(exp,ln.l);const pU=100-pO;
         add({mkt:`Over ${ln.l} Cantos`,mt:'corners',lbl:'Over Cantos FT',prob:pO,bo:ln.o,conf:tend==='over'?5:3,x1:ox[ln.ko],desc:`Exp ${exp} cnr. Liga avg ${lgAvg}. Over rate ${pred.ovRate}%.`});
-        add({mkt:`Under ${ln.l} Cantos`,mt:'corners',lbl:'Under Cantos FT',prob:pU,bo:ln.u,conf:tend==='under'?5:3,desc:`Under ${ln.l} cnr. Exp ${exp}. Liga tende ${tend}.`});
+        add({mkt:`Under ${ln.l} Cantos`,mt:'corners',lbl:'Under Cantos FT',prob:pU,bo:ln.u,conf:tend==='under'?5:3,x1:null,desc:`Under ${ln.l} cnr. Exp ${exp}. Tende ${tend}.`});
       });
-      // HT corners
+
+      // ── CORNERS HT ──
       [{l:3.5,o:ev.odds.htO35,u:ev.odds.htU35},{l:4.5,o:ev.odds.htO45,u:ev.odds.htU45}].forEach(ln=>{
         if(!ln.o||ln.o<=1)return;
         const pO=this.pOv(htExp,ln.l,Math.sqrt(htExp)*1.1);const pU=100-pO;
-        add({mkt:`Over ${ln.l} HT`,mt:'ht',lbl:`Over ${ln.l} Cnr HT`,prob:pO,bo:ln.o,conf:htOvRate>60?4:3,desc:`Exp HT: ${htExp}. HT ovRate ${htOvRate}%.`});
-        add({mkt:`Under ${ln.l} HT`,mt:'ht',lbl:`Under ${ln.l} Cnr HT`,prob:pU,bo:ln.u,conf:htOvRate<40?5:3,desc:`Under HT. Exp ${htExp}. Liga arranque lento.`});
+        add({mkt:`Over ${ln.l} HT`,mt:'ht',lbl:`Over ${ln.l} HT`,prob:pO,bo:ln.o,conf:htOvRate>60?4:3,desc:`Exp HT: ${htExp}. HT ovRate ${htOvRate}%.`});
+        add({mkt:`Under ${ln.l} HT`,mt:'ht',lbl:`Under ${ln.l} HT`,prob:pU,bo:ln.u,conf:htOvRate<40?5:3,desc:`Under HT. Exp ${htExp}. Arranque lento.`});
       });
-      // Winner
-      const favOdds=s.homeFav?ev.odds.hW:ev.odds.aW;const favName=s.homeFav?ev.home:ev.away;
-      if(favOdds&&favOdds<2.8){
-        const fp=Math.round(100/favOdds*1.045*10)/10;
-        add({mkt:`${favName} Vence`,mt:'winner',lbl:'Match Winner',prob:fp,bo:favOdds,conf:favOdds<1.65?4:3,x1:s.homeFav?ox.hW:null,desc:`${favName} @${favOdds}. Pressão ${s.press}%.`});
+
+      // ── TOTAL GOALS ──
+      if(ev.odds.oGoals25){
+        const pO25=this.pOv(ga,2.5,1.2);const pU25=100-pO25;
+        add({mkt:'Over 2.5 Golos',mt:'goals',lbl:'Over 2.5 Goals',prob:pO25,bo:ev.odds.oGoals25,conf:ga>3.0?5:ga>2.5?4:3,x1:ox.oGoals25,desc:`Avg golos ${ga}/g. Over 2.5 probability ${pO25}%.`});
+        add({mkt:'Under 2.5 Golos',mt:'goals',lbl:'Under 2.5 Goals',prob:pU25,bo:ev.odds.uGoals25,conf:ga<2.2?5:ga<2.5?4:3,x1:null,desc:`Under 2.5 golos. Avg ${ga}. Defensivo: ${100-br}% jogos sem BTTS.`});
       }
-      // Team corners
+      if(ev.odds.oGoals35){
+        const pO35=this.pOv(ga,3.5,1.2);const pU35=100-pO35;
+        add({mkt:'Over 3.5 Golos',mt:'goals',lbl:'Over 3.5 Goals',prob:pO35,bo:ev.odds.oGoals35,conf:ga>3.5?5:ga>3.0?4:3,x1:ox.oGoals35,desc:`Avg golos ${ga}/g. Jogo aberto esperado.`});
+        add({mkt:'Under 3.5 Golos',mt:'goals',lbl:'Under 3.5 Goals',prob:pU35,bo:ev.odds.uGoals35,conf:ga<2.5?5:3,x1:null,desc:`Under 3.5 golos. Avg ${ga}. Jogo tático.`});
+      }
+
+      // ── BTTS ──
+      if(ev.odds.btts){
+        const bttsp=br;const nobttsp=100-br;
+        add({mkt:'Ambas Marcam — Sim',mt:'btts',lbl:'BTTS Sim',prob:bttsp,bo:ev.odds.btts,conf:br>68?5:br>58?4:3,x1:ox.btts,desc:`BTTS rate desta equipa: ${br}%. Avg golos: ${ga}.`});
+        add({mkt:'Ambas Marcam — Não',mt:'btts',lbl:'BTTS Não',prob:nobttsp,bo:ev.odds.nobtts,conf:br<38?5:br<48?4:3,x1:null,desc:`Equipa defensiva. BTTS só em ${br}% jogos.`});
+      }
+
+      // ── 1X2 WINNER ──
+      const favOdds=s.homeFav?ev.odds.hW:ev.odds.aW;const favName=s.homeFav?ev.home:ev.away;
+      if(favOdds&&favOdds<3.5){
+        const fp=Math.round(100/favOdds*1.045*10)/10;
+        add({mkt:`${favName} Vence`,mt:'winner',lbl:'Match Winner',prob:fp,bo:favOdds,conf:favOdds<1.65?4:3,x1:s.homeFav?ox.hW:(ox.aW||null),desc:`${favName} @${favOdds}. Pressão ${s.press}%.`});
+      }
+      if(ev.odds.draw){
+        const dp=Math.round(100/ev.odds.draw*1.02*10)/10;
+        if(Math.abs(ev.odds.hW-ev.odds.aW)<0.6){add({mkt:'Empate',mt:'winner',lbl:'Empate',prob:dp,bo:ev.odds.draw,conf:3,x1:null,desc:`Jogo equilibrado. Odds: ${ev.odds.hW} vs ${ev.odds.aW}.`});}
+      }
+
+      // ── ASIAN HANDICAP ──
+      if(ev.odds.ah0&&s.homeFav){
+        const ahp=Math.round(100/ev.odds.ah0*1.04*10)/10;
+        add({mkt:`${ev.home} AH 0`,mt:'hcap',lbl:'Asian Handicap 0',prob:ahp,bo:ev.odds.ah0,conf:s.press>80?4:3,x1:ox.ah0,desc:`AH 0 — stake devolvido em empate. Favorito @${ev.odds.hW}.`});
+      }
+      if(ev.odds.ahA&&!s.homeFav){
+        const aap=Math.round(100/ev.odds.ahA*1.04*10)/10;
+        add({mkt:`${ev.away} AH 0`,mt:'hcap',lbl:'Asian Handicap 0',prob:aap,bo:ev.odds.ahA,conf:s.press>80?4:3,x1:null,desc:`Favorito visitante protegido. AH 0.`});
+      }
+
+      // ── CARDS ──
+      if(ev.odds.cards45){
+        const pC=this.pOv(cd,4.5,1.4);const pUC=100-pC;
+        add({mkt:'Over 4.5 Cartões',mt:'special',lbl:'Over Cards',prob:pC,bo:ev.odds.cards45,conf:cd>5.5?5:cd>4.8?4:3,x1:ox.cards45,desc:`Avg ${cd} cartões/g. Árbitro e rivalidade.`});
+        add({mkt:'Under 4.5 Cartões',mt:'special',lbl:'Under Cards',prob:pUC,bo:ev.odds.uCards45,conf:cd<4.0?5:cd<4.5?4:3,x1:null,desc:`Jogo disciplinado esperado. Avg ${cd} cartões.`});
+      }
+
+      // ── TEAM CORNERS (secondary) ──
       if(s.hCross&&s.hAvg>=5.5){const ph=this.pOv(s.hAvg,4.5,1.5);add({mkt:`${ev.home} +4.5 Cnr`,mt:'corners',lbl:'Team Corners',prob:ph,bo:ev.odds.hcH||1.90,conf:s.hAvg>6?4:3,x1:ox.hcH,desc:`${ev.home} avg ${s.hAvg} cnr/g.`});}
     }
     else if(ev.sport==='tennis'){
@@ -1346,20 +1410,20 @@ function renderCard(ev){
   const p1info={football:`${ev.stats.hAvg} cnr/g`,tennis:`#${ev.stats.p1Rank}`,mma:ev.stats.p1Style,cricket:`${ev.stats.p1Avg}r avg`,rugby:`${ev.stats.p1Pts}pts/g`}[ev.sport]||'';
   const p2info={football:`${ev.stats.aAvg} cnr/g`,tennis:`#${ev.stats.p2Rank}`,mma:ev.stats.p2Style,cricket:`${ev.stats.p2Avg}r avg`,rugby:`${ev.stats.p2Pts}pts/g`}[ev.sport]||'';
   const s3={
-    football:[{l:'Exp Cnr FT',v:pred.exp,c:SC[ev.sport]},{l:'HT Exp',v:pred.htExp,c:'#f59e0b'},{l:'Liga Avg',v:pred.lgAvg,c:'#64748b'}],
+    football:[{l:'Exp Cnr FT',v:pred.exp,c:SC[ev.sport]},{l:'Avg Golos',v:pred.ga||ev.stats.goalsAvg||'--',c:'#f59e0b'},{l:'BTTS Rate',v:(pred.bttsRate||ev.stats.bttsRate||'--')+'%',c:'#a5b4fc'}],
     tennis:[{l:'Exp Games',v:pred.exp,c:SC[ev.sport]},{l:'H2H Avg',v:ev.stats.h2hAvg,c:'#f59e0b'},{l:'Surf',v:(ev.stats.surf||'').toUpperCase(),c:'#64748b'}],
     mma:[{l:'Finish%',v:`${pred.finProb||0}%`,c:SC[ev.sport]},{l:'Exp Rds',v:pred.expRds||'--',c:'#f59e0b'},{l:'Dec%',v:`${pred.decProb||0}%`,c:'#06b6d4'}],
     cricket:[{l:'Exp Runs',v:pred.expTotal||'--',c:SC[ev.sport]},{l:'1st Inn',v:pred.expFirst||'--',c:'#f59e0b'},{l:'Pista',v:(pred.pitchType||'').toUpperCase(),c:'#64748b'}],
     rugby:[{l:'Exp Pts',v:pred.expTotal||'--',c:SC[ev.sport]},{l:'Tries/g',v:pred.tries||'--',c:'#f59e0b'},{l:'P1 Pts',v:pred.expP1||'--',c:'#84cc16'}]
   }[ev.sport]||[];
   const expLbl={football:`${pred.exp||'--'} cnr / ${pred.htExp||'--'} HT`,tennis:`${pred.exp||'--'} g`,mma:`${pred.finProb||'--'}% fin`,cricket:`${pred.expTotal||'--'} r`,rugby:`${pred.expTotal||'--'} pts`}[ev.sport]||'--';
-  const topVBs=vbs.slice(0,4);
+  const topVBs=vbs.slice(0,6);
   const ocHtml=topVBs.length?`<div class="oc-wrap">
-    <div class="oc-title"><span><i class="fas fa-gem" style="color:#a5b4fc;font-size:.48rem"></i> Value Bets — click para adicionar</span><span style="font-size:.44rem;color:var(--t2)">Betfair · 1xBet</span></div>
+    <div class="oc-title"><span><i class="fas fa-gem" style="color:#a5b4fc;font-size:.48rem"></i> Value Bets — click para adicionar</span><span style="font-size:.44rem;color:var(--t2)">1xBet · Betfair</span></div>
     <div class="oc-cells">${topVBs.map((v,i)=>`<div class="oc${i===0?' vb':''}" onclick="openQA('${ev.id}','${v.mkt.replace(/'/g,"\\'")}',${v.bo},${v.prob/100},'${(p1+' vs '+p2).replace(/'/g,"\\'")}','${v.lbl.replace(/'/g,"\\'")}','${ev.sport}')">
       <div class="oc-lbl">${v.mkt}</div>
-      <div class="oc-odds">@${v.bo}</div>
-      ${v.x1?`<div class="oc-1x">1x @${v.x1}</div>`:''}
+      <div class="oc-odds" style="color:${v.x1?'#f59e0b':'#a5b4fc'}">@${v.x1||v.bo}</div>
+      ${v.x1?`<div style="font-size:.44rem;color:#64748b;font-family:var(--mono)">BF@${v.bo}</div>`:''}
       <div class="oc-edge pos">+${v.edge}%</div>
     </div>`).join('')}</div></div>`:`<div style="font-size:.58rem;color:var(--t2);padding:5px 0;text-align:center">Sem VBs com filtros actuais</div>`;
   const el=document.createElement('div');
@@ -1679,14 +1743,14 @@ function buildAnalysis(evId){
 
   // TAB 3: Quantitative + Qualitative Factors
   const statLines={
-    football:[`${ev.home}: avg ${ev.stats.hAvg} cnr/g pró · ${ev.stats.hDef} cnr/g sofridos · ${ev.stats.hCross?'usa cruzamentos ✓':'jogo central ✗'}`,`${ev.away}: avg ${ev.stats.aAvg} cnr/g · ${ev.stats.aDef} cnr/g sofridos · ${ev.stats.aCross?'usa cruzamentos ✓':'jogo central ✗'}`,`H2H cantos: ${ev.stats.h2h||'--'} avg · Liga avg ${pred.lgAvg||'--'} · Tendência ${pred.tend||'--'} · Over rate ${pred.ovRate||'--'}%`,`HT: avg ${pred.htExp||'--'} cnr esperados · HT over rate ${pred.htOvRate||'--'}%`,`Pressão ofensiva: ${ev.stats.press}% · Odd favorito: @${ev.stats.hOdd} · Importância: ${ev.stats.imp}`],
+    football:[`${ev.home}: avg ${ev.stats.hAvg} cnr/g · Golos avg ${ev.stats.goalsAvg||'--'}/g · ${ev.stats.hCross?'cruzamentos ✓':'central ✗'}`,`${ev.away}: avg ${ev.stats.aAvg} cnr/g · BTTS rate ${ev.stats.bttsRate||'--'}% · ${ev.stats.aCross?'cruzamentos ✓':'central ✗'}`,`Cantos — H2H avg: ${ev.stats.h2h||'--'} · Liga avg ${pred.lgAvg||'--'} · Tend. ${pred.tend||'--'} · Over rate ${pred.ovRate||'--'}%`,`Golos — Avg ${pred.ga||ev.stats.goalsAvg||'--'}/g · BTTS rate ${pred.bttsRate||ev.stats.bttsRate||'--'}% · Cartões avg ${ev.stats.cards||'--'}/g`,`Pressão: ${ev.stats.press}% · Favorito: @${ev.stats.hOdd} · Importância: ${ev.stats.imp}`,`1xBet: Over 2.5G @${ev.odds._1x?.oGoals25||'--'} · BTTS @${ev.odds._1x?.btts||'--'} · AH @${ev.odds._1x?.ah0||'--'} · Cards @${ev.odds._1x?.cards45||'--'}`],
     tennis:[`${p1} (Rank #${ev.stats.p1Rank}): Break% ${ev.stats.p1Brk} · Hold% ${ev.stats.p1Hold} · Avg games/match: ${ev.stats.p1Avg}`,`${p2} (Rank #${ev.stats.p2Rank}): Break% ${ev.stats.p2Brk} · Hold% ${ev.stats.p2Hold} · Avg games/match: ${ev.stats.p2Avg}`,`H2H avg: ${ev.stats.h2hAvg} games · Surface: ${ev.stats.surf} · P1 surf adv: x${ev.stats.p1SurfAdv} · H2H: ${ev.stats.h2hRec||'--'}`],
     mma:[`${p1}: ${ev.stats.p1Style} · Finish ${ev.stats.p1Fin}% · KO ${ev.stats.p1KO}% · Sub ${ev.stats.p1Sub}% · Dec ${ev.stats.p1Dec}% · Acc ${ev.stats.p1Acc}%`,`${p2}: ${ev.stats.p2Style} · Finish ${ev.stats.p2Fin}% · KO ${ev.stats.p2KO}% · Sub ${ev.stats.p2Sub}% · Dec ${ev.stats.p2Dec}% · Acc ${ev.stats.p2Acc}%`,`Reach: ${ev.stats.p1Reach||'--'}cm vs ${ev.stats.p2Reach||'--'}cm · Avg fight time: ${ev.stats.p1Time} vs ${ev.stats.p2Time} min`],
     cricket:[`${p1}: Avg ${ev.stats.p1Avg} runs/inning · Win prob ${ev.stats.p1Win}%`,`Pista: ${ev.stats.pitch} · Formato: ${ev.format} · Toss adv: ${Math.round((ev.stats.toss||.5)*100)}%`,`Venue: ${ev.venue||'--'} · Clima: ${ev.stats.weather?'Adverso':'Bom'}`],
     rugby:[`${p1}: ${ev.stats.p1Pts}pts/g avg · ${ev.stats.p1Tries} ensaios/g · Set piece ${ev.stats.p1SP}%`,`${p2}: ${ev.stats.p2Pts}pts/g avg · ${ev.stats.p2Tries} ensaios/g · Set piece ${ev.stats.p2SP}%`,`H2H total: ${ev.stats.h2hTot}pts avg · Home advantage: +${ev.stats.homeAdv}pts`]
   }[ev.sport]||[];
   const checklists={
-    football:['Verificar lesionados — especialmente atacantes e laterais cruzadores','Confirmar motivação: jogo decisivo ou matematicamente irrelevante?','Ver condições meteorológicas (chuva/vento aumentam cantos)','Comparar linha em Pinnacle vs Betfair vs 1xBet (movimento sharp)','H2H nesta competição — padrão de cantos histórico','Monitorar movement de odds nas 4h antes (sharp money indicator)'],
+    football:['Verificar lesionados e suspensos — impacto no ataque e defesa','Árbitro designado: média de cartões e penáltis marcados na época','Condições meteo: chuva intensa reduz golos, vento afecta cantos','Comparar odds 1xBet vs Betfair vs Pinnacle — buscar discrepâncias','H2H nesta competição e neste venue — padrões históricos concretos','Movimentação de odds nas últimas 4h = sharp money indicator','Conferir notícias do dia: tácticas, declarações pré-jogo','Liga pequena/secundária: bookmakers menos eficientes = mais edge'],
     tennis:['Confirmar estado físico — fadiga (matches anteriores no torneio)','H2H nesta superfície específica — não apenas geral','Comparar odds em Pinnacle vs Betfair Exchange','Ver schedule: quantos sets jogou nos últimos 2 dias','Break point % nas últimas 3 partidas desta época','Condições do court: outdoor (vento afecta rally length)'],
     mma:['Confirmar corte de peso — processo difícil degrada performance','Grappler vs Striker: determina método provável','Finish rate vs adversário específico (não apenas geral)','Reach advantage: >5cm é significativo para KO props','Camp/treino: parceiros de sparring de qualidade?','Luta de título (5 rounds) vs luta normal (3 rounds)'],
     cricket:['Relatório de pista: batting/bowling/neutral — atualizado','Previsão meteorológica precisa para os dias do match','Toss advantage no venue: alguns venues têm bias forte','XI titular confirmado: batsmen/bowlers keyplayers disponíveis','Bowling lineup: pace vs spin vs pista prevista','Histórico de scores neste venue (min/max dos últimos 5 jogos)'],
