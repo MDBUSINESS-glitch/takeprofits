@@ -1020,7 +1020,7 @@ const DB=[
    p1:'Leinster',p2:'Stormers',venue:'Aviva Stadium, Dublin',time:'19:35',date:'18/04/2026',isLive:false,liveMin:0,
    stats:{p1Win:72,p1Pts:36.8,p2Pts:24.2,h2hTot:58.5,p1Tries:4.4,p2Tries:3.0,p1SP:89,p2SP:78,homeAdv:5.2,form:{h:['W','W','W','W','W'],a:['L','W','D','W','L']}},
    odds:{p1W:1.38,p2W:3.10,o49:1.70,u49:2.15,o545:1.92,u545:1.90,hcap:1.85,both:1.60,_1x:{p1W:1.43,o49:1.76}}}
-]];
+];
 function allEvs(){const all=[...DB];S.liveEvs.forEach(le=>{if(!all.find(e=>e.home===le.home&&e.away===le.away))all.push(le);});return all;}
 /* ===== ANALYTICS ENGINE ===== */
 const AE={
