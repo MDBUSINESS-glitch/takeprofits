@@ -919,109 +919,117 @@ const SURFACES={clay:{mult:1.10,note:'Rallies longos'},hard:{mult:1.0,note:'Neut
 const TIER1_LEAGUES=['Premier League','Bundesliga','Serie A','La Liga','Ligue 1','Champions League','Europa League','Eredivisie','Primeira Liga'];
 
 /* ===== EVENTS DB — April 2026 ===== */
+/* Dynamic dates: next 7 days from today */
+const _d=(offset)=>{const d=new Date();d.setDate(d.getDate()+offset);return d.toLocaleDateString('pt-PT');};
 const DB=[
   /* ━━━━ FOOTBALL: MAJOR LEAGUES ━━━━ */
   {id:'f1',sport:'football',league:'Champions League',tier:1,home:'Arsenal',away:'Real Madrid',
-   venue:'Emirates Stadium, Londres',time:'20:00',date:'15/04/2026',isLive:false,liveMin:0,
+   venue:'Emirates Stadium, Londres',time:'20:00',date:_d(4),isLive:false,liveMin:0,
    stats:{hAvg:6.4,aAvg:5.8,hDef:4.2,aDef:3.9,h2h:11.5,htH:3.1,htA:2.8,hOdd:2.25,homeFav:false,hCross:true,aCross:false,press:82,imp:'high',goalsAvg:2.9,goalsConc:1.1,bttsRate:62,cards:4.2,yCards:3.8,form:{h:['W','W','W','D','W'],a:['W','W','W','W','D']}},
    odds:{o85:1.74,u85:2.10,o95:1.97,u95:1.86,o105:2.48,u105:1.50,htO35:1.87,htU35:1.96,htO45:2.24,htU45:1.64,hcH:1.77,hcA:2.08,hW:2.25,draw:3.35,aW:1.66,oGoals25:1.65,uGoals25:2.25,oGoals35:2.30,uGoals35:1.58,btts:1.75,nobtts:2.05,ah0:2.10,ahH:2.20,ahA:1.72,cards45:2.20,uCards45:1.65,_1x:{hW:2.36,aW:1.72,o85:1.82,oGoals25:1.70,oGoals35:2.38,btts:1.82,ah0:2.18}}},
 
   {id:'f2',sport:'football',league:'Champions League',tier:1,home:'Barcelona',away:'Inter Milan',
-   venue:'Estadi Olímpic, Barcelona',time:'20:00',date:'16/04/2026',isLive:false,liveMin:0,
+   venue:'Estadi Olímpic, Barcelona',time:'20:00',date:_d(5),isLive:false,liveMin:0,
    stats:{hAvg:6.1,aAvg:4.9,hDef:4.0,aDef:4.4,h2h:10.8,htH:2.9,htA:2.4,hOdd:1.75,homeFav:true,hCross:true,aCross:false,press:86,imp:'high',goalsAvg:3.1,goalsConc:0.9,bttsRate:58,cards:3.8,yCards:3.2,form:{h:['W','W','W','D','W'],a:['W','W','D','W','W']}},
    odds:{o85:1.80,u85:2.00,o95:2.07,u95:1.78,o105:2.58,u105:1.46,htO35:1.92,htU35:1.90,htO45:2.28,htU45:1.61,hcH:1.74,hcA:2.14,hW:1.75,draw:3.75,aW:4.40,oGoals25:1.70,uGoals25:2.18,oGoals35:2.25,uGoals35:1.62,btts:1.85,nobtts:1.98,ah0:1.68,ahH:2.42,ahA:2.18,cards45:2.35,uCards45:1.58,_1x:{hW:1.82,o85:1.88,oGoals25:1.78,oGoals35:2.32,btts:1.90,ah0:1.74}}},
 
   {id:'f3',sport:'football',league:'Premier League',tier:1,home:'Chelsea',away:'Manchester City',
-   venue:'Stamford Bridge, Londres',time:'16:30',date:'19/04/2026',isLive:false,liveMin:0,
+   venue:'Stamford Bridge, Londres',time:'16:30',date:_d(8),isLive:false,liveMin:0,
    stats:{hAvg:5.9,aAvg:7.2,hDef:4.5,aDef:3.8,h2h:12.5,htH:2.8,htA:3.4,hOdd:3.80,homeFav:false,hCross:true,aCross:true,press:88,imp:'high',goalsAvg:3.3,goalsConc:1.4,bttsRate:72,cards:4.8,yCards:4.2,form:{h:['L','W','D','W','L'],a:['W','W','W','W','W']}},
    odds:{o85:1.57,u85:2.38,o95:1.74,u95:2.10,o105:2.02,u105:1.80,htO35:1.74,htU35:2.08,htO45:2.08,htU45:1.75,hcH:1.62,hcA:2.34,hW:3.80,draw:3.55,aW:1.96,oGoals25:1.52,uGoals25:2.42,oGoals35:2.00,uGoals35:1.85,btts:1.68,nobtts:2.15,ah0:1.88,ahH:3.40,ahA:1.46,cards45:1.88,uCards45:1.95,_1x:{hW:3.95,aW:2.04,o85:1.64,oGoals25:1.58,oGoals35:2.08,btts:1.74,ahA:1.50}}},
 
   {id:'f4',sport:'football',league:'Bundesliga',tier:1,home:'Bayern Munich',away:'Bayer Leverkusen',
-   venue:'Allianz Arena, Munique',time:'18:30',date:'19/04/2026',isLive:false,liveMin:0,
+   venue:'Allianz Arena, Munique',time:'18:30',date:_d(8),isLive:false,liveMin:0,
    stats:{hAvg:7.3,aAvg:6.6,hDef:3.8,aDef:4.3,h2h:13.5,htH:3.5,htA:3.2,hOdd:1.72,homeFav:true,hCross:true,aCross:true,press:92,imp:'high',goalsAvg:3.8,goalsConc:1.2,bttsRate:76,cards:3.5,yCards:3.0,form:{h:['W','W','W','W','W'],a:['W','W','W','D','W']}},
    odds:{o85:1.52,u85:2.46,o95:1.70,u95:2.16,o105:1.94,u105:1.88,htO35:1.67,htU35:2.22,htO45:1.92,htU45:1.90,hcH:1.57,hcA:2.40,hW:1.72,draw:4.15,aW:4.45,oGoals25:1.48,uGoals25:2.55,oGoals35:1.92,uGoals35:1.92,btts:1.72,nobtts:2.10,ah0:1.62,ahH:2.20,ahA:2.55,cards45:2.48,uCards45:1.52,_1x:{hW:1.80,o85:1.60,oGoals25:1.54,oGoals35:2.00,btts:1.78,ah0:1.68}}},
 
   /* ━━ SMALL LEAGUES — where real value hides ━━ */
   {id:'f5',sport:'football',league:'Liga Uruguay',tier:2,home:'Nacional',away:'Penarol',
-   venue:'Gran Parque Central, Montevideo',time:'21:00',date:'17/04/2026',isLive:false,liveMin:0,
+   venue:'Gran Parque Central, Montevideo',time:'21:00',date:_d(6),isLive:false,liveMin:0,
    stats:{hAvg:3.8,aAvg:3.9,hDef:3.6,aDef:4.0,h2h:7.2,htH:1.8,htA:1.7,hOdd:2.10,homeFav:false,hCross:false,aCross:false,press:42,imp:'high',goalsAvg:2.1,goalsConc:0.9,bttsRate:44,cards:5.8,yCards:5.2,form:{h:['D','D','L','W','D'],a:['W','D','D','W','L']}},
    odds:{o85:2.22,u85:1.63,o95:3.12,u95:1.30,o105:5.10,u105:1.13,htO35:2.82,htU35:1.38,htO45:4.55,htU45:1.17,hcH:2.52,hcA:2.38,hW:2.10,draw:3.08,aW:3.48,oGoals25:2.55,uGoals25:1.50,oGoals35:4.20,uGoals35:1.18,btts:2.80,nobtts:1.38,ah0:2.05,ahH:2.85,ahA:1.78,cards45:1.68,uCards45:2.22,_1x:{u85:1.68,u95:1.35,htU35:1.44,uGoals25:1.55,nobtts:1.42,cards45:1.72}}},
 
   {id:'f6',sport:'football',league:'Serie A',tier:1,home:'Juventus',away:'Torino',
-   venue:'Allianz Stadium, Torino',time:'18:00',date:'19/04/2026',isLive:false,liveMin:0,
+   venue:'Allianz Stadium, Torino',time:'18:00',date:_d(8),isLive:false,liveMin:0,
    stats:{hAvg:4.2,aAvg:3.5,hDef:3.8,aDef:4.5,h2h:7.8,htH:1.9,htA:1.8,hOdd:1.62,homeFav:true,hCross:false,aCross:false,press:58,imp:'normal',goalsAvg:2.2,goalsConc:0.7,bttsRate:38,cards:4.9,yCards:4.4,form:{h:['W','D','W','D','W'],a:['L','D','L','D','L']}},
    odds:{o85:1.94,u85:1.88,o95:2.42,u95:1.54,o105:3.22,u105:1.34,htO35:2.22,htU35:1.63,htO45:3.52,htU45:1.24,hcH:1.80,hcA:2.12,hW:1.62,draw:3.38,aW:5.45,oGoals25:2.42,uGoals25:1.54,oGoals35:4.80,uGoals35:1.16,btts:2.92,nobtts:1.34,ah0:1.58,ahH:2.18,ahA:3.15,cards45:1.62,uCards45:2.28,_1x:{hW:1.68,u85:1.92,uGoals25:1.58,nobtts:1.38,cards45:1.66}}},
 
   {id:'f7',sport:'football',league:'Liga Colombia',tier:2,home:'Atletico Nacional',away:'America Cali',
-   venue:'Estadio Atanasio Girardot, Medellin',time:'20:00',date:'18/04/2026',isLive:false,liveMin:0,
+   venue:'Estadio Atanasio Girardot, Medellin',time:'20:00',date:_d(7),isLive:false,liveMin:0,
    stats:{hAvg:7.2,aAvg:6.4,hDef:5.1,aDef:5.8,h2h:13.8,htH:3.5,htA:3.1,hOdd:1.68,homeFav:true,hCross:true,aCross:true,press:86,imp:'high',goalsAvg:2.8,goalsConc:1.0,bttsRate:60,cards:6.2,yCards:5.6,form:{h:['W','W','W','D','W'],a:['L','W','W','L','W']}},
    odds:{o85:1.50,u85:2.50,o95:1.68,u95:2.20,o105:1.90,u105:1.92,htO35:1.65,htU35:2.28,htO45:1.92,htU45:1.90,hcH:1.68,hcA:2.22,hW:1.68,draw:3.62,aW:5.00,oGoals25:1.62,uGoals25:2.30,oGoals35:2.10,uGoals35:1.78,btts:1.78,nobtts:2.05,ah0:1.64,ahH:2.32,ahA:2.52,cards45:1.48,uCards45:2.58,_1x:{hW:1.74,o85:1.56,oGoals25:1.68,cards45:1.52,btts:1.82}}},
 
   {id:'f8',sport:'football',league:'Eredivisie',tier:1,home:'Ajax',away:'PSV',
-   venue:'Johan Cruyff Arena, Amesterdão',time:'14:30',date:'20/04/2026',isLive:false,liveMin:0,
+   venue:'Johan Cruyff Arena, Amesterdão',time:'14:30',date:_d(9),isLive:false,liveMin:0,
    stats:{hAvg:6.8,aAvg:7.1,hDef:4.4,aDef:4.8,h2h:12.2,htH:3.2,htA:3.4,hOdd:2.35,homeFav:false,hCross:true,aCross:true,press:84,imp:'high',goalsAvg:3.5,goalsConc:1.3,bttsRate:74,cards:3.8,yCards:3.2,form:{h:['D','W','W','L','W'],a:['W','W','W','W','D']}},
    odds:{o85:1.58,u85:2.35,o95:1.78,u95:2.05,o105:2.10,u105:1.76,htO35:1.76,htU35:2.06,htO45:2.10,htU45:1.78,hcH:1.92,hcA:1.94,hW:2.35,draw:3.20,aW:2.85,oGoals25:1.50,uGoals25:2.48,oGoals35:1.95,uGoals35:1.88,btts:1.62,nobtts:2.28,ah0:2.00,ahH:2.55,ahA:1.72,cards45:2.42,uCards45:1.55,_1x:{o85:1.64,oGoals25:1.56,oGoals35:2.02,btts:1.68,ah0:2.06}}},
 
   {id:'f9',sport:'football',league:'La Liga',tier:1,home:'Atletico Madrid',away:'Sevilla',
-   venue:'Metropolitano, Madrid',time:'21:00',date:'20/04/2026',isLive:false,liveMin:0,
+   venue:'Metropolitano, Madrid',time:'21:00',date:_d(9),isLive:false,liveMin:0,
    stats:{hAvg:5.5,aAvg:4.8,hDef:3.2,aDef:5.1,h2h:9.8,htH:2.7,htA:2.4,hOdd:1.55,homeFav:true,hCross:false,aCross:false,press:76,imp:'normal',goalsAvg:2.4,goalsConc:0.8,bttsRate:42,cards:5.4,yCards:4.8,form:{h:['W','W','D','W','W'],a:['L','D','W','L','D']}},
    odds:{o85:1.92,u85:1.90,o95:2.35,u95:1.58,o105:3.10,u105:1.38,htO35:2.15,htU35:1.68,htO45:3.40,htU45:1.28,hcH:1.78,hcA:2.10,hW:1.55,draw:3.70,aW:6.20,oGoals25:2.35,uGoals25:1.58,oGoals35:4.50,uGoals35:1.18,btts:2.75,nobtts:1.40,ah0:1.50,ahH:2.10,ahA:3.45,cards45:1.55,uCards45:2.42,_1x:{hW:1.60,u85:1.95,uGoals25:1.62,nobtts:1.44,cards45:1.58}}},
 
   {id:'f10',sport:'football',league:'Brasileirao',tier:2,home:'Flamengo',away:'Palmeiras',
-   venue:'Maracanã, Rio de Janeiro',time:'18:30',date:'20/04/2026',isLive:false,liveMin:0,
+   venue:'Maracanã, Rio de Janeiro',time:'18:30',date:_d(9),isLive:false,liveMin:0,
    stats:{hAvg:7.0,aAvg:6.2,hDef:4.8,aDef:5.0,h2h:14.2,htH:3.4,htA:3.0,hOdd:1.95,homeFav:true,hCross:true,aCross:true,press:88,imp:'high',goalsAvg:2.9,goalsConc:1.1,bttsRate:64,cards:5.0,yCards:4.5,form:{h:['W','W','D','W','W'],a:['W','W','D','W','L']}},
    odds:{o85:1.50,u85:2.52,o95:1.67,u95:2.23,o105:1.90,u105:1.92,htO35:1.64,htU35:2.26,htO45:1.92,htU45:1.90,hcH:1.67,hcA:2.22,hW:1.95,draw:3.18,aW:3.98,oGoals25:1.60,uGoals25:2.32,oGoals35:2.08,uGoals35:1.78,btts:1.80,nobtts:2.03,ah0:1.88,ahH:2.38,ahA:2.15,cards45:1.82,uCards45:2.08,_1x:{hW:2.03,o85:1.57,oGoals25:1.66,btts:1.86,cards45:1.88}}},
 
   /* ━━━━ TENNIS ━━━━ */
   {id:'t1',sport:'tennis',tier:1,tournament:'Monte Carlo Masters',surface:'clay',round:'QF',
-   p1:'Carlos Alcaraz',p2:'Jannik Sinner',venue:'Monte Carlo Country Club, Mónaco',time:'14:00',date:'16/04/2026',isLive:false,liveMin:0,
+   p1:'Carlos Alcaraz',p2:'Jannik Sinner',venue:'Monte Carlo Country Club, Mónaco',time:'14:00',date:_d(5),isLive:false,liveMin:0,
    stats:{p1Win:55,p1Rank:2,p2Rank:1,p1Avg:22.5,p2Avg:22.0,h2hAvg:43.8,p1Brk:44,p2Brk:41,p1Hold:76,p2Hold:79,surf:'clay',p1SurfAdv:1.12,h2hRec:'6-5',form:{h:['W','W','W','L','W'],a:['W','W','W','W','L']}},
    odds:{p1W:1.88,p2W:1.95,o385:1.80,u385:2.02,o415:2.10,u415:1.72,p1H:1.92,p2H:1.88,_1x:{p1W:1.96,o385:1.88}}},
 
   {id:'t2',sport:'tennis',tier:1,tournament:'Monte Carlo Masters',surface:'clay',round:'SF',
-   p1:'Novak Djokovic',p2:'Alexander Zverev',venue:'Monte Carlo Country Club, Mónaco',time:'11:00',date:'18/04/2026',isLive:false,liveMin:0,
+   p1:'Novak Djokovic',p2:'Alexander Zverev',venue:'Monte Carlo Country Club, Mónaco',time:'11:00',date:_d(7),isLive:false,liveMin:0,
    stats:{p1Win:58,p1Rank:5,p2Rank:3,p1Avg:21.8,p2Avg:22.8,h2hAvg:43.5,p1Brk:45,p2Brk:37,p1Hold:80,p2Hold:75,surf:'clay',p1SurfAdv:1.15,h2hRec:'22-10',form:{h:['W','W','L','W','W'],a:['W','L','W','W','W']}},
    odds:{p1W:1.75,p2W:2.10,o385:1.82,u385:2.00,o415:2.12,u415:1.70,p1H:1.88,p2H:1.94,_1x:{p1W:1.82,o385:1.90}}},
 
   {id:'t3',sport:'tennis',tier:1,tournament:'WTA Stuttgart',surface:'clay',round:'Final',
-   p1:'Iga Swiatek',p2:'Aryna Sabalenka',venue:'Porsche-Arena, Stuttgart',time:'14:00',date:'19/04/2026',isLive:false,liveMin:0,
+   p1:'Iga Swiatek',p2:'Aryna Sabalenka',venue:'Porsche-Arena, Stuttgart',time:'14:00',date:_d(8),isLive:false,liveMin:0,
    stats:{p1Win:62,p1Rank:1,p2Rank:2,p1Avg:20.5,p2Avg:21.2,h2hAvg:41.2,p1Brk:50,p2Brk:42,p1Hold:83,p2Hold:78,surf:'clay',p1SurfAdv:1.20,h2hRec:'12-9',form:{h:['W','W','W','W','W'],a:['W','W','D','W','L']}},
    odds:{p1W:1.65,p2W:2.25,o385:1.88,u385:1.92,o415:2.20,u415:1.65,p1H:1.82,p2H:1.98,_1x:{p1W:1.70,o385:1.96}}},
 
   /* ━━━━ MMA ━━━━ */
   {id:'m1',sport:'mma',tier:1,promotion:'UFC',event:'UFC 312',weight:'Heavyweight',isTitle:true,
-   p1:'Jon Jones',p2:'Tom Aspinall',venue:'T-Mobile Arena, Las Vegas',time:'03:00',date:'19/04/2026',isLive:false,liveMin:0,
+   p1:'Jon Jones',p2:'Tom Aspinall',venue:'T-Mobile Arena, Las Vegas',time:'03:00',date:_d(8),isLive:false,liveMin:0,
    stats:{p1Win:52,p1Style:'wrestler',p2Style:'striker',p1Fin:55,p2Fin:92,p1KO:25,p2KO:70,p1Sub:30,p2Sub:15,p1Dec:45,p2Dec:8,p1Acc:55,p2Acc:60,p1Time:12.5,p2Time:7.2,p1Reach:215,p2Reach:213,form:{h:['W','W','W','W','W'],a:['W','W','W','W','W']}},
    odds:{p1W:1.98,p2W:1.85,oR:2.45,uR:1.52,ko:2.80,sub:5.50,dec:3.40,r1:4.20,_1x:{p1W:2.08,uR:1.58,ko:2.92}}},
 
   {id:'m2',sport:'mma',tier:1,promotion:'UFC',event:'UFC FN 258',weight:'Welterweight',isTitle:false,
-   p1:'Shavkat Rakhmonov',p2:'Gilbert Burns',venue:'UFC Apex, Las Vegas',time:'22:00',date:'18/04/2026',isLive:false,liveMin:0,
+   p1:'Shavkat Rakhmonov',p2:'Gilbert Burns',venue:'UFC Apex, Las Vegas',time:'22:00',date:_d(7),isLive:false,liveMin:0,
    stats:{p1Win:68,p1Style:'finisher',p2Style:'bjj',p1Fin:90,p2Fin:62,p1KO:45,p2KO:30,p1Sub:45,p2Sub:32,p1Dec:10,p2Dec:38,p1Acc:58,p2Acc:48,p1Time:8.2,p2Time:12.8,p1Reach:191,p2Reach:185,form:{h:['W','W','W','W','W'],a:['W','W','L','W','W']}},
    odds:{p1W:1.48,p2W:2.75,oR:2.80,uR:1.42,ko:3.50,sub:2.20,dec:3.80,r1:4.00,_1x:{p1W:1.54,uR:1.46,sub:2.30}}},
 
   /* ━━━━ CRICKET ━━━━ */
   {id:'c1',sport:'cricket',tier:1,comp:'IPL 2026',format:'T20',
-   p1:'Mumbai Indians',p2:'Chennai Super Kings',venue:'Wankhede Stadium, Mumbai',time:'15:30',date:'17/04/2026',isLive:false,liveMin:0,
+   p1:'Mumbai Indians',p2:'Chennai Super Kings',venue:'Wankhede Stadium, Mumbai',time:'15:30',date:_d(6),isLive:false,liveMin:0,
    stats:{p1Win:54,p1Avg:184,p2Avg:178,pitch:'batting',weather:0,toss:.62,form:{h:['W','W','L','W','W'],a:['L','W','W','W','L']}},
    odds:{p1W:1.82,p2W:2.02,o315:1.85,u315:1.95,o165:1.88,u165:1.92,_1x:{p1W:1.90,o315:1.92}}},
 
   {id:'c2',sport:'cricket',tier:1,comp:'IPL 2026',format:'T20',
-   p1:'Royal Challengers',p2:'Kolkata Knight Riders',venue:'Chinnaswamy Stadium, Bangalore',time:'19:30',date:'18/04/2026',isLive:false,liveMin:0,
+   p1:'Royal Challengers',p2:'Kolkata Knight Riders',venue:'Chinnaswamy Stadium, Bangalore',time:'19:30',date:_d(7),isLive:false,liveMin:0,
    stats:{p1Win:46,p1Avg:170,p2Avg:178,pitch:'batting',weather:0,toss:.58,form:{h:['L','W','W','L','W'],a:['W','W','W','L','W']}},
    odds:{p1W:2.12,p2W:1.72,o315:1.80,u315:2.00,o165:1.85,u165:1.95,_1x:{p1W:2.20,o315:1.88}}},
 
   /* ━━━━ RUGBY ━━━━ */
   {id:'r1',sport:'rugby',tier:1,comp:'Premiership',
-   p1:'Saracens',p2:'Leicester Tigers',venue:'StoneX Stadium, Londres',time:'15:00',date:'19/04/2026',isLive:false,liveMin:0,
+   p1:'Saracens',p2:'Leicester Tigers',venue:'StoneX Stadium, Londres',time:'15:00',date:_d(8),isLive:false,liveMin:0,
    stats:{p1Win:64,p1Pts:31.2,p2Pts:24.5,h2hTot:54.2,p1Tries:3.5,p2Tries:2.8,p1SP:85,p2SP:76,homeAdv:4.5,form:{h:['W','W','W','D','W'],a:['L','W','L','W','D']}},
    odds:{p1W:1.60,p2W:2.35,o49:1.88,u49:1.92,o545:2.12,u545:1.70,hcap:1.88,both:1.70,_1x:{p1W:1.66,o49:1.95}}},
 
   {id:'r2',sport:'rugby',tier:1,comp:'URC',
-   p1:'Leinster',p2:'Stormers',venue:'Aviva Stadium, Dublin',time:'19:35',date:'18/04/2026',isLive:false,liveMin:0,
+   p1:'Leinster',p2:'Stormers',venue:'Aviva Stadium, Dublin',time:'19:35',date:_d(7),isLive:false,liveMin:0,
    stats:{p1Win:72,p1Pts:36.8,p2Pts:24.2,h2hTot:58.5,p1Tries:4.4,p2Tries:3.0,p1SP:89,p2SP:78,homeAdv:5.2,form:{h:['W','W','W','W','W'],a:['L','W','D','W','L']}},
    odds:{p1W:1.38,p2W:3.10,o49:1.70,u49:2.15,o545:1.92,u545:1.90,hcap:1.85,both:1.60,_1x:{p1W:1.43,o49:1.76}}}
 ];
-function allEvs(){const all=[...DB];S.liveEvs.forEach(le=>{if(!all.find(e=>e.home===le.home&&e.away===le.away))all.push(le);});return all;}
+function allEvs(){
+  // If we have real API events for a sport, don't show static DB for that sport
+  const liveSports=new Set(S.liveEvs.map(e=>e.sport));
+  const base=DB.filter(ev=>!liveSports.has(ev.sport));
+  const all=[...base,...S.liveEvs];
+  return all;
+}
 /* ===== ANALYTICS ENGINE ===== */
 const AE={
   erf(x){const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;const sg=x>=0?1:-1;x=Math.abs(x);const t=1/(1+p*x);const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);return sg*y;},
@@ -1303,7 +1311,7 @@ const API={
     const btn=document.getElementById('btn-fetch');if(btn)btn.disabled=true;
     S.api.status='loading';updAPI();
     apiLog('<i class="fas fa-circle-notch spin"></i> A buscar dados em tempo real...','info');
-    const sports=Object.keys(this.lgMap).slice(0,10);let found=[];const errs=[];
+    const sports=Object.keys(this.lgMap);let found=[];const errs=[];
     try{
       const results=await Promise.allSettled(sports.map(async sp=>{
         try{
@@ -1488,7 +1496,7 @@ const Render={
       const div=document.createElement('div');div.className='egrp';
       div.innerHTML=`<div class="egrp-hdr ${sport}"><span class="egrp-title">${labels[sport]}</span><div class="egrp-meta"><span class="badge v">${vbCnt} VBs</span><span>${evts.length} eventos</span>${evts.some(e=>e.isLive)?'<span class="badge live" style="font-size:.44rem">LIVE</span>':''}</div></div>`;
       const grid=document.createElement('div');grid.className='mgrid';
-      evts.slice(0,3).forEach(ev=>{const c=renderCard(ev);if(c)grid.appendChild(c);});
+      evts.forEach(ev=>{const c=renderCard(ev);if(c)grid.appendChild(c);});
       div.appendChild(grid);g.appendChild(div);
     });
     if(!g.children.length)g.innerHTML='<div class="empty"><i class="fas fa-bolt"></i>Sem oportunidades com estes filtros.<br><small>Tenta reduzir o edge mínimo ou desactiva Tier 1.</small></div>';
